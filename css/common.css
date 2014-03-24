@@ -1,0 +1,18 @@
+/**
+ * "Yet Another Multicolumn Layout" - YAML CSS Framework
+ *
+ * default screen stylesheet - PAGE-layout type layout
+ *
+ * @copyright       Copyright 2005-2012, Dirk Jesse
+ * @license         CC-BY 2.0 (http://creativecommons.org/licenses/by/2.0/),
+ *                  YAML-CDL (http://www.yaml.de/license.html)
+ * @link            http://www.yaml.de
+ * @package         yaml
+ * @version         v4.0.1
+ * @revision        $Revision: 733 $
+ * @lastmodified    $Date: 2012-03-04 19:15:48 +0100 (So, 04 Mrz 2012) $
+ */
+@import url(./yaml/core/base.css);
+@import url(./screen/layout.css);
+@import url(./screen/typography.css);
+@import url(./screen/layout-cmdi.css);
