@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v0.6.7
+# v0.6.8
 
 CACHE:
 index.html
@@ -57,7 +57,6 @@ img/logos/LOGO_CLASS.png
 img/logos/LOGO_Uni_Koeln.png
 javascript/actors.js
 javascript/actor_languages.js
-javascript/ajax.js
 javascript/alertify.min.js
 javascript/cmdi_generator.js
 javascript/content_languages.js
