@@ -1,7 +1,7 @@
 {
   "name": "CMDI Maker",
   "description": "CMDI Maker lets you easily create IMDI and CMDI metadata files for your language archive.",
-  "version": "0.6.8",
+  "version": "0.7.1",
   "app": {
     "background": {
       "scripts": ["background.js"]

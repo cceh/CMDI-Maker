@@ -115,6 +115,53 @@ function show_actor(actor_id){
 
 }
 
+function export_actors(){
+	
+	var actors_json = JSON.stringify(actors);
+	
+	save_file(actors_json, "actors.json", "application/json;charset=utf-8");
+
+
+}
+
+
+function import_actors(evt){
+
+    var files = evt.target.files; // FileList object
+
+	console.log(files);
+	
+	var file = files[0];
+	
+	console.log(file);
+	
+	reader = new FileReader();
+	
+	reader.onload = function(e){
+	
+		try {
+			var imported_actors = JSON.parse(e.target.result);
+		}
+		
+		catch (e) {
+			console.log(e);
+			return;
+		}
+		
+		for (var a=0; a<imported_actors.length; a++){
+			actors.push(imported_actors[a]);
+		}
+		
+		RefreshActorsInWebStorage();
+		RefreshActorsListDisplay();
+		
+		alertify.log(imported_actors.length + " actors imported");
+	
+	}
+	
+	reader.readAsText(file);
+	
+}
 
 function calcAgeAtDate(dateString,birthDate) {
 	

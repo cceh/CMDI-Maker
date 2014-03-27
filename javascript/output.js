@@ -136,23 +136,23 @@ function export_corpus(){
   
 function save_corpus(){
 
-	save_file(g("textarea_corpus").value,/*"Corpus_"+*/get("corpus_name")+"."+getOutputFormat().toLowerCase());
+	save_file(g("textarea_corpus").value,/*"Corpus_"+*/get("corpus_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
 
 }
 
 
 function save_session(session){
 
-	save_file(g("textarea_session_"+session).value,/*"Session"+(session+1)+"_"+*/get("session_"+sessions[session].id+"_name")+"."+getOutputFormat().toLowerCase());
+	save_file(g("textarea_session_"+session).value,/*"Session"+(session+1)+"_"+*/get("session_"+sessions[session].id+"_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
 
 }
 
 
-function save_file(text, filename){
+function save_file(text, filename, mime_type){
 
 	var clean_filename = remove_invalid_chars(filename);
 
-	var blob = new Blob([text], {type: "text/xml;charset=utf-8"});
+	var blob = new Blob([text], {type: mime_type});
 	saveAs(blob, clean_filename);
 
 }

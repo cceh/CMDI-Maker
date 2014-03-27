@@ -85,7 +85,9 @@ function add_event_listeners() {
 	document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    setAutosaveInterval(600);     });	
 	
 	g('link_erase_actors_database').addEventListener('click', function() {        erase_actor_database();      });
-	g('link_delete_recall_data').addEventListener('click', function() {        delete_recall_data();      });	
+	g('link_delete_recall_data').addEventListener('click', function() {        delete_recall_data();      });
+	g('link_export_actors').addEventListener('click', function() {        export_actors();      });	
+	g('actors_file_input').addEventListener('change',import_actors, false);	
 	g('actor_role_cv_img').addEventListener('click', function() {        change_ov_input("actor_role",vocabularies.actor.role);   /*open vocabulary*/   });
 	g('actor_fs_role_cv_img').addEventListener('click', function() {        change_ov_input("actor_family_social_role",vocabularies.actor.family_social_role);  /*open vocabulary*/    });
 	
