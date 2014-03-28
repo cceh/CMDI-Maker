@@ -149,7 +149,7 @@ function import_actors(evt){
 		}
 		
 		for (var a=0; a<imported_actors.length; a++){
-			actors.push(imported_actors[a]);
+			save_actor(imported_actors[a], true);
 		}
 		
 		RefreshActorsInWebStorage();
@@ -344,87 +344,84 @@ function duplicate_active_actor(){
 	//then create a duplicate
 	if (save == true){
 		save_active_actor(true);
+		alertify.log("Actor saved and duplicated.","success",5000);
 	}
 
 }
 
 
-function save_active_actor(duplicate){
-//duplicate can be true or false. if true, active actor will not be overwritten, but duplicated
+function save_active_actor(do_not_overwrite){
+//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
 
 	if (get("actor_name") != ""){
 
-		if (!duplicate){
-			var duplicate = false;
+		if (!do_not_overwrite){
+			var do_not_overwrite = false;
 		}
 		
-		var actor_name = get("actor_name");
- 
 		var actor_to_put = MakeActorObjectOutOfForm();
 		
-		var actor_ids = [];
-		
-		//create array with all actor ids
-		for (var a=0; a<actors.length;a++){
-			actor_ids.push(actors[a].id);
-		}
-
-		//if this actor does already exist and is to be overwritten, overwrite the object in the array
-		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (duplicate == false)) {
-			actors.splice(getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
-			
-			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
-			for (var s=0; s<sessions.length; s++){
-			
-				//search for actor_id in this session's actors
-				if (sessions[s].actors.indexOf(actor_to_put.id) != -1){
-				
-					RefreshActorNameInSession(sessions[s].id, actor_to_put.id);
-	
-				}
-			
-			}
-			
-			
-		}
-		
-		else {    //if actor shall be duplicated, give the duplicate a new id
-		
-			actor_to_put.id = counters.actor_id;
-			console.log("Saving actor with id "+actor_to_put.id);
-			counters.actor_id++;
-		
-			localStorage.setItem("actor_id_counter",counters.actor_id);
-		
-			actors.push(actor_to_put);
-		}
- 
-		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
-
-		RefreshActorsInWebStorage();
-		RefreshActorsListDisplay();
-		
-		if (duplicate == true){
-			alertify.log("Actor " + actor_name + " duplicated.","success",5000);
-		}
-		
-		else {
-			alertify.log("Actor " + actor_name + " saved.","success",5000);
-		}
-		
-		return true;
+		return save_actor(actor_to_put, do_not_overwrite);
 		
 	}
 
 	else {
 
-		alertify.alert("Please give your actor a name.<br>This application would not make much sense if you don't do that.");
+		alertify.alert("Please give your actor a name first.");
 		return false;
 		
 	}
 
 }
 
+
+function save_actor(actor_to_put, do_not_overwrite){
+
+	var actor_ids = [];
+	
+	//create array with all actor ids
+	for (var a=0; a<actors.length;a++){
+		actor_ids.push(actors[a].id);
+	}
+
+	//if this actor does already exist and is to be overwritten, overwrite the object in the array
+	if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite == false)) {
+		actors.splice(getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
+		
+		//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
+		for (var s=0; s<sessions.length; s++){
+	
+			//search for actor_id in this session's actors
+			if (sessions[s].actors.indexOf(actor_to_put.id) != -1){
+				
+				RefreshActorNameInSession(sessions[s].id, actor_to_put.id);
+	
+			}
+			
+		}
+	
+		
+	}
+	
+	else {    //if actor shall not be overwritten, give the duplicate/new generated actor a new id
+		
+		actor_to_put.id = counters.actor_id;
+		console.log("Saving actor with id "+actor_to_put.id);
+		counters.actor_id++;
+		
+		localStorage.setItem("actor_id_counter",counters.actor_id);
+		
+		actors.push(actor_to_put);
+	}
+ 
+	console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
+
+	RefreshActorsInWebStorage();
+	RefreshActorsListDisplay();
+	
+	return true;
+
+}
 
 function RefreshActorNameInSession(session_id, actor_id){
 
