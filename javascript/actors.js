@@ -366,6 +366,10 @@ function save_active_actor(do_not_overwrite){
 	}
 
 	else {
+	
+		alertify.set({ labels: {
+			ok     : "OK"
+		} });
 
 		alertify.alert("Please give your actor a name first.");
 		return false;

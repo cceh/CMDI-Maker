@@ -125,11 +125,12 @@ function show_window(window_id){
 			
 			if (active_actor != -1){
 				g("link_delete_active_actor").style.display = "inline";
+				g("link_duplicate_active_actor").style.display = "inline";
 			}
 			
 			g("link_sort_actors_alphabetically").style.display = "inline";
 			
-			//g("link_duplicate_active_actor").style.display = "inline";
+			
 			
 			break;
 		}
