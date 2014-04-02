@@ -3,7 +3,6 @@ CACHE MANIFEST
 
 CACHE:
 index.html
-manifest.json
 css/alertify.core.css
 css/alertify.default.css
 css/common.css

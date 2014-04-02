@@ -52,7 +52,7 @@ var MetadataLanguageIDs = [
 	["arb","Standard Arabic"]
 ];
 
-var not_allowed_chars = " !\"§$%&/()=?^°`´'#*+~<>[]{}|²³,.;:";
+var not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:";
 
 var valid_lamus_written_resource_file_types = [
 	["eaf","text/x-eaf+xml","Annotation"],
