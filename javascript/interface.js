@@ -103,6 +103,8 @@ function show_window(window_id){
 		case 0: {
 			g('sessions').style.display = "block";
 			
+			g('sessions').scrollTop = 0;
+			
 			g("sessions_window_icon").style.backgroundColor = highlight_color;
 			
 			
@@ -174,12 +176,13 @@ function show_window(window_id){
 		case 3: {
 
 			g('media_files').style.display = "block";
+			g('media_files').scrollTop = 0;
 			
 			g("manage_media_files_icon").style.backgroundColor = highlight_color;
 			
 			g("crps_icon").style.display = "inline";
 			g("link_clear_file_list").style.display = "inline";
-		g("link_sort_alphabetically").style.display = "inline";
+			g("link_sort_alphabetically").style.display = "inline";
 			
 			break;
 		}

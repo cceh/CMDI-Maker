@@ -593,3 +593,36 @@ function get_file_type(filename){
 
 	return fileinfo;
 }
+
+
+function parse_birth_date(string){
+
+	if (string.length != 10 || string == "Unspecified" || string == "Unknown"){
+		var year = "YYYY";
+		var month = "MM";
+		var day = "DD";
+	}
+	
+	else {
+	
+		var year = string.slice(0,4);
+		var month = string.slice(5,7);
+		var day = string.slice(8,10);	
+
+	}
+
+	var object = {
+	
+		year: year,
+		month: month,
+		day: day
+	
+	
+	};
+	
+	
+	return object;
+
+
+
+}

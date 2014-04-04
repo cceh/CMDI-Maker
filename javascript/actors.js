@@ -91,11 +91,11 @@ function show_actor(actor_id){
 		set_form_value("actor_sex",actors[actor_id].sex);
 		set_form_value("actor_education",actors[actor_id].education);
 		
-		document.getElementsByName("actor_contact_name")[0].value = actors[actor_id].contact.email;
-		document.getElementsByName("actor_contact_address")[0].value = actors[actor_id].contact.address;
-		document.getElementsByName("actor_contact_email")[0].value = actors[actor_id].contact.email;
-		document.getElementsByName("actor_contact_organisation")[0].value = actors[actor_id].contact.organisation;
-		document.getElementsByName("actor_description")[0].value = actors[actor_id].description;
+		set_form_value("actor_contact_name",actors[actor_id].contact.name);
+		set_form_value("actor_contact_address",actors[actor_id].contact.address);
+		set_form_value("actor_contact_email",actors[actor_id].contact.email);
+		set_form_value("actor_contact_organisation",actors[actor_id].contact.organisation);
+		set_form_value("actor_description",actors[actor_id].description);
 	
 		document.getElementsByName("actor_anonymized")[0].checked = actors[actor_id].anonymized;
 		
@@ -135,16 +135,31 @@ function import_actors(evt){
 	
 	console.log(file);
 	
-	reader = new FileReader();
+	var reader = new FileReader();
 	
 	reader.onload = function(e){
 	
+		var result = e.target.result;
+	
 		try {
-			var imported_actors = JSON.parse(e.target.result);
+			var imported_actors = JSON.parse(result);
 		}
 		
 		catch (e) {
 			console.log(e);
+
+			if (window.DOMParser) {
+				var parser = new DOMParser();
+				var xml = parser.parseFromString(result,"text/xml");
+				
+				var imported_actors = parse_imdi_for_actors(xml);
+				
+			}
+			
+			
+		}
+		
+		if (!imported_actors){
 			return;
 		}
 		
@@ -161,6 +176,90 @@ function import_actors(evt){
 	
 	reader.readAsText(file);
 	
+}
+
+function parse_imdi_for_actors(xml){
+
+	var actors_in_xml = xml.getElementsByTagName("Actor");
+	
+	var actors_in_json = [];
+	
+	for (var a=0; a<actors_in_xml.length; a++){
+	
+		
+		console.log("Actor in IMDI found. Name: " + actors_in_xml[a].querySelector("Name").textContent.trim());
+		
+		var actor = {
+			name: actors_in_xml[a].querySelector("Name").textContent.trim(),
+			role: actors_in_xml[a].querySelector("Role").textContent.trim(),
+			full_name: actors_in_xml[a].querySelector("FullName").textContent.trim(),
+			code: actors_in_xml[a].querySelector("Code").textContent.trim(),		
+			age: actors_in_xml[a].querySelector("Age").textContent.trim(),
+			sex: actors_in_xml[a].querySelector("Sex").textContent.trim(),		
+			education: actors_in_xml[a].querySelector("Education").textContent.trim(),
+			birth_date: parse_birth_date(actors_in_xml[a].querySelector("BirthDate").textContent.trim()),
+			ethnic_group: actors_in_xml[a].querySelector("EthnicGroup").textContent.trim(),
+			family_social_role: actors_in_xml[a].querySelector("FamilySocialRole").textContent.trim(),
+			
+			description: actors_in_xml[a].querySelector("Description").textContent.trim(),
+			
+			contact: {
+			
+				name: actors_in_xml[a].querySelector("Contact").querySelector("Name").textContent.trim(),
+				address: actors_in_xml[a].querySelector("Contact").querySelector("Address").textContent.trim(),
+				email: actors_in_xml[a].querySelector("Contact").querySelector("Email").textContent.trim(),
+				organisation: actors_in_xml[a].querySelector("Contact").querySelector("Organisation").textContent.trim(),
+			
+			
+			},
+			
+			anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
+			
+			languages: []
+		
+		}
+		
+		var actor_languages = actors_in_xml[a].querySelector("Languages");
+		
+		console.log(actor_languages.children);
+		
+		for (var l=0; l<actor_languages.children.length; l++){
+		
+			if (actor_languages.children[l].nodeName != "Language"){
+				continue;
+			}
+		
+			var Actor_Language = {
+			
+				LanguageObject: [
+				
+				actor_languages.children[l].querySelector("Id").textContent.trim().slice(9),
+				"?",
+				"?",
+				actor_languages.children[l].querySelector("Name").textContent.trim(),
+				
+				
+				],
+				
+				MotherTongue: (actor_languages.children[l].querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
+				PrimaryLanguage: (actor_languages.children[l].querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
+			
+			
+			}
+			
+			
+			actor.languages.push(Actor_Language);
+		
+		}
+		
+		actors_in_json.push(actor);
+
+	}
+	
+	console.log(actors_in_xml);
+	
+	return actors_in_json;
+
 }
 
 function calcAgeAtDate(dateString,birthDate) {
