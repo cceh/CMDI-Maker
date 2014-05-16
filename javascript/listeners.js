@@ -87,9 +87,18 @@ function add_event_listeners() {
 	g('link_erase_actors_database').addEventListener('click', function() {        erase_actor_database();      });
 	g('link_delete_recall_data').addEventListener('click', function() {        delete_recall_data();      });
 	g('link_export_actors').addEventListener('click', function() {        export_actors();      });	
-	g('actors_file_input').addEventListener('change',import_actors, false);	
-	g('actor_role_cv_img').addEventListener('click', function() {        change_ov_input("actor_role",vocabularies.actor.role);   /*open vocabulary*/   });
-	g('actor_fs_role_cv_img').addEventListener('click', function() {        change_ov_input("actor_family_social_role",vocabularies.actor.family_social_role);  /*open vocabulary*/    });
+	g('actors_file_input').addEventListener('change',import_actors, false);
+	
+	g('actor_role_cv_img').addEventListener('click', function() {
+		change_ov_input("actor_role",
+		["Unknown","Unspecified","Annotator","Author","Collector","Consultant","Computer","Depositor","Editor","Filmer",
+		"Illustrator","Interviewer","Musician","Photographer","Publisher","Recorder","Referent","Researcher","Singer","Speaker/Signer","Translator"]);   /*open vocabulary*/
+	});
+	
+	g('actor_fs_role_cv_img').addEventListener('click', function() {
+		change_ov_input("actor_family_social_role",
+		["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"]);  /*open vocabulary*/
+	});
 	
 	g("content_language_select").onkeydown = function(event) {
 

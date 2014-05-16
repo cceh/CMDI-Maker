@@ -289,8 +289,8 @@ function make_date_input(parent, title, name_prefix, id_prefix, y_value, m_value
 	span.appendChild(document.createElement("br"));
 	
 	var y_input = document.createElement("input");
-	y_input.name = name_prefix+"_date_year";
-	y_input.id = id_prefix+"_date_year";
+	y_input.name = name_prefix+"_year";
+	y_input.id = id_prefix+"_year";
 	y_input.className = "YearInput";
 	y_input.value = (y_value != "") ? y_value : "YYYY";
 	y_input.title = hover;
@@ -301,8 +301,8 @@ function make_date_input(parent, title, name_prefix, id_prefix, y_value, m_value
 	span2.innerHTML = " ";
 	
 	var m_input = document.createElement("input");
-	m_input.name = name_prefix+"_date_month";
-	m_input.id = id_prefix+"_date_month";
+	m_input.name = name_prefix+"_month";
+	m_input.id = id_prefix+"_month";
 	m_input.className = "MonthInput";
 	m_input.value = (m_value != "") ? m_value : "MM";
 	m_input.title = hover;
@@ -315,8 +315,8 @@ function make_date_input(parent, title, name_prefix, id_prefix, y_value, m_value
 	span2.title = hover;
 	
 	var d_input = document.createElement("input");
-	d_input.name = name_prefix+"_date_day";
-	d_input.id = id_prefix+"_date_day";
+	d_input.name = name_prefix+"_day";
+	d_input.id = id_prefix+"_day";
 	d_input.className = "DayInput";
 	d_input.value = (d_value != "") ? d_value : "DD";
 	d_input.title = hover;
@@ -421,7 +421,7 @@ function o(object, property_array){
 	
 		if (property_array[p] in value){
 			value = value[property_array[p]];
-			
+		
 		}
 		
 		else { 
@@ -431,7 +431,6 @@ function o(object, property_array){
 	}
 	
 	return value;
-
 
 }
 
@@ -507,13 +506,26 @@ function bytesToSize(bytes, precision){
 }
 
 
-function new_element(element_tag,element_id,element_class,parent_to_append_to){
+function new_element(element_tag,element_id,element_class,parent_to_append_to,innerHTML){
 
 	var element = document.createElement(element_tag);
-	element.id = element_id;
-	element.className = element_class;
+	
+	if (element_id != ""){
+		element.id = element_id;
+	}
+	
+	if (element_class != ""){
+		element.className = element_class;
+	}
+	
 	parent_to_append_to.appendChild(element);
 
+	if (innerHTML){
+	
+		element.innerHTML = innerHTML;
+	
+	}
+	
 	return element;
 }
 
@@ -623,6 +635,42 @@ function parse_birth_date(string){
 	
 	return object;
 
+}
 
+
+function make_new_session_object(){
+
+	var session_object = {
+	
+		name: "",
+	
+		id: null,
+		
+		date: {
+			year: "",
+			month: "",
+			day: ""
+		},
+		
+		location: {},
+		project: {},
+		contact: {},
+		content: {},
+		
+		actors: [],
+		//which actors are in this session?
+		//Ex.: [21, 36];  //I. e. Session contains actor_ids 21 and 36
+		
+		writtenResources: [],
+		//values represent resource ids in respective session	
+		
+		mediaFiles: [],
+		//values represent resource ids in respective session
+		
+		expanded: false
+
+	};
+	
+	return session_object;
 
 }

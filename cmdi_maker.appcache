@@ -59,7 +59,6 @@ javascript/actor_languages.js
 javascript/alertify.min.js
 javascript/cmdi_generator.js
 javascript/content_languages.js
-javascript/descriptions.js
 javascript/FileSaver.js
 javascript/get.js
 javascript/helpers.js
@@ -71,7 +70,7 @@ javascript/listeners.js
 javascript/output.js
 javascript/resource_files.js
 javascript/save_and_recall.js
+javascript/session_form.js
 javascript/sessions.js
 javascript/settings.js
-javascript/vocabularies.js
 javascript/xml.js

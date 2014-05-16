@@ -16,13 +16,16 @@ limitations under the License.
 
 // Settings
 var originator="CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version="v0.8.1";
+var version="v0.9.1";
 var LanguageCodePrefix = "ISO639-3:";
 var imdi_version = "IMDI 3.04";
 var path_to_images = "img/";
 
 var output_textarea_rows = 40;
 var output_textarea_columns = 130;
+
+var form_textarea_rows = 18;
+var form_textarea_columns = 5;
 
 var interval;
 var interval_time = 60;

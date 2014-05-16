@@ -173,13 +173,11 @@ function delete_recall_data(){
 }
 
 function save_form(){
-
-	console.log("Saving Form");
 	
 	var form_object = MakeObjectOutOfForm();
 
 	var onsuccess = function(id){
-		console.log('Form saved! insertId is: ' + id);
+		console.log('Form saved. insertId = ' + id);
 	}
 
 	var onerror = function(error){
@@ -223,20 +221,7 @@ function MakeObjectOutOfForm(){
 	
 	for (var s=0; s<sessions.length; s++){
 		
-		object.sessions.push({
-			
-			date: {},
-			location: {},
-			project: {},
-			contact: {},
-			content: {},
-			
-			actors: [],
-			writtenResources: [],
-			mediaFiles: []
-		
-		
-		});
+		object.sessions.push(make_new_session_object());
 		
 		object.sessions[s].name = get("session_"+sessions[s].id+"_name");
 		object.sessions[s].title = get("session_"+sessions[s].id+"_title");
@@ -274,7 +259,10 @@ function MakeObjectOutOfForm(){
 		object.sessions[s].content.socialcontext = get("session_"+sessions[s].id+"_content_socialcontext");
 		object.sessions[s].content.involvement = get("session_"+sessions[s].id+"_content_involvement");
 		
+		
+		object.sessions[s].actorsDescription = get("session_"+sessions[s].id+"_actorsDescription");
 		object.sessions[s].actors = sessions[s].actors;
+		
 		object.sessions[s].writtenResources = sessions[s].writtenResources;
 		object.sessions[s].mediaFiles = sessions[s].mediaFiles;
 		

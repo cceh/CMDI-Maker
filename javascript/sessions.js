@@ -30,31 +30,11 @@ function new_session(session_object){
 		var session_expanded = session_object.expanded;
 	}
 
-	//push new object into sessions array
-	sessions.push({
-		name: "",
-		
-		
-		date: {
-			year: "",
-			month: "",
-			day: ""
-		},
-	
-		id: session_id,
-		actors: [],
-		//which actors are in this session?
-		//Ex.: [21, 36];  //I. e. Session contains actor_ids 21 and 36
-		
-		writtenResources: [],
-		//values represent resource ids in respective session	
-		
-		mediaFiles: [],
-		//values represent resource ids in respective session
-		
-		expanded: session_expanded
-		
-	});  
+	//push new session object into sessions array
+	var new_session_object = make_new_session_object();
+	new_session_object.id = session_id;
+	new_session_object.expanded = session_expanded;
+	sessions.push(new_session_object);
 	
 	var session_div = new_element('div','session'+session_id,'session_div',g('sessions')); 
 	//sessions_count is right! but it has to be clear which session in sessions has which session_id
@@ -88,9 +68,10 @@ function new_session(session_object){
 	//create icon to expand/collapse the session
 	var session_display_link = new_element('a','session_'+session_id+'_display_link','session_display_link',session_header);
 	session_display_link.addEventListener('click', function(num) { 
-				return function(){ display(num);  
-				};
-				}(session_id) );
+		return function(){
+			display(num);  
+		};
+	}(session_id) );
 	session_display_link.innerHTML = "<img id=\"session_"+session_id+"_expand_img\" class=\"expand_img\" src=\""+path_to_images+"icons/down.png\">";
 	session_display_link.href = "#";
 
@@ -105,130 +86,9 @@ function new_session(session_object){
 
 	var session_content = new_element('div','session'+session_id+'_content','session_content',session_div)
 
-	var table = new_element("table","session"+session_id+"_table","session_table",session_content);
-	
-	var tr = document.createElement("tr");
-	table.appendChild(tr);
-	
-	var td = document.createElement("td");
-	tr.appendChild(td);
-	
-	var h2 = document.createElement("h2");
-	h2.innerHTML = "Session";
-	td.appendChild(h2);
-	
-	//make_text_input parameters: parent element, Title in front of input, element name, element id,  element value
-	var input = make_text_input(td,"Name","session_"+session_id+"_name","session_"+session_id+"_name",o(session_object,["name"]),comments.session.name);
-	
-	input.onkeypress = function(e) {
-		var chr = String.fromCharCode(e.which);
-		if (not_allowed_chars.indexOf(chr) >= 0){
-			alertify.log("This character is not allowed here.","error",5000);
-			return false;
-		}
-	};
-	
-	
-	make_text_input(td,"Title","session_"+session_id+"_title","session_"+session_id+"_title",o(session_object,["title"]),comments.session.title);
-	make_date_input(td,"Date","session_"+session_id,"session_"+session_id,o(session_object,["date","year"]),o(session_object,["date","month"]),o(session_object,["date","day"]),comments.session.date);
-	make_textarea(18,5,td,"Description","session_"+session_id+"_description","session_"+session_id+"_description","textarea",o(session_object,["description"]),comments.session.description);
-	
-	var h3 = document.createElement("h3");
-	h3.innerHTML = "Location";
-	td.appendChild(h3);
+	//create the form
+	make_input(session_content, session_form, session_id, session_object);
 
-	make_select(td, "Continent","session_"+session_id+"_location_continent","session_"+session_id+"_location_continent",1,vocabularies.continent,o(session_object,["location","continent"]),comments.session.location.continent);
-	//parameters: parent to append to, title, name of element, id of element, size, array of options
-	
-	make_text_input(td,"Country","session_"+session_id+"_location_country","session_"+session_id+"_location_country",o(session_object,["location","country"]),comments.session.location.country);
-	make_text_input(td,"Region","session_"+session_id+"_location_region","session_"+session_id+"_location_region",o(session_object,["location","region"]),comments.session.location.region);
-	make_text_input(td,"Address","session_"+session_id+"_location_address","session_"+session_id+"_location_address",o(session_object,["location","address"]),comments.session.location.address);
-	
-	
-	//Project TD
-	var td = document.createElement("td");
-	td.id = "session_"+session_id+"_project_td";
-	td.className = "session_project_td";
-	tr.appendChild(td);
-	
-	var h2 = document.createElement("h2");
-	h2.innerHTML = "Project";
-	h2.title = comments.session.project.main;
-
-	td.appendChild(h2);
-	
-	make_text_input(td,"Name","session_"+session_id+"_project_name","session_"+session_id+"_project_name",o(session_object,["project","name"]),comments.session.project.name);
-	make_text_input(td,"Title","session_"+session_id+"_project_title","session_"+session_id+"_project_title",o(session_object,["project","title"]),comments.session.project.title);
-	make_text_input(td,"ID","session_"+session_id+"_project_id","session_"+session_id+"_project_id",o(session_object,["project","id"]),comments.session.project.id);
-	
-	make_textarea(18,5,td,"Description","session_"+session_id+"_project_description","session_"+session_id+"_project_description","textarea",o(session_object,["project","description"]),comments.session.project.description);
-	
-	var h3 = document.createElement("h3");
-	h3.innerHTML = "Contact";
-	h3.title = comments.session.project.contact;
-	td.appendChild(h3);
-
-	make_text_input(td,"Name","session_"+session_id+"_contact_name","session_"+session_id+"_contact_name",o(session_object,["contact","name"]),comments.session.project.contact);
-	make_text_input(td,"Address","session_"+session_id+"_contact_address","session_"+session_id+"_contact_address",o(session_object,["contact","address"]),comments.session.project.contact);
-	make_text_input(td,"Email","session_"+session_id+"_contact_email","session_"+session_id+"_contact_email",o(session_object,["contact","email"]),comments.session.project.contact);
-	make_text_input(td,"Organisation","session_"+session_id+"_contact_organisation","session_"+session_id+"_contact_organisation",o(session_object,["contact","organisation"]),comments.session.project.contact);
-	
-	
-	// Content td
-	var td = document.createElement("td");
-	td.id = "session_"+session_id+"_content_td";
-	td.className = "session_content_td";
-	tr.appendChild(td);
-	
-	var h2 = document.createElement("h2");
-	h2.innerHTML = "Content";
-	h2.title = comments.session.content.main;
-	td.appendChild(h2);
-
-	open_vocabulary(td, "Genre","session_"+session_id+"_content_genre","session_"+session_id+"_content_genre",1,vocabularies.genre,o(session_object,["content","genre"]),comments.session.content.genre);	
-	make_text_input(td,"Sub Genre","session_"+session_id+"_content_subgenre","session_"+session_id+"_content_subgenre",o(session_object,["content","subgenre"]),comments.session.content.subgenre);
-	//Language
-	//Session-wide content language not supported yet, only corpus-wide content language possible at this time
-	open_vocabulary(td,"Task","session_"+session_id+"_content_task","session_"+session_id+"_content_task",1,vocabularies.task,o(session_object,["content","task"]),comments.session.content.task);
-	
-	make_textarea(18,5,td,"Description","session_"+session_id+"_content_description","session_"+session_id+"_content_description","textarea",o(session_object,["content","description"]),comments.session.content.description);
-
-	var h3 = document.createElement("h3");
-	h3.innerHTML = "Communication Context";
-	h3.title = comments.session.content.communication_context.main;
-	td.appendChild(h3);
-	
-	make_select(td, "Event Structure","session_"+session_id+"_content_eventstructure","session_"+session_id+"_content_eventstructure",1,vocabularies.event_structure,o(session_object,["content","eventstructure"]),comments.session.content.communication_context.event_structure);	
-	make_select(td, "Planning Type","session_"+session_id+"_content_planningtype","session_"+session_id+"_content_planningtype",1,vocabularies.planning_type,o(session_object,["content","planningtype"]),comments.session.content.communication_context.planning_type);	
-	make_select(td, "Interactivity","session_"+session_id+"_content_interactivity","session_"+session_id+"_content_interactivity",1,vocabularies.interactivity,o(session_object,["content","interactivity"]),comments.session.content.communication_context.interactivity);	
-	make_select(td, "Social Context","session_"+session_id+"_content_socialcontext","session_"+session_id+"_content_socialcontext",1,vocabularies.social_context,o(session_object,["content","socialcontext"]),comments.session.content.communication_context.social_context);	
-	make_select(td, "Involvement","session_"+session_id+"_content_involvement","session_"+session_id+"_content_involvement",1,vocabularies.involvement,o(session_object,["content","involvement"]),comments.session.content.communication_context.involvement);	
-
-	
-	//Actors td
-	var td = document.createElement("td");
-	td.className = "actors_TD";
-	tr.appendChild(td);
-
-	td.innerHTML = "<h2>Actors</h2>"+
-
-	"Description of Actors:<br>"+
-	"<textarea title=\"" + comments.session.actors.description + "\" name=\"session_"+session_id+"_actors_description\" id=\"session_"+session_id+"_actors_description\" cols=\"19\" rows=\"5\">"+o(session_object,"name")+"</textarea><br><br>"+
-	"<div id='actors_of_session_"+session_id+"' class='actors'></div>"+
-	"<div id='session_"+session_id+"_add_actors_div' class='actors'></div>";
-	
-	var td = document.createElement("td");
-	td.className = "mediafiles_TD";
-	td.id = "session_"+session_id+"_mf_td";
-	tr.appendChild(td);
-
-	td.innerHTML = 
-	"<h2>Resources</h2>"+
-	"<div id='mfs_of_session_"+session_id+"' class='mfs'></div>"+
-	"<div id='session_"+session_id+"_add_mf_div'>"+
-
-	"</div>";
-	
 	
 	g("session_"+session_id+"_name").addEventListener("blur", function(num){
 	
@@ -269,9 +129,7 @@ function new_session(session_object){
 	
 	}
 	
-
 	refresh_resources_of_session(GetSessionIndexFromID(session_id));
-	
 	
 	var all_available_actor_ids = [];
 	
@@ -285,11 +143,137 @@ function new_session(session_object){
 		display(session_id);
 	}
 	
-	
 	counters.session_id+=1;   //this is the id, always unique, even if session created after one is deleted
 	
 	return counters.session_id-1;
 }
+
+
+function make_input(parent, field, session_id, session_object){
+
+	if (field.type == "text"){
+		var input = make_text_input(parent, field.heading,
+			"session_"+session_id+"_"+field.name,
+			"session_"+session_id+"_"+field.name,
+			o(session_object, field.session_object_name),
+			field.comment
+		);
+	}
+	
+	if (field.type == "date"){
+		var input = make_date_input(parent, field.heading,
+			"session_"+session_id+"_"+field.name,
+			"session_"+session_id+"_"+field.name,
+			o(session_object, [field.session_object_name, "year"]),
+			o(session_object, [field.session_object_name, "month"]),				
+			o(session_object, [field.session_object_name, "day"]),					
+			field.comment
+		);
+	}
+	
+	if (field.type == "textarea"){
+		var input = make_textarea(
+			form_textarea_rows,
+			form_textarea_columns,
+			parent,
+			field.heading,
+			"session_"+session_id+"_"+field.name,
+			"session_"+session_id+"_"+field.name,
+			"session_"+session_id+"_"+field.name,
+			o(session_object, field.session_object_name),
+			field.comment
+		);
+	}			
+	
+	if (field.type == "subarea"){
+	
+		var h3 = document.createElement("h3");
+		h3.innerHTML = field.heading;
+		parent.title = field.comment;
+		parent.appendChild(h3);
+	
+		for (var f=0; f<field.fields.length; f++){
+			
+			make_input(parent, field.fields[f], session_id, session_object);
+		
+		}
+	}
+	
+	if (field.type == "column"){
+	
+		var td = new_element("td","session_"+session_id+"_"+field.name,"session_"+field.name,parent);
+		var h2 = new_element("h2","","",td,field.title);
+		
+		for (var f=0; f<field.fields.length; f++){
+			
+			make_input(td, field.fields[f], session_id, session_object);
+		
+		}
+	}
+	
+	if (field.type == "form"){
+	
+		var table = new_element("table","session"+session_id+"_table","session_table",parent);
+		var tr = new_element("tr","","",table);
+		
+		for (var f=0; f<field.columns.length; f++){
+			
+			make_input(tr, field.columns[f], session_id, session_object);
+		
+		}
+	}
+	
+	if (field.type == "special"){
+	
+		if (field.name == "actors"){
+		
+			new_element("br","","",parent);
+			
+			new_element("div","actors_of_session_"+session_id, "actors", parent);
+			new_element("div","session_"+session_id+"_add_actors_div", "actors", parent);
+		
+		}
+		
+		if (field.name == "resources"){
+		
+			new_element("div","mfs_of_session_"+session_id, "mfs", parent);
+			new_element("div","session_"+session_id+"_add_mf_div", "", parent);
+		
+		}
+	
+	}
+	
+	if (field.type == "select"){
+		var input = make_select(
+			parent, field.heading,
+			"session_"+session_id+"_"+field.name,
+			"session_"+session_id+"_"+field.name,
+			field.size,
+			field.vocabulary,
+			o(session_object,field.session_object_name),
+			field.comment
+		);
+	}
+
+	if (field.type == "open_vocabulary"){
+		var input = open_vocabulary(
+			parent, field.heading,
+			"session_"+session_id+"_"+field.name,
+			"session_"+session_id+"_"+field.name,
+			field.size,
+			field.vocabulary,
+			o(session_object,field.session_object_name),
+			field.comment
+		);
+	}
+
+	if (field.onkeypress){
+		input.onkeypress = field.onkeypress;
+	}
+
+}
+
+
 
 function user_erase_session(session_id){
 
@@ -339,7 +323,7 @@ function show_no_session_text(){
 	g("sessions").innerHTML = "";
 
 	var no_sessions_message = new_element("h2","no_session_text","no_session_text",g("sessions"));
-	no_sessions_message.innerHTML = "This corpus contains no sessions. Why not ";
+	no_sessions_message.innerHTML = "This corpus contains no sessions yet. Why not ";
 
 	var new_session_link = new_element("a","new_session_link","new_session_link",no_sessions_message);
 
@@ -352,8 +336,6 @@ function show_no_session_text(){
 	//we have to use g here instead of no_sessions_link, because letter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
 	
 	g("sessions").scrollTop = 0;
-
-
 
 }
 
@@ -400,26 +382,13 @@ function add_actor_to_session(session_id, actor_id){
 	
 			sessions[GetSessionIndexFromID(session_id)].actors.push(actor_id);
 		
-			var div0 = document.createElement('div');
-			div0.id = "session_" + session_id + "_actor_" + actor_id;
-			div0.className = "actor_in_session_wrap";
-			g('actors_of_session_'+session_id).appendChild(div0);
-	
-			var div = document.createElement('div');
-			div.id = "session_"+session_id+"_actor_" + actor_id + "_label";
-			div.className = "actor_in_session";
-			g("session_"+session_id+"_actor_" + actor_id).appendChild(div);
+			new_element("div", "session_" + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g("actors_of_session_"+session_id));
+			var div = new_element("div", "session_"+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g("session_"+session_id+"_actor_" + actor_id));
 			
 			RefreshActorNameInSession(session_id, actor_id);
 		
-			//div.innerHTML = "<h2 class='actor_name_disp'>" + actors[getActorsIndexFromID(actor_id)].name + "</h2>"; //display name of actor
-			//div.innerHTML += "<p class='actor_role_disp'>" + actors[getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
-			
-			var img = document.createElement('img');
-			img.id = "delete_actor_"+actor_id+"_icon";
+			var img = new_element("img", "delete_actor_"+actor_id+"_icon", "delete_actor_icon", g("session_"+session_id+"_actor_" + actor_id));
 			img.src = path_to_images+"icons/reset.png";
-			img.className = "delete_actor_icon";
-			g("session_"+session_id+"_actor_" + actor_id).appendChild(img);
 	
 			img.addEventListener('click', function(num, num2) { 
 				return function(){ RemoveActorFromSession(num, num2);  
@@ -443,7 +412,6 @@ function add_actor_to_session(session_id, actor_id){
 	
 	}
 }
-
 
 
 function RemoveActorFromSession(session_id, actor_id){
@@ -707,7 +675,7 @@ function assign_session1_metadata(){
 				add_actor_to_session(sessions[s].id,sessions[0].actors[a]);
 			}
 			
-			copy_field("session_"+sessions[s].id+"_actors_description","session_"+sessions[0].id+"_actors_description");
+			copy_field("session_"+sessions[s].id+"_actorsDescription","session_"+sessions[0].id+"_actorsDescription");
 		}
 	}
 	
@@ -864,6 +832,23 @@ function are_all_sessions_properly_named(){
 			
 			}
 	
+		}
+		
+	}
+	
+	return true;
+
+}
+
+
+function does_every_session_have_a_project_name(){
+
+	for (var i=0;i<sessions.length;i++){
+	
+		if (get("session_"+sessions[i].id+"_project_name") == ""){
+		
+			return false;
+		
 		}
 		
 	}

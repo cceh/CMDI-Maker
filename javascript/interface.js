@@ -140,14 +140,31 @@ function show_window(window_id){
 		case 2: {
 		
 			if ((is_corpus_properly_named()) && (are_all_sessions_properly_named())){
+			
+				if (does_every_session_have_a_project_name()){
 
-				g('xml_window').style.display = "block";
+					g('xml_window').style.display = "block";
 				
-				g("xml_output_icon").style.backgroundColor = highlight_color;
+					g("xml_output_icon").style.backgroundColor = highlight_color;
 				
-				g("link_export_corpus").style.display = "inline";
+					g("link_export_corpus").style.display = "inline";
 		
-				generate();
+					generate();
+				
+				}
+				
+				else {
+				
+					alertify.set({ labels: {
+						ok     : "OK"
+					} });
+				
+					alertify.alert("Every session must have a project name!");
+				
+					show_window(0);
+				
+				
+				}
 				
 				
 			}
@@ -160,11 +177,11 @@ function show_window(window_id){
 				
 				alertify.alert("The corpus and every session must have a proper name.<br>An unnamed corpus or sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
 				
-				if (!is_corpus_properly_named()){
+				if (!is_corpus_properly_named()){   //show corpus
 					show_window(6);
 				}
 				
-				else {
+				else {  //show sessions
 					show_window(0);
 				}
 			}

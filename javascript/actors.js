@@ -146,10 +146,11 @@ function import_actors(evt){
 		}
 		
 		catch (e) {
-			console.log(e);
+		//if json parsing is not possible, try xml parsing
 
 			if (window.DOMParser) {
 				var parser = new DOMParser();
+				
 				var xml = parser.parseFromString(result,"text/xml");
 				
 				var imported_actors = parse_imdi_for_actors(xml);
@@ -177,6 +178,7 @@ function import_actors(evt){
 	reader.readAsText(file);
 	
 }
+
 
 function parse_imdi_for_actors(xml){
 
