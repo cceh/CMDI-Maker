@@ -21,6 +21,29 @@ var LanguageCodePrefix = "ISO639-3:";
 var imdi_version = "IMDI 3.04";
 var path_to_images = "img/";
 
+
+var output_formats = [
+	{
+		title: "IMDI",
+		name: "imdi",
+		output_name: "IMDI",
+		generator_object: imdi_generator
+	},
+	{
+		title: "CMDI with IMDI Profile",
+		name: "cmdi-imdi",
+		output_name: "CMDI",
+		generator_object: cmdi_generator
+	},
+	{
+		title: "Weird test profile - do not use this",
+		name: "weird-test",
+		output_name: "WEIRD"
+	}
+];
+
+
+
 var output_textarea_rows = 40;
 var output_textarea_columns = 130;
 
@@ -142,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	g("version_span").innerHTML = version;
 
-
+	create_output_format_select();
 	display_metadata_languages();  
 	GetActorsFromWebStorage();
 	GetRecallData();

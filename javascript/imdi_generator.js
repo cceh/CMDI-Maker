@@ -327,7 +327,7 @@ var imdi_generator = function(){
 		return_string += xml.tag("Access",1);
 		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
 		return_string += xml.element("Keys","");
-	    return_string += xml.tag("MediaFile",1);
+		return_string += xml.tag("MediaFile",1);
 		return return_string;
 		
 	}
@@ -379,7 +379,7 @@ var imdi_generator = function(){
 		}
 	
 		return_string += xml.tag("BirthDate",1);	
-	    return_string += xml.element("Sex",actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("Sex",actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
 		return_string += xml.element("Education",(actors[i].education != "") ? actors[i].education : "Unspecified" );
 		return_string += xml.element("Anonymized",(actors[i].anonymized) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]); 
 		return_string += xml.tag("Contact",0);
@@ -387,17 +387,17 @@ var imdi_generator = function(){
 		return_string += xml.element("Address",actors[i].contact.address);   
 		return_string += xml.element("Email",actors[i].contact.email);   
 		return_string += xml.element("Organisation",actors[i].contact.organisation);   
-	    return_string += xml.tag("Contact",1);
+		return_string += xml.tag("Contact",1);
 		return_string += xml.tag("Keys",2);
-    	return_string += xml.element("Description",actors[i].description,[["LanguageId",get_metadata_language()],["Link",""]]);
+		return_string += xml.element("Description",actors[i].description,[["LanguageId",get_metadata_language()],["Link",""]]);
 		return_string += xml.tag("Actor",1);
 		return return_string;
     
 	}
 	
 	var my = {};
-    my.sessions = [];           
-    my.corpus = create_imdi_corpus();
+	my.sessions = [];           
+	my.corpus = create_imdi_corpus();
     
 	for (var s=0;s<sessions.length;s++){   
 		my.sessions.push(create_imdi_session(sessions[s].id));

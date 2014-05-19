@@ -105,7 +105,7 @@ var session_form = {
 					comment: "A short name or abbreviation of the project.",
 				},
 				{
-					heading: "title",
+					heading: "Title",
 					name: "title",
 					type: "text",
 					comment: "The full title of the project.",

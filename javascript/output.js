@@ -15,29 +15,65 @@ limitations under the License.
 */
 
 
+function create_output_format_select(){
+
+	var parent = g("output_format_select");
+
+	new_element("h2","","",parent, "Output Format");
+	
+	for (var f=0; f<output_formats.length; f++){
+	
+		var input = new_element("input","output_format_radio_"+f, "", parent);
+		input.type = "radio";
+		input.name = "output_format";
+		
+		new_element("span", "","",parent, " " + output_formats[f].title);
+		
+		if (f == 0){
+			input.checked = true;
+		}
+		
+		new_element("br","","",parent);
+		
+	}
+	
+	new_element("br","","",parent);
+
+}
+
+
+function get_selected_radio_index(radios){
+
+
+	for (var r=0; r< radios.length; r++){
+	
+		if (radios[r].checked == true){
+		
+			return r;
+		
+		}
+	
+	}
+	
+	return 0;
+
+
+}
+
+
 function generate(){	
 	
 	var xml_window = g('xml');
 	
 	xml_window.innerHTML = "";
 	
-	if (document.metadata_form.output_format[0].checked == true){   // if output format is imdi
+	//get index of selected output format
+	var output_format_index = get_selected_radio_index(document.metadata_form.output_format);
 	
-		// initiate object for imdi_structure class
-		xml_strings = new imdi_generator();
-		var output_format = "IMDI";
-	}
-	
-	else if (document.metadata_form.output_format[1].checked == true){
-	
-		xml_strings = new cmdi_generator();
-		var output_format = "CMDI";
-	}
-	
-	else { 
-		return alertify.alert("No output format has been specified. Sorry, this should not have happened.");
-	}
-	
+	// initiate object for imdi_structure class
+	xml_strings = new output_formats[output_format_index].generator_object();
+	var output_format = output_formats[output_format_index].output_name;
+
 	var div = document.createElement("div");
 	div.className = "output_div";
 	xml_window.appendChild(div);
