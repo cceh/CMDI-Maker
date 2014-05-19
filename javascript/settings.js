@@ -26,23 +26,26 @@ var output_formats = [
 	{
 		title: "IMDI",
 		name: "imdi",
+		file_ending: "imdi",
 		output_name: "IMDI",
 		generator_object: imdi_generator
 	},
 	{
 		title: "CMDI with IMDI Profile",
 		name: "cmdi-imdi",
+		file_ending: "cmdi",
 		output_name: "CMDI",
 		generator_object: cmdi_generator
 	},
 	{
 		title: "Weird test profile - do not use this",
 		name: "weird-test",
-		output_name: "WEIRD"
+		output_name: "WEIRD",
+		file_ending: "weird"
 	}
 ];
 
-
+var file_download_header = "text/xml;charset=utf-8";
 
 var output_textarea_rows = 40;
 var output_textarea_columns = 130;

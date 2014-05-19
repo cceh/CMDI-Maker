@@ -57,6 +57,15 @@ function get_selected_radio_index(radios){
 	
 	return 0;
 
+}
+
+function set_radio_index(radios, index){
+
+	if ((!index) || (typeof index == "undefined")){
+		var index = 0;
+	}
+
+	radios[index].checked = true;
 
 }
 
@@ -135,23 +144,6 @@ function generate(){
 }
 
 
-function getOutputFormat(){
-
-
-	if (document.metadata_form.output_format[0].checked == true){   // if output format is imdi
-		return "IMDI";	
-	} 
-
-	else if (document.metadata_form.output_format[1].checked == true){
-		return "CMDI";
-	}
-	
-	else { 
-		document.write("No output format has been specified. Sorry, this should not have happened."); 
-	}
-}
-
- 
 function export_corpus(){
  
 	save_corpus();
@@ -163,17 +155,22 @@ function export_corpus(){
 }
   
 
-  
 function save_corpus(){
 
-	save_file(g("textarea_corpus").value,get("corpus_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
+	var output_format_index = get_selected_radio_index(document.metadata_form.output_format);
+	var file_ending = output_formats[output_format_index].file_ending;
+
+	save_file(g("textarea_corpus").value,get("corpus_name")+"."+file_ending, file_download_header);
 
 }
 
 
 function save_session(session){
 
-	save_file(g("textarea_session_"+session).value,get("session_"+sessions[session].id+"_session_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
+	var output_format_index = get_selected_radio_index(document.metadata_form.output_format);
+	var file_ending = output_formats[output_format_index].file_ending;
+
+	save_file(g("textarea_session_"+session).value,get("session_"+sessions[session].id+"_session_name")+"."+file_ending, file_download_header);
 
 }
 

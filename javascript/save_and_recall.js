@@ -16,20 +16,13 @@ limitations under the License.
 
 
 function GetRecallData(){
-	try {
-		var form = localStorage.getItem("form");
-		console.log("Retrieved Form data from local storage");
-	}
-	
-	catch (e){
-		console.log("Error retrieving form data from LocalStorage!");
-		console.log(e);
-		return;
-	}
-	
+
+	var form = localStorage.getItem("form");
+
 	if (!form){
 		console.log("No recall data found");
 		show_no_session_text();
+		setAutosaveInterval(interval_time);
 		view("default");
 		return;
 	}
@@ -40,7 +33,6 @@ function GetRecallData(){
 	console.log(form_object);
 	
 	FillForm(form_object);	
-	
 	
 	if (sessions.length == 0){
 		show_no_session_text();
@@ -80,13 +72,7 @@ function FillForm(recall_object){
 	g("metadata_language_select").selectedIndex = recall_object.metadata_language;
 	g("metadata_creator").value = recall_object.metadata_creator;
 	
-	if (recall_object.output_format == "imdi"){
-		g("radio_imdi").checked = true;
-	}
-	
-	else {
-		g("radio_cmdi").checked = true;
-	}
+	set_radio_index(document.metadata_form.output_format, recall_object.output_format);
 	
 	if (recall_object.calc_actors_age == true){
 	
@@ -158,7 +144,7 @@ function MakeObjectOutOfForm(){
 		content_languages: [],
 		
 		interval: 60000,
-		output_format: (document.getElementsByName("output_format")[0].checked ? "imdi" : "cmdi"),
+		output_format: get_selected_radio_index(document.metadata_form.output_format),
 		calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false),
 		metadata_creator: get("metadata_creator"),
 		

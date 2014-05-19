@@ -453,7 +453,7 @@ var cmdi_generator = function(){
 	my.sessions = [];           
 	my.corpus = create_cmdi_corpus();
     
-	for (var s=0;s<sessions.length;s++){   
+	for (var s=0;s<sessions.length;s++){
 		my.sessions.push(create_cmdi_session(sessions[s].id));
 	}
 
