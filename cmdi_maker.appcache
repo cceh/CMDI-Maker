@@ -62,7 +62,6 @@ javascript/content_languages.js
 javascript/FileSaver.js
 javascript/get.js
 javascript/helpers.js
-javascript/idbstore.js
 javascript/imdi_generator.js
 javascript/interface.js
 javascript/LanguageIndex.js

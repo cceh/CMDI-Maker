@@ -15,6 +15,14 @@ width: 146px;
 
 }
 
+#wait_wrapper{
+	text-align: center;
+}
+
+#wait_img{
+	margin: 50px;
+}
+
 
 input[type="button"], input[type="submit"]{
 
@@ -688,6 +696,8 @@ display: inline;
 
 padding: 15px;
 
+cursor: pointer;
+
 }
 
 .session_table, .actor_table{
@@ -761,6 +771,8 @@ width: 25px;
 margin: 0px;
 margin-right: 5px;
 padding: 0px;
+
+float: right;
 }
 
 
@@ -771,6 +783,8 @@ width: 25px;
 margin: 0px;
 margin-right: 5px;
 padding: 0px;
+
+float: right;
 
 }
 
@@ -953,6 +967,12 @@ margin-right: 20px;
 #settings p{
 
 margin: 0px;
+
+}
+
+#link_hard_reset{
+
+	color: red;
 
 }
 

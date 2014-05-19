@@ -18,11 +18,11 @@ limitations under the License.
 function add_event_listeners() {
 
 	// Views
-	g('start_window_icon').addEventListener('click', function() {        show_window(6);      });
-	g('sessions_window_icon').addEventListener('click', function() {        show_window(0);      });
-	g('manage_actors_icon').addEventListener('click', function() {        show_window(1);      });
-	g('manage_media_files_icon').addEventListener('click', function() {        show_window(3);      });
-	g('xml_output_icon').addEventListener('click', function() {        show_window(2);      });
+	g('start_window_icon').addEventListener('click', function() {        view("start");      });
+	g('sessions_window_icon').addEventListener('click', function() {        view("sessions");      });
+	g('manage_actors_icon').addEventListener('click', function() {        view("actors");      });
+	g('manage_media_files_icon').addEventListener('click', function() {        view("media_files");      });
+	g('xml_output_icon').addEventListener('click', function() {        view("xml");      });
 	
 	// Functions
     g('link_reset_form').addEventListener('click', function() {        
@@ -47,14 +47,14 @@ function add_event_listeners() {
 		});
 	});
 	
-	g('link_new_session').addEventListener('click', function() {        new_session({});      });
+	g('link_new_session').addEventListener('click', function() {        new_session();      });
 	g('link_save_form').addEventListener('click', function() {
 		save_form();
 		alertify.log("Form saved","",5000);
 	});	
 	g('link_export_corpus').addEventListener('click', function() {        export_corpus();      });
-	g('link_settings').addEventListener('click', function() {        show_window(4);      });
-	g('link_about').addEventListener('click', function() {        show_window(5);      });
+	g('link_settings').addEventListener('click', function() {        view("settings");      });
+	g('link_about').addEventListener('click', function() {        view("about");      });
 	g('link_clear_file_list').addEventListener('click', function() {        clear_file_list();      });
 	g('link_sort_alphabetically').addEventListener('click', function() {        sort_alphabetically();      });
 	g('link_save_active_actor').addEventListener('click', function() {        save_active_actor();      });
@@ -67,7 +67,7 @@ function add_event_listeners() {
 	g('link_copy_sessions').addEventListener('mousedown', function() {        g('link_copy_sessions').style.backgroundColor = "black";      });
 	g('link_copy_sessions').addEventListener('mouseup', function() {        g('link_copy_sessions').style.backgroundColor = "";      });
 	
-	g('crps_icon').addEventListener('click', function() {        create_session_per_resource();  show_window(0);     });
+	g('crps_icon').addEventListener('click', function() {        create_session_per_resource();  view("sessions");     });
 	
 	//this cannot be done with css
 	g('crps_icon').addEventListener('mousedown', function() {        g('crps_icon').style.backgroundColor = "black";      });
@@ -86,6 +86,8 @@ function add_event_listeners() {
 	
 	g('link_erase_actors_database').addEventListener('click', function() {        erase_actor_database();      });
 	g('link_delete_recall_data').addEventListener('click', function() {        delete_recall_data();      });
+	g('link_hard_reset').addEventListener('click', function() {        hard_reset();      });	
+	
 	g('link_export_actors').addEventListener('click', function() {        export_actors();      });	
 	g('actors_file_input').addEventListener('change',import_actors, false);
 	

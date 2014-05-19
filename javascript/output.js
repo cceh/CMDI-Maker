@@ -17,7 +17,7 @@ limitations under the License.
 
 function generate(){	
 	
-	var xml_window = g('xml_window');
+	var xml_window = g('xml');
 	
 	xml_window.innerHTML = "";
 	
@@ -56,15 +56,9 @@ function generate(){
     
 
 	// Call the imdi corpus, that has just been created by initializing the imdi_structure object
-	var textarea = document.createElement("textarea");
-	textarea.id = "textarea_corpus";
-	textarea.className = "xml_textarea";
+	var textarea = new_element("textarea", "textarea_corpus", "xml_textarea", div, xml_strings.corpus);
 	textarea.cols = output_textarea_columns;
 	textarea.rows = output_textarea_rows;
-	
-	textarea.innerHTML = xml_strings.corpus;
-	
-	div.appendChild(textarea);
 	
 	for (var s=0;s<sessions.length;s++){
 	
@@ -136,14 +130,14 @@ function export_corpus(){
   
 function save_corpus(){
 
-	save_file(g("textarea_corpus").value,/*"Corpus_"+*/get("corpus_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
+	save_file(g("textarea_corpus").value,get("corpus_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
 
 }
 
 
 function save_session(session){
 
-	save_file(g("textarea_session_"+session).value,/*"Session"+(session+1)+"_"+*/get("session_"+sessions[session].id+"_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
+	save_file(g("textarea_session_"+session).value,get("session_"+sessions[session].id+"_session_name")+"."+getOutputFormat().toLowerCase(), "text/xml;charset=utf-8");
 
 }
 

@@ -101,13 +101,13 @@ function insert_cmdi_session_data(session){
     var return_string = "";
     
     return_string += xml.tag("Session",0);
-    return_string += xml.element("Name",get("session_"+session+"_name"));
-    return_string += xml.element("Title",get("session_"+session+"_title"));
+    return_string += xml.element("Name",get(session_dom_element_prefix+session+"_session_name"));
+    return_string += xml.element("Title",get(session_dom_element_prefix+session+"_session_title"));
 	
 	
-	if ((get("session_"+session+"_date_year") != "") && (get("session_"+session+"_date_year") != "YYYY")){
+	if ((get(session_dom_element_prefix+session+"_session_date_year") != "") && (get(session_dom_element_prefix+session+"_session_date_year") != "YYYY")){
 	
-		return_string += xml.element("Date",get("session_"+session+"_date_year")+"-"+get("session_"+session+"_date_month")+"-"+get("session_"+session+"_date_day"));
+		return_string += xml.element("Date",get(session_dom_element_prefix+session+"_session_date_year")+"-"+get(session_dom_element_prefix+session+"_session_date_month")+"-"+get(session_dom_element_prefix+session+"_session_date_day"));
 		
 	}
 	
@@ -121,25 +121,25 @@ function insert_cmdi_session_data(session){
     return_string += xml.tag("MDGroup",0);
     
     return_string += xml.tag("Location",0);
-    return_string += xml.element("Continent",get("session_"+session+"_location_continent"));
-    return_string += xml.element("Country",get("session_"+session+"_location_country"));
-    return_string += xml.element("Region",get("session_"+session+"_location_region"));
-    return_string += xml.element("Address",get("session_"+session+"_location_address"));
+    return_string += xml.element("Continent",get(session_dom_element_prefix+session+"_session_location_continent"));
+    return_string += xml.element("Country",get(session_dom_element_prefix+session+"_session_location_country"));
+    return_string += xml.element("Region",get(session_dom_element_prefix+session+"_session_location_region"));
+    return_string += xml.element("Address",get(session_dom_element_prefix+session+"_session_location_address"));
     return_string += xml.tag("Location",1);
     
     
     return_string += xml.tag("Project",0);
     
-    return_string += xml.element("Name",get("session_"+session+"_project_name"));
-    return_string += xml.element("Title",get("session_"+session+"_project_title"));
-    return_string += xml.element("Id",get("session_"+session+"_project_id"));
+    return_string += xml.element("Name",get(session_dom_element_prefix+session+"_project_name"));
+    return_string += xml.element("Title",get(session_dom_element_prefix+session+"_project_title"));
+    return_string += xml.element("Id",get(session_dom_element_prefix+session+"_project_id"));
 
     
     return_string += xml.tag("Contact",0);
-    return_string += xml.element("Name",get("session_"+session+"_contact_name"));
-    return_string += xml.element("Address",get("session_"+session+"_contact_address"));
-    return_string += xml.element("Email",get("session_"+session+"_contact_email"));
-    return_string += xml.element("Organisation",get("session_"+session+"_contact_organisation"));
+    return_string += xml.element("Name",get(session_dom_element_prefix+session+"_project_contact_name"));
+    return_string += xml.element("Address",get(session_dom_element_prefix+session+"_project_contact_address"));
+    return_string += xml.element("Email",get(session_dom_element_prefix+session+"_project_contact_email"));
+    return_string += xml.element("Organisation",get(session_dom_element_prefix+session+"_project_contact_organisation"));
     return_string += xml.tag("Contact",1);
     
     return_string += xml.tag("Project",1);
@@ -148,9 +148,9 @@ function insert_cmdi_session_data(session){
     
     return_string += xml.tag("Content",0);
     
-    return_string += xml.element("Genre",get("session_"+session+"_content_genre"));
-	return_string += xml.element("SubGenre",get("session_"+session+"_content_subgenre"));
-	return_string += xml.element("Task",get("session_"+session+"_content_task"));
+    return_string += xml.element("Genre",get(session_dom_element_prefix+session+"_content_genre"));
+	return_string += xml.element("SubGenre",get(session_dom_element_prefix+session+"_content_subgenre"));
+	return_string += xml.element("Task",get(session_dom_element_prefix+session+"_content_task"));
 	
 	
 	return_string += xml.element("Modalities","");
@@ -162,11 +162,11 @@ function insert_cmdi_session_data(session){
 	
     
     return_string += xml.tag("CommunicationContext",0);
-	return_string += xml.element("Interactivity",get("session_"+session+"_content_interactivity"));
-	return_string += xml.element("PlanningType",get("session_"+session+"_content_interactivity"));
-	return_string += xml.element("Involvement",get("session_"+session+"_content_involvement"));	
-	return_string += xml.element("SocialContext",get("session_"+session+"_content_socialcontext"));
-	return_string += xml.element("EventStructure",get("session_"+session+"_content_eventstructure"));
+	return_string += xml.element("Interactivity",get(session_dom_element_prefix+session+"_content_communication_context_interactivity"));
+	return_string += xml.element("PlanningType",get(session_dom_element_prefix+session+"_content_communication_context_interactivity"));
+	return_string += xml.element("Involvement",get(session_dom_element_prefix+session+"_content_communication_context_involvement"));	
+	return_string += xml.element("SocialContext",get(session_dom_element_prefix+session+"_content_communication_context_socialcontext"));
+	return_string += xml.element("EventStructure",get(session_dom_element_prefix+session+"_content_communication_context_eventstructure"));
 	return_string += xml.element("Channel","Unknown");
 	/* no input yet. channel must be one of
 	<item ConceptLink="http://www.isocat.org/datcat/DC-2591">Unknown</item>
@@ -191,8 +191,8 @@ function insert_cmdi_session_data(session){
     
     return_string += xml.tag("Actors",0);
     
-    for (var a=0;a<sessions[GetSessionIndexFromID(session)].actors.length;a++){
-        return_string += insert_cmdi_actor(session,sessions[GetSessionIndexFromID(session)].actors[a]);
+    for (var a=0;a<sessions[GetSessionIndexFromID(session)].actors.actors.length;a++){
+        return_string += insert_cmdi_actor(session,sessions[GetSessionIndexFromID(session)].actors.actors[a]);
     }
     
     return_string += xml.tag("Actors",1);  
@@ -200,18 +200,18 @@ function insert_cmdi_session_data(session){
     
     return_string += xml.tag("Resources",0);
 	
-    for (var r=0;r<sessions[GetSessionIndexFromID(session)].mediaFiles.length;r++){  
+    for (var r=0;r<sessions[GetSessionIndexFromID(session)].resources.mediaFiles.length;r++){  
 	
-		var id = sessions[GetSessionIndexFromID(session)].mediaFiles[r].id;
+		var id = sessions[GetSessionIndexFromID(session)].resources.mediaFiles[r].id;
 	
-        return_string += insert_cmdi_mediafile(get('session_'+session+'_mediafile_'+id+"_name"),get('session_'+session+'_mediafile_'+id+"_size"));
+        return_string += insert_cmdi_mediafile(get(session_dom_element_prefix+session+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session+'_mediafile_'+id+"_size"));
     }
 	
-    for (var r=0;r<sessions[GetSessionIndexFromID(session)].writtenResources.length;r++){  
+    for (var r=0;r<sessions[GetSessionIndexFromID(session)].resources.writtenResources.length;r++){  
 
-		var id = sessions[GetSessionIndexFromID(session)].writtenResources[r].id;	
+		var id = sessions[GetSessionIndexFromID(session)].resources.writtenResources[r].id;	
 
-        return_string += insert_cmdi_written_resource(get('session_'+session+'_mediafile_'+id+"_name"),get('session_'+session+'_mediafile_'+id+"_size"));
+        return_string += insert_cmdi_written_resource(get(session_dom_element_prefix+session+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session+'_mediafile_'+id+"_size"));
     }
 	
 	//more resource stuff
@@ -277,12 +277,9 @@ function insert_cmdi_written_resource(link,size){
 
 	return_string += xml.tag("Access",1);
 
-
     return_string += xml.element("Description","");
 	
 	return_string += xml.element("Keys","");
-	
-	
 	
 	return_string += xml.tag("WrittenResource",1);
 
@@ -436,7 +433,7 @@ function create_cmdi_corpus(){
 			
             return_string+=xml.tag("ResourceProxy",0,[["id",IDREFS[i-1]]]);
             return_string+=xml.element("ResourceType","Metadata");
-            return_string+=xml.element("ResourceRef","Session"+i+"_"+get("session_"+sessions[i-1].id+"_name")+".cmdi");
+            return_string+=xml.element("ResourceRef",get(session_dom_element_prefix+sessions[i-1].id+"_session_name")+".cmdi");
             return_string+=xml.tag("ResourceProxy",1);
 		}
         

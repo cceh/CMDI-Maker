@@ -606,6 +606,43 @@ function get_file_type(filename){
 	return fileinfo;
 }
 
+function hard_reset(){
+
+	localStorage.removeItem("actors");
+	localStorage.removeItem("form");
+	localStorage.removeItem("first_start");
+	location.reload();
+
+
+}
+
+
+
+function parseDate(str){
+	var t = str.match(/([1-2][0-9][0-9][0-9])\-([0-1][0-9])\-([0-3][0-9])/);
+	
+	if(t!==null){
+		
+		var y=+t[1], m=+t[2], d=+t[3];
+		var date = new Date(y,m-1,d);
+		
+		if(date.getFullYear()===y && date.getMonth()===m-1){
+			return {
+			
+				year: t[1],
+				month: t[2],
+				day: t[3]
+				
+			
+			};   
+		}
+	
+	}
+	
+	return null;
+}
+
+
 
 function parse_birth_date(string){
 
@@ -642,30 +679,53 @@ function make_new_session_object(){
 
 	var session_object = {
 	
-		name: "",
+		session: {
+		
+			name: "",
+		
+			date: {
+				year: "",
+				month: "",
+				day: ""
+			},	
+
+			location: {
+				continent: ""
+			},			
+		
+		},
 	
 		id: null,
+
+
+		project: {
 		
-		date: {
-			year: "",
-			month: "",
-			day: ""
+			contact: {},
+		
 		},
 		
-		location: {},
-		project: {},
-		contact: {},
-		content: {},
+		content: {
 		
-		actors: [],
-		//which actors are in this session?
-		//Ex.: [21, 36];  //I. e. Session contains actor_ids 21 and 36
+			communication_context: {}
 		
-		writtenResources: [],
-		//values represent resource ids in respective session	
+		},
 		
-		mediaFiles: [],
-		//values represent resource ids in respective session
+		actors: {
+			description: "",
+			actors: []
+			//which actors are in this session?
+			//Ex.: [21, 36];  //I. e. Session contains actor_ids 21 and 36
+		},
+	
+		resources: {
+		
+			writtenResources: [],
+			//values represent resource ids in respective session	
+		
+			mediaFiles: []
+			//values represent resource ids in respective session
+			
+		},
 		
 		expanded: false
 

@@ -497,7 +497,7 @@ function save_actor(actor_to_put, do_not_overwrite){
 		for (var s=0; s<sessions.length; s++){
 	
 			//search for actor_id in this session's actors
-			if (sessions[s].actors.indexOf(actor_to_put.id) != -1){
+			if (sessions[s].actors.actors.indexOf(actor_to_put.id) != -1){
 				
 				RefreshActorNameInSession(sessions[s].id, actor_to_put.id);
 	
@@ -530,7 +530,7 @@ function save_actor(actor_to_put, do_not_overwrite){
 
 function RefreshActorNameInSession(session_id, actor_id){
 
-	var div = g("session_" + session_id + "_actor_" + actor_id + "_label");
+	var div = g(session_dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
 	div.innerHTML = "<h2 class='actor_name_disp'>" + actors[getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
 	div.innerHTML += "<p class='actor_role_disp'>" + actors[getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
 
@@ -701,7 +701,7 @@ function RefreshActorsListDisplay(){
 
 function RefreshActorListInSession(s,all_available_actor_ids){
 
-	var aad = g("session_"+sessions[s].id+"_add_actors_div");
+	var aad = g(session_dom_element_prefix+sessions[s].id+"_actors_add_actors_div");
 	
 	aad.innerHTML = "";
 
@@ -749,7 +749,7 @@ function RefreshActorListInSession(s,all_available_actor_ids){
 		h5.appendChild(link);
 		
 		link.addEventListener('click', function() { 
-			show_window(1);  
+			view("actors");  
 		} );
 	}
 	
@@ -758,15 +758,15 @@ function RefreshActorListInSession(s,all_available_actor_ids){
 	
 	
 	//check if actor in session is part of actors[...].id(s)? if not, remove it immediately!
-	for (var k=0;k<sessions[s].actors.length;k++){
+	for (var k=0;k<sessions[s].actors.actors.length;k++){
 		
-		console.log("Trying to find id " + sessions[s].actors[k] + " in actors of session "+s);
+		console.log("Trying to find id " + sessions[s].actors.actors[k] + " in actors of session "+s);
 		
 		// if an actor k is not in all available actors, remove it in the session!
-		if (all_available_actor_ids.indexOf(sessions[s].actors[k]) == -1){
+		if (all_available_actor_ids.indexOf(sessions[s].actors.actors[k]) == -1){
 			
 			console.log("There is an actor in session "+s+" that does not exist anymore. Deleting!");
-			RemoveActorFromSession(sessions[s].id,sessions[s].actors[k]);
+			RemoveActorFromSession(sessions[s].id,sessions[s].actors.actors[k]);
 		
 		}
 	

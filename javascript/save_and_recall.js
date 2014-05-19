@@ -15,65 +15,38 @@ limitations under the License.
 */
 
 
-var recallDB;
-
-
-function start_recallDB(){
-
-
-	recallDB = new IDBStore({
-		dbVersion: 3,
-		storeName: 'recall',
-		keyPath: 'id',
-		autoIncrement: false,    // !!!  
-		onStoreReady: function(){
-			console.log('RecallDB ready!');
-			GetRecallData();
-		}
-	});
-
-}
-
-
 function GetRecallData(){
-
-	console.log("Recalling form data from RecallDB");
+	try {
+		var form = localStorage.getItem("form");
+		console.log("Retrieved Form data from local storage");
+	}
 	
-	var onItem = function (item) {
-		console.log('Found RecallDB item:', item);
-		
-		if (item != null){
-			FillForm(item);	
-		}
-		
-		else {   //recall data not found
-		
-			show_no_session_text();
-			console.log("Showing No session text because item is null");
-			
-		}
-		
-	};
+	catch (e){
+		console.log("Error retrieving form data from LocalStorage!");
+		console.log(e);
+		return;
+	}
 	
-	var onEnd = function (item) {
-		
-		if (sessions.length == 0){
-			show_no_session_text();
-			console.log("Showing No session text because sessions.length is 0 after recallDB iteration");
-		
-		}
-		
-		console.log('End of iterating recallDB. Starting Auto Save interval.');
-		
-		setAutosaveInterval(interval_time);
-
-		
-	};
+	if (!form){
+		console.log("No recall data found");
+		show_no_session_text();
+		view("default");
+		return;
+	}
 	
-	recallDB.iterate(onItem, {
-		order: 'DESC',
-		onEnd: onEnd
-	});
+	var form_object = JSON.parse(form);
+	
+	console.log("Recall object: ");
+	console.log(form_object);
+	
+	FillForm(form_object);	
+	
+	
+	if (sessions.length == 0){
+		show_no_session_text();
+	}
+	
+	setAutosaveInterval(interval_time);
 
 }
 
@@ -127,11 +100,15 @@ function FillForm(recall_object){
 	
 	}
 	
+
+	
 	for (var l=0;l<recall_object.content_languages.length;l++){
 	
 		set_content_language(recall_object.content_languages[l]);
 		
 	}
+	
+
 	
 	available_resources = recall_object.available_resources;
 	refreshFileListDisplay();
@@ -143,8 +120,8 @@ function FillForm(recall_object){
 		new_session(recall_object.sessions[s]);
 	
 	}
-	
-	show_window(recall_object.active_window);	
+
+	view(recall_object.active_view);	
 	
 }
 
@@ -158,33 +135,15 @@ function FillCorpus(corpus){
 
 function delete_recall_data(){
 
-	var onsuccess = function(){
-
-		alertify.log("Recall data deleted", "", "5000");
-  
-	}
-	
-	var onerror = function(error){
-		console.log('Oh noes, sth went wrong!', error);
-	}
- 
-	recallDB.clear(onsuccess, onerror);
+	localStorage.removeItem("form");
 
 }
 
 function save_form(){
 	
 	var form_object = MakeObjectOutOfForm();
-
-	var onsuccess = function(id){
-		console.log('Form saved. insertId = ' + id);
-	}
-
-	var onerror = function(error){
-		console.log('Oh noes, sth went wrong when trying to save the form!', error);
-	}
- 
-	recallDB.put(form_object, onsuccess, onerror);
+	
+	localStorage.setItem("form", JSON.stringify(form_object));
 
 }
 
@@ -216,60 +175,87 @@ function MakeObjectOutOfForm(){
 	object.metadata_language = g("metadata_language_select").selectedIndex;
 	object.content_languages = content_languages;
 	
-	object.active_window = active_window;
+	if (active_view != "wait"){
+		object.active_view = active_view;
+	}
+	
+	else {
+		object.active_view = "default";
+	}
+	
 	object.available_resources = available_resources;
 	
 	for (var s=0; s<sessions.length; s++){
+	
+		var session_object = make_new_session_object();
 		
-		object.sessions.push(make_new_session_object());
+		fill_object_with_form_element(session_object, session_dom_element_prefix+sessions[s].id+"_", session_form);		
 		
-		object.sessions[s].name = get("session_"+sessions[s].id+"_name");
-		object.sessions[s].title = get("session_"+sessions[s].id+"_title");
+		session_object.actors.actors = sessions[s].actors.actors;
+		session_object.resources = sessions[s].resources;
 		
-		object.sessions[s].date.year = get("session_"+sessions[s].id+"_date_year");
-		object.sessions[s].date.month = get("session_"+sessions[s].id+"_date_month");
-		object.sessions[s].date.day = get("session_"+sessions[s].id+"_date_day");		
+		session_object.expanded = sessions[s].expanded;
 		
-		object.sessions[s].description = get("session_"+sessions[s].id+"_description");
-		
-		object.sessions[s].location.continent = get("session_"+sessions[s].id+"_location_continent");
-		object.sessions[s].location.country = get("session_"+sessions[s].id+"_location_country");
-		object.sessions[s].location.region = get("session_"+sessions[s].id+"_location_region");
-		object.sessions[s].location.address = get("session_"+sessions[s].id+"_location_address");
-		
-		object.sessions[s].project.name = get("session_"+sessions[s].id+"_project_name");
-		object.sessions[s].project.title = get("session_"+sessions[s].id+"_project_title");
-		object.sessions[s].project.id = get("session_"+sessions[s].id+"_project_id");
-		object.sessions[s].project.description = get("session_"+sessions[s].id+"_project_description");
-		
-		object.sessions[s].contact.name = get("session_"+sessions[s].id+"_contact_name");
-		object.sessions[s].contact.address = get("session_"+sessions[s].id+"_contact_address");	
-		object.sessions[s].contact.email = get("session_"+sessions[s].id+"_contact_email");
-		object.sessions[s].contact.organisation = get("session_"+sessions[s].id+"_contact_organisation");
-
-		object.sessions[s].content.genre = get("session_"+sessions[s].id+"_content_genre");
-		object.sessions[s].content.subgenre = get("session_"+sessions[s].id+"_content_subgenre");
-		//object.sessions[s].content.language = get("session_"+sessions[s].id+"_content_language");
-		object.sessions[s].content.task = get("session_"+sessions[s].id+"_content_task");
-		object.sessions[s].content.description = get("session_"+sessions[s].id+"_content_description");
-		
-		object.sessions[s].content.eventstructure = get("session_"+sessions[s].id+"_content_eventstructure");
-		object.sessions[s].content.planningtype = get("session_"+sessions[s].id+"_content_planningtype");
-		object.sessions[s].content.interactivity = get("session_"+sessions[s].id+"_content_interactivity");
-		object.sessions[s].content.socialcontext = get("session_"+sessions[s].id+"_content_socialcontext");
-		object.sessions[s].content.involvement = get("session_"+sessions[s].id+"_content_involvement");
-		
-		
-		object.sessions[s].actorsDescription = get("session_"+sessions[s].id+"_actorsDescription");
-		object.sessions[s].actors = sessions[s].actors;
-		
-		object.sessions[s].writtenResources = sessions[s].writtenResources;
-		object.sessions[s].mediaFiles = sessions[s].mediaFiles;
-		
-		object.sessions[s].expanded = sessions[s].expanded;
-
+		object.sessions.push(session_object);
 	}
 	
 	return object;
+
+}
+
+
+function fill_object_with_form_element(object, element_id_prefix, form_element){
+//object = the object to be filled with form data
+//form_element = element of the form as specified in session_form
+
+	if ((form_element.type == "text") || (form_element.type == "textarea") || (form_element.type == "select") || (form_element.type == "open_vocabulary")){
+
+		object[form_element.name] = get(element_id_prefix+form_element.name);
+		
+	}
+	
+	if (form_element.type == "date"){
+	
+		object[form_element.name]["year"] = get(element_id_prefix+form_element.name+"_year");
+		object[form_element.name]["month"] = get(element_id_prefix+form_element.name+"_month");
+		object[form_element.name]["day"] = get(element_id_prefix+form_element.name+"_day");
+	}
+	
+	if (form_element.type == "column"){
+	
+		element_id_prefix += form_element.name + "_";
+		
+		for (var f=0; f<form_element.fields.length; f++){
+			
+			fill_object_with_form_element(object, element_id_prefix, form_element.fields[f]);
+		
+		}
+	}
+	
+	if (form_element.type == "subarea"){
+	
+		element_id_prefix += form_element.name + "_";
+		
+		for (var f=0; f<form_element.fields.length; f++){
+			
+			fill_object_with_form_element(object[form_element.name], element_id_prefix, form_element.fields[f]);
+		
+		}
+	}
+	
+	if (form_element.type == "form"){
+	
+		for (var f=0; f<form_element.fields.length; f++){
+			
+			fill_object_with_form_element(object[form_element.fields[f].name], element_id_prefix, form_element.fields[f]);
+		
+		}
+	}
+	
+	if (form_element.type == "special"){
+	
+		return;
+	
+	}
 
 }

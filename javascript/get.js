@@ -153,17 +153,17 @@ function GetIndexFromResourceID(resource_id){
 
 	for (var s=0;s<sessions.length;s++){
 	
-		for (var r=0; r<sessions[s].writtenResources.length; r++){
+		for (var r=0; r<sessions[s].resources.writtenResources.length; r++){
 	
-			if (sessions[s].writtenResources[r].id == resource_id){
+			if (sessions[s].resources.writtenResources[r].id == resource_id){
 				return r;
 			}
 		
 		}
 		
-		for (var r=0; r<sessions[s].mediaFiles.length; r++){
+		for (var r=0; r<sessions[s].resources.mediaFiles.length; r++){
 	
-			if (sessions[s].mediaFiles[r].id == resource_id){
+			if (sessions[s].resources.mediaFiles[r].id == resource_id){
 				return r;
 			}
 		

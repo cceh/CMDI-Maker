@@ -16,7 +16,7 @@ limitations under the License.
 
 // Settings
 var originator="CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version="v0.9.1";
+var version="v1.0.0";
 var LanguageCodePrefix = "ISO639-3:";
 var imdi_version = "IMDI 3.04";
 var path_to_images = "img/";
@@ -31,6 +31,8 @@ var interval;
 var interval_time = 60;
 
 var highlight_color = "skyblue";
+
+var session_dom_element_prefix = "session_";
 
 
 var compatibility_warnings = {
@@ -112,7 +114,7 @@ var sessions = [];
 var imdi_corpus_profile="clarin.eu:cr1:p_1274880881885";
 var imdi_session_profile="clarin.eu:cr1:p_1271859438204";
 
-var active_window;
+var active_view;
 
 var actors = [];
 var active_actor=-1;
@@ -136,12 +138,14 @@ var available_resources = [];
   
 document.addEventListener('DOMContentLoaded', function() {
 
+	view("wait");
+	
 	g("version_span").innerHTML = version;
 
-	show_window(6);
+
 	display_metadata_languages();  
 	GetActorsFromWebStorage();
-	start_recallDB();
+	GetRecallData();
 	refreshFileListDisplay();
 
 	var first_start = localStorage.getItem("first_start");
