@@ -83,14 +83,8 @@ function generate(){
 	xml_strings = new output_formats[output_format_index].generator_object();
 	var output_format = output_formats[output_format_index].output_name;
 
-	var div = document.createElement("div");
-	div.className = "output_div";
-	xml_window.appendChild(div);
-
-	div.innerHTML = "<h1>"+output_format+" Corpus</h1><br>";
-
-	var h3 = document.createElement("h3");
-	div.appendChild(h3);
+	var div = new_element("div", "", "output_div", xml_window, "<h1>"+output_format+" Corpus</h1><br>");
+	var h3 = new_element("h3", "", "", div);
 	
 	var a = document.createElement("a");
 	a.href = "#";
@@ -98,7 +92,6 @@ function generate(){
 	a.innerHTML = "<img class=\"module_icon\" src=\"img/icons/save.png\"> Download";
 	
 	h3.appendChild(a);
-    
 
 	// Call the imdi corpus, that has just been created by initializing the imdi_structure object
 	var textarea = new_element("textarea", "textarea_corpus", "xml_textarea", div, xml_strings.corpus);
@@ -107,16 +100,9 @@ function generate(){
 	
 	for (var s=0;s<sessions.length;s++){
 	
-		var div = document.createElement("div");
-		div.className = "output_div";
-		xml_window.appendChild(div);
-		
-		var h1 = document.createElement("h1");
-		h1.innerHTML = output_format + " Session " + (s+1);
-		div.appendChild(h1);
-		
-		var h3 = document.createElement("h3");
-		div.appendChild(h3);	
+		var div = new_element("div", "", "output_div", xml_window);
+		var h1 = new_element("h1", "", "", div, output_format + " Session " + (s+1));
+		var h3 = new_element("h3", "", "", div);
 		
 		var a = document.createElement("a");
 		a.href = "#";
@@ -130,15 +116,10 @@ function generate(){
 		
 		h3.appendChild(a);
 		
-		var textarea = document.createElement("textarea");
-		textarea.id = "textarea_session_"+s;
-		textarea.className = "xml_textarea";
+		var textarea = new_element("textarea", "textarea_session_"+s, "xml_textarea", div, xml_strings.sessions[s]);
 		textarea.cols = output_textarea_columns;
 		textarea.rows = output_textarea_rows;
 	
-		textarea.innerHTML = xml_strings.sessions[s];
-	
-		div.appendChild(textarea);
 	}
 	
 }
@@ -190,12 +171,9 @@ function remove_invalid_chars(string){
 	var text = string;
 	
 	text = text.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss");
-	
 	text = text.replace(/á/g,"a").replace(/à/g,"a").replace(/Á/g,"A").replace(/À/g,"A");
 	text = text.replace(/é/g,"e").replace(/è/g,"e").replace(/É/g,"E").replace(/È/g,"E");
-	
 	text = text.replace(/\s+/g, '_');
-
 
 	return text;
 }
