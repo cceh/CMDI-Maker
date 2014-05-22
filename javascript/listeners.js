@@ -86,7 +86,26 @@ function add_event_listeners() {
 	
 	g('link_erase_actors_database').addEventListener('click', function() {        erase_actor_database();      });
 	g('link_delete_recall_data').addEventListener('click', function() {        delete_recall_data();      });
-	g('link_hard_reset').addEventListener('click', function() {        hard_reset();      });	
+	g('link_hard_reset').addEventListener('click', function() {    
+
+		alertify.set({ labels: {
+			ok     : "No",
+			cancel : "Yes, delete everything"
+		} });
+
+		alertify.confirm("Really?<br>You want to hard reset CMDI Maker? All your actors and stuff will be deleted!", function (e) {
+
+			if (e) {
+				// user clicked "ok"
+			}
+	
+			else {
+				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+				hard_reset();
+			}
+		});
+
+	});	
 	
 	g('link_export_actors').addEventListener('click', function() {        export_actors();      });	
 	g('actors_file_input').addEventListener('change',import_actors, false);

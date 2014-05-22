@@ -15,9 +15,10 @@
 	
 	float: left;
 	margin: 0px;
-	padding-top:11px;
+	padding-top:15px;
 	color: black;
-	margin-right: 30px;
+	font-size: 16pt;
+	font-weight: bold;
 	
 }
 
@@ -97,8 +98,8 @@ background-color: #bbffcc;
 
 .header_logo{
 	
-	height: 40px;
-	padding: 5px;
+	height: 35px;
+	padding: 8px;
 	float: right;
 
 }
