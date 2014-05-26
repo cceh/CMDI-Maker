@@ -44,6 +44,35 @@ function display_metadata_languages(){
 }
 
 
+function check_if_first_start(){
+
+	var first_start = localStorage.getItem("first_start");
+	
+	if (first_start == null){
+		first_start = true;
+	}
+	
+	
+	if (first_start == true){
+	
+		alertify.set({ labels: {
+			ok     : "Let's go"
+		} });		
+		
+		alertify.alert(first_start_message);
+		localStorage.setItem("first_start", false);
+		console.log("First start! Hey there and welcome to CMDI Maker!");
+	
+	}
+	
+	else {
+	
+		alertify.log("Aloha! Welcome back!", "", 5000);
+	
+	}
+
+}
+
 
 
 function reset_form(){
@@ -61,7 +90,6 @@ function reset_form(){
 
 
 function view(id){
-	//0=metadata editor 1=actors, 2=xml output, 3=resource files, 4=settings, 5=about, 6=start
 	
 	if (id == "default"){
 		id = "start";

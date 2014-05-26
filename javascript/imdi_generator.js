@@ -14,63 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
-function get_metadata_language(){
-
-	var return_string = LanguageCodePrefix;	
-	return_string += g("metadata_language_select").options[g("metadata_language_select").options.selectedIndex].value;
-
-	return return_string;
-
-}
-	
-
-
-function get_actors_age(session, actor_id){
-
-	var i = getActorsIndexFromID(actor_id);
-	
-	if (actors[i].age == ""){   //at first, check, if actor's age hasn't been specified yet
-	
-		if (document.metadata_form.radio_age_calc[0].checked == true){  //then, check if auto calculate feature in settings is activated
-			
-			var birthDate = actors[i].birth_date.year + "-" + actors[i].birth_date.month + "-" + actors[i].birth_date.day;
-			var sessionDate = get(session_dom_element_prefix+session+"_session_date_year") + "-" + get(session_dom_element_prefix+session+"_session_date_month") + "-" + get(session_dom_element_prefix+session+"_session_date_day"); 
-			var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
-			
-			if (age_calc_result != 0){
-			
-				console.log("Actor's age successfully calculated");			
-				return age_calc_result;
-		
-			}
-			
-			else {  //if age calc = 0, age could not be calculated
-			
-				return "Unspecified";
-			
-			}
-			
-		}
-		
-		else {	//if feature is activated, but age has not been specified
-		
-			return "Unspecified";
-		
-		}
-	}
-	
-	else { //if actor's age has been specified
-	
-		return actors[i].age;
-	
-	}
-
-}
-
-
-
 var imdi_generator = function(){
+
+	var imdi_version = "IMDI 3.04";
+	
+	var get_metadata_language = function(){
+
+		var return_string = LanguageCodePrefix;	
+		return_string += g("metadata_language_select").options[g("metadata_language_select").options.selectedIndex].value;
+
+		return return_string;
+
+	}
 	
 	var create_imdi_corpus = function () {
     

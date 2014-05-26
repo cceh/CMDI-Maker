@@ -170,63 +170,36 @@ function set_actor_language(ActorLanguageObject){
 	languages_of_active_actor.push(ActorLanguageObject);
 	
 	var div = new_element("div","actor_language_"+counters.al_id+"_div","current_actor_language_entry",g("current_actor_languages_display"));
-	
 	var img = new_element("img","delete_lang_"+counters.al_id+"_icon","delete_lang_icon",div);
-	
 	img.src = path_to_images+"icons/reset.png";
-	
 	img.addEventListener('click', function(num) { 
 		return function(){ RemoveActorLanguage(num);  
 		};
 	}(counters.al_id) );
 	
-	var span = document.createElement("span");
-	span.innerHTML = "ISO639-3 Code: " + LanguageObject[0];
-	div.appendChild(span);
+	new_element("span","","",div, "ISO639-3 Code: " + LanguageObject[0]);
+	new_element("br","","",div);
+	new_element("span","","",div, "Name: " + LanguageObject[3]);
+	new_element("br","","",div);
+	new_element("span","","",div, "Country ID: " + LanguageObject[1]);
+	new_element("br","","",div);
 	
-	var br = document.createElement("br");
-	div.appendChild(br);
-	
-	span = document.createElement("span");
-	span.innerHTML = "Name: " + LanguageObject[3];
-	div.appendChild(span);
-	
-	br = document.createElement("br");
-	div.appendChild(br);
-	
-	span = document.createElement("span");
-	span.innerHTML = "Country ID: " + LanguageObject[1];
-	div.appendChild(span);
-	
-	br = document.createElement("br");
-	div.appendChild(br);
-	
-	var input = document.createElement("input");
+	var input = new_element("input", "mothertongue_" + counters.al_id, "", div);
 	input.type = "checkbox";
-	input.id = "mothertongue_" + counters.al_id;
-	div.appendChild(input);
 	
 	if (ActorLanguageObject.MotherTongue == true){
 		input.checked = true;
 	}
 
-	span = document.createElement("span");
-	span.innerHTML = "Mother Tongue  ";
-	div.appendChild(span);	
-	
-	var input = document.createElement("input");
+	new_element("span","","",div, "Mother Tongue  ");
+	var input = new_element("input", "primarylanguage_" + counters.al_id, "", div);
 	input.type = "checkbox";
-	input.id = "primarylanguage_" + counters.al_id;
-	div.appendChild(input);
 	
 	if (ActorLanguageObject.PrimaryLanguage == true){
 		input.checked = true;
 	}
 	
-	span = document.createElement("span");
-	span.innerHTML = "Primary Language";
-	div.appendChild(span);	
-	
+	new_element("span","","",div, "Primary Language");
 
 	close_actor_language_select();
 
@@ -276,6 +249,10 @@ function addactorISOLanguage(){
 		}
 
 	}
+	
+	alertify.set({ labels: {
+		ok: "OK"
+	}});	
 	
 	alertify.alert("ISO code " + input + " not found in database.");
 

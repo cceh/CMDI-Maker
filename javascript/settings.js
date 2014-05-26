@@ -15,12 +15,10 @@ limitations under the License.
 */
 
 // Settings
-var originator="CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version="v1.0.0";
+var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";    
+var version = "v1.0.0";
 var LanguageCodePrefix = "ISO639-3:";
-var imdi_version = "IMDI 3.04";
 var path_to_images = "img/";
-
 
 var output_formats = [
 	{
@@ -49,7 +47,6 @@ var file_download_header = "text/xml;charset=utf-8";
 
 var output_textarea_rows = 40;
 var output_textarea_columns = 130;
-
 var form_textarea_rows = 18;
 var form_textarea_columns = 5;
 
@@ -59,7 +56,6 @@ var interval_time = 60;
 var highlight_color = "skyblue";
 
 var session_dom_element_prefix = "session_";
-
 
 var compatibility_warnings = {
 	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_images+'icons/warning.png"></div><div class="compatibility_warning">'+
@@ -129,22 +125,15 @@ var invalid_lamus_media_file_types = [
 	["au","audio/basic","audio"]
 ];
 
-
-
 var new_page = true;
   
 var content_languages = [];
 
 var sessions = [];
-
-var imdi_corpus_profile="clarin.eu:cr1:p_1274880881885";
-var imdi_session_profile="clarin.eu:cr1:p_1271859438204";
-
-var active_view;
-
 var actors = [];
 var active_actor=-1;
 
+var active_view;
 var counters = {
 	session_id: 0,
 	resource_id: 0,
@@ -159,13 +148,12 @@ var first_start_message = "Welcome to CMDI Maker!<br>Please note, that this is a
 "Every time you load this page, you can pick up where you left off.";
 
 var available_resources = [];
-//0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
-// this array contains only file metadata retrieved by file upload form / drag and drop
+// 0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
+// this array only contains file metadata retrieved by file upload form / drag and drop
   
 document.addEventListener('DOMContentLoaded', function() {
 
 	view("wait");
-	
 	g("version_span").innerHTML = version;
 
 	create_output_format_select();
@@ -173,27 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	GetActorsFromWebStorage();
 	GetRecallData();
 	refreshFileListDisplay();
-
-	var first_start = localStorage.getItem("first_start");
-	
-	if (first_start == null){
-		first_start = true;
-	}
-	
-	
-	if (first_start == true){
-	
-		alertify.set({ labels: {
-			ok     : "Let's go"
-		} });		
-		
-		alertify.alert(first_start_message);
-		localStorage.setItem("first_start", false);
-		console.log("First start! Hey there and welcome to CMDI Maker!");
-	
-	}
-
-	add_event_listeners();
-	//listeners.js  
+	check_if_first_start();
+	add_event_listeners();   //listeners.js  
 
 }, false);

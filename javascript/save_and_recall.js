@@ -34,12 +34,6 @@ function GetRecallData(){
 	
 	FillForm(form_object);	
 	
-	if (sessions.length == 0){
-		show_no_session_text();
-	}
-	
-	setAutosaveInterval(interval_time);
-
 }
 
 
@@ -69,12 +63,11 @@ function FillForm(recall_object){
 
 	console.log("Filling the form with recalled data");
 	
-	g("metadata_language_select").selectedIndex = recall_object.metadata_language;
-	g("metadata_creator").value = recall_object.metadata_creator;
+	g("metadata_language_select").selectedIndex = recall_object.settings.metadata_language;
+	g("metadata_creator").value = recall_object.settings.metadata_creator;
+	set_radio_index(document.metadata_form.output_format, recall_object.settings.output_format);
 	
-	set_radio_index(document.metadata_form.output_format, recall_object.output_format);
-	
-	if (recall_object.calc_actors_age == true){
+	if (recall_object.settings.calc_actors_age == true){
 	
 		document.metadata_form.radio_age_calc[0].checked = true;
 	
@@ -86,15 +79,11 @@ function FillForm(recall_object){
 	
 	}
 	
-
-	
 	for (var l=0;l<recall_object.content_languages.length;l++){
 	
 		set_content_language(recall_object.content_languages[l]);
 		
 	}
-	
-
 	
 	available_resources = recall_object.available_resources;
 	refreshFileListDisplay();
@@ -106,6 +95,12 @@ function FillForm(recall_object){
 		new_session(recall_object.sessions[s]);
 	
 	}
+	
+	if (sessions.length == 0){
+		show_no_session_text();
+	}
+	
+	setAutosaveInterval(recall_object.settings.save_interval_time);
 
 	view(recall_object.active_view);	
 	
@@ -140,26 +135,26 @@ function MakeObjectOutOfForm(){
 		corpus: {},
 		sessions: [],
 		
-		metadata_language: {},
 		content_languages: [],
-		
-		interval: 60000,
-		output_format: get_selected_radio_index(document.metadata_form.output_format),
-		calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false),
-		metadata_creator: get("metadata_creator"),
-		
 		available_resources: [],
 		
-		id: 0   //id is always 0, because we only want to overwrite the object
-	
+		settings: {
+			save_interval_time: 0,
+			output_format: get_selected_radio_index(document.metadata_form.output_format),
+			calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false),
+			metadata_creator: get("metadata_creator"),
+			metadata_language: g("metadata_language_select").selectedIndex
+		}
+		
 	};
 	
 	object.corpus.name = g("corpus_name").value;
 	object.corpus.title = g("corpus_title").value;
 	object.corpus.description = g("corpus_description").value;
 	
-	object.metadata_language = g("metadata_language_select").selectedIndex;
 	object.content_languages = content_languages;
+	
+	object.settings.save_interval_time = document.metadata_form.radio_auto_save.value;
 	
 	if (active_view != "wait"){
 		object.active_view = active_view;
@@ -179,7 +174,6 @@ function MakeObjectOutOfForm(){
 		
 		session_object.actors.actors = sessions[s].actors.actors;
 		session_object.resources = sessions[s].resources;
-		
 		session_object.expanded = sessions[s].expanded;
 		
 		object.sessions.push(session_object);

@@ -16,6 +16,9 @@ limitations under the License.
 
 var cmdi_generator = function(){
 
+	var imdi_corpus_profile="clarin.eu:cr1:p_1274880881885";
+	var imdi_session_profile="clarin.eu:cr1:p_1271859438204";
+
 	var createIDREFS = function(){
 
 		var rString1 = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
