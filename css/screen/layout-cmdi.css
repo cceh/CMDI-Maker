@@ -391,8 +391,7 @@ display: block;
 
 .warning_div{
 background-color: tomato;
-border-radius: 10px;
-padding:  10px;
+padding: 5px 10px;
 
 }
 
@@ -400,7 +399,7 @@ padding:  10px;
 
 display: block;
 position: absolute;
-top: -146px; 
+bottom: 44px; 
 background: cornflowerblue;
 color: black;
 padding: 15px;
@@ -468,7 +467,7 @@ color: black;
 .mf{
 	
 padding: 10px;
-background-color: darkorange;
+background-color: orange;
 border-radius: 5px;
 margin-bottom: 10px;
 width: 158px;
@@ -478,7 +477,7 @@ width: 158px;
 .wr{
 	
 padding: 10px;
-background-color: yellowgreen;
+background-color: limegreen;
 border-radius: 5px;
 margin-bottom: 10px;
 width: 158px;
@@ -513,24 +512,34 @@ width:220px;
 
 width: 260px;
 border-radius: 10px;
-padding: 20px;
+padding: 10px;
+border: 10px solid transparent;
 margin-right: 20px;
 margin-bottom: 20px;
 float: left;
 height: 116px;
 overflow: hidden;
+cursor: pointer;
+
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 
 }
 
+
 .media_file_entry{
 
-background-color: lightskyblue;
+background-color: orange;
 
 }
 
 .written_resource_file_entry{
 
-background-color: yellowgreen;
+background-color: limegreen;
 
 }
 
@@ -743,6 +752,11 @@ color: #FFFFFF;
 float: left;
 clear: left;
 
+}
+
+.selected_file {
+	border: 10px solid;
+	border-color: indigo;
 }
 
 #copy_sessions_select{

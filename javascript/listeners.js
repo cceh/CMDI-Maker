@@ -167,7 +167,31 @@ function add_event_listeners() {
   
 	document.getElementById('files_input').addEventListener('change', handleFileInputChange, false);
 	
+	document.onkeydown = function(event) {
+	
+		if (event.keyCode == 16) {  //if shift is pressed
+			if (shift == false){
+				shift = true;
+				console.log("shift on");
+			}
+		}
+		
+		if (event.keyCode == 27)  {   //escape pressed
+		
+			deselect_all_files();
+		
+		}
+	
+	};
 
+	document.onkeyup = function(event) {
+	
+		if (event.keyCode == 16) {  //if shift is let go
+			shift = false;
+			console.log("shift off");
+		}
+		
+	};
 	
 	
 };

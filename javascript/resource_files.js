@@ -52,7 +52,11 @@ function refreshFileListDisplay() {
 
     // files is a FileList of File objects. List some properties.
     var output = [];
-    
+	
+	var list = g('list');
+	
+	list.innerHTML = "";
+
 	for (var i = 0; i < available_resources.length; i++) {
 	
 		switch (GetValidityOfFile(available_resources[i][0])){
@@ -92,24 +96,33 @@ function refreshFileListDisplay() {
 		
 		var file_size = available_resources[i][2];
 	
-		output.push('<div class="file_entry ' + file_entry_class + '"><h2 class="file_entry_title">', available_resources[i][0], '</h2>',
-		'<p>', available_resources[i][1],
-		'<br><span class="size_span">Size: ',file_size, '</span><br><span name="date_span" class="date_span">Last modified: ',
-		available_resources[i][3], '</span></p>');
+		var div = new_element("div", "file_entry_"+i, "file_entry " + file_entry_class, list);
+		var title = new_element("h2", "", "file_entry_title", div, available_resources[i][0]);
+		var p = new_element("p", "", "", div, available_resources[i][1] +
+		'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
+		available_resources[i][3] + '</span>');
 		
-		output.push(compatibility_warning);
+		div.innerHTML += compatibility_warning;
 
-		output.push('</div>');
+		div.addEventListener("click", function(i){
+		
+			return function(){
+				
+				clicked_on_file(i);
+			
+			};
+			
+		}(i), false);
 
     }
 	
 	if (available_resources.length == 0){
-		output.push("<h2>No media files imported.</h2>");
+		list.innerHTML = "<h2>No media files imported.</h2>";
 	}
 
-    document.getElementById('list').innerHTML = output.join('');
-	
 	refresh_resources_of_sessions();
+	
+	selected_files = [];
 	
 }
   
@@ -162,9 +175,6 @@ function sortByKey(array, key) {
 }
   
 function create_session_per_resource(){
-
-	//erase_all_sessions();
-	//really? or only add sessions?
 
 	var radio_buttons = document.getElementsByName("radio_file_type");
 	
@@ -240,5 +250,108 @@ function handleFileInputChange(evt){
  
 }
 
+
+/* File selection */
+
+
+function clicked_on_file(i){
+	
+	if (shift == true){
+		
+		if (i < last_selected_file){
+		
+			for (var f=last_selected_file-1; f>=i; f--){
+		
+				select_file(f);
+		
+			}		
+		
+		}
+		
+		if (i > last_selected_file){
+		
+			for (var f=last_selected_file+1; f<=i; f++){
+		
+				select_file(f);
+		
+			}
+		}
+		
+	}
+	
+	else {
+		select_file(i);	
+	}
+
+
+	console.log(selected_files);
+
+
+}
+
+
+function select_file(i){
+
+	var pos = selected_files.indexOf(i);
+
+	if (pos == -1){
+		selected_files.push(i);
+		last_selected_file = i;
+		
+		if (shift_tip == true){
+			shift_tip = false;
+			alertify.log("Tip: Hold SHIFT to select multiple files","",5000);
+			
+		}
+		
+	}
+	
+	else {
+		selected_files.splice(pos,1);
+		last_selected_file = i;
+	}
+
+	mark_file_entry(i);
+
+}
+
+function mark_file_entry(i){
+
+	var pos = g("file_entry_"+i).className.indexOf(" selected_file");
+	
+	if (pos == -1) {
+		
+		g("file_entry_"+i).className = g("file_entry_"+i).className + " selected_file";
+		available_resources[i].selected = true;
+	
+	}
+	
+	else {
+	
+		g("file_entry_"+i).className = g("file_entry_"+i).className.slice(0,pos);
+		available_resources[i].selected = false;
+		
+	}
+
+}
+
+function deselect_all_files(){
+
+	while (selected_files.length > 0){
+	
+		select_file(selected_files[0]);
+	
+	}
+
+}
+
+  
+function clear_file_list(){
+
+	available_resources = [];
+
+	refreshFileListDisplay();
+
+}
 
   
