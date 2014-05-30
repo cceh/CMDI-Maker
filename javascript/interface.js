@@ -74,6 +74,32 @@ function check_if_first_start(){
 }
 
 
+function create_copy_session_options(){
+
+	var div = g("copy_sessions_select");
+	
+	if (!session_form.fields_to_copy){
+	
+		new_element("span", "", "", div, "This function is currently unavailable!");
+		return;
+		
+	}
+
+	var options = session_form.fields_to_copy;
+
+	for (var c=0; c<options.length; c++){
+	
+		var input = new_element("input", copy_checkbox_element_prefix+options[c].name, "", div);
+		input.type = "checkbox";
+		input.checked = true;
+		
+		new_element("span", "", "", div, " "+options[c].label);
+		new_element("br", "", "", div);
+	
+	}
+
+
+}
 
 function reset_form(){
 	

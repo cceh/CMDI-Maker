@@ -674,63 +674,50 @@ function RemoveResourceFromSession(session_id, resource_id){
 
 function assign_session1_metadata(){
 
-	if (g("copy_check_location").checked){
-		copy_fields_to_all_sessions(0);
-	}
-	
-	if (g("copy_check_project").checked){
-		copy_fields_to_all_sessions(1);
-	}
-	
-	if (g("copy_check_content").checked){
-		copy_fields_to_all_sessions(2);
-	}
-	
-	if (g("copy_check_date").checked){
-		copy_fields_to_all_sessions(3);
-	}
-	
-	if (g("copy_check_actors").checked){
-
-		for (var s=1;s<sessions.length;s++){
-			RemoveAllActorsFromSession(sessions[s].id);
-		
-			// copy actors from session 1 to session session
-			for (var a=0;a<sessions[0].actors.actors.length;a++){
-				add_actor_to_session(sessions[s].id,sessions[0].actors.actors[a]);
-			}
-			
-			copy_field(session_dom_element_prefix+sessions[s].id+"_actorsDescription",session_dom_element_prefix+sessions[0].id+"_actorsDescription");
-		}
-	}
-	
 	if (sessions.length < 2){
 	
 		alertify.log("There have to be at least 2 sessions to assign metadata from one to another.", "error", "5000");
+		return;
+		
 	}
 	
-	else {
+	for (var i=0; i<session_form.fields_to_copy.length; i++){
 	
-		alertify.log("Session 1 metadata assigned to all sessions.", "", "5000");
+		if (g(copy_checkbox_element_prefix+session_form.fields_to_copy[i].name).checked){  //if checkbox is checked
+		
+			if (session_form.fields_to_copy[i].name == "actors"){  //special case: actors!
+			
+				for (var s=1; s<sessions.length; s++){
+					RemoveAllActorsFromSession(sessions[s].id);
+		
+					// copy actors from session 1 to session session
+					for (var a=0;a<sessions[0].actors.actors.length;a++){
+						add_actor_to_session(sessions[s].id,sessions[0].actors.actors[a]);
+					}
+				
+				}
+			
+			}
+		
+			copy_fields_to_all_sessions(session_form.fields_to_copy[i].fields);
+			
+		}
 	
 	}
+
+	alertify.log("Session 1 metadata assigned to all sessions.", "", "5000");
+
 }
 
 
-function copy_fields_to_all_sessions(group){
-
-	var fields_to_copy = [
-		["location_continent","location_country","location_region","location_address"],
-		["project_name","project_title","project_id","project_description","contact_name","contact_address","contact_email","contact_organisation"],
-		["content_genre","content_subgenre",/*"content_language",*/"content_task","content_description","content_eventstructure","content_planningtype","content_interactivity","content_socialcontext","content_involvement"],
-		["date_year","date_month","date_day"]
-	];
-	//it is indeed html conform to get textarea.value
+function copy_fields_to_all_sessions(fields_to_copy){
+//fields_to_copy is an array
+//it is indeed html conform to get textarea.value
 	
-	for (var s=1;s<sessions.length;s++){
+	for (var s=1;s<sessions.length;s++){   //important to not include the first session in this loop
 	
-		for (var k=0;k<fields_to_copy[group].length;k++){
-			copy_field(session_dom_element_prefix+sessions[s].id+"_"+fields_to_copy[group][k],session_dom_element_prefix+sessions[0].id+"_"+fields_to_copy[group][k]);
+		for (var k=0;k<fields_to_copy.length;k++){
+			copy_field(session_dom_element_prefix+sessions[s].id+"_"+fields_to_copy[k],session_dom_element_prefix+sessions[0].id+"_"+fields_to_copy[k]);
 		}
 	
 	}

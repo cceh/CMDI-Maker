@@ -745,7 +745,21 @@ clear: left;
 
 }
 
-#copy_sessions_select, #crps_filetype_select{
+#copy_sessions_select{
+
+display: none;
+bottom: 44px;
+position: absolute;
+width: 353px;
+left: 465px;
+background: cornflowerblue;
+color: black;
+padding: 15px;
+cursor: default;
+
+}
+
+#crps_filetype_select{
 
 display: none;
 
@@ -754,17 +768,6 @@ display: none;
 #copy_sessions_div:hover #copy_sessions_select{
 
 display: block;
-position: absolute;
-top: -140px;
-background: cornflowerblue;
-/*height: 91px;*/
-color: black;
-padding: 15px;
-cursor: default;
-
-width: 353px;
-
-left: 465px;
 
 }
 

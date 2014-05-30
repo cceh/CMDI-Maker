@@ -269,5 +269,35 @@ var session_form = {
 				}
 			]
 		}
+	],
+	fields_to_copy: [ 
+	//fields_to_copy is important for the function "Copy session 1 metadata to all session" so that it knows, what can be copied 
+	
+		{
+			name: "date",
+			label: "Date",
+			fields: ["session_date_year","session_date_month","session_date_day"]
+		},
+		{
+			name: "location",
+			label: "Location",
+			fields: ["session_location_continent","session_location_country","session_location_region","session_location_address"]
+		},
+		{
+			name: "project",
+			label: "Project",
+			fields: ["project_name","project_title","project_id","project_description","project_contact_name","project_contact_address","project_contact_email","project_contact_organisation"]
+		},
+		{
+			name: "content",
+			label: "Content",
+			fields: ["content_genre","content_subgenre","content_task","content_description","content_communication_context_eventstructure","content_communication_context_planningtype","content_communication_context_interactivity","content_communication_context_socialcontext","content_communication_context_involvement"]
+		},
+		{
+			name: "actors",
+			label: "Actors",
+			fields: ["actors_description"]
+			//since type of field actors is "special", there will be other stuff going on as well here!
+		}	
 	]
 };

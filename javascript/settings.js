@@ -56,6 +56,7 @@ var interval_time = 60;
 var highlight_color = "skyblue";
 
 var session_dom_element_prefix = "session_";
+var copy_checkbox_element_prefix = "copy_check_";
 
 var compatibility_warnings = {
 	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_images+'icons/warning.png"></div><div class="compatibility_warning">'+
@@ -162,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	GetRecallData();
 	refreshFileListDisplay();
 	check_if_first_start();
+	create_copy_session_options();
 	add_event_listeners();   //listeners.js  
 
 }, false);
