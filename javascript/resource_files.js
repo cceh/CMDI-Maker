@@ -188,38 +188,64 @@ function create_session_per_resource(){
 
 	console.log("Searching for files of chosen file type" + chosen_file_type);
 	
-	//for all media files of filetype
+	if (chosen_file_type == "selected"){
 	
-	for (var f=0; f<available_resources.length; f++){
+		console.log("Searching for selected files");
+		
+		for (var f=0; f<selected_files.length; f++){
 	
-		if (GetFileTypeFromFilename(available_resources[f][0]) == chosen_file_type){
-			console.log("Found a file of file type " + chosen_file_type);
-			var session = new_session({
-				name: RemoveEndingFromFilename(available_resources[f][0]),
-				expanded: false			//collapse automatically generated session
-			});
-			
-			add_resource_to_session(session, f);
-			
-			alertify.log("A new session has been created.<br>Name: " + sessions[GetSessionIndexFromID(session)].name, "", "5000");
-			
-			//if another file's name of available_resources starts with the same name as this file, add it to the session, too!
-			for (var f2=0; f2<available_resources.length; f2++){
-			
-				if (f == f2){
-					continue;
-				}
-			
-				if (isSubstringAStartOfAWordInString(RemoveEndingFromFilename(available_resources[f2][0]), RemoveEndingFromFilename(available_resources[f][0]))) {
-				
-					add_resource_to_session(session, f2);
-				
-				}
-			
-			}
+			create_session_for_resource(selected_files[f]);
 		
 		}
 		
+		return;
+	
+	}
+	
+	else {    //for all media files of filetype
+	
+		for (var f=0; f<available_resources.length; f++){
+		
+			if (GetFileTypeFromFilename(available_resources[f][0]) == chosen_file_type){
+			
+				console.log("Found a file of file type " + chosen_file_type);
+				
+				create_session_for_resource(f);
+			
+			}
+			
+		}
+		
+	}
+
+
+}
+
+function create_session_for_resource(resource_index){
+
+	var session_object = make_new_session_object();
+	session_object.session.name = RemoveEndingFromFilename(available_resources[resource_index][0]);
+	session_object.expanded = false; //collapse automatically generated session
+
+	var session = new_session(session_object);
+	
+	add_resource_to_session(session, resource_index);
+	
+	alertify.log("A new session has been created.<br>Name: " + sessions[GetSessionIndexFromID(session)].name, "", "5000");
+	
+	//if another file's name of available_resources starts with the same name as this file, add it to the session, too!
+	for (var f2=0; f2<available_resources.length; f2++){
+	
+		if (resource_index == f2){
+			continue;
+		}
+	
+		if (isSubstringAStartOfAWordInString(RemoveEndingFromFilename(available_resources[f2][0]), RemoveEndingFromFilename(available_resources[resource_index][0]))) {
+		
+			add_resource_to_session(session, f2);
+		
+		}
+	
 	}
 
 

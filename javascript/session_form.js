@@ -56,7 +56,6 @@ var session_form = {
 					type: "textarea",
 					comment: "Here a relevant description referring to the session as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.", 
 				},
-				
 				{
 					heading: "Location",
 					name: "location",

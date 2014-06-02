@@ -54,7 +54,7 @@ function new_session(session_object){
 
 	var session_label = new_element('a',session_dom_element_prefix+session_id+'_label','session_label',session_header);
 	
-	if ((!session_object.session.name) || (session_object.session.name == "")){
+	if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name == "")){
 	
 		session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
 		sessions[GetSessionIndexFromID(session_id)].name = "";
@@ -607,8 +607,8 @@ function draw_resource_in_session(resource_id, session_id, type, name, size){
 	var span = document.createElement("span");
 	span.className = "resource_file_content_span";
 	
-	span.innerHTML = "File Name:<br><input type=\"text\" name=\""+session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
-	"Size:<br><input type=\"text\" name=\""+session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">";
+	span.innerHTML = "File Name<br><input type=\"text\" name=\""+session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
+	"Size<br><input type=\"text\" name=\""+session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">";
 	
 	div.appendChild(span);
 	

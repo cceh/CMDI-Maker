@@ -26,14 +26,16 @@ var output_formats = [
 		name: "imdi",
 		file_ending: "imdi",
 		output_name: "IMDI",
-		generator_object: imdi_generator
+		generator_object: imdi_generator,
+		form: undefined
 	},
 	{
 		title: "CMDI with IMDI Profile",
 		name: "cmdi-imdi",
 		file_ending: "cmdi",
 		output_name: "CMDI",
-		generator_object: cmdi_generator
+		generator_object: cmdi_generator,
+		form: undefined
 	},
 	{
 		title: "Weird test profile - do not use this",

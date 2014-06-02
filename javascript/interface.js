@@ -48,7 +48,7 @@ function check_if_first_start(){
 
 	var first_start = localStorage.getItem("first_start");
 	
-	if (first_start == null){
+	if (first_start == null){  //if there's no data, assume it's the first start
 		first_start = true;
 	}
 	
