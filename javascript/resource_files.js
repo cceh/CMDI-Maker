@@ -324,12 +324,6 @@ function select_file(i){
 		selected_files.push(i);
 		last_selected_file = i;
 		
-		if (shift_tip == true){
-			shift_tip = false;
-			alertify.log("Tip: Hold SHIFT to select multiple files","",5000);
-			
-		}
-		
 	}
 	
 	else {

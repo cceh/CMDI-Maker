@@ -139,7 +139,6 @@ var active_actor=-1;
 var selected_files = [];
 var last_selected_file = -1;
 var shift = false;
-var shift_tip = true;
 
 var active_view;
 var counters = {
