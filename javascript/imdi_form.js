@@ -300,3 +300,130 @@ var session_form = {
 		}	
 	]
 };
+
+var actor_form_imdi = {
+
+	title: "imdi-actors",
+	type: "form",
+	fields: [
+		{
+			title: "",
+			name: "",
+			type: "column",
+			fields: [
+				{
+					heading: "Name",
+					name: "name",
+					type: "text",
+				},    
+				{
+					heading: "Full Name",
+					name: "full_name",
+					type: "text",
+				},
+   				{
+					heading: "Code",
+					name: "code",
+					type: "text",
+				},
+   				{
+					heading: "Birth Date",
+					name: "birth_date",
+					type: "date",
+				},
+   				{
+					heading: "Age",
+					name: "age",
+					type: "text",
+				},
+   				{
+					heading: "Sex",
+					name: "sex",
+					type: "select",
+					vocabulary: ["Unknown","Unspecified","NAP","Female","Male"]
+				},
+   				{
+					heading: "Education",
+					name: "education",
+					type: "text",
+				}
+			]
+		},
+		{
+			title: "",
+			name: "",
+			type: "column",
+			fields: [
+				{
+					heading: "Role",
+					name: "role",
+					type: "open_vocabulary",
+					vocabulary: [
+						"Unknown","Unspecified","Annotator","Author","Collector","Consultant","Computer","Depositor","Editor","Filmer",	
+						"Illustrator","Interviewer","Musician","Photographer","Publisher","Recorder","Referent","Researcher","Singer","Speaker/Signer","Translator"
+					]
+				},    
+				{
+					heading: "Ethnic Group",
+					name: "ethnic_group",
+					type: "text",
+				},
+   				{
+					heading: "Family Social Role",
+					name: "family_social_role",
+					type: "open_vocabulary",
+					vocabulary: ["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"]
+				},
+   				{
+					heading: "Description of the actor",
+					name: "description",
+					type: "textarea",
+				},
+   				{
+					heading: "Anonymized",
+					name: "anonymized",
+					type: "check",
+				}
+			]
+		},	
+		{
+			title: "Contact",
+			name: "contact",
+			type: "column",
+			fields: [
+				{
+					heading: "Name",
+					name: "name",
+					type: "text"
+				},    
+				{
+					heading: "Address",
+					name: "address",
+					type: "text"
+				},
+   				{
+					heading: "Email",
+					name: "email",
+					type: "text"
+				},
+   				{
+					heading: "Organisation",
+					name: "organisation",
+					type: "text"
+				}
+			]
+		},	
+		{
+			title: "Languages",
+			name: "languages",
+			type: "column",
+			fields: [
+				{
+					heading: "Actor Languages",
+					name: "actor_languages",
+					type: "special"
+				}
+			]
+		}
+	]
+};

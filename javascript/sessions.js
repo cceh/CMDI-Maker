@@ -22,8 +22,6 @@ function new_session(session_object){
 		g("sessions").innerHTML = "";
 	};
 
-
-	
 	var session_id = counters.session_id;
 	
 	if (!session_object){
@@ -89,7 +87,7 @@ function new_session(session_object){
 	var session_content = new_element('div','session'+session_id+'_content','session_content',session_div)
 
 	//create the form
-	make_input(session_content, session_form, session_dom_element_prefix+session_id+"_", session_object);
+	make_input(session_content, session_form, session_dom_element_prefix+session_id+"_", session_dom_element_prefix, session_object);
 
 	
 	g(session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
@@ -159,13 +157,13 @@ function new_session(session_object){
 }
 
 
-function make_input(parent, field, element_id_prefix, session_object){
+function make_input(parent, field, element_id_prefix, element_class_prefix, session_object){
 
 	if (field.type == "text"){
 		var input = make_text_input(parent, field.heading,
 			element_id_prefix+field.name,
 			element_id_prefix+field.name,
-			(session_object[field.name] ? session_object[field.name] : ""),
+			(session_object && session_object[field.name] ? session_object[field.name] : ""),
 			field.comment
 		);
 	}
@@ -174,9 +172,9 @@ function make_input(parent, field, element_id_prefix, session_object){
 		var input = make_date_input(parent, field.heading,
 			element_id_prefix+field.name,
 			element_id_prefix+field.name,
-			(session_object[field.name] ? session_object[field.name]["year"] : ""),
-			(session_object[field.name] ? session_object[field.name]["month"] : ""),				
-			(session_object[field.name] ? session_object[field.name]["day"] : ""),					
+			(session_object && session_object[field.name] ? session_object[field.name]["year"] : ""),
+			(session_object && session_object[field.name] ? session_object[field.name]["month"] : ""),				
+			(session_object && session_object[field.name] ? session_object[field.name]["day"] : ""),					
 			field.comment
 		);
 	}
@@ -190,7 +188,7 @@ function make_input(parent, field, element_id_prefix, session_object){
 			element_id_prefix+field.name,
 			element_id_prefix+field.name,
 			element_id_prefix+field.name,
-			(session_object[field.name] ? session_object[field.name] : ""),
+			(session_object && session_object[field.name] ? session_object[field.name] : ""),
 			field.comment
 		);
 	}			
@@ -208,7 +206,7 @@ function make_input(parent, field, element_id_prefix, session_object){
 	
 			for (var f=0; f<field.fields.length; f++){
 			
-				make_input(parent, field.fields[f], element_id_prefix, session_object[field.name]);
+				make_input(parent, field.fields[f], element_id_prefix, element_class_prefix, session_object[field.name]);
 		
 			}
 		
@@ -217,16 +215,32 @@ function make_input(parent, field, element_id_prefix, session_object){
 	
 	if (field.type == "column"){
 	
-		var td = new_element("td",element_id_prefix+field.name+"_td",session_dom_element_prefix+field.name+"_td",parent);
+		if (field.name != ""){
+		
+			var td_name = field.name+"_td";
+		
+		}
+		
+		else {
+		
+			var td_name = "td";
+		
+		}
+	
+		var td = new_element("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
 		var h2 = new_element("h2","","",td,field.title);
 		
 		if (field.fields){
 		
-			element_id_prefix += field.name + "_";
+			if (field.name != ""){
+		
+				element_id_prefix += field.name + "_";
+				
+			}
 		
 			for (var f=0; f<field.fields.length; f++){
 			
-				make_input(td, field.fields[f], element_id_prefix, session_object[field.name]);
+				make_input(td, field.fields[f], element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
 		
 			}
 		
@@ -240,7 +254,7 @@ function make_input(parent, field, element_id_prefix, session_object){
 		
 		for (var f=0; f<field.fields.length; f++){
 			
-			make_input(tr, field.fields[f], element_id_prefix, session_object);
+			make_input(tr, field.fields[f], element_id_prefix, element_class_prefix, session_object);
 		
 		}
 	}
@@ -262,6 +276,40 @@ function make_input(parent, field, element_id_prefix, session_object){
 			new_element("div",element_id_prefix+"add_mf_div", "", parent);
 		
 		}
+		
+		if (field.name == "actor_languages"){
+		
+			var p = new_element("p","", "", parent);
+
+			var input = new_element("input","actor_language_select","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = "actor_language_select";
+			
+			new_element("span","","",p," ");
+
+			var input = new_element("input","actor_language_search_button","",p);
+			input.type = "button";
+			input.value = "Search";
+
+			new_element("br","","",p);
+			new_element("span","","",p,"or type in ISO code ");
+			
+			var input = new_element("input","actor_language_iso_input","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = "actor_language_iso_input";
+			
+			new_element("span","","",p," ");
+			
+			var input = new_element("input","actor_language_iso_ok","",p);
+			input.type = "button";
+			input.value = "OK";			
+			
+			new_element("div","current_actor_languages_display", "", parent);									
+
+		
+		}
 	
 	}
 	
@@ -272,7 +320,7 @@ function make_input(parent, field, element_id_prefix, session_object){
 			element_id_prefix+field.name,
 			field.size,
 			field.vocabulary,
-			(session_object[field.name] ? session_object[field.name] : ""),
+			(session_object && session_object[field.name] ? session_object[field.name] : ""),
 			field.comment
 		);
 	}
@@ -284,7 +332,17 @@ function make_input(parent, field, element_id_prefix, session_object){
 			element_id_prefix+field.name,
 			field.size,
 			field.vocabulary,
-			(session_object[field.name] ? session_object[field.name] : ""),
+			(session_object && session_object[field.name] ? session_object[field.name] : ""),
+			field.comment
+		);
+	}
+	
+	if (field.type == "check"){
+		var input = make_checkbox(
+			parent, field.heading,
+			element_id_prefix+field.name,
+			element_id_prefix+field.name,
+			(session_object && session_object[field.name] ? session_object[field.name] : false),
 			field.comment
 		);
 	}
@@ -747,8 +805,6 @@ function refresh_resources_of_sessions(){
 }
 
 function refresh_resources_of_session(s){
-
-	console.log("Refreshing Resources of Session " + s);
 
 	g(session_dom_element_prefix+sessions[s].id+"_resources_add_mf_div").innerHTML = "";
 

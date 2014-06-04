@@ -356,7 +356,7 @@ function MakeActorObjectOutOfForm(){
 		code: '',
 		ethnic_group: '',
 		family_social_role: '',
-		age: 52,
+		age: 0,
 		birth_date: {
 			year: '',
 			month: '',

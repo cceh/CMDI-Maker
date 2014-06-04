@@ -4,13 +4,11 @@
 float: left;
 height: 25px;
 padding: 12px;
-background: lightskyblue;
 }
 
-#module_title{
+.module_title{
 
 height: 50px;
-background: lightskyblue;
 width: 188px;
 color: black;
 font-size: 16pt;
@@ -40,6 +38,14 @@ input[type="button"], input[type="submit"]{
 cursor: pointer;
 height: 20px;
 margin: 0px;
+
+}
+
+.ultra_big{
+
+	font-size: 80pt;
+	text-align: center;
+
 
 }
 
@@ -74,7 +80,7 @@ padding-bottom: 15px;
 
 }
 
-.icon_div:hover{
+.icon_div:hover, .icon_div_hover:hover{
 
 background-color: pink;
 
@@ -308,7 +314,7 @@ background-color: #CCEEDD;
 
 /*--- Start ---*/
 
-#corpus{
+#corpus_form{
 
 padding: 10px;
 background-color: #AABFFF;
@@ -619,7 +625,7 @@ overflow: hidden;
 
 }
 
-#actor_language_td{
+#actor_languages_td{
 
 	width: 350px;
 
@@ -1031,6 +1037,16 @@ padding-right: 10px;
 
 #logos a img{
 	height: 80px;
+}
+
+#supporters{
+	text-align: center;
+	margin-top: 30px;
+}
+
+#supporters a img{
+	height: 100px;
+	margin: 0px 10px;
 }
 
 #bmbf_link{

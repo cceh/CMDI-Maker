@@ -16,7 +16,7 @@ limitations under the License.
 
 // Settings
 var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version = "v1.0.0";
+var version = "v1.0.1";
 var LanguageCodePrefix = "ISO639-3:";
 var path_to_images = "img/";
 
@@ -27,7 +27,8 @@ var output_formats = [
 		file_ending: "imdi",
 		output_name: "IMDI",
 		generator_object: imdi_generator,
-		form: undefined
+		form: session_form,
+		actor_form: actor_form_imdi
 	},
 	{
 		title: "CMDI with IMDI Profile",
@@ -35,7 +36,8 @@ var output_formats = [
 		file_ending: "cmdi",
 		output_name: "CMDI",
 		generator_object: cmdi_generator,
-		form: undefined
+		form: session_form,
+		actor_form: actor_form_imdi
 	},
 	{
 		title: "Weird test profile - do not use this",
@@ -151,9 +153,6 @@ var counters = {
 
 var preset_data;
 
-var first_start_message = "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use without an internet connection.<br>" +
-"Every time you load this page, you can pick up where you left off.";
-
 var available_resources = [];
 // 0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
 // this array only contains file metadata retrieved by file upload form / drag and drop
@@ -164,7 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	g("version_span").innerHTML = version;
 
 	create_output_format_select();
-	display_metadata_languages();  
+	display_metadata_languages();
+	create_actor_form();
 	GetActorsFromWebStorage();
 	GetRecallData();
 	refreshFileListDisplay();

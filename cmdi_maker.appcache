@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1.0.0
+# v1.0.1
 
 CACHE:
 index.html
@@ -54,6 +54,7 @@ img/logos/LOGO_CCeH.png
 img/logos/LOGO_CLARIN-D.png
 img/logos/LOGO_CLASS.png
 img/logos/LOGO_Uni_Koeln.png
+img/logos/LOGO_SOAS.png
 javascript/actors.js
 javascript/actor_languages.js
 javascript/alertify.min.js

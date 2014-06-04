@@ -19,6 +19,8 @@ function add_event_listeners() {
 
 	// Views
 	g('start_window_icon').addEventListener('click', function() {        view("start");      });
+	
+	g('corpus_window_icon').addEventListener('click', function() {        view("corpus");      });
 	g('sessions_window_icon').addEventListener('click', function() {        view("sessions");      });
 	g('manage_actors_icon').addEventListener('click', function() {        view("actors");      });
 	g('manage_media_files_icon').addEventListener('click', function() {        view("media_files");      });
@@ -109,17 +111,6 @@ function add_event_listeners() {
 	
 	g('link_export_actors').addEventListener('click', function() {        export_actors();      });	
 	g('actors_file_input').addEventListener('change',import_actors, false);
-	
-	g('actor_role_cv_img').addEventListener('click', function() {
-		change_ov_input("actor_role",
-		["Unknown","Unspecified","Annotator","Author","Collector","Consultant","Computer","Depositor","Editor","Filmer",
-		"Illustrator","Interviewer","Musician","Photographer","Publisher","Recorder","Referent","Researcher","Singer","Speaker/Signer","Translator"]);   /*open vocabulary*/
-	});
-	
-	g('actor_fs_role_cv_img').addEventListener('click', function() {
-		change_ov_input("actor_family_social_role",
-		["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"]);  /*open vocabulary*/
-	});
 	
 	g("content_language_select").onkeydown = function(event) {
 

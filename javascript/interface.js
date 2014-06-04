@@ -29,6 +29,11 @@ function display(session_id){
 	}
 }
 
+function create_actor_form(){
+
+	make_input(g("actor_content_div"), actor_form_imdi, "actor_", "actor_", undefined);
+
+}
 
 
 function display_metadata_languages(){
@@ -54,12 +59,12 @@ function check_if_first_start(){
 	
 	
 	if (first_start == true){
-	
+		/*
 		alertify.set({ labels: {
 			ok     : "Let's go"
 		} });		
 		
-		alertify.alert(first_start_message);
+		alertify.alert(first_start_message);*/
 		localStorage.setItem("first_start", false);
 		console.log("First start! Hey there and welcome to CMDI Maker!");
 	
@@ -121,7 +126,7 @@ function view(id){
 		id = "start";
 	}
 	
-	var views = ["wait", "start", "sessions", "media_files", "xml", "settings", "about", "actors"];
+	var views = ["wait", "start", "corpus", "sessions", "media_files", "xml", "settings", "about", "actors"];
 	
 	if (views.indexOf(id) == -1){
 		console.log("Error: Unkown view requested!");
@@ -136,6 +141,7 @@ function view(id){
 	}
 
 	g("start_window_icon").style.backgroundColor = "";
+	g("corpus_window_icon").style.backgroundColor = "";
 	g("sessions_window_icon").style.backgroundColor = "";
 	g("manage_actors_icon").style.backgroundColor = "";
 	g("manage_media_files_icon").style.backgroundColor = "";
@@ -165,6 +171,24 @@ function view(id){
 	
 		case "wait": {
 			g("module_icons").style.display = "none";
+		}
+		
+		case "start": {
+		
+			g("start_window_icon").style.backgroundColor = highlight_color;		
+			break;			
+		
+		}
+		
+		
+		case "corpus": {
+		
+			g("corpus_window_icon").style.backgroundColor = highlight_color;
+			
+			g("link_save_form").style.display = "inline";
+			g("link_reset_form").style.display = "inline";
+
+			break;
 		}
 
 		case "sessions": {
@@ -236,7 +260,7 @@ function view(id){
 				alertify.alert("The corpus and every session must have a proper name.<br>An unnamed corpus or sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
 				
 				if (!is_corpus_properly_named()){   //show corpus
-					view("start");
+					view("corpus");
 				}
 				
 				else {  //show sessions
@@ -273,16 +297,6 @@ function view(id){
 		case "about": {
 			
 			g("link_about").style.backgroundColor = highlight_color;
-
-			break;
-		}
-		
-		case "start": {
-		
-			g("start_window_icon").style.backgroundColor = highlight_color;
-			
-			g("link_save_form").style.display = "inline";
-			g("link_reset_form").style.display = "inline";
 
 			break;
 		}

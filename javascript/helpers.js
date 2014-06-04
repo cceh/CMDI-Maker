@@ -52,6 +52,37 @@ function make_text_input(parent,title,name,id,value,hover){
 }
 
 
+
+
+function make_checkbox(parent,title,name,id,checked,hover){
+
+	if (!hover){
+		var hover = "";
+	}
+	
+	var span = document.createElement("span");
+	span.title = hover;
+	span.innerHTML = title;
+	
+	parent.appendChild(span);
+	parent.appendChild(document.createElement("br"));
+	
+	var input = document.createElement("input");
+	input.type = "checkbox";
+	input.name = name;
+	input.id = id;
+	input.checked = checked;
+	input.title = hover;
+	
+	parent.appendChild(input);
+	
+	parent.appendChild(document.createElement("br"));
+
+	return input;	
+	
+}
+
+
 function open_vocabulary(parent, title, name, id, size, options, value, hover){
 
 	if (!hover){
