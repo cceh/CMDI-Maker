@@ -38,12 +38,6 @@ var output_formats = [
 		generator_object: cmdi_generator,
 		form: session_form,
 		actor_form: actor_form_imdi
-	},
-	{
-		title: "Weird test profile - do not use this",
-		name: "weird-test",
-		output_name: "WEIRD",
-		file_ending: "weird"
 	}
 ];
 
