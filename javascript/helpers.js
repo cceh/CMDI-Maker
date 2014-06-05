@@ -60,13 +60,6 @@ function make_checkbox(parent,title,name,id,checked,hover){
 		var hover = "";
 	}
 	
-	var span = document.createElement("span");
-	span.title = hover;
-	span.innerHTML = title;
-	
-	parent.appendChild(span);
-	parent.appendChild(document.createElement("br"));
-	
 	var input = document.createElement("input");
 	input.type = "checkbox";
 	input.name = name;
@@ -76,6 +69,11 @@ function make_checkbox(parent,title,name,id,checked,hover){
 	
 	parent.appendChild(input);
 	
+	var span = document.createElement("span");
+	span.title = hover;
+	span.innerHTML = title;
+	
+	parent.appendChild(span);
 	parent.appendChild(document.createElement("br"));
 
 	return input;	
