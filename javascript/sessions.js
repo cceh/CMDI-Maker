@@ -608,15 +608,15 @@ function add_resource_to_session(session_id, resource_file_index, without_questi
 	
 	//Check, if there is a date string in the form of YYYY-MM-DD in the filename of an eaf file. If so, adopt it for the session date
 	//only, if session date is still YYYY
-	if ((GetFileTypeFromFilename(filename) == "eaf") && (get(session_dom_element_prefix+session_id+"_date_year") == "YYYY")){
+	if ((GetFileTypeFromFilename(filename) == "eaf") && (get(session_dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
 		
 		var date = parseDate(available_resources[resource_file_index][0]);
 		
 		if (date != null){
 		
-			g(session_dom_element_prefix+session_id+"_date_year").value = date.year;
-			g(session_dom_element_prefix+session_id+"_date_month").value = date.month;
-			g(session_dom_element_prefix+session_id+"_date_day").value = date.day;
+			g(session_dom_element_prefix+session_id+"_session_date_year").value = date.year;
+			g(session_dom_element_prefix+session_id+"_session_date_month").value = date.month;
+			g(session_dom_element_prefix+session_id+"_session_date_day").value = date.day;
 			
 			alertify.log("Session date has been extracted from EAF file name: " + date.year + "-" + date.month + "-" + date.day, "", 5000);
 		
