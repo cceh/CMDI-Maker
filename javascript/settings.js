@@ -130,6 +130,8 @@ var invalid_lamus_media_file_types = [
 	["au","audio/basic","audio"]
 ];
 
+var hellos = ["Hello!", "Hallo!", "Aloha!", "Hola!", "Hej!", "Merhaba!", "你好", "こんにちは", "Вiтаю!", "Salut!", "Grüezi!", "Ciào!", "Hæ!", "Moïen!", "Olá!", "Privet!", "Hallå!", "Salam!"];
+
 var new_page = true;
   
 var content_languages = [];
@@ -161,6 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	view("wait");
 	g("version_span").innerHTML = version;
+	
+	say_hello();
 
 	create_output_format_select();
 	display_metadata_languages();

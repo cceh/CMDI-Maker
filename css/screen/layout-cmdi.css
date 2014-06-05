@@ -17,6 +17,11 @@ float: left;
 
 }
 
+#start_window_icon{
+
+cursor: pointer;
+
+}
 
 textarea{
 

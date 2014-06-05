@@ -63,6 +63,7 @@ javascript/content_languages.js
 javascript/FileSaver.js
 javascript/get.js
 javascript/helpers.js
+javascript/imdi_form.js
 javascript/imdi_generator.js
 javascript/interface.js
 javascript/LanguageIndex.js
@@ -70,7 +71,6 @@ javascript/listeners.js
 javascript/output.js
 javascript/resource_files.js
 javascript/save_and_recall.js
-javascript/session_form.js
 javascript/sessions.js
 javascript/settings.js
 javascript/xml.js

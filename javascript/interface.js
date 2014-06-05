@@ -59,12 +59,7 @@ function check_if_first_start(){
 	
 	
 	if (first_start == true){
-		/*
-		alertify.set({ labels: {
-			ok     : "Let's go"
-		} });		
-		
-		alertify.alert(first_start_message);*/
+
 		localStorage.setItem("first_start", false);
 		console.log("First start! Hey there and welcome to CMDI Maker!");
 	
@@ -72,9 +67,20 @@ function check_if_first_start(){
 	
 	else {
 	
-		alertify.log("Aloha! Welcome back!", "", 5000);
+		alertify.log("Welcome back!", "", 5000);
 	
 	}
+
+}
+
+
+function say_hello(){
+
+
+	var index = Math.floor(Math.random() * hellos.length);
+
+	g("hello").innerHTML = hellos[index];
+
 
 }
 
