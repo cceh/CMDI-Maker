@@ -457,7 +457,7 @@ function view(id){
 		
 			if ((is_corpus_properly_named()) && (session.are_all_sessions_properly_named())){
 			
-				if (does_every_session_have_a_project_name()){
+				if (session.does_every_session_have_a_project_name()){
 
 					g("xml_output_icon").style.backgroundColor = highlight_color;
 				
