@@ -15,6 +15,33 @@ limitations under the License.
 */
 
 
+function create_output_format_select(){
+
+	var parent = g("output_format_select");
+
+	new_element("h2","","",parent, "Output Format");
+	
+	for (var f=0; f<output_formats.length; f++){
+	
+		var input = new_element("input","output_format_radio_"+f, "", parent);
+		input.type = "radio";
+		input.name = "output_format";
+		
+		new_element("span", "","",parent, " " + output_formats[f].title);
+		
+		if (f == 0){
+			input.checked = true;
+		}
+		
+		new_element("br","","",parent);
+		
+	}
+	
+	new_element("br","","",parent);
+
+}
+
+
 function make_input(parent, field, element_id_prefix, element_class_prefix, session_object){
 
 	switch (field.type){

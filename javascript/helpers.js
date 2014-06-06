@@ -22,6 +22,18 @@ function randomString(length, chars) {
 }
 
 
+function remove_invalid_chars(string){
+
+	var text = string;
+	text = text.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss");
+	text = text.replace(/á/g,"a").replace(/à/g,"a").replace(/Á/g,"A").replace(/À/g,"A");
+	text = text.replace(/é/g,"e").replace(/è/g,"e").replace(/É/g,"E").replace(/È/g,"E");
+	text = text.replace(/\s+/g, '_');
+
+	return text;
+}
+
+
 function get_selected_radio_index(radios){
 
 
@@ -147,11 +159,9 @@ function make_checkbox(parent,title,name,id,checked,hover){
 	
 	parent.appendChild(input);
 	
-	var span = document.createElement("span");
+	var span = new_element("span","","",parent,title);
 	span.title = hover;
-	span.innerHTML = title;
-	
-	parent.appendChild(span);
+
 	parent.appendChild(document.createElement("br"));
 
 	return input;	
@@ -165,11 +175,9 @@ function open_vocabulary(parent, title, name, id, size, options, value, hover){
 		var hover = "";
 	}
 
-	var span = document.createElement("span");
-	span.innerHTML = title;
+	var span = new_element("span","","",parent,title);
 	span.title = hover;
 	
-	parent.appendChild(span);
 	parent.appendChild(document.createElement("br"));
 
 
@@ -210,13 +218,11 @@ function open_vocabulary(parent, title, name, id, size, options, value, hover){
 		parent.appendChild(input);
 	}
 	
-	var img = document.createElement("img");
+	var img = new_element("img","","edit_img",parent);
 	img.src = path_to_images + "icons/textedit.png";
-	img.className = "edit_img";
 	img.alt = "Custom Property";
 	img.title = "Custom Property";
-	
-	parent.appendChild(img);
+
 	
 	
 	img.addEventListener("click", function(){
