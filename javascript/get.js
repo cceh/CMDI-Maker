@@ -80,11 +80,7 @@ function GetActorLanguageObjectIndexFromID(al_id){
 	
 	}
 
-
-
-
 }
-
 
 
 function get(name){

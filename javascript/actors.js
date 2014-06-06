@@ -14,786 +14,632 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+var actor = (function(){
 
-function erase_actor_database(){
-
-	alertify.set({ labels: {
-		ok     : "No",
-		cancel : "Yes, delete all actors"
-	} });
-
-	alertify.confirm("Really?<br>You want to erase the whole actors database?", function (e) {
-
-		if (e) {
-			// user clicked "ok"
-			
-		}
+	var my = {};
 	
-		else {
-			// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-			
-			counters.actor_id = 0;
-			localStorage.setItem("actor_id_counter",0);
-			
-			localStorage.setItem("actors","[]");
+	my.id_counter = 0;
+	my.active_actor = -1;
 
-			alertify.log("Actor Database deleted", "", "5000");
-			GetActorsFromWebStorage();
-  
-			for (var s=0;s<sessions.length;s++){
-				RemoveAllActorsFromSession(sessions[s].id);
-			}
-			
-			
-  
-		}
-	});
-}
+	my.erase_database = function(){
 
-
-function show_actor(actor_id){
-// -1 = empty form to create a new actor
-
-	console.log("Showing actor "+actor_id);
-	
-	//new actors cannot be deleted, so remove the icon:
-	if (actor_id == -1) {
-		g('link_delete_active_actor').style.display = "none";
-		g('link_duplicate_active_actor').style.display = "none";
-	}
-	
-	else {
-		g('link_delete_active_actor').style.display = "inline";
-		g('link_duplicate_active_actor').style.display = "inline";
-	}
-
-	close_actor_language_select();	
-	highlight_active_actor_div(actor_id);
-	clear_active_actor_languages();
-
-	active_actor = actor_id;
-
-	if (actor_id != -1){
-		//show data of selected actor in form
-
-		g("actor_form_title").innerHTML = actors[actor_id].name;
-
-		set_form_value("actor_name",actors[actor_id].name);
-		set_form_value("actor_full_name",actors[actor_id].full_name);
-		set_form_value("actor_code",actors[actor_id].code);
-		set_form_value("actor_role",actors[actor_id].role);
-		set_form_value("actor_ethnic_group",actors[actor_id].ethnic_group);
-		set_form_value("actor_family_social_role",actors[actor_id].family_social_role);
-		set_form_value("actor_age",actors[actor_id].age);
-		set_form_value("actor_birth_date_year",actors[actor_id].birth_date.year);
-		set_form_value("actor_birth_date_month",actors[actor_id].birth_date.month);
-		set_form_value("actor_birth_date_day",actors[actor_id].birth_date.day);
-		set_form_value("actor_sex",actors[actor_id].sex);
-		set_form_value("actor_education",actors[actor_id].education);
-		
-		set_form_value("actor_contact_name",actors[actor_id].contact.name);
-		set_form_value("actor_contact_address",actors[actor_id].contact.address);
-		set_form_value("actor_contact_email",actors[actor_id].contact.email);
-		set_form_value("actor_contact_organisation",actors[actor_id].contact.organisation);
-		set_form_value("actor_description",actors[actor_id].description);
-	
-		document.getElementsByName("actor_anonymized")[0].checked = actors[actor_id].anonymized;
-		
-		show_languages_of_active_actor();
-		g("save_actor_span").innerHTML = " Save changes to this actor";
-
-	}
-
-	else {
-
-		blank_actor_form();
-
-		g("save_actor_span").innerHTML = " Save Actor";
-
-	}
-
-
-}
-
-function export_actors(){
-	
-	var actors_json = JSON.stringify(actors);
-	
-	save_file(actors_json, "actors.json", "application/json;charset=utf-8");
-
-
-}
-
-
-function import_actors(evt){
-
-    var files = evt.target.files; // FileList object
-
-	console.log(files);
-	
-	var file = files[0];
-	
-	console.log(file);
-	
-	var reader = new FileReader();
-	
-	reader.onload = function(e){
-	
-		var result = e.target.result;
-	
-		try {
-			var imported_actors = JSON.parse(result);
-		}
-		
-		catch (e) {
-		//if json parsing is not possible, try xml parsing
-
-			if (window.DOMParser) {
-				var parser = new DOMParser();
-				
-				var xml = parser.parseFromString(result,"text/xml");
-				
-				var imported_actors = parse_imdi_for_actors(xml);
-				
-			}
-			
-			
-		}
-		
-		if (!imported_actors){
-			return;
-		}
-		
-		for (var a=0; a<imported_actors.length; a++){
-			save_actor(imported_actors[a], true);
-		}
-		
-		RefreshActorsInWebStorage();
-		RefreshActorsListDisplay();
-		
-		alertify.log(imported_actors.length + " actors imported");
-	
-	}
-	
-	reader.readAsText(file);
-	
-}
-
-
-function parse_imdi_for_actors(xml){
-
-	var actors_in_xml = xml.getElementsByTagName("Actor");
-	
-	var actors_in_json = [];
-	
-	for (var a=0; a<actors_in_xml.length; a++){
-	
-		
-		console.log("Actor in IMDI found. Name: " + actors_in_xml[a].querySelector("Name").textContent.trim());
-		
-		var actor = {
-			name: actors_in_xml[a].querySelector("Name").textContent.trim(),
-			role: actors_in_xml[a].querySelector("Role").textContent.trim(),
-			full_name: actors_in_xml[a].querySelector("FullName").textContent.trim(),
-			code: actors_in_xml[a].querySelector("Code").textContent.trim(),		
-			age: actors_in_xml[a].querySelector("Age").textContent.trim(),
-			sex: actors_in_xml[a].querySelector("Sex").textContent.trim(),		
-			education: actors_in_xml[a].querySelector("Education").textContent.trim(),
-			birth_date: parse_birth_date(actors_in_xml[a].querySelector("BirthDate").textContent.trim()),
-			ethnic_group: actors_in_xml[a].querySelector("EthnicGroup").textContent.trim(),
-			family_social_role: actors_in_xml[a].querySelector("FamilySocialRole").textContent.trim(),
-			
-			description: actors_in_xml[a].querySelector("Description").textContent.trim(),
-			
-			contact: {
-			
-				name: actors_in_xml[a].querySelector("Contact").querySelector("Name").textContent.trim(),
-				address: actors_in_xml[a].querySelector("Contact").querySelector("Address").textContent.trim(),
-				email: actors_in_xml[a].querySelector("Contact").querySelector("Email").textContent.trim(),
-				organisation: actors_in_xml[a].querySelector("Contact").querySelector("Organisation").textContent.trim(),
-			
-			
-			},
-			
-			anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
-			
-			languages: []
-		
-		}
-		
-		var actor_languages = actors_in_xml[a].querySelector("Languages");
-		
-		console.log(actor_languages.children);
-		
-		for (var l=0; l<actor_languages.children.length; l++){
-		
-			if (actor_languages.children[l].nodeName != "Language"){
-				continue;
-			}
-		
-			var Actor_Language = {
-			
-				LanguageObject: [
-				
-				actor_languages.children[l].querySelector("Id").textContent.trim().slice(9),
-				"?",
-				"?",
-				actor_languages.children[l].querySelector("Name").textContent.trim(),
-				
-				
-				],
-				
-				MotherTongue: (actor_languages.children[l].querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
-				PrimaryLanguage: (actor_languages.children[l].querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
-			
-			
-			}
-			
-			
-			actor.languages.push(Actor_Language);
-		
-		}
-		
-		actors_in_json.push(actor);
-
-	}
-	
-	console.log(actors_in_xml);
-	
-	return actors_in_json;
-
-}
-
-function calcAgeAtDate(dateString,birthDate) {
-	
-	var date = +new Date(dateString);
-	var birthday = +new Date(birthDate);
-	return ~~((date - birthday) / (31557600000));
-}
-
-
-
-function set_form_value(element_id,value){
-
-	var element = g(element_id);
-	
-	if (element.nodeName == "SELECT"){
-	
-		var options = [];
-		
-		for (var o=0;o<element.options.length;o++){
-		
-			options.push(element.options[o].value);
-		
-		
-		}
-		
-		if (options.indexOf(value) == -1){
-	
-			console.log("Now i should change the nodename of the object.");
-			
-			var new_element = change_ov_input(element_id, options);
-			
-			new_element.value = value;
-		
-		}
-		
-		else {
-		
-			element.value = value;
-			
-		}
-	
-	}
-	
-	else {
-	
-		element.value = value;
-	
-	}
-
-
-}
-
-
-function blank_actor_form(){
-
-	g("actor_form_title").innerHTML = "New Actor";
-
-	set_form_value("actor_name","");
-	set_form_value("actor_full_name","");
-	set_form_value("actor_code","");
-	set_form_value("actor_role","Unknown");
-	set_form_value("actor_ethnic_group","");
-	set_form_value("actor_family_social_role","Unknown");
-	set_form_value("actor_age","");
-	set_form_value("actor_birth_date_year","YYYY");
-	set_form_value("actor_birth_date_month","MM");
-	set_form_value("actor_birth_date_day","DD");
-	set_form_value("actor_sex","Unknown");
-	set_form_value("actor_education","");
-
-	set_form_value("actor_contact_name","");
-	set_form_value("actor_contact_address","");
-	set_form_value("actor_contact_email","");
-	set_form_value("actor_contact_organisation","");
-	
-	set_form_value("actor_description","");
-
-	document.getElementsByName("actor_anonymized")[0].checked = false;
-
-	clear_active_actor_languages();
-	
-}
-
-
-function MakeActorObjectOutOfForm(){
-
-	var object = {
-		role: "",
-		name: '',
-		full_name: '',
-		code: '',
-		ethnic_group: '',
-		family_social_role: '',
-		age: 0,
-		birth_date: {
-			year: '',
-			month: '',
-			day: ''
-		},
-		sex: '',
-		education: '',
-		contact: {
-			name: '',
-			address: '',
-			email: '',
-			organisation: ''
-		},
-		description: '',
-		anonymized: false,
-		id: 0,
-		
-		languages: []
-	};
-
-	object.role = get("actor_role");
-	object.name = get("actor_name");
-	object.full_name = get("actor_full_name");
-	object.code = get("actor_code");
-	object.ethnic_group = get("actor_ethnic_group");
-	object.family_social_role = get("actor_family_social_role");
-	object.age = get("actor_age");
-	object.birth_date.year = get("actor_birth_date_year");
-	object.birth_date.month = get("actor_birth_date_month");
-	object.birth_date.day = get("actor_birth_date_day");
-	object.sex = get("actor_sex");
-	object.education = get("actor_education");
-
-	object.contact.name = get("actor_contact_name");
-	object.contact.address = get("actor_contact_address");
-	object.contact.email = get("actor_contact_email");
-	object.contact.organisation = get("actor_contact_organisation");
-	
-	object.description = get("actor_description");
-
-	object.anonymized = document.getElementsByName("actor_anonymized")[0].checked;
-	
-	for (var l=0; l<languages_of_active_actor.length; l++){
-	
-		var id = languages_of_active_actor[l].id;
-	
-		var ActorLanguageObject = {
-			
-			LanguageObject: languages_of_active_actor[l].LanguageObject,
-			MotherTongue: g("mothertongue_" + id).checked,
-			PrimaryLanguage: g("primarylanguage_" + id).checked
-			
-		}
-		
-		object.languages.push(ActorLanguageObject);
-		
-	}
-	
-
-	//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
-	if (active_actor != -1) {
-		object.id = actors[active_actor].id;
-		console.log("Saving actor with id "+object.id);
-	}
-	
-	else {
-	
-		object.id = counters.actor_id;
-		console.log("Saving actor with id "+object.id);
-		counters.actor_id++;
-		
-		localStorage.setItem("actor_id_counter",counters.actor_id);
-	
-	}
-
-	return object;
- 
-}
-
-
-function duplicate_active_actor(){
-
-	//first, save changes to the actor
-	var save = save_active_actor();
-	
-	//then create a duplicate
-	if (save == true){
-		save_active_actor(true);
-		alertify.log("Actor saved and duplicated.","success",5000);
-	}
-
-}
-
-
-function save_active_actor(do_not_overwrite){
-//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
-
-	if (get("actor_name") != ""){
-
-		if (!do_not_overwrite){
-			var do_not_overwrite = false;
-		}
-		
-		var actor_to_put = MakeActorObjectOutOfForm();
-		
-		return save_actor(actor_to_put, do_not_overwrite);
-		
-	}
-
-	else {
-	
 		alertify.set({ labels: {
-			ok     : "OK"
+			ok     : "No",
+			cancel : "Yes, delete all actors"
 		} });
 
-		alertify.alert("Please give your actor a name first.");
-		return false;
-		
-	}
+		alertify.confirm("Really?<br>You want to erase the whole actors database?", function (e) {
 
-}
-
-
-function save_actor(actor_to_put, do_not_overwrite){
-
-	var actor_ids = [];
-	
-	//create array with all actor ids
-	for (var a=0; a<actors.length;a++){
-		actor_ids.push(actors[a].id);
-	}
-
-	//if this actor does already exist and is to be overwritten, overwrite the object in the array
-	if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite == false)) {
-		actors.splice(getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
-		
-		//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
-		for (var s=0; s<sessions.length; s++){
-	
-			//search for actor_id in this session's actors
-			if (sessions[s].actors.actors.indexOf(actor_to_put.id) != -1){
+			if (e) {
+				// user clicked "ok"
 				
-				RefreshActorNameInSession(sessions[s].id, actor_to_put.id);
-	
+			}
+		
+			else {
+				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+				
+				my.id_counter = 0;
+				localStorage.setItem("actor_id_counter",0);
+				
+				localStorage.setItem("actors","[]");
+
+				alertify.log("Actor Database deleted", "", "5000");
+				GetActorsFromWebStorage();
+	  
+				for (var s=0;s<sessions.length;s++){
+					RemoveAllActorsFromSession(sessions[s].id);
+				}
+				
+				
+	  
+			}
+		});
+	}
+
+
+	my.show = function(actor_id){
+	// -1 = empty form to create a new actor
+
+		console.log("Showing actor "+actor_id);
+		
+		//new actors cannot be deleted, so remove the icon:
+		if (actor_id == -1) {
+			g('link_delete_active_actor').style.display = "none";
+			g('link_duplicate_active_actor').style.display = "none";
+		}
+		
+		else {
+			g('link_delete_active_actor').style.display = "inline";
+			g('link_duplicate_active_actor').style.display = "inline";
+		}
+
+		close_actor_language_select();	
+		my.highlight_active_actor_div(actor_id);
+		clear_active_actor_languages();
+
+		my.active_actor = actor_id;
+
+		if (actor_id != -1){
+			//show data of selected actor in form
+
+			g("actor_form_title").innerHTML = actors[actor_id].name;
+
+			set_form_value("actor_name",actors[actor_id].name);
+			set_form_value("actor_full_name",actors[actor_id].full_name);
+			set_form_value("actor_code",actors[actor_id].code);
+			set_form_value("actor_role",actors[actor_id].role);
+			set_form_value("actor_ethnic_group",actors[actor_id].ethnic_group);
+			set_form_value("actor_family_social_role",actors[actor_id].family_social_role);
+			set_form_value("actor_age",actors[actor_id].age);
+			set_form_value("actor_birth_date_year",actors[actor_id].birth_date.year);
+			set_form_value("actor_birth_date_month",actors[actor_id].birth_date.month);
+			set_form_value("actor_birth_date_day",actors[actor_id].birth_date.day);
+			set_form_value("actor_sex",actors[actor_id].sex);
+			set_form_value("actor_education",actors[actor_id].education);
+			
+			set_form_value("actor_contact_name",actors[actor_id].contact.name);
+			set_form_value("actor_contact_address",actors[actor_id].contact.address);
+			set_form_value("actor_contact_email",actors[actor_id].contact.email);
+			set_form_value("actor_contact_organisation",actors[actor_id].contact.organisation);
+			set_form_value("actor_description",actors[actor_id].description);
+		
+			document.getElementsByName("actor_anonymized")[0].checked = actors[actor_id].anonymized;
+			
+			show_languages_of_active_actor();
+			g("save_actor_span").innerHTML = " Save changes to this actor";
+
+		}
+
+		else {
+
+			my.blank_form();
+
+			g("save_actor_span").innerHTML = " Save Actor";
+
+		}
+
+
+	}
+
+	my.export_actors = function(){
+		
+		var actors_json = JSON.stringify(actors);
+		
+		save_file(actors_json, "actors.json", "application/json;charset=utf-8");
+
+
+	}
+
+
+	my.import_actors = function(evt){
+
+		var files = evt.target.files; // FileList object
+
+		console.log(files);
+		
+		var file = files[0];
+		
+		console.log(file);
+		
+		var reader = new FileReader();
+		
+		reader.onload = function(e){
+		
+			var result = e.target.result;
+		
+			try {
+				var imported_actors = JSON.parse(result);
 			}
 			
-		}
-	
-		
-	}
-	
-	else {    //if actor shall not be overwritten, give the duplicate/new generated actor a new id
-		
-		actor_to_put.id = counters.actor_id;
-		console.log("Saving actor with id "+actor_to_put.id);
-		counters.actor_id++;
-		
-		localStorage.setItem("actor_id_counter",counters.actor_id);
-		
-		actors.push(actor_to_put);
-	}
- 
-	console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
+			catch (e) {
+			//if json parsing is not possible, try xml parsing
 
-	RefreshActorsInWebStorage();
-	RefreshActorsListDisplay();
-	
-	return true;
-
-}
-
-function RefreshActorNameInSession(session_id, actor_id){
-
-	var div = g(session_dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
-	div.innerHTML = "<h2 class='actor_name_disp'>" + actors[getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
-	div.innerHTML += "<p class='actor_role_disp'>" + actors[getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
-
-
-}
-
-
-
-function highlight_active_actor_div(actor_id){
-
-	for (var i=0;i<actors.length;i++){
-		g("ac_list_entry_"+i).style.background = "#FF8BC7";
-	}
-
-	g("ac_list_entry_-1").style.background = "#FF8BC7";
-	//make everything normal at first
-
-	g("ac_list_entry_"+actor_id).style.background = "lightskyblue";
-
-}
-
-
-
-function delete_active_actor(){
-
-	var name_of_actor = actors[active_actor].name;
-
-	alertify.set({ labels: {
-		ok     : "No",
-		cancel : "Yes, delete actor"
-	} });
-
-	alertify.confirm("Really?<br>You want to erase "+name_of_actor+"?", function (e) {
-
-		if (e) {
-			// user clicked "ok"
-		}
-	
-		else {
-			// user clicked "cancel"
+				if (window.DOMParser) {
+					var parser = new DOMParser();
+					
+					var xml = parser.parseFromString(result,"text/xml");
+					
+					var imported_actors = parse_imdi_for_actors(xml);
+					
+				}
+				
+				
+			}
 			
-			actors.splice(active_actor,1);
-			RefreshActorsListDisplay();
+			if (!imported_actors){
+				return;
+			}
+			
+			for (var a=0; a<imported_actors.length; a++){
+				save_actor(imported_actors[a], true);
+			}
+			
 			RefreshActorsInWebStorage();
+			RefreshActorsListDisplay();
 			
-			
+			alertify.log(imported_actors.length + " actors imported");
+		
+		}
+		
+		reader.readAsText(file);
+		
+	}
 
-  
-			alertify.log("Actor "+name_of_actor+" deleted", "", "5000");
+
+	my.parse_imdi_for_actors = function(xml){
+
+		var actors_in_xml = xml.getElementsByTagName("Actor");
+		
+		var actors_in_json = [];
+		
+		for (var a=0; a<actors_in_xml.length; a++){
+		
+			
+			console.log("Actor in IMDI found. Name: " + actors_in_xml[a].querySelector("Name").textContent.trim());
+			
+			var actor = {
+				name: actors_in_xml[a].querySelector("Name").textContent.trim(),
+				role: actors_in_xml[a].querySelector("Role").textContent.trim(),
+				full_name: actors_in_xml[a].querySelector("FullName").textContent.trim(),
+				code: actors_in_xml[a].querySelector("Code").textContent.trim(),		
+				age: actors_in_xml[a].querySelector("Age").textContent.trim(),
+				sex: actors_in_xml[a].querySelector("Sex").textContent.trim(),		
+				education: actors_in_xml[a].querySelector("Education").textContent.trim(),
+				birth_date: parse_birth_date(actors_in_xml[a].querySelector("BirthDate").textContent.trim()),
+				ethnic_group: actors_in_xml[a].querySelector("EthnicGroup").textContent.trim(),
+				family_social_role: actors_in_xml[a].querySelector("FamilySocialRole").textContent.trim(),
+				
+				description: actors_in_xml[a].querySelector("Description").textContent.trim(),
+				
+				contact: {
+				
+					name: actors_in_xml[a].querySelector("Contact").querySelector("Name").textContent.trim(),
+					address: actors_in_xml[a].querySelector("Contact").querySelector("Address").textContent.trim(),
+					email: actors_in_xml[a].querySelector("Contact").querySelector("Email").textContent.trim(),
+					organisation: actors_in_xml[a].querySelector("Contact").querySelector("Organisation").textContent.trim(),
+				
+				
+				},
+				
+				anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
+				
+				languages: []
+			
+			}
+			
+			var actor_languages = actors_in_xml[a].querySelector("Languages");
+			
+			console.log(actor_languages.children);
+			
+			for (var l=0; l<actor_languages.children.length; l++){
+			
+				if (actor_languages.children[l].nodeName != "Language"){
+					continue;
+				}
+			
+				var Actor_Language = {
+				
+					LanguageObject: [
+					
+					actor_languages.children[l].querySelector("Id").textContent.trim().slice(9),
+					"?",
+					"?",
+					actor_languages.children[l].querySelector("Name").textContent.trim(),
+					
+					
+					],
+					
+					MotherTongue: (actor_languages.children[l].querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
+					PrimaryLanguage: (actor_languages.children[l].querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
+				
+				
+				}
+				
+				
+				actor.languages.push(Actor_Language);
+			
+			}
+			
+			actors_in_json.push(actor);
 
 		}
-	});
-}
+		
+		console.log(actors_in_xml);
+		
+		return actors_in_json;
+
+	}
 
 
-function RefreshActorsInWebStorage(){
+	my.blank_form = function(){
 
-	localStorage.setItem("actors", JSON.stringify(actors));
-	
-	localStorage.setItem("actor_id_counter",counters.actor_id);
+		g("actor_form_title").innerHTML = "New Actor";
 
-}
+		set_form_value("actor_name","");
+		set_form_value("actor_full_name","");
+		set_form_value("actor_code","");
+		set_form_value("actor_role","Unknown");
+		set_form_value("actor_ethnic_group","");
+		set_form_value("actor_family_social_role","Unknown");
+		set_form_value("actor_age","");
+		set_form_value("actor_birth_date_year","YYYY");
+		set_form_value("actor_birth_date_month","MM");
+		set_form_value("actor_birth_date_day","DD");
+		set_form_value("actor_sex","Unknown");
+		set_form_value("actor_education","");
 
-function GetActorsFromWebStorage(){
+		set_form_value("actor_contact_name","");
+		set_form_value("actor_contact_address","");
+		set_form_value("actor_contact_email","");
+		set_form_value("actor_contact_organisation","");
+		
+		set_form_value("actor_description","");
 
-	actors = [];  //Reset the cache!
-	
+		document.getElementsByName("actor_anonymized")[0].checked = false;
 
-	var actors_db = localStorage.getItem("actors");
-	
-	if (actors_db == null){
-		actors_db = "[]";
+		clear_active_actor_languages();
+		
+	}
+
+
+	my.make_actor_object_out_of_form = function(){
+
+		var object = {
+			role: "",
+			name: '',
+			full_name: '',
+			code: '',
+			ethnic_group: '',
+			family_social_role: '',
+			age: 0,
+			birth_date: {
+				year: '',
+				month: '',
+				day: ''
+			},
+			sex: '',
+			education: '',
+			contact: {
+				name: '',
+				address: '',
+				email: '',
+				organisation: ''
+			},
+			description: '',
+			anonymized: false,
+			id: 0,
+			
+			languages: []
+		};
+
+		object.role = get("actor_role");
+		object.name = get("actor_name");
+		object.full_name = get("actor_full_name");
+		object.code = get("actor_code");
+		object.ethnic_group = get("actor_ethnic_group");
+		object.family_social_role = get("actor_family_social_role");
+		object.age = get("actor_age");
+		object.birth_date.year = get("actor_birth_date_year");
+		object.birth_date.month = get("actor_birth_date_month");
+		object.birth_date.day = get("actor_birth_date_day");
+		object.sex = get("actor_sex");
+		object.education = get("actor_education");
+
+		object.contact.name = get("actor_contact_name");
+		object.contact.address = get("actor_contact_address");
+		object.contact.email = get("actor_contact_email");
+		object.contact.organisation = get("actor_contact_organisation");
+		
+		object.description = get("actor_description");
+
+		object.anonymized = document.getElementsByName("actor_anonymized")[0].checked;
+		
+		for (var l=0; l<languages_of_active_actor.length; l++){
+		
+			var id = languages_of_active_actor[l].id;
+		
+			var ActorLanguageObject = {
+				
+				LanguageObject: languages_of_active_actor[l].LanguageObject,
+				MotherTongue: g("mothertongue_" + id).checked,
+				PrimaryLanguage: g("primarylanguage_" + id).checked
+				
+			}
+			
+			object.languages.push(ActorLanguageObject);
+			
+		}
+		
+
+		//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
+		if (my.active_actor != -1) {
+			object.id = actors[my.active_actor].id;
+			console.log("Saving actor with id "+object.id);
+		}
+		
+		else {
+		
+			object.id = my.id_counter;
+			console.log("Saving actor with id "+object.id);
+			my.id_counter++;
+			
+			localStorage.setItem("actor_id_counter",my.id_counter);
+		
+		}
+
+		return object;
+	 
 	}
 	
-	counters.actor_id = localStorage.getItem("actor_id_counter");
 	
-	if (counters.actor_id == null){
-		counters.actor_id = 0;
+	my.create_form = function(){
+
+		make_input(g("actor_content_div"), actor_form_imdi, "actor_", "actor_", undefined);
+
+	}
+
+
+	my.duplicate_active_actor = function(){
+
+		//first, save changes to the actor
+		var save = my.save_active_actor();
+		
+		//then create a duplicate
+		if (save == true){
+			my.save_active_actor(true);
+			alertify.log("Actor saved and duplicated.","success",5000);
+		}
+
+	}
+
+
+	my.save_active_actor = function(do_not_overwrite){
+	//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
+
+		if (get("actor_name") != ""){
+
+			if (!do_not_overwrite){
+				var do_not_overwrite = false;
+			}
+			
+			var actor_to_put = my.make_actor_object_out_of_form();
+			
+			return my.save(actor_to_put, do_not_overwrite);
+			
+		}
+
+		else {
+		
+			alertify.set({ labels: {
+				ok     : "OK"
+			} });
+
+			alertify.alert("Please give your actor a name first.");
+			return false;
+			
+		}
+
+	}
+
+
+	my.save = function(actor_to_put, do_not_overwrite){
+
+		var actor_ids = [];
+		
+		//create array with all actor ids
+		for (var a=0; a<actors.length;a++){
+			actor_ids.push(actors[a].id);
+		}
+
+		//if this actor does already exist and is to be overwritten, overwrite the object in the array
+		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite == false)) {
+			actors.splice(getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
+			
+			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
+			for (var s=0; s<sessions.length; s++){
+		
+				//search for actor_id in this session's actors
+				if (sessions[s].actors.actors.indexOf(actor_to_put.id) != -1){
+					
+					session.refresh_actor_name(sessions[s].id, actor_to_put.id);
+		
+				}
+				
+			}
+		
+			
+		}
+		
+		else {    //if actor shall not be overwritten, give the duplicate/new generated actor a new id
+			
+			actor_to_put.id = my.id_counter;
+			console.log("Saving actor with id "+actor_to_put.id);
+			my.id_counter++;
+			
+			localStorage.setItem("actor_id_counter",my.id_counter);
+			
+			actors.push(actor_to_put);
+		}
+	 
+		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
+
+		my.refresh_web_storage();
+		my.refresh_list_display();
+		
+		return true;
+
+	}
+
+
+	my.highlight_active_actor_div = function(actor_id){
+
+		for (var i=0;i<actors.length;i++){
+			g("ac_list_entry_"+i).style.background = "#FF8BC7";
+		}
+
+		g("ac_list_entry_-1").style.background = "#FF8BC7";
+		//make everything normal at first
+
+		g("ac_list_entry_"+actor_id).style.background = "lightskyblue";
+
 	}
 	
-	actors = JSON.parse(actors_db);
 
-	console.log(actors.length + ' actors taken from Web Storage');
+	my.delete_active_actor = function(){
+
+		var name_of_actor = actors[my.active_actor].name;
+
+		alertify.set({ labels: {
+			ok     : "No",
+			cancel : "Yes, delete actor"
+		} });
+
+		alertify.confirm("Really?<br>You want to erase "+name_of_actor+"?", function (e) {
+
+			if (e) {
+				// user clicked "ok"
+			}
+		
+			else {
+				// user clicked "cancel"
+				
+				actors.splice(my.active_actor,1);
+				my.refresh_list_display();
+				my.refresh_web_storage();
+				
+				
+
+	  
+				alertify.log("Actor "+name_of_actor+" deleted", "", "5000");
+
+			}
+		});
+	}
+
+
+	my.refresh_web_storage = function(){
+
+		localStorage.setItem("actors", JSON.stringify(actors));
+		
+		localStorage.setItem("actor_id_counter",my.id_counter);
+
+	}
 	
-	RefreshActorsListDisplay();
-	
-}
 
-function sort_actors_alphabetically(){
+	my.get_actors_from_web_storage = function(){
 
-	actors = sortByKey(actors,"name");
+		actors = [];  //Reset the cache!
+		
 
-	RefreshActorsInWebStorage();
-	RefreshActorsListDisplay();
-	
-	alertify.log("Actors sorted.","",5000);
+		var actors_db = localStorage.getItem("actors");
+		
+		if (actors_db == null){
+			actors_db = "[]";
+		}
+		
+		my.id_counter = localStorage.getItem("actor_id_counter");
+		
+		if (my.id_counter == null){
+			my.id_counter = 0;
+		}
+		
+		actors = JSON.parse(actors_db);
 
-}
+		console.log(actors.length + ' actors taken from Web Storage');
+		
+		my.refresh_list_display();
+		
+	}
+
+	my.sort_actors_alphabetically = function(){
+
+		actors = sortByKey(actors,"name");
+
+		my.refresh_web_storage();
+		my.refresh_list_display();
+		
+		alertify.log("Actors sorted.","",5000);
+
+	}
 
 
-function RefreshActorsListDisplay(){
+	my.refresh_list_display = function(){
 
-	g('ac_list').innerHTML = "";
+		g('ac_list').innerHTML = "";
 
-	for (var i=0;i<actors.length;i++){
+		for (var i=0;i<actors.length;i++){
 
+			var div = new_element('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + actors[i].name + "</h2>" + "<p>"+actors[i].role+"</p>");
+			//display name of actor
+		
+			div.addEventListener('click', function(num) { 
+				return function(){ my.show(num); }; 
+			}(i), false );
+			
+		}
+
+		//create field for new actor
 		var div = document.createElement('div');
-		div.id = "ac_list_entry_"+(i);
+		div.id = "ac_list_entry_-1";
 		div.className = "ac_list_entry";
 
+		div.addEventListener('click', function() { my.show(-1); } , false );
 
 
-		div.innerHTML = "<h2>" + actors[i].name + "</h2>" + //display name of actor
-		"<p>"+actors[i].role+"</p>";
-	
+		div.innerHTML = "<h2>New Actor</h2>";
 
-	
-		div.addEventListener('click', function(num) { 
-			return function(){ show_actor(num); }; 
-		}(i), false );
+		g('ac_list').appendChild(div);	
+
+		session.refresh_actor_lists();
+
+		switch (actors.length){
 		
-
-		g('ac_list').appendChild(div);				
-	}
-
-	//create field for new actor
-	var div = document.createElement('div');
-	div.id = "ac_list_entry_-1";
-	div.className = "ac_list_entry";
-
-	div.addEventListener('click', function() { show_actor(-1); } , false );
-
-
-	div.innerHTML = "<h2>New Actor</h2>";
-
-	g('ac_list').appendChild(div);	
-
-	RefreshActorListsInSessions();
-
-
-	switch (actors.length){
-	
-		case 0: {
-			show_actor(-1);
-			break;
-		}
-		
-		case 1: {
-			show_actor(0);
-			break;
-		}
-		
-		default: {
-		
-			if (active_actor >= actors.length){
-				show_actor(actors.length-1);
+			case 0: {
+				my.show(-1);
+				break;
 			}
 			
-			else {
-				show_actor(active_actor);
+			case 1: {
+				my.show(0);
+				break;
 			}
-		
-			break;
-		}
-	}
-}
-
-
-function RefreshActorListInSession(s,all_available_actor_ids){
-
-	var aad = g(session_dom_element_prefix+sessions[s].id+"_actors_add_actors_div");
-	
-	aad.innerHTML = "";
-
-	var select = document.createElement("select");
-	
-	for (var a=0;a<actors.length;a++){ 
-	
-		var value = actors[a].name + " (" + actors[a].role + ")";
-		
-		NewOption = new Option( value, a, false, true);
-		select.options[select.options.length] = NewOption;		
-		
-	}
-
-	if (actors.length > 0){
-	
-		aad.appendChild(select);
-	
-		select.selectedIndex = 0;	
-	
-		var add_button = document.createElement("input");
-		add_button.type = "button";
-		add_button.value = "Add to session";
-		
-		aad.appendChild(document.createElement("br"));
-		
-		aad.appendChild(add_button);		
-		
-		add_button.addEventListener('click', function(num) { 
-			return function(){ add_actor_to_session(num, actors[select.selectedIndex].id);  };
-		}(sessions[s].id) );
-		
-	}
-	
-	if (actors.length == 0){
-	
-		var link = document.createElement("a");
-		link.href="#";
-		link.innerHTML = "Create some actors.";
-		
-		var h5 = document.createElement("h5");
-		h5.innerHTML = "There are no actors in the database yet.<br>";
-	
-		aad.appendChild(h5);
-		h5.appendChild(link);
-		
-		link.addEventListener('click', function() { 
-			view("actors");  
-		} );
-	}
-	
-	
-	console.log("Refreshing Actor List of Session "+s);
-	
-	
-	//check if actor in session is part of actors[...].id(s)? if not, remove it immediately!
-	for (var k=0;k<sessions[s].actors.actors.length;k++){
-		
-		console.log("Trying to find id " + sessions[s].actors.actors[k] + " in actors of session "+s);
-		
-		// if an actor k is not in all available actors, remove it in the session!
-		if (all_available_actor_ids.indexOf(sessions[s].actors.actors[k]) == -1){
 			
-			console.log("There is an actor in session "+s+" that does not exist anymore. Deleting!");
-			RemoveActorFromSession(sessions[s].id,sessions[s].actors.actors[k]);
-		
+			default: {
+			
+				if (my.active_actor >= actors.length){
+					my.show(actors.length-1);
+				}
+				
+				else {
+					my.show(my.active_actor);
+				}
+			
+				break;
+			}
 		}
-	
-	
 	}
 
 
-}
-
-
-
-function RefreshActorListsInSessions(){
-	//Offer possibility to add every available actor to all session
-	//refresh all sessions with available actors
-
-	var all_available_actor_ids = [];
+	return my;
 	
-	for (var n=0; n<actors.length; n++){
-		all_available_actor_ids.push(actors[n].id);
-	}
-	
-	
-
-	for (var s=0;s<sessions.length;s++){   //for all existing sessions
-	
-		RefreshActorListInSession(s,all_available_actor_ids);
-
-	}
-
-}
+})();

@@ -16,7 +16,7 @@ limitations under the License.
 
 // Settings
 var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version = "v1.0.1";
+var version = "v1.0.2";
 var LanguageCodePrefix = "ISO639-3:";
 var path_to_images = "img/";
 
@@ -80,51 +80,74 @@ var MetadataLanguageIDs = [
 
 var not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:";
 
-var valid_lamus_written_resource_file_types = [
-	["eaf","text/x-eaf+xml","Annotation"],
-	["mdf","Unknown","Unspecified"],
-	["pdf","application/pdf","Primary Text"],
-	["xml","text/xml","Annotation"],
-	["txt","text/plain","Unspecified"],
-	["htm","text/html","Unspecified"],
-	["html","text/html","Unspecified"]
-];
+var file_types = {
 
-var valid_lamus_media_file_types = [
-	["wav","audio/x-wav","audio"],
-	["mpg","video/mpeg","video"],
-	["mpeg","video/mpeg","video"],
-	["mp4","video/mp4","video"],
-	["aif","audio/x-aiff","audio"],
-	["aiff","audio/x-aiff","audio"],
-	["jpg","image/jpeg","image"],
-	["jpeg","image/jpeg","image"],
-	["png","image/png","image"],
-	["tif","image/tiff","image"],
-	["tiff","image/tiff","image"],
-	["smil","application/smil+xml","video"]
-];
+	valid_lamus_written_resource_file_types: [
+		["eaf","text/x-eaf+xml","Annotation"],
+		["mdf","Unknown","Unspecified"],
+		["pdf","application/pdf","Primary Text"],
+		["xml","text/xml","Annotation"],
+		["txt","text/plain","Unspecified"],
+		["htm","text/html","Unspecified"],
+		["html","text/html","Unspecified"]
+	],
 
-var invalid_lamus_written_resource_file_types = [
-	["docx","application/vnd.openxmlformats-officedocument.wordprocessingml.document","Unspecified"],
-	["doc","application/msword","Unspecified"],
-	["odf","application/vnd.oasis.opendocument.formula","Unspecified"],
-	["odt","application/vnd.oasis.opendocument.text","Unspecified"],
-	["xls","application/vnd.ms-excel","Unspecified"],
-	["xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","Unspecified"],
-	["ppt","application/vnd.ms-powerpoint","Unspecified"],
-	["pptx","application/vnd.openxmlformats-officedocument.presentationml.presentation","Unspecified"]
-];
+	valid_lamus_media_file_types: [
+		["wav","audio/x-wav","audio"],
+		["mpg","video/mpeg","video"],
+		["mpeg","video/mpeg","video"],
+		["mp4","video/mp4","video"],
+		["aif","audio/x-aiff","audio"],
+		["aiff","audio/x-aiff","audio"],
+		["jpg","image/jpeg","image"],
+		["jpeg","image/jpeg","image"],
+		["png","image/png","image"],
+		["tif","image/tiff","image"],
+		["tiff","image/tiff","image"],
+		["smil","application/smil+xml","video"]
+	],
 
-var invalid_lamus_media_file_types = [
-	["mkv","Unknown","video"],
-	["mov","video/quicktime","video"],
-	["mp3","Unknown","audio"],
-	["avi","video/x-msvideo","video"],
-	["au","audio/basic","audio"]
-];
+	invalid_lamus_written_resource_file_types: [
+		["docx","application/vnd.openxmlformats-officedocument.wordprocessingml.document","Unspecified"],
+		["doc","application/msword","Unspecified"],
+		["odf","application/vnd.oasis.opendocument.formula","Unspecified"],
+		["odt","application/vnd.oasis.opendocument.text","Unspecified"],
+		["xls","application/vnd.ms-excel","Unspecified"],
+		["xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","Unspecified"],
+		["ppt","application/vnd.ms-powerpoint","Unspecified"],
+		["pptx","application/vnd.openxmlformats-officedocument.presentationml.presentation","Unspecified"]
+	],
 
-var hellos = ["Hello!", "Hallo!", "Aloha!", "Hola!", "Hej!", "Merhaba!", "你好", "こんにちは", "Вiтаю!", "Salut!", "Grüezi!", "Ciào!", "Hæ!", "Moïen!", "Olá!", "Privet!", "Hallå!", "Salam!"];
+	invalid_lamus_media_file_types: [
+		["mkv","Unknown","video"],
+		["mov","video/quicktime","video"],
+		["mp3","Unknown","audio"],
+		["avi","video/x-msvideo","video"],
+		["au","audio/basic","audio"]
+	]
+
+};
+
+var hellos = [
+	["Hello!","English"],
+	["Hallo!","German"],
+	["Aloha!","Hawaiian"],
+	["Hola!", "Spanish"],
+	["Hej!", "Danish"],
+	["Merhaba!", "Turkish"],
+	["你好", "Chinese"],
+	["こんにちは", "Japanese"],
+	["Вiтаю!","Belarusian"],
+	["Salut!","French"],
+	["Grüezi!","Swiss German"],
+	["Ciào!", "Italian"],
+	["Hæ!", "Icelandic"],
+	["Moïen!", "Luxembourgish"],
+	["Olá!", "Portuguese"],
+	["Privet!", "Russian"],
+	["Hallå!", "Scanian"],
+	["Salam!", "Urdu"]
+];
 
 var new_page = true;
   
@@ -132,7 +155,6 @@ var content_languages = [];
 
 var sessions = [];
 var actors = [];
-var active_actor=-1;
 
 var selected_files = [];
 var last_selected_file = -1;
@@ -140,11 +162,9 @@ var shift = false;
 
 var active_view;
 var counters = {
-	session_id: 0,
 	resource_id: 0,
 	cl_id: 0,
-	al_id: 0,
-	actor_id: 0
+	al_id: 0
 };
 
 var preset_data;
@@ -159,12 +179,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	g("version_span").innerHTML = version;
 	
 	say_hello();
-
 	create_output_format_select();
 	display_metadata_languages();
-	create_actor_form();
-	GetActorsFromWebStorage();
-	GetRecallData();
+	actor.create_form();
+	actor.get_actors_from_web_storage();
+	save_and_recall.get_recall_data();
 	refreshFileListDisplay();
 	check_if_first_start();
 	create_copy_session_options();

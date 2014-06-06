@@ -51,20 +51,20 @@ function add_event_listeners() {
 		});
 	});
 	
-	g('link_new_session').addEventListener('click', function() {        new_session();      });
+	g('link_new_session').addEventListener('click', function() {session.new_session(); });
 	g('link_save_form').addEventListener('click', function() {
-		save_form();
+		save_and_recall.save_form();
 		alertify.log("Form saved","",5000);
 	});	
-	g('link_export_corpus').addEventListener('click', function() {        export_corpus();      });
+	g('link_export_corpus').addEventListener('click', function() {export_corpus(); });
 	g('link_settings').addEventListener('click', function() {        view("settings");      });
 	g('link_about').addEventListener('click', function() {        view("about");      });
-	g('link_clear_file_list').addEventListener('click', function() {        clear_file_list();      });
-	g('link_sort_alphabetically').addEventListener('click', function() {        sort_alphabetically();      });
-	g('link_save_active_actor').addEventListener('click', function() {        save_active_actor();      });
-	g('link_delete_active_actor').addEventListener('click', function() {        delete_active_actor();      });
-	g("link_sort_actors_alphabetically").addEventListener('click', function() {        sort_actors_alphabetically();      });
-	g('link_duplicate_active_actor').addEventListener('click', function() {        duplicate_active_actor();      });
+	g('link_clear_file_list').addEventListener('click', function() {clear_file_list(); });
+	g('link_sort_alphabetically').addEventListener('click', function() {sort_alphabetically(); });
+	g('link_save_active_actor').addEventListener('click', function() {actor.save_active_actor(); });
+	g('link_delete_active_actor').addEventListener('click', function() {actor.delete_active_actor(); });
+	g("link_sort_actors_alphabetically").addEventListener('click', function() {actor.sort_actors_alphabetically(); });
+	g('link_duplicate_active_actor').addEventListener('click', function() {actor.duplicate_active_actor(); });
 	g('link_copy_sessions').addEventListener('click', function() {        assign_session1_metadata();      });
 	
 	//this cannot be done with css
@@ -82,11 +82,11 @@ function add_event_listeners() {
 	
 	document.getElementsByName("radio_auto_save").selectedIndex = 3;
 	
-	document.getElementsByName("radio_auto_save")[0].addEventListener( "click", function() {    setAutosaveInterval(-1);     });
-	document.getElementsByName("radio_auto_save")[1].addEventListener( "click", function() {    setAutosaveInterval(30);     });
-	document.getElementsByName("radio_auto_save")[2].addEventListener( "click", function() {    setAutosaveInterval(60);     });	
-	document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    setAutosaveInterval(300);     });
-	document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    setAutosaveInterval(600);     });	
+	document.getElementsByName("radio_auto_save")[0].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(-1);     });
+	document.getElementsByName("radio_auto_save")[1].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(30);     });
+	document.getElementsByName("radio_auto_save")[2].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(60);     });	
+	document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
+	document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
 	
 	g('link_erase_actors_database').addEventListener('click', function() {        erase_actor_database();      });
 	g('link_delete_recall_data').addEventListener('click', function() {        delete_recall_data();      });
@@ -112,7 +112,7 @@ function add_event_listeners() {
 	});	
 	
 	g('link_export_actors').addEventListener('click', function() {        export_actors();      });	
-	g('actors_file_input').addEventListener('change',import_actors, false);
+	g('actors_file_input').addEventListener('change',actor.import_actors, false);
 	
 	g("content_language_select").onkeydown = function(event) {
 

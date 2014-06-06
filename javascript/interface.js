@@ -15,23 +15,222 @@ limitations under the License.
 */
 
 
-function display(session_id){
-	if (document.getElementById("session"+session_id+"_content").style.display != "none"){
-		document.getElementById("session"+session_id+"_content").style.display = "none";
-		document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_images+"icons/up.png";
-		sessions[GetSessionIndexFromID(session_id)].expanded = false;
-	}
-	
-	else {
-		document.getElementById("session"+session_id+"_content").style.display = "block";
-		document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_images+"icons/down.png";
-		sessions[GetSessionIndexFromID(session_id)].expanded = true;
-	}
-}
+function make_input(parent, field, element_id_prefix, element_class_prefix, session_object){
 
-function create_actor_form(){
+	switch (field.type){
+		
+		case "text": {
+		
+			var input = make_text_input(parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				field.comment
+			);
+			
+			break;
+		}
+		
+		case "date": {
+		
+			var input = make_date_input(parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name]["year"] : ""),
+				(session_object && session_object[field.name] ? session_object[field.name]["month"] : ""),				
+				(session_object && session_object[field.name] ? session_object[field.name]["day"] : ""),					
+				field.comment
+			);
+			
+			break;
+		}
+		
+		case "textarea": {
+		
+			var input = make_textarea(
+				form_textarea_rows,
+				form_textarea_columns,
+				parent,
+				field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				field.comment
+			);
+			break;
+		}			
+		
+		case "subarea": {
+		
+			var h3 = document.createElement("h3");
+			h3.innerHTML = field.heading;
+			parent.title = field.comment;
+			parent.appendChild(h3);
+			
+			if (field.fields){
+			
+				element_id_prefix += field.name + "_";
+		
+				for (var f=0; f<field.fields.length; f++){
+				
+					make_input(parent, field.fields[f], element_id_prefix, element_class_prefix, session_object[field.name]);
+			
+				}
+			
+			}
+			
+			break;
+		}
+		
+		case "column": {
+		
+			if (field.name != ""){
+			
+				var td_name = field.name+"_td";
+			
+			}
+			
+			else {
+			
+				var td_name = "td";
+			
+			}
+		
+			var td = new_element("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
+			var h2 = new_element("h2","","",td,field.title);
+			
+			if (field.fields){
+			
+				if (field.name != ""){
+			
+					element_id_prefix += field.name + "_";
+					
+				}
+			
+				for (var f=0; f<field.fields.length; f++){
+				
+					make_input(td, field.fields[f], element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
+			
+				}
+			
+			}
+			
+			break;
+		}
+		
+		case "form": {
+		
+			var table = new_element("table",element_id_prefix+"_table","session_table",parent);
+			var tr = new_element("tr","","",table);
+			
+			for (var f=0; f<field.fields.length; f++){
+				
+				make_input(tr, field.fields[f], element_id_prefix, element_class_prefix, session_object);
+			
+			}
+			
+			break;
+		}
+		
+		case "special": {
+		
+			if (field.name == "actors"){
+			
+				new_element("br","","",parent);
+				
+				new_element("div",element_id_prefix+"actors", "actors", parent);
+				new_element("div",element_id_prefix+"add_actors_div", "actors", parent);
+			
+			}
+			
+			if (field.name == "resources"){
+			
+				new_element("div",element_id_prefix+"resources", "mfs", parent);
+				new_element("div",element_id_prefix+"add_mf_div", "", parent);
+			
+			}
+			
+			if (field.name == "actor_languages"){
+			
+				var p = new_element("p","", "", parent);
 
-	make_input(g("actor_content_div"), actor_form_imdi, "actor_", "actor_", undefined);
+				var input = new_element("input","actor_language_select","",p);
+				input.type = "text";
+				input.size = 1;
+				input.name = "actor_language_select";
+				
+				new_element("span","","",p," ");
+
+				var input = new_element("input","actor_language_search_button","",p);
+				input.type = "button";
+				input.value = "Search";
+
+				new_element("br","","",p);
+				new_element("span","","",p,"or type in ISO code ");
+				
+				var input = new_element("input","actor_language_iso_input","",p);
+				input.type = "text";
+				input.size = 1;
+				input.name = "actor_language_iso_input";
+				
+				new_element("span","","",p," ");
+				
+				var input = new_element("input","actor_language_iso_ok","",p);
+				input.type = "button";
+				input.value = "OK";			
+				
+				new_element("div","current_actor_languages_display", "", parent);									
+
+			
+			}
+			
+			break;
+		
+		}
+		
+		case "select": {
+			var input = make_select(
+				parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				field.size,
+				field.vocabulary,
+				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				field.comment
+			);
+			break;
+		}
+
+		case "open_vocabulary": {
+			var input = open_vocabulary(
+				parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				field.size,
+				field.vocabulary,
+				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				field.comment
+			);
+			break;
+		}
+		
+		case "check": {
+			var input = make_checkbox(
+				parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name] : false),
+				field.comment
+			);
+			break;
+		}
+		
+	}
+
+	if (field.onkeypress){
+		input.onkeypress = field.onkeypress;
+	}
 
 }
 
@@ -79,7 +278,7 @@ function say_hello(){
 
 	var index = Math.floor(Math.random() * hellos.length);
 
-	g("hello").innerHTML = hellos[index];
+	g("hello").innerHTML = hellos[index][0];
 
 
 }
@@ -119,7 +318,7 @@ function reset_form(){
 	g("corpus_title").value = "";
 	g("corpus_description").value = "";
 	
-	erase_all_sessions();
+	session.erase_all();
 	
 	RemoveAllContentLanguages();
 }
@@ -217,7 +416,7 @@ function view(id){
 			
 			g("link_save_active_actor").style.display = "inline";
 			
-			if (active_actor != -1){
+			if (actor.active_actor != -1){
 				g("link_delete_active_actor").style.display = "inline";
 				g("link_duplicate_active_actor").style.display = "inline";
 			}
@@ -229,7 +428,7 @@ function view(id){
 	
 		case "xml": {
 		
-			if ((is_corpus_properly_named()) && (are_all_sessions_properly_named())){
+			if ((is_corpus_properly_named()) && (session.are_all_sessions_properly_named())){
 			
 				if (does_every_session_have_a_project_name()){
 

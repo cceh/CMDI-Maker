@@ -42,34 +42,6 @@ function create_output_format_select(){
 }
 
 
-function get_selected_radio_index(radios){
-
-
-	for (var r=0; r< radios.length; r++){
-	
-		if (radios[r].checked == true){
-		
-			return r;
-		
-		}
-	
-	}
-	
-	return 0;
-
-}
-
-function set_radio_index(radios, index){
-
-	if ((!index) || (typeof index == "undefined")){
-		var index = 0;
-	}
-
-	radios[index].checked = true;
-
-}
-
-
 function generate(){	
 	
 	var xml_window = g('xml');
@@ -122,6 +94,29 @@ function generate(){
 	
 	}
 	
+}
+
+
+function is_corpus_properly_named(){
+
+	if (get("corpus_name") == ""){
+		
+		return false;
+		
+	}
+	
+	for (var c=0; c<not_allowed_chars.length; c++){
+	
+		if (get("corpus_name").indexOf(not_allowed_chars[c]) != -1){
+		
+			return false;
+			
+		}
+	
+	}
+
+	return true;
+
 }
 
 

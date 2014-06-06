@@ -20,26 +20,26 @@ function GetValidityOfFile(filename){
 
 	var file_type = GetFileTypeFromFilename(filename);
 	
-	for (var j=0;j<valid_lamus_media_file_types.length; j++){
-		if (file_type == valid_lamus_media_file_types[j][0]) {
+	for (var j=0;j<file_types.valid_lamus_media_file_types.length; j++){
+		if (file_type == file_types.valid_lamus_media_file_types[j][0]) {
 			return 0;
 		}
 	}
 	
-	for (var j=0;j<valid_lamus_written_resource_file_types.length; j++){
-		if (file_type == valid_lamus_written_resource_file_types[j][0]){
+	for (var j=0;j<file_types.valid_lamus_written_resource_file_types.length; j++){
+		if (file_type == file_types.valid_lamus_written_resource_file_types[j][0]){
 			return 1;
 		}
 	}
 
-	for (var j=0;j<invalid_lamus_media_file_types.length; j++){
-		if (file_type == invalid_lamus_media_file_types[j][0]){
+	for (var j=0;j<file_types.invalid_lamus_media_file_types.length; j++){
+		if (file_type == file_types.invalid_lamus_media_file_types[j][0]){
 			return 2;
 		}
 	}	
 
-	for (var j=0;j<invalid_lamus_written_resource_file_types.length; j++){
-		if (file_type == invalid_lamus_written_resource_file_types[j][0]){
+	for (var j=0;j<file_types.invalid_lamus_written_resource_file_types.length; j++){
+		if (file_type == file_types.invalid_lamus_written_resource_file_types[j][0]){
 			return 3;
 		}
 	}		
@@ -120,7 +120,7 @@ function refreshFileListDisplay() {
 		list.innerHTML = "<h2>No media files imported.</h2>";
 	}
 
-	refresh_resources_of_sessions();
+	session.refresh_resources_of_all_sessions();
 	
 	selected_files = [];
 	
@@ -221,17 +221,18 @@ function create_session_per_resource(){
 
 }
 
+
 function create_session_for_resource(resource_index){
 
 	var session_object = make_new_session_object();
 	session_object.session.name = RemoveEndingFromFilename(available_resources[resource_index][0]);
 	session_object.expanded = false; //collapse automatically generated session
 
-	var session = new_session(session_object);
+	var session_id = session.new_session(session_object);
 	
-	add_resource_to_session(session, resource_index);
+	session.add_resource(session_id, resource_index);
 	
-	alertify.log("A new session has been created.<br>Name: " + sessions[GetSessionIndexFromID(session)].name, "", "5000");
+	alertify.log("A new session has been created.<br>Name: " + sessions[GetSessionIndexFromID(session_id)].name, "", "5000");
 	
 	//if another file's name of available_resources starts with the same name as this file, add it to the session, too!
 	for (var f2=0; f2<available_resources.length; f2++){
@@ -242,7 +243,7 @@ function create_session_for_resource(resource_index){
 	
 		if (isSubstringAStartOfAWordInString(RemoveEndingFromFilename(available_resources[f2][0]), RemoveEndingFromFilename(available_resources[resource_index][0]))) {
 		
-			add_resource_to_session(session, f2);
+			session.add_resource(session_id, f2);
 		
 		}
 	

@@ -32,10 +32,10 @@ function RemoveActorLanguage(al_id){
 
 function show_languages_of_active_actor(){
 
-	for (var l=0; l < actors[active_actor].languages.length; l++){
+	for (var l=0; l < actors[actor.active_actor].languages.length; l++){
 	
 	
-		set_actor_language( actors[active_actor].languages[l] );
+		set_actor_language( actors[actor.active_actor].languages[l] );
 	
 	}
 
@@ -84,7 +84,7 @@ function search_actor_language(){
 
 	}
 	
-	//now we have all relevant languageIDs in name_hits. next-step: get the L-names of theses language IDs.
+	//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
 	
 	for (var j=0;j<LanguageIndex.length;j++){
 	
@@ -92,53 +92,32 @@ function search_actor_language(){
 		
 			results.push(LanguageIndex[j]);
 			
-			//name_hits.splice(name_hits.indexOf(LanguageIndex[j][0]),1);   //delete the ID in name_hits, so that it won't be taken/chosen again
-		
 		}
-	
-	
 	
 	}
 	
 	g("ac_view").style.display = "none";
-	
 	
 	var alrd = g("actor_language_results_div");	
 	
 	alrd.style.display = "block";
 	alrd.innerHTML = "";
 	
-	var h1 = document.createElement("h1");
-	h1.innerHTML = "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"); 
-	alrd.appendChild(h1);
+	new_element("h1", "", "", alrd, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s")); 
 	
-	var img = document.createElement("img");
-	img.id = "close_alrd_icon";
-	//clrd = content language results div
+	var img = new_element("img","close_alrd_icon","",alrd);
 	img.src = "img/icons/reset.png";
-	alrd.appendChild(img);
-	
-	
 	img.addEventListener('click', function() { 
 		close_actor_language_select();  
 	} );
 	
-	var h3 = document.createElement("h3");
-	h3.innerHTML = "(ISO639-3 Code, Country ID, Language Name)";
-	alrd.appendChild(h3);
-	
-
+	var h3 = new_element("h3","","",alrd,"(ISO639-3 Code, Country ID, Language Name)");
 	
 	for (var j=0;j<results.length;j++){
 	
-		var a = document.createElement("a");
-		a.id = 'al_results_link_'+j;
-		a.className = 'al_results_link';
+		var a = new_element("a", 'al_results_link_'+j, 'al_results_link',alrd,
+		"<div class='actor_lang_search_entry'>" + results[j][0] + ", "+results[j][1]+", " + results[j][3] + "</div>");
 		a.href = '#';
-		
-		alrd.appendChild(a);
-		
-		a.innerHTML = "<div class='actor_lang_search_entry'>" + results[j][0] + ", "+results[j][1]+", " + results[j][3] + "</div>";
 	
 	}
 	

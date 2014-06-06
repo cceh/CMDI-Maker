@@ -22,6 +22,84 @@ function randomString(length, chars) {
 }
 
 
+function get_selected_radio_index(radios){
+
+
+	for (var r=0; r< radios.length; r++){
+	
+		if (radios[r].checked == true){
+		
+			return r;
+		
+		}
+	
+	}
+	
+	return 0;
+
+}
+
+
+function set_radio_index(radios, index){
+
+	if ((!index) || (typeof index == "undefined")){
+		var index = 0;
+	}
+
+	radios[index].checked = true;
+
+}
+
+
+function calcAgeAtDate(dateString,birthDate) {
+	
+	var date = +new Date(dateString);
+	var birthday = +new Date(birthDate);
+	return ~~((date - birthday) / (31557600000));
+}
+
+
+function set_form_value(element_id,value){
+
+	var element = g(element_id);
+
+	if (element.nodeName == "SELECT"){
+	
+		var options = [];
+		
+		for (var o=0;o<element.options.length;o++){
+		
+			options.push(element.options[o].value);
+		
+		
+		}
+		
+		if (options.indexOf(value) == -1){
+	
+			console.log("Now i should change the nodename of the object.");
+			
+			var new_element = change_ov_input(element_id, options);
+			
+			new_element.value = value;
+		
+		}
+		
+		else {
+		
+			element.value = value;
+			
+		}
+	
+	}
+	
+	else {
+	
+		element.value = value;
+	
+	}
+
+}
+
 
 function make_text_input(parent,title,name,id,value,hover){
 
