@@ -28,47 +28,44 @@ function generate(){
 	xml_strings = new output_formats[output_format_index].generator_object();
 	var output_format = output_formats[output_format_index].output_name;
 
-	var div = new_element("div", "", "output_div", xml_window, "<h1>"+output_format+" Corpus</h1><br>");
-	var h3 = new_element("h3", "", "", div);
-	
-	var a = document.createElement("a");
-	a.href = "#";
-	a.addEventListener("click", function() {save_corpus();});
-	a.innerHTML = "<img class=\"module_icon\" src=\"img/icons/save.png\"> Download";
-	
-	h3.appendChild(a);
-
-	// Call the imdi corpus, that has just been created by initializing the imdi_structure object
-	var textarea = new_element("textarea", "textarea_corpus", "xml_textarea", div, xml_strings.corpus);
-	textarea.cols = output_textarea_columns;
-	textarea.rows = output_textarea_rows;
+	create_output_div(xml_window, output_format + " Corpus", "textarea_corpus", xml_strings.corpus,
+		function(num){
+			return function(){
+				save_corpus();
+			}
+		}(s)
+	);
 	
 	for (var s=0;s<sessions.length;s++){
-	
-		var div = new_element("div", "", "output_div", xml_window);
-		var h1 = new_element("h1", "", "", div, output_format + " Session " + (s+1));
-		var h3 = new_element("h3", "", "", div);
 		
-		var a = document.createElement("a");
-		a.href = "#";
-		a.innerHTML = "<img class=\"module_icon\" src=\"img/icons/save.png\"> Download";
+		create_output_div(xml_window, output_format + " Session " + (s+1), "textarea_session_"+s, xml_strings.sessions[s],
+			function(num){
+				return function(){
+					save_session(num);
+				}
+			}(s)
+		);
 		
-		a.addEventListener("click", function(num){
-			return function(){
-				save_session(num);
-			}
-		}(s) );
-		
-		h3.appendChild(a);
-		
-		var textarea = new_element("textarea", "textarea_session_"+s, "xml_textarea", div, xml_strings.sessions[s]);
-		textarea.cols = output_textarea_columns;
-		textarea.rows = output_textarea_rows;
-	
 	}
 	
 }
 
+
+function create_output_div(parent, title, textarea_id, value, on_download){
+
+	var div = new_element("div", "", "output_div", parent);
+	
+	var img = new_element("img","","download_icon",div);
+	img.src = path_to_images + "icons/save.png";
+	img.addEventListener("click", on_download);
+	
+	var h1 = new_element("h1", "", "", div, title);
+	
+	var textarea = new_element("textarea", textarea_id, "xml_textarea", div, value);
+	textarea.cols = output_textarea_columns;
+	textarea.rows = output_textarea_rows;
+
+}
 
 function is_corpus_properly_named(){
 

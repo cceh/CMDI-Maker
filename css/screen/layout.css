@@ -51,7 +51,15 @@ background-color: #bbffcc;
 	height: 25px;
 	
 	padding-top: 7px;
-	/*padding-left: 20px;*/
+}
+
+.download_icon{
+	
+	width: 25px;
+	height: 25px;
+	
+	float: right;
+	cursor: pointer;
 }
 
 .function_img{
