@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1.0.1
+# v1.0.2
 
 CACHE:
 index.html
@@ -61,7 +61,7 @@ javascript/alertify.min.js
 javascript/cmdi_generator.js
 javascript/content_languages.js
 javascript/FileSaver.js
-javascript/get.js
+javascript/app.js
 javascript/helpers.js
 javascript/imdi_form.js
 javascript/imdi_generator.js
