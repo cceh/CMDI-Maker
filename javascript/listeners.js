@@ -17,16 +17,16 @@ limitations under the License.
 
 function add_event_listeners() {
 
-	g('link_lets_go').addEventListener('click', function() {        view("corpus");      });
+	g('link_lets_go').addEventListener('click', function() {        APP.view("corpus");      });
 
 	// Views
-	g('start_window_icon').addEventListener('click', function() {        view("start");      });
+	g('start_window_icon').addEventListener('click', function() {        APP.view("start");      });
 	
-	g('corpus_window_icon').addEventListener('click', function() {        view("corpus");      });
-	g('sessions_window_icon').addEventListener('click', function() {        view("sessions");      });
-	g('manage_actors_icon').addEventListener('click', function() {        view("actors");      });
-	g('manage_media_files_icon').addEventListener('click', function() {        view("media_files");      });
-	g('xml_output_icon').addEventListener('click', function() {        view("xml");      });
+	g('corpus_window_icon').addEventListener('click', function() {        APP.view("corpus");      });
+	g('sessions_window_icon').addEventListener('click', function() {        APP.view("sessions");      });
+	g('manage_actors_icon').addEventListener('click', function() {        APP.view("actors");      });
+	g('manage_media_files_icon').addEventListener('click', function() {        APP.view("media_files");      });
+	g('xml_output_icon').addEventListener('click', function() {        APP.view("xml");      });
 	
 	// Functions
     g('link_reset_form').addEventListener('click', function() {        
@@ -51,27 +51,27 @@ function add_event_listeners() {
 		});
 	});
 	
-	g('link_new_session').addEventListener('click', function() {session.new_session(); });
+	g('link_newSession').addEventListener('click', function() {session.newSession(); });
 	g('link_save_form').addEventListener('click', function() {
 		save_and_recall.save_form();
 		alertify.log("Form saved","",5000);
 	});	
 	g('link_export_corpus').addEventListener('click', function() {export_corpus(); });
-	g('link_settings').addEventListener('click', function() {        view("settings");      });
-	g('link_about').addEventListener('click', function() {        view("about");      });
+	g('link_settings').addEventListener('click', function() {        APP.view("settings");      });
+	g('link_about').addEventListener('click', function() {        APP.view("about");      });
 	g('link_clear_file_list').addEventListener('click', function() {clear_file_list(); });
 	g('link_sort_alphabetically').addEventListener('click', function() {sort_alphabetically(); });
 	g('link_save_active_actor').addEventListener('click', function() {actor.save_active_actor(); });
 	g('link_delete_active_actor').addEventListener('click', function() {actor.delete_active_actor(); });
 	g("link_sort_actors_alphabetically").addEventListener('click', function() {actor.sort_actors_alphabetically(); });
 	g('link_duplicate_active_actor').addEventListener('click', function() {actor.duplicate_active_actor(); });
-	g('link_copy_sessions').addEventListener('click', function() {        assign_session1_metadata();      });
+	g('link_copy_sessions').addEventListener('click', function() {        session.assignSession1Metadata();      });
 	
 	//this cannot be done with css
 	g('link_copy_sessions').addEventListener('mousedown', function() {        g('link_copy_sessions').style.backgroundColor = "black";      });
 	g('link_copy_sessions').addEventListener('mouseup', function() {        g('link_copy_sessions').style.backgroundColor = "";      });
 	
-	g('crps_icon').addEventListener('click', function() {        create_session_per_resource();  view("sessions");     });
+	g('crps_icon').addEventListener('click', function() {        create_session_per_resource();  APP.view("sessions");     });
 	
 	//this cannot be done with css
 	g('crps_icon').addEventListener('mousedown', function() {        g('crps_icon').style.backgroundColor = "black";      });
@@ -105,7 +105,7 @@ function add_event_listeners() {
 	
 			else {
 				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-				hard_reset();
+				APP.hard_reset();
 			}
 		});
 

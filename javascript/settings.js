@@ -19,6 +19,7 @@ var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";
 var version = "v1.0.2";
 var LanguageCodePrefix = "ISO639-3:";
 var path_to_images = "img/";
+var path_to_icons = path_to_images + "icons/";
 
 var output_formats = [
 	{
@@ -57,13 +58,13 @@ var session_dom_element_prefix = "session_";
 var copy_checkbox_element_prefix = "copy_check_";
 
 var compatibility_warnings = {
-	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_images+'icons/warning.png"></div><div class="compatibility_warning">'+
+	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
 	' This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.</div></div>',
 	
-	invalid_media_file: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_images+'icons/warning.png"></div><div class="compatibility_warning">'+
+	invalid_media_file: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
 	' This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).</div></div>',
 	
-	invalid_written_resource: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_images+'icons/warning.png"></div><div class="compatibility_warning">'+
+	invalid_written_resource: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
 	' This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.</div></div>'
 };
 
@@ -153,14 +154,12 @@ var new_page = true;
   
 var content_languages = [];
 
-var sessions = [];
 var actors = [];
 
 var selected_files = [];
 var last_selected_file = -1;
 var shift = false;
 
-var active_view;
 var counters = {
 	resource_id: 0,
 	cl_id: 0,
@@ -175,18 +174,18 @@ var available_resources = [];
   
 document.addEventListener('DOMContentLoaded', function() {
 
-	view("wait");
+	APP.view("wait");
 	g("version_span").innerHTML = version;
 	
-	say_hello();
-	create_output_format_select();
-	display_metadata_languages();
+	APP.say_hello();
+	APP.create_output_format_select();
+	APP.display_metadata_languages();
 	actor.create_form();
 	actor.get_actors_from_web_storage();
 	save_and_recall.get_recall_data();
 	refreshFileListDisplay();
-	check_if_first_start();
-	create_copy_session_options();
+	APP.check_if_first_start();
+	APP.create_copy_session_options();
 	add_event_listeners();   //listeners.js  
 
 }, false);

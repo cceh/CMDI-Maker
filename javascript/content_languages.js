@@ -166,15 +166,15 @@ function set_content_language(LanguageObjectFromDB){
 	
 	content_languages.push(LanguageObject);
 	
-	var div = new_element("div","content_language_"+counters.cl_id+"_div","current_content_language_entry",g("current_content_languages_display"));
+	var div = dom.newElement("div","content_language_"+counters.cl_id+"_div","current_content_language_entry",g("current_content_languages_display"));
 	
 	var span = document.createElement("span");
 	span.innerHTML = "ISO639-3 Code: " + LanguageObject[0];
 	div.appendChild(span);
 	
-	var img = new_element("img","delete_lang_"+counters.cl_id+"_icon","delete_lang_icon",div);
+	var img = dom.newElement("img","delete_lang_"+counters.cl_id+"_icon","delete_lang_icon",div);
 	
-	img.src = path_to_images+"icons/reset.png";
+	img.src = path_to_icons+"reset.png";
 	
 	img.addEventListener('click', function(num) { 
 		return function(){ RemoveLanguage(num);  

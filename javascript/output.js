@@ -22,7 +22,7 @@ function generate(){
 	xml_window.innerHTML = "";
 	
 	//get index of selected output format
-	var output_format_index = get_selected_radio_index(document.metadata_form.output_format);
+	var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
 	
 	// initiate object for imdi_structure class
 	xml_strings = new output_formats[output_format_index].generator_object();
@@ -36,7 +36,7 @@ function generate(){
 		}(s)
 	);
 	
-	for (var s=0;s<sessions.length;s++){
+	for (var s=0;s<session.sessions.length;s++){
 		
 		create_output_div(xml_window, output_format + " Session " + (s+1), "textarea_session_"+s, xml_strings.sessions[s],
 			function(num){
@@ -53,15 +53,15 @@ function generate(){
 
 function create_output_div(parent, title, textarea_id, value, on_download){
 
-	var div = new_element("div", "", "output_div", parent);
+	var div = dom.newElement("div", "", "output_div", parent);
 	
-	var img = new_element("img","","download_icon",div);
+	var img = dom.newElement("img","","download_icon",div);
 	img.src = path_to_images + "icons/save.png";
 	img.addEventListener("click", on_download);
 	
-	var h1 = new_element("h1", "", "", div, title);
+	var h1 = dom.newElement("h1", "", "", div, title);
 	
-	var textarea = new_element("textarea", textarea_id, "xml_textarea", div, value);
+	var textarea = dom.newElement("textarea", textarea_id, "xml_textarea", div, value);
 	textarea.cols = output_textarea_columns;
 	textarea.rows = output_textarea_rows;
 
@@ -103,7 +103,7 @@ function export_corpus(){
 
 function save_corpus(){
 
-	var output_format_index = get_selected_radio_index(document.metadata_form.output_format);
+	var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
 	var file_ending = output_formats[output_format_index].file_ending;
 
 	save_file(g("textarea_corpus").value,get("corpus_name")+"."+file_ending, file_download_header);
@@ -113,7 +113,7 @@ function save_corpus(){
 
 function save_session(session){
 
-	var output_format_index = get_selected_radio_index(document.metadata_form.output_format);
+	var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
 	var file_ending = output_formats[output_format_index].file_ending;
 
 	save_file(g("textarea_session_"+session).value,get("session_"+sessions[session].id+"_session_name")+"."+file_ending, file_download_header);
@@ -133,7 +133,7 @@ function save_file(text, filename, mime_type){
 
 function get_actors_age(session, actor_id){
 
-	var i = getActorsIndexFromID(actor_id);
+	var i = actor.getActorsIndexFromID(actor_id);
 	
 	if (actors[i].age == ""){   //at first, check, if actor's age hasn't been specified yet
 	

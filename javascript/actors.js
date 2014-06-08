@@ -47,7 +47,7 @@ var actor = (function(){
 				GetActorsFromWebStorage();
 	  
 				for (var s=0;s<sessions.length;s++){
-					RemoveAllActorsFromSession(sessions[s].id);
+					RemoveAllActorsFromSession(session.sessions[s].id);
 				}
 				
 				
@@ -84,24 +84,24 @@ var actor = (function(){
 
 			g("actor_form_title").innerHTML = actors[actor_id].name;
 
-			set_form_value("actor_name",actors[actor_id].name);
-			set_form_value("actor_full_name",actors[actor_id].full_name);
-			set_form_value("actor_code",actors[actor_id].code);
-			set_form_value("actor_role",actors[actor_id].role);
-			set_form_value("actor_ethnic_group",actors[actor_id].ethnic_group);
-			set_form_value("actor_family_social_role",actors[actor_id].family_social_role);
-			set_form_value("actor_age",actors[actor_id].age);
-			set_form_value("actor_birth_date_year",actors[actor_id].birth_date.year);
-			set_form_value("actor_birth_date_month",actors[actor_id].birth_date.month);
-			set_form_value("actor_birth_date_day",actors[actor_id].birth_date.day);
-			set_form_value("actor_sex",actors[actor_id].sex);
-			set_form_value("actor_education",actors[actor_id].education);
+			dom.setFormValue("actor_name",actors[actor_id].name);
+			dom.setFormValue("actor_full_name",actors[actor_id].full_name);
+			dom.setFormValue("actor_code",actors[actor_id].code);
+			dom.setFormValue("actor_role",actors[actor_id].role);
+			dom.setFormValue("actor_ethnic_group",actors[actor_id].ethnic_group);
+			dom.setFormValue("actor_family_social_role",actors[actor_id].family_social_role);
+			dom.setFormValue("actor_age",actors[actor_id].age);
+			dom.setFormValue("actor_birth_date_year",actors[actor_id].birth_date.year);
+			dom.setFormValue("actor_birth_date_month",actors[actor_id].birth_date.month);
+			dom.setFormValue("actor_birth_date_day",actors[actor_id].birth_date.day);
+			dom.setFormValue("actor_sex",actors[actor_id].sex);
+			dom.setFormValue("actor_education",actors[actor_id].education);
 			
-			set_form_value("actor_contact_name",actors[actor_id].contact.name);
-			set_form_value("actor_contact_address",actors[actor_id].contact.address);
-			set_form_value("actor_contact_email",actors[actor_id].contact.email);
-			set_form_value("actor_contact_organisation",actors[actor_id].contact.organisation);
-			set_form_value("actor_description",actors[actor_id].description);
+			dom.setFormValue("actor_contact_name",actors[actor_id].contact.name);
+			dom.setFormValue("actor_contact_address",actors[actor_id].contact.address);
+			dom.setFormValue("actor_contact_email",actors[actor_id].contact.email);
+			dom.setFormValue("actor_contact_organisation",actors[actor_id].contact.organisation);
+			dom.setFormValue("actor_description",actors[actor_id].description);
 		
 			document.getElementsByName("actor_anonymized")[0].checked = actors[actor_id].anonymized;
 			
@@ -120,6 +120,18 @@ var actor = (function(){
 
 
 	}
+	
+	
+	my.getActorsIndexFromID = function(actor_id) {
+
+		for(var i = 0, len = actors.length; i < len; i++) {
+			if (actors[i].id == actor_id) return i;
+		}
+		
+		return alert("An error has occured.\nCould not find actors cache index from actor id!\n\nactor_id = " + actor_id);
+		
+	}
+	
 
 	my.export_actors = function(){
 		
@@ -275,25 +287,25 @@ var actor = (function(){
 
 		g("actor_form_title").innerHTML = "New Actor";
 
-		set_form_value("actor_name","");
-		set_form_value("actor_full_name","");
-		set_form_value("actor_code","");
-		set_form_value("actor_role","Unknown");
-		set_form_value("actor_ethnic_group","");
-		set_form_value("actor_family_social_role","Unknown");
-		set_form_value("actor_age","");
-		set_form_value("actor_birth_date_year","YYYY");
-		set_form_value("actor_birth_date_month","MM");
-		set_form_value("actor_birth_date_day","DD");
-		set_form_value("actor_sex","Unknown");
-		set_form_value("actor_education","");
+		dom.setFormValue("actor_name","");
+		dom.setFormValue("actor_full_name","");
+		dom.setFormValue("actor_code","");
+		dom.setFormValue("actor_role","Unknown");
+		dom.setFormValue("actor_ethnic_group","");
+		dom.setFormValue("actor_family_social_role","Unknown");
+		dom.setFormValue("actor_age","");
+		dom.setFormValue("actor_birth_date_year","YYYY");
+		dom.setFormValue("actor_birth_date_month","MM");
+		dom.setFormValue("actor_birth_date_day","DD");
+		dom.setFormValue("actor_sex","Unknown");
+		dom.setFormValue("actor_education","");
 
-		set_form_value("actor_contact_name","");
-		set_form_value("actor_contact_address","");
-		set_form_value("actor_contact_email","");
-		set_form_value("actor_contact_organisation","");
+		dom.setFormValue("actor_contact_name","");
+		dom.setFormValue("actor_contact_address","");
+		dom.setFormValue("actor_contact_email","");
+		dom.setFormValue("actor_contact_organisation","");
 		
-		set_form_value("actor_description","");
+		dom.setFormValue("actor_description","");
 
 		document.getElementsByName("actor_anonymized")[0].checked = false;
 
@@ -394,7 +406,7 @@ var actor = (function(){
 	
 	my.create_form = function(){
 
-		make_input(g("actor_content_div"), actor_form_imdi, "actor_", "actor_", undefined);
+		APP.makeInput(g("actor_content_div"), actor_form_imdi, "actor_", "actor_", undefined);
 
 	}
 
@@ -453,15 +465,15 @@ var actor = (function(){
 
 		//if this actor does already exist and is to be overwritten, overwrite the object in the array
 		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite == false)) {
-			actors.splice(getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
+			actors.splice(my.getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
 			
 			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
 			for (var s=0; s<sessions.length; s++){
 		
 				//search for actor_id in this session's actors
-				if (sessions[s].actors.actors.indexOf(actor_to_put.id) != -1){
+				if (session.sessions[s].actors.actors.indexOf(actor_to_put.id) != -1){
 					
-					session.refresh_actor_name(sessions[s].id, actor_to_put.id);
+					session.refreshActorName(session.sessions[s].id, actor_to_put.id);
 		
 				}
 				
@@ -589,7 +601,7 @@ var actor = (function(){
 
 		for (var i=0;i<actors.length;i++){
 
-			var div = new_element('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + actors[i].name + "</h2>" + "<p>"+actors[i].role+"</p>");
+			var div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + actors[i].name + "</h2>" + "<p>"+actors[i].role+"</p>");
 			//display name of actor
 		
 			div.addEventListener('click', function(num) { 
@@ -610,7 +622,7 @@ var actor = (function(){
 
 		g('ac_list').appendChild(div);	
 
-		session.refresh_actor_lists();
+		session.refreshActorLists();
 
 		switch (actors.length){
 		

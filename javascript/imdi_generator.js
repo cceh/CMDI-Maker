@@ -38,7 +38,7 @@ var imdi_generator = function(){
 		return_string += xml.element("Description",get('corpus_description'),[["LanguageId",get_metadata_language()]]);       
     
         for (var i=0; i<sessions.length; i++){
-			return_string += xml.element("CorpusLink",get(session_dom_element_prefix+sessions[i].id+"_session_name")+".imdi",[["Name",get(session_dom_element_prefix+sessions[i].id+"_session_name")]]);
+			return_string += xml.element("CorpusLink",get(session_dom_element_prefix+session.sessions[i].id+"_session_name")+".imdi",[["Name",get(session_dom_element_prefix+session.sessions[i].id+"_session_name")]]);
 		}
     
 		return_string += xml.tag("Corpus",1);
@@ -49,21 +49,21 @@ var imdi_generator = function(){
 	}
 
 	
-	var create_imdi_session = function (session) {
+	var create_imdi_session = function (session_id) {
     
 		var return_string = "";
     
 		return_string+=xml.header;
 		return_string+=create_imdi_header("SESSION",originator,"1.0",today());
 		return_string+=xml.tag("Session",0);
-		return_string+=xml.element("Name",get(session_dom_element_prefix+session+"_session_name"));
-		return_string+=xml.element("Title",get(session_dom_element_prefix+session+"_session_title"));
+		return_string+=xml.element("Name",get(session_dom_element_prefix+session_id+"_session_name"));
+		return_string+=xml.element("Title",get(session_dom_element_prefix+session_id+"_session_title"));
 
 
-		if ((get(session_dom_element_prefix+session+"_session_date_year") != "") && (get(session_dom_element_prefix+session+"_session_date_year") != "YYYY")){
+		if ((get(session_dom_element_prefix+session_id+"_session_date_year") != "") && (get(session_dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
 	
 			return_string += xml.tag("Date",0);
-			return_string += get(session_dom_element_prefix+session+"_session_date_year") + "-" + get(session_dom_element_prefix+session+"_session_date_month") + "-" + get(session_dom_element_prefix+session+"_session_date_day");
+			return_string += get(session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(session_dom_element_prefix+session_id+"_session_date_day");
 			return_string += xml.tag("Date",1);
 		
 		}	
@@ -72,55 +72,55 @@ var imdi_generator = function(){
 			return_string+=xml.element("Date","Unspecified");
 		}
    
-		return_string+=xml.element("Description",get(session_dom_element_prefix+session+"_session_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
+		return_string+=xml.element("Description",get(session_dom_element_prefix+session_id+"_session_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
    
 		return_string+=xml.tag("MDGroup",0);
 		return_string+=xml.tag("Location",0);
-		return_string+=xml.element("Continent",get(session_dom_element_prefix+session+"_session_location_continent"),[["Link","http://www.mpi.nl/IMDI/Schema/Continents.xml"],["Type","ClosedVocabulary"]]);
-		return_string+=xml.element("Country",get(session_dom_element_prefix+session+"_session_location_country"),[["Link","http://www.mpi.nl/IMDI/Schema/Countries.xml"],["Type","OpenVocabulary"]]);
-		return_string+=xml.element("Region",get(session_dom_element_prefix+session+"_session_location_region"));
-		return_string+=xml.element("Address",get(session_dom_element_prefix+session+"_session_location_address"));
+		return_string+=xml.element("Continent",get(session_dom_element_prefix+session_id+"_session_location_continent"),[["Link","http://www.mpi.nl/IMDI/Schema/Continents.xml"],["Type","ClosedVocabulary"]]);
+		return_string+=xml.element("Country",get(session_dom_element_prefix+session_id+"_session_location_country"),[["Link","http://www.mpi.nl/IMDI/Schema/Countries.xml"],["Type","OpenVocabulary"]]);
+		return_string+=xml.element("Region",get(session_dom_element_prefix+session_id+"_session_location_region"));
+		return_string+=xml.element("Address",get(session_dom_element_prefix+session_id+"_session_location_address"));
 		return_string+=xml.tag("Location",1);
 
 		return_string+=xml.tag("Project",0);
-		return_string+=xml.element("Name",get(session_dom_element_prefix+session+"_project_name"));
-		return_string+=xml.element("Title",get(session_dom_element_prefix+session+"_project_title"));
-		return_string+=xml.element("Id",get(session_dom_element_prefix+session+"_project_id"));
+		return_string+=xml.element("Name",get(session_dom_element_prefix+session_id+"_project_name"));
+		return_string+=xml.element("Title",get(session_dom_element_prefix+session_id+"_project_title"));
+		return_string+=xml.element("Id",get(session_dom_element_prefix+session_id+"_project_id"));
 		return_string+=xml.tag("Contact",0);
-		return_string+=xml.element("Name",get(session_dom_element_prefix+session+"_project_contact_name"));
-		return_string+=xml.element("Address",get(session_dom_element_prefix+session+"_project_contact_address"));
-		return_string+=xml.element("Email",get(session_dom_element_prefix+session+"_project_contact_email"));
-		return_string+=xml.element("Organisation",get(session_dom_element_prefix+session+"_project_contact_organisation"));
+		return_string+=xml.element("Name",get(session_dom_element_prefix+session_id+"_project_contact_name"));
+		return_string+=xml.element("Address",get(session_dom_element_prefix+session_id+"_project_contact_address"));
+		return_string+=xml.element("Email",get(session_dom_element_prefix+session_id+"_project_contact_email"));
+		return_string+=xml.element("Organisation",get(session_dom_element_prefix+session_id+"_project_contact_organisation"));
 		return_string+=xml.tag("Contact",1);
-		return_string+=xml.element("Description",get(session_dom_element_prefix+session+"_project_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
+		return_string+=xml.element("Description",get(session_dom_element_prefix+session_id+"_project_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
 		return_string+=xml.tag("Project",1);
 		return_string+=xml.tag("Keys",0);
 		return_string+=xml.tag("Keys",1);
-		return_string+=insert_session_content(session);
+		return_string+=insert_session_content(session_id);
 
 		//Actors
 		return_string+=xml.tag("Actors",0);
     
-		for (var a=0;a<sessions[GetSessionIndexFromID(session)].actors.actors.length;a++){
-			return_string += insert_actor(session,sessions[GetSessionIndexFromID(session)].actors.actors[a]);
+		for (var a=0;a<session.sessions[session.getSessionIndexFromID(session_id)].actors.actors.length;a++){
+			return_string += insert_actor(session,session.sessions[session.getSessionIndexFromID(session_id)].actors.actors[a]);
 		}
 
 		return_string+=xml.tag("Actors",1);
 		return_string+=xml.tag("MDGroup",1);
 		return_string+=xml.tag("Resources",0);
 
-		for (var r=0; r<sessions[GetSessionIndexFromID(session)].resources.mediaFiles.length; r++){  
+		for (var r=0; r<session.sessions[session.getSessionIndexFromID(session_id)].resources.mediaFiles.length; r++){  
 	
-			var id = sessions[GetSessionIndexFromID(session)].resources.mediaFiles[r].id;
+			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.mediaFiles[r].id;
 			console.log("looking for mediafile with id " + id);
-			return_string += insert_mediafile(get(session_dom_element_prefix+session+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session+'_mediafile_'+id+"_size"));
+			return_string += insert_mediafile(get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}
 	
-		for (var r=0; r<sessions[GetSessionIndexFromID(session)].resources.writtenResources.length; r++){  
+		for (var r=0; r<session.sessions[session.getSessionIndexFromID(session_id)].resources.writtenResources.length; r++){  
 
-			var id = sessions[GetSessionIndexFromID(session)].resources.writtenResources[r].id;	
+			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.writtenResources[r].id;	
 			console.log("looking for wr with id " + id);
-			return_string += insert_written_resource(get(session_dom_element_prefix+session+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session+'_mediafile_'+id+"_size"));
+			return_string += insert_written_resource(get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}
     
 		return_string+=xml.tag("Resources",1);
@@ -134,13 +134,13 @@ var imdi_generator = function(){
 	}	
 	
 	
-	var insert_session_content = function (session) {
+	var insert_session_content = function (session_id) {
 
 		return_string = "";
 		return_string += xml.tag("Content",0);
-		return_string += xml.element("Genre",get(session_dom_element_prefix+session+"_content_genre"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Genre.xml"],["Type","OpenVocabulary"]]);
-		return_string += xml.element("SubGenre",get(session_dom_element_prefix+session+"_content_subgenre"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-SubGenre.xml"],["Type","OpenVocabularyList"]]);
-		return_string += xml.element("Task",get(session_dom_element_prefix+session+"_content_task"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Task.xml"],["Type","OpenVocabulary"]]);
+		return_string += xml.element("Genre",get(session_dom_element_prefix+session_id+"_content_genre"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Genre.xml"],["Type","OpenVocabulary"]]);
+		return_string += xml.element("SubGenre",get(session_dom_element_prefix+session_id+"_content_subgenre"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-SubGenre.xml"],["Type","OpenVocabularyList"]]);
+		return_string += xml.element("Task",get(session_dom_element_prefix+session_id+"_content_task"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Task.xml"],["Type","OpenVocabulary"]]);
 	
 		return_string += xml.element("Modalities","",[["Link","http://www.mpi.nl/IMDI/Schema/Content-Modalities.xml"],["Type","OpenVocabulary"]]);
 		//no input yet
@@ -148,11 +148,11 @@ var imdi_generator = function(){
 		//no input yet
 
 		return_string += xml.tag("CommunicationContext",0);
-		return_string += xml.element("Interactivity",get(session_dom_element_prefix+session+"_content_communication_context_interactivity"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Interactivity.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("PlanningType",get(session_dom_element_prefix+session+"_content_communication_context_planningtype"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-PlanningType.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Involvement",get(session_dom_element_prefix+session+"_content_communication_context_involvement"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Involvement.xml"],["Type","ClosedVocabulary"]]);	
-		return_string += xml.element("SocialContext",get(session_dom_element_prefix+session+"_content_communication_context_socialcontext"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-SocialContext.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("EventStructure",get(session_dom_element_prefix+session+"_content_communication_context_eventstructure"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-EventStructure.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("Interactivity",get(session_dom_element_prefix+session_id+"_content_communication_context_interactivity"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Interactivity.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("PlanningType",get(session_dom_element_prefix+session_id+"_content_communication_context_planningtype"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-PlanningType.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("Involvement",get(session_dom_element_prefix+session_id+"_content_communication_context_involvement"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Involvement.xml"],["Type","ClosedVocabulary"]]);	
+		return_string += xml.element("SocialContext",get(session_dom_element_prefix+session_id+"_content_communication_context_socialcontext"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-SocialContext.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("EventStructure",get(session_dom_element_prefix+session_id+"_content_communication_context_eventstructure"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-EventStructure.xml"],["Type","ClosedVocabulary"]]);
 
 		return_string += xml.element("Channel","",[["Link","http://www.mpi.nl/IMDI/Schema/Content-Channel.xml"],["Type","ClosedVocabulary"]]);
 		//no input yet
@@ -166,7 +166,7 @@ var imdi_generator = function(){
 		return_string += insert_content_languages(session);
 		return_string += xml.tag("Languages",1);
 		return_string += xml.element("Keys","");
-		return_string += xml.element("Description",get(session_dom_element_prefix+session+"_content_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
+		return_string += xml.element("Description",get(session_dom_element_prefix+session_id+"_content_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
 		return_string += xml.tag("Content",1);
 
 		return return_string;
@@ -290,7 +290,7 @@ var imdi_generator = function(){
 
 	var insert_actor = function (session, actor_id) {
 
-		var i = getActorsIndexFromID(actor_id);
+		var i = actor.getActorsIndexFromID(actor_id);
 
 		var return_string = "";
 		return_string += xml.tag("Actor",0);
@@ -354,8 +354,8 @@ var imdi_generator = function(){
 	my.sessions = [];           
 	my.corpus = create_imdi_corpus();
     
-	for (var s=0;s<sessions.length;s++){   
-		my.sessions.push(create_imdi_session(sessions[s].id));
+	for (var s=0;s<session.sessions.length;s++){   
+		my.sessions.push(create_imdi_session(session.sessions[s].id));
 	}
 
 	return my;

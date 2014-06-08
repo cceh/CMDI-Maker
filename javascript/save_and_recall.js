@@ -24,9 +24,9 @@ var save_and_recall = (function(){
 
 		if (!form){
 			console.log("No recall data found");
-			session.show_no_session_text();
+			session.displayNoSessionText();
 			my.set_autosave_interval(interval_time);
-			view("default");
+			APP.view("default");
 			return;
 		}
 		
@@ -68,7 +68,7 @@ var save_and_recall = (function(){
 		
 		g("metadata_language_select").selectedIndex = recall_object.settings.metadata_language;
 		g("metadata_creator").value = recall_object.settings.metadata_creator;
-		set_radio_index(document.metadata_form.output_format, recall_object.settings.output_format);
+		dom.setRadioIndex(document.metadata_form.output_format, recall_object.settings.output_format);
 		
 		if (recall_object.settings.calc_actors_age == true){
 		
@@ -91,21 +91,21 @@ var save_and_recall = (function(){
 		available_resources = recall_object.available_resources;
 		refreshFileListDisplay();
 		my.fill_corpus(recall_object.corpus);
-		session.erase_all();
+		session.eraseAll();
 		
 		for (var s=0; s<recall_object.sessions.length; s++){
 		
-			session.new_session(recall_object.sessions[s]);
+			session.newSession(recall_object.sessions[s]);
 		
 		}
 		
-		if (sessions.length == 0){
-			session.show_no_session_text();
+		if (session.sessions.length == 0){
+			session.displayNoSessionText();
 		}
 		
 		my.set_autosave_interval(recall_object.settings.save_interval_time);
 
-		view(recall_object.active_view);	
+		APP.view(recall_object.active_view);	
 		
 	}
 
@@ -143,7 +143,7 @@ var save_and_recall = (function(){
 			
 			settings: {
 				save_interval_time: 0,
-				output_format: get_selected_radio_index(document.metadata_form.output_format),
+				output_format: dom.getSelectedRadioIndex(document.metadata_form.output_format),
 				calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false),
 				metadata_creator: get("metadata_creator"),
 				metadata_language: g("metadata_language_select").selectedIndex
@@ -159,8 +159,8 @@ var save_and_recall = (function(){
 		
 		object.settings.save_interval_time = document.metadata_form.radio_auto_save.value;
 		
-		if (active_view != "wait"){
-			object.active_view = active_view;
+		if (APP.active_view != "wait"){
+			object.active_view = APP.active_view;
 		}
 		
 		else {
@@ -169,15 +169,15 @@ var save_and_recall = (function(){
 		
 		object.available_resources = available_resources;
 		
-		for (var s=0; s<sessions.length; s++){
+		for (var s=0; s<session.sessions.length; s++){
 		
 			var session_object = make_new_session_object();
 			
-			my.fill_object_with_form_element(session_object, session_dom_element_prefix+sessions[s].id+"_", session_form);		
+			my.fill_object_with_form_element(session_object, session_dom_element_prefix+session.sessions[s].id+"_", session_form);		
 			
-			session_object.actors.actors = sessions[s].actors.actors;
-			session_object.resources = sessions[s].resources;
-			session_object.expanded = sessions[s].expanded;
+			session_object.actors.actors = session.sessions[s].actors.actors;
+			session_object.resources = session.sessions[s].resources;
+			session_object.expanded = session.sessions[s].expanded;
 			
 			object.sessions.push(session_object);
 		}

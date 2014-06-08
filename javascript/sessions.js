@@ -18,11 +18,12 @@ var session = (function () {
 
 	var my = {};
 	
+	my.sessions = [];
 	my.id_counter = 0;
 	
-	my.refresh_resources = function(s){
+	my.refreshResources = function(s){
 
-		g(session_dom_element_prefix+sessions[s].id+"_resources_add_mf_div").innerHTML = "";
+		g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";
 
 		var select = document.createElement("select");
 		
@@ -35,7 +36,7 @@ var session = (function () {
 
 		if (available_resources.length > 0){
 		
-			g(session_dom_element_prefix+sessions[s].id+"_resources_add_mf_div").appendChild(select);
+			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(select);
 		
 			select.selectedIndex = 0;	
 		
@@ -43,20 +44,20 @@ var session = (function () {
 			add_button.type = "button";
 			add_button.value = "Add to session";
 			
-			g(session_dom_element_prefix+sessions[s].id+"_resources_add_mf_div").appendChild(document.createElement("br"));
+			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(document.createElement("br"));
 			
-			g(session_dom_element_prefix+sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
+			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
-				return function(){ add_resource_to_session(num, select.selectedIndex);  };
-			}(sessions[s].id) );
+				return function(){ session.addResource(num, select.selectedIndex);  };
+			}(my.sessions[s].id) );
 			
 		}
 
 		if (available_resources.length == 0){
 		
 			var p = document.createElement("h5");
-			g(session_dom_element_prefix+sessions[s].id+"_resources_add_mf_div").appendChild(p);
+			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(p);
 			p.innerHTML = "No files have been added.<br>";
 		
 			var a = document.createElement("a");
@@ -66,7 +67,7 @@ var session = (function () {
 			p.appendChild(a);
 
 			a.addEventListener('click', function() { 
-				view("media_files");
+				APP.view("media_files");
 			} );
 			
 		
@@ -75,10 +76,10 @@ var session = (function () {
 	}
 
 
-	my.new_session = function(session_object){
+	my.newSession = function(session_object){
 
 		//remove no sessions message before drawing new session
-		if (sessions.length == 0) {
+		if (my.sessions.length == 0) {
 			g("sessions").innerHTML = "";
 		};
 
@@ -98,63 +99,63 @@ var session = (function () {
 		//push new session object into sessions array
 		session_object.id = session_id;
 		session_object.expanded = session_expanded;
-		sessions.push(session_object);
+		my.sessions.push(session_object);
 		
-		var session_div = new_element('div','session'+session_id,'session_div',g('sessions')); 
+		var session_div = dom.newElement('div','session'+session_id,'session_div',g('sessions')); 
 		//sessions_count is right! but it has to be clear which session in sessions has which session_id
 
-		var session_header = new_element('div','session'+session_id+'_header','session_header',session_div);
+		var session_header = dom.newElement('div','session'+session_id+'_header','session_header',session_div);
 		session_header.addEventListener('click', function(num) { 
 			return function(){
 				my.display(num);  
 			};
 		}(session_id) );
 
-		var session_label = new_element('a',session_dom_element_prefix+session_id+'_label','session_label',session_header);
+		var session_label = dom.newElement('a',session_dom_element_prefix+session_id+'_label','session_label',session_header);
 		
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name == "")){
 		
 			session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
-			sessions[GetSessionIndexFromID(session_id)].name = "";
+			my.sessions[my.getSessionIndexFromID(session_id)].name = "";
 			
 		}
 		
 		else {
 			session_label.innerHTML = "<h1 class=\"session_heading\">Session: " + session_object.session.name + "   </h1>";
-			sessions[GetSessionIndexFromID(session_id)].name = session_object.session.name;
+			my.sessions[my.getSessionIndexFromID(session_id)].name = session_object.session.name;
 		
 		}
 
 		session_label.href = "#";
 
 		//create icon for deleting the session
-		var session_delete_link = new_element('a',session_dom_element_prefix+session_id+'_delete_link','session_delete_link',session_header);
+		var session_delete_link = dom.newElement('a',session_dom_element_prefix+session_id+'_delete_link','session_delete_link',session_header);
 		session_delete_link.addEventListener('click', function(num) {
 			return function(){
-				my.user_erase(num);  
+				my.userErase(num);  
 				my.display(num);   //because otherwise session.expanded would change
 			};
 		}(session_id) );
-		session_delete_link.innerHTML = "<img id=\""+session_dom_element_prefix+session_id+"_delete_img\" class=\"delete_img\" src=\""+path_to_images+"icons/reset.png\" alt=\"Delete Session\">";
+		session_delete_link.innerHTML = "<img id=\""+session_dom_element_prefix+session_id+"_delete_img\" class=\"delete_img\" src=\""+path_to_icons+"reset.png\" alt=\"Delete Session\">";
 		session_delete_link.href = "#";
 		
 		//create icon to expand/collapse the session
-		var session_display_link = new_element('a',session_dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
-		session_display_link.innerHTML = "<img id=\""+session_dom_element_prefix+session_id+"_expand_img\" class=\"expand_img\" src=\""+path_to_images+"icons/down.png\">";
+		var session_display_link = dom.newElement('a',session_dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
+		session_display_link.innerHTML = "<img id=\""+session_dom_element_prefix+session_id+"_expand_img\" class=\"expand_img\" src=\""+path_to_icons+"down.png\">";
 		session_display_link.href = "#";
 
 
-		var session_content = new_element('div','session'+session_id+'_content','session_content',session_div);
+		var session_content = dom.newElement('div','session'+session_id+'_content','session_content',session_div);
 
 		//create the form
-		make_input(session_content, session_form, session_dom_element_prefix+session_id+"_", session_dom_element_prefix, session_object);
+		APP.makeInput(session_content, session_form, session_dom_element_prefix+session_id+"_", session_dom_element_prefix, session_object);
 
 		
 		g(session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		
 			return function(){
 			
-				my.refresh_name_display(num);
+				my.refreshSessionHeading(num);
 			}
 		}(session_id) );
 		
@@ -163,7 +164,7 @@ var session = (function () {
 		
 			for (var a=0; a<session_object.actors.actors.length; a++){
 		
-				my.draw_actor(session_id, session_object.actors.actors[a]);
+				my.renderActor(session_id, session_object.actors.actors[a]);
 		
 			}
 		}
@@ -175,7 +176,7 @@ var session = (function () {
 			
 				var file = session_object.resources.writtenResources[r];	
 				file.id = counters.resource_id;
-				my.draw_resource(counters.resource_id, session_id, "wr", file.name, file.size);
+				my.renderResource(counters.resource_id, session_id, "wr", file.name, file.size);
 				
 				counters.resource_id += 1;
 		
@@ -190,14 +191,14 @@ var session = (function () {
 			
 				var file = session_object.resources.mediaFiles[r];
 				file.id = counters.resource_id;
-				my.draw_resource(file.id, session_id, "mf", file.name, file.size);
+				my.renderResource(file.id, session_id, "mf", file.name, file.size);
 
 				counters.resource_id += 1;
 			}
 		
 		}
 		
-		my.refresh_resources(GetSessionIndexFromID(session_id));
+		my.refreshResources(my.getSessionIndexFromID(session_id));
 		
 		var all_available_actor_ids = [];
 		
@@ -205,7 +206,7 @@ var session = (function () {
 			all_available_actor_ids.push(actors[n].id);
 		}   // find a better place for that
 
-		my.refresh_actor_list_in_session(GetSessionIndexFromID(session_id),all_available_actor_ids);
+		my.refreshActorListInSession(my.getSessionIndexFromID(session_id),all_available_actor_ids);
 		
 		if (session_expanded == false){
 			my.display(session_id);
@@ -217,19 +218,49 @@ var session = (function () {
 	}
 	
 	
-	my.refresh_actor_name = function(session_id, actor_id){
+	my.refreshActorName = function(session_id, actor_id){
 
 		var div = g(session_dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
-		div.innerHTML = "<h2 class='actor_name_disp'>" + actors[getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
-		div.innerHTML += "<p class='actor_role_disp'>" + actors[getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
+		div.innerHTML = "<h2 class='actor_name_disp'>" + actors[actor.getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
+		div.innerHTML += "<p class='actor_role_disp'>" + actors[actor.getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
 
 
 	}
 	
-	
-	my.refresh_actor_list_in_session = function(s,all_available_actor_ids){
+	my.getName = function(session_index){
 
-		var aad = g(session_dom_element_prefix+sessions[s].id+"_actors_add_actors_div");
+		if (my.sessions[session_index].name == ""){
+		
+			return "Unnamed Session";
+			
+		}
+		
+		else {
+			return "Session: " + my.sessions[session_index].name;
+		
+		}
+		
+	}
+	
+	
+	my.getSessionIndexFromID = function(session_id){
+
+		for(var i = 0; i < my.sessions.length; i++) {
+			if (my.sessions[i].id == session_id) {
+				return i;
+			}
+		}
+		
+		alert("An error has occured.\nCould not find session index from session_id!\n\nsession_id = " + session_id);
+		console.log(sessions);
+		
+
+	}
+	
+	
+	my.refreshActorListInSession = function(s,all_available_actor_ids){
+
+		var aad = g(session_dom_element_prefix+my.sessions[s].id+"_actors_addActors_div");
 		
 		aad.innerHTML = "";
 
@@ -259,8 +290,8 @@ var session = (function () {
 			aad.appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
-				return function(){ my.add_actor(num, actors[select.selectedIndex].id);  };
-			}(sessions[s].id) );
+				return function(){ my.addActor(num, actors[select.selectedIndex].id);  };
+			}(my.sessions[s].id) );
 			
 		}
 		
@@ -277,7 +308,7 @@ var session = (function () {
 			h5.appendChild(link);
 			
 			link.addEventListener('click', function() { 
-				view("actors");  
+				APP.view("actors");  
 			} );
 		}
 		
@@ -286,15 +317,15 @@ var session = (function () {
 		
 		
 		//check if actor in session is part of actors[...].id(s)? if not, remove it immediately!
-		for (var k=0;k<sessions[s].actors.actors.length;k++){
+		for (var k=0;k<my.sessions[s].actors.actors.length;k++){
 			
-			console.log("Trying to find id " + sessions[s].actors.actors[k] + " in actors of session "+s);
+			console.log("Trying to find id " + my.sessions[s].actors.actors[k] + " in actors of session "+s);
 			
 			// if an actor k is not in all available actors, remove it in the session!
-			if (all_available_actor_ids.indexOf(sessions[s].actors.actors[k]) == -1){
+			if (all_available_actor_ids.indexOf(my.sessions[s].actors.actors[k]) == -1){
 				
 				console.log("There is an actor in session "+s+" that does not exist anymore. Deleting!");
-				my.remove_actor(sessions[s].id,sessions[s].actors.actors[k]);
+				my.removeActor(my.sessions[s].id,my.sessions[s].actors.actors[k]);
 			
 			}
 		
@@ -305,7 +336,7 @@ var session = (function () {
 	}
 
 
-	my.refresh_actor_lists = function(){
+	my.refreshActorLists = function(){
 		//Offer possibility to add every available actor to all session
 		//refresh all sessions with available actors
 
@@ -317,16 +348,16 @@ var session = (function () {
 		
 		
 
-		for (var s=0;s<sessions.length;s++){   //for all existing sessions
+		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
 		
-			my.refresh_actor_list_in_session(s,all_available_actor_ids);
+			my.refreshActorListInSession(s,all_available_actor_ids);
 
 		}
 
 	}
 
 
-	my.user_erase = function(session_id){
+	my.userErase = function(session_id){
 
 		alertify.set({ labels: {
 			ok     : "No",
@@ -357,32 +388,32 @@ var session = (function () {
 		var node = document.getElementById("session"+session_id);
 		g("sessions").removeChild(node);
 		
-		sessions.splice(GetSessionIndexFromID(session_id),1);
+		my.sessions.splice(my.getSessionIndexFromID(session_id),1);
 		
-		if (sessions.length == 0) {
-			my.show_no_session_text();
+		if (my.sessions.length == 0) {
+			my.displayNoSessionText();
 		} 
 
 
 	}
 
-	my.show_no_session_text = function(){
+	my.displayNoSessionText = function(){
 
 		console.log("Showing no session text");
 
 		g("sessions").innerHTML = "";
 
-		var no_sessions_message = new_element("h2","no_session_text","no_session_text",g("sessions"));
+		var no_sessions_message = dom.newElement("h2","no_session_text","no_session_text",g("sessions"));
 		no_sessions_message.innerHTML = "This corpus contains no sessions yet. Why not ";
 
-		var new_session_link = new_element("a","new_session_link","new_session_link",no_sessions_message);
+		var new_session_link = dom.newElement("a","new_session_link","new_session_link",no_sessions_message);
 
 		new_session_link.innerHTML = "create one";
 		new_session_link.href = "#";
 
 		no_sessions_message.innerHTML += "?";
 
-		g("new_session_link").addEventListener('click', function() {session.new_session(); });
+		g("new_session_link").addEventListener('click', function() {session.newSession(); });
 		//we have to use g here instead of no_sessions_link, because letter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
 		
 		g("sessions").scrollTop = 0;
@@ -390,11 +421,11 @@ var session = (function () {
 	}
 
 
-	my.erase_all = function (){
+	my.eraseAll = function (){
 
-		while (sessions.length > 0){
+		while (my.sessions.length > 0){
 		
-			my.erase_last();
+			my.eraseLast();
 		
 		}
 
@@ -402,11 +433,11 @@ var session = (function () {
 
 
 
-	my.erase_last = function(){
+	my.eraseLast = function(){
 
-		if (sessions.length > 0){
+		if (my.sessions.length > 0){
 		
-			my.erase(sessions[sessions.length-1].id);
+			my.erase(my.sessions[my.sessions.length-1].id);
 
 		}
 		
@@ -418,19 +449,19 @@ var session = (function () {
 	}
 
 
-	my.add_actor = function(session_id, actor_id){
+	my.addActor = function(session_id, actor_id){
 	//add existing actor to session
 	//new actors are only created in manage actors
 
 
 		//if session doesn't already contain this actor
-		if (sessions[GetSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id) == -1){
+		if (my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id) == -1){
 		
-			if (actors[getActorsIndexFromID(actor_id)]){  //check if actor still exists before adding
+			if (actors[actor.getActorsIndexFromID(actor_id)]){  //check if actor still exists before adding
 		
-				sessions[GetSessionIndexFromID(session_id)].actors.actors.push(actor_id);
+				my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.push(actor_id);
 			
-				my.draw_actor(session_id, actor_id);
+				my.renderActor(session_id, actor_id);
 				
 			}
 			
@@ -451,41 +482,41 @@ var session = (function () {
 	}
 
 
-	my.draw_actor = function(session_id, actor_id){
+	my.renderActor = function(session_id, actor_id){
 
-		new_element("div", session_dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(session_dom_element_prefix+session_id+"_actors_actors"));
-		var div = new_element("div", session_dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(session_dom_element_prefix+session_id+"_actor_" + actor_id));
+		dom.newElement("div", session_dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(session_dom_element_prefix+session_id+"_actors_actors"));
+		var div = dom.newElement("div", session_dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(session_dom_element_prefix+session_id+"_actor_" + actor_id));
 		
-		my.refresh_actor_name(session_id, actor_id);
+		my.refreshActorName(session_id, actor_id);
 		
-		var img = new_element("img", "delete_actor_"+actor_id+"_icon", "delete_actor_icon", g(session_dom_element_prefix+session_id+"_actor_" + actor_id));
-		img.src = path_to_images+"icons/reset.png";
+		var img = dom.newElement("img", "delete_actor_"+actor_id+"_icon", "delete_actor_icon", g(session_dom_element_prefix+session_id+"_actor_" + actor_id));
+		img.src = path_to_icons+"reset.png";
 
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ RemoveActorFromSession(num, num2);  
+			return function(){ session.removeActor(num, num2);  
 			};
 		}(session_id, actor_id) );
 
 	}
 
 
-	my.remove_actor = function(session_id, actor_id){
+	my.removeActor = function(session_id, actor_id){
 
-		var position_in_array = sessions[GetSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id);
+		var position_in_array = my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id);
 		
 		console.log("Removing actor. Position in array: " + position_in_array);
 
 		//remove actor_id in array
-		sessions[GetSessionIndexFromID(session_id)].actors.actors.splice(position_in_array,1);
+		my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.splice(position_in_array,1);
 		
-		remove(session_dom_element_prefix+session_id+"_actor_"+actor_id);
+		dom.remove(session_dom_element_prefix+session_id+"_actor_"+actor_id);
 		
-		save_form();
+		save_and_recall.save_form();
 		
 	}
 
 
-	my.add_resource = function(session_id, resource_file_index, without_questions){
+	my.addResource = function(session_id, resource_file_index, without_questions){
 	// resource_file_index is the index of the available media file, that is to be added to the session
 	// if resource_file_index is -1, a new empty field with no available media file is created
 	//if without_questions == true, no alerts will be thrown (e.g. when resources are added at start up)
@@ -501,7 +532,7 @@ var session = (function () {
 		
 			var resource_type = "mf";
 		
-			sessions[GetSessionIndexFromID(session_id)].resources.mediaFiles.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.push({
 				name: available_resources[resource_file_index][0],
 				size: available_resources[resource_file_index][2],
 				id: counters.resource_id,
@@ -514,7 +545,7 @@ var session = (function () {
 		
 			var resource_type = "wr";
 		
-			sessions[GetSessionIndexFromID(session_id)].resources.writtenResources.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
 				name: available_resources[resource_file_index][0],
 				size: available_resources[resource_file_index][2],
 				id: counters.resource_id,
@@ -538,7 +569,7 @@ var session = (function () {
 			
 			var resource_type = "wr";
 			
-			sessions[GetSessionIndexFromID(session_id)].resources.writtenResources.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
 				name: available_resources[resource_file_index][0],
 				size: available_resources[resource_file_index][2],
 				id: counters.resource_id,
@@ -594,7 +625,7 @@ var session = (function () {
 		
 		}
 		
-		my.draw_resource(resource_id, session_id, resource_type, filename, filesize);
+		my.renderResource(resource_id, session_id, resource_type, filename, filesize);
 
 		counters.resource_id+=1;
 		
@@ -603,9 +634,9 @@ var session = (function () {
 	}
 
 
-	my.draw_resource = function(resource_id, session_id, type, name, size){
+	my.renderResource = function(resource_id, session_id, type, name, size){
 
-		var div = new_element('div', session_dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(session_dom_element_prefix+session_id+"_resources_resources"));
+		var div = dom.newElement('div', session_dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(session_dom_element_prefix+session_id+"_resources_resources"));
 
 		var h3 = document.createElement("h3");
 		
@@ -624,10 +655,10 @@ var session = (function () {
 		
 		div.appendChild(h3);
 		
-		var img = new_element("img","delete_resource_" + resource_id +"_icon","delete_resource_icon",div);
-		img.src = path_to_images+"icons/reset.png";
+		var img = dom.newElement("img","delete_resource_" + resource_id +"_icon","delete_resource_icon",div);
+		img.src = path_to_icons+"reset.png";
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ RemoveResourceFromSession(num, num2);  
+			return function(){ session.removeResource(num, num2);  
 			};
 		}(session_id,resource_id) );
 		
@@ -646,7 +677,7 @@ var session = (function () {
 	}
 
 
-	my.refresh_name_display = function(session_id){
+	my.refreshSessionHeading = function(session_id){
 
 		if (get(session_dom_element_prefix+session_id+"_session_name") == ""){
 			g(session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
@@ -661,33 +692,33 @@ var session = (function () {
 	}
 
 
-	my.remove_resource = function(session_id, resource_id){
+	my.removeResource = function(session_id, resource_id){
 
 		var ids_of_sessions_media_files = [];
 		
-		for (var m=0; m<sessions[GetSessionIndexFromID(session_id)].resources.mediaFiles.length; m++){
+		for (var m=0; m<my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.length; m++){
 		
-			ids_of_sessions_media_files.push(sessions[GetSessionIndexFromID(session_id)].resources.mediaFiles[m].id);
+			ids_of_sessions_media_files.push(my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles[m].id);
 		
 		}
 		
 		var ids_of_sessions_written_resources = [];
 		
-		for (var m=0; m<sessions[GetSessionIndexFromID(session_id)].resources.writtenResources.length; m++){
+		for (var m=0; m<my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.length; m++){
 		
-			ids_of_sessions_written_resources.push(sessions[GetSessionIndexFromID(session_id)].resources.writtenResources[m].id);
+			ids_of_sessions_written_resources.push(my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources[m].id);
 		
 		}
 
 		if (ids_of_sessions_written_resources.indexOf(resource_id) != -1){
 
-			sessions[GetSessionIndexFromID(session_id)].resources.writtenResources.splice(GetIndexFromResourceID(resource_id),1);
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.splice(GetIndexFromResourceID(resource_id),1);
 		
 		}
 		
 		if (ids_of_sessions_media_files.indexOf(resource_id) != -1){
 
-			sessions[GetSessionIndexFromID(session_id)].resources.mediaFiles.splice(GetIndexFromResourceID(resource_id),1);
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.splice(GetIndexFromResourceID(resource_id),1);
 		
 		}
 		
@@ -699,9 +730,9 @@ var session = (function () {
 
 
 
-	my.assign_session1_metadata = function(){
+	my.assignSession1Metadata = function(){
 
-		if (sessions.length < 2){
+		if (my.sessions.length < 2){
 		
 			alertify.log("There have to be at least 2 sessions to assign metadata from one to another.", "error", "5000");
 			return;
@@ -714,19 +745,19 @@ var session = (function () {
 			
 				if (session_form.fields_to_copy[i].name == "actors"){  //special case: actors!
 				
-					for (var s=1; s<sessions.length; s++){
-						RemoveAllActorsFromSession(sessions[s].id);
+					for (var s=1; s<my.sessions.length; s++){
+						my.removeAllActors(my.sessions[s].id);
 			
 						// copy actors from session 1 to session session
-						for (var a=0;a<sessions[0].actors.actors.length;a++){
-							add_actor_to_session(sessions[s].id,sessions[0].actors.actors[a]);
+						for (var a=0;a<my.sessions[0].actors.actors.length;a++){
+							addActor_to_session(my.sessions[s].id,my.sessions[0].actors.actors[a]);
 						}
 					
 					}
 				
 				}
 			
-				copy_fields_to_all_sessions(session_form.fields_to_copy[i].fields);
+				my.copyFieldsToAllSessions(session_form.fields_to_copy[i].fields);
 				
 			}
 		
@@ -737,48 +768,48 @@ var session = (function () {
 	}
 
 
-	my.copy_fields_to_all_sessions = function(fields_to_copy){
+	my.copyFieldsToAllSessions = function(fields_to_copy){
 	//fields_to_copy is an array
 	//it is indeed html conform to get textarea.value
 		
-		for (var s=1;s<sessions.length;s++){   //important to not include the first session in this loop
+		for (var s=1;s<my.sessions.length;s++){   //important to not include the first session in this loop
 		
 			for (var k=0;k<fields_to_copy.length;k++){
-				copy_field(session_dom_element_prefix+sessions[s].id+"_"+fields_to_copy[k],session_dom_element_prefix+sessions[0].id+"_"+fields_to_copy[k]);
+				dom.copyField(session_dom_element_prefix+my.sessions[s].id+"_"+fields_to_copy[k],session_dom_element_prefix+my.sessions[0].id+"_"+fields_to_copy[k]);
 			}
 		
 		}
 		
 	}
 
-	my.remove_all_actors = function(session_id){
+	my.removeAllActors = function(session_id){
 	//Remove all actors from respective session
 		
-		while (sessions[GetSessionIndexFromID(session_id)].actors.actors.length > 0){
-			RemoveActorFromSession(session_id,sessions[GetSessionIndexFromID(session_id)].actors.actors[0]);
+		while (my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.length > 0){
+			RemoveActorFromSession(session_id,my.sessions[my.getSessionIndexFromID(session_id)].actors.actors[0]);
 			//Remove always the first actor of this session because every actor is at some point the first	
 		}
 	}
 
 
-	my.refresh_resources_of_all_sessions = function(){
+	my.refreshResourcesOfAllSessions = function(){
 	//Offer possibility to add every available media file to all session
 	//refresh all sessions with available media files
 
-		for (var s=0;s<sessions.length;s++){
+		for (var s=0;s<my.sessions.length;s++){
 		
-			my.refresh_resources(s);
+			my.refreshResources(s);
 			
 		}
 
 	}
 
 
-	my.are_all_sessions_properly_named = function(){
+	my.areAllSessionsProperlyNamed = function(){
 
-		for (var i=0;i<sessions.length;i++){
+		for (var i=0;i<my.sessions.length;i++){
 		
-			if (get(session_dom_element_prefix+sessions[i].id+"_session_name") == ""){
+			if (get(session_dom_element_prefix+my.sessions[i].id+"_session_name") == ""){
 			
 				return false;
 			
@@ -786,7 +817,7 @@ var session = (function () {
 			
 			for (var c=0; c<not_allowed_chars.length; c++){
 		
-				if (get(session_dom_element_prefix+sessions[i].id+"_session_name").indexOf(not_allowed_chars[c]) != -1){
+				if (get(session_dom_element_prefix+my.sessions[i].id+"_session_name").indexOf(not_allowed_chars[c]) != -1){
 			
 					return false;
 				
@@ -801,11 +832,11 @@ var session = (function () {
 	}
 
 
-	my.does_every_session_have_a_project_name = function(){
+	my.doesEverySessionHaveAProjectName = function(){
 
-		for (var i=0;i<sessions.length;i++){
+		for (var i=0;i<my.sessions.length;i++){
 		
-			if (get(session_dom_element_prefix+sessions[i].id+"_project_name") == ""){
+			if (get(session_dom_element_prefix+my.sessions[i].id+"_project_name") == ""){
 			
 				return false;
 			
@@ -822,14 +853,14 @@ var session = (function () {
 	
 		if (document.getElementById("session"+session_id+"_content").style.display != "none"){
 			document.getElementById("session"+session_id+"_content").style.display = "none";
-			document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_images+"icons/up.png";
-			sessions[GetSessionIndexFromID(session_id)].expanded = false;
+			document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_icons+"up.png";
+			my.sessions[my.getSessionIndexFromID(session_id)].expanded = false;
 		}
 		
 		else {
 			document.getElementById("session"+session_id+"_content").style.display = "block";
-			document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_images+"icons/down.png";
-			sessions[GetSessionIndexFromID(session_id)].expanded = true;
+			document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_icons+"down.png";
+			my.sessions[my.getSessionIndexFromID(session_id)].expanded = true;
 		}
 	}
 

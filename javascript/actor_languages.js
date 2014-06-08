@@ -103,19 +103,19 @@ function search_actor_language(){
 	alrd.style.display = "block";
 	alrd.innerHTML = "";
 	
-	new_element("h1", "", "", alrd, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s")); 
+	dom.newElement("h1", "", "", alrd, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s")); 
 	
-	var img = new_element("img","close_alrd_icon","",alrd);
+	var img = dom.newElement("img","close_alrd_icon","",alrd);
 	img.src = "img/icons/reset.png";
 	img.addEventListener('click', function() { 
 		close_actor_language_select();  
 	} );
 	
-	var h3 = new_element("h3","","",alrd,"(ISO639-3 Code, Country ID, Language Name)");
+	var h3 = dom.newElement("h3","","",alrd,"(ISO639-3 Code, Country ID, Language Name)");
 	
 	for (var j=0;j<results.length;j++){
 	
-		var a = new_element("a", 'al_results_link_'+j, 'al_results_link',alrd,
+		var a = dom.newElement("a", 'al_results_link_'+j, 'al_results_link',alrd,
 		"<div class='actor_lang_search_entry'>" + results[j][0] + ", "+results[j][1]+", " + results[j][3] + "</div>");
 		a.href = '#';
 	
@@ -148,37 +148,37 @@ function set_actor_language(ActorLanguageObject){
 	
 	languages_of_active_actor.push(ActorLanguageObject);
 	
-	var div = new_element("div","actor_language_"+counters.al_id+"_div","current_actor_language_entry",g("current_actor_languages_display"));
-	var img = new_element("img","delete_lang_"+counters.al_id+"_icon","delete_lang_icon",div);
-	img.src = path_to_images+"icons/reset.png";
+	var div = dom.newElement("div","actor_language_"+counters.al_id+"_div","current_actor_language_entry",g("current_actor_languages_display"));
+	var img = dom.newElement("img","delete_lang_"+counters.al_id+"_icon","delete_lang_icon",div);
+	img.src = path_to_icons+"reset.png";
 	img.addEventListener('click', function(num) { 
 		return function(){ RemoveActorLanguage(num);  
 		};
 	}(counters.al_id) );
 	
-	new_element("span","","",div, "ISO639-3 Code: " + LanguageObject[0]);
-	new_element("br","","",div);
-	new_element("span","","",div, "Name: " + LanguageObject[3]);
-	new_element("br","","",div);
-	new_element("span","","",div, "Country ID: " + LanguageObject[1]);
-	new_element("br","","",div);
+	dom.newElement("span","","",div, "ISO639-3 Code: " + LanguageObject[0]);
+	dom.newElement("br","","",div);
+	dom.newElement("span","","",div, "Name: " + LanguageObject[3]);
+	dom.newElement("br","","",div);
+	dom.newElement("span","","",div, "Country ID: " + LanguageObject[1]);
+	dom.newElement("br","","",div);
 	
-	var input = new_element("input", "mothertongue_" + counters.al_id, "", div);
+	var input = dom.newElement("input", "mothertongue_" + counters.al_id, "", div);
 	input.type = "checkbox";
 	
 	if (ActorLanguageObject.MotherTongue == true){
 		input.checked = true;
 	}
 
-	new_element("span","","",div, "Mother Tongue  ");
-	var input = new_element("input", "primarylanguage_" + counters.al_id, "", div);
+	dom.newElement("span","","",div, "Mother Tongue  ");
+	var input = dom.newElement("input", "primarylanguage_" + counters.al_id, "", div);
 	input.type = "checkbox";
 	
 	if (ActorLanguageObject.PrimaryLanguage == true){
 		input.checked = true;
 	}
 	
-	new_element("span","","",div, "Primary Language");
+	dom.newElement("span","","",div, "Primary Language");
 
 	close_actor_language_select();
 

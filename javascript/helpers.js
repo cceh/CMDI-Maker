@@ -15,6 +15,113 @@ limitations under the License.
 */
 
 
+function GetFileTypeFromFilename(filename){
+
+	var pos_of_dot = filename.lastIndexOf(".");
+	
+	return filename.slice(pos_of_dot+1,filename.length).toLowerCase();
+
+}
+
+
+
+function GetLanguageObjectIndexFromID(cl_id){
+
+	for (var l=0; l<content_languages.length; l++){
+	
+		if (content_languages[l][4] == cl_id){
+			return l;
+		}
+	
+	}
+
+}
+
+function GetActorLanguageObjectIndexFromID(al_id){
+
+	for (var l=0; l<languages_of_active_actor.length; l++){
+	
+		if (languages_of_active_actor[l].id == al_id){
+			return l;
+		}
+	
+	}
+
+}
+
+
+function get(name){
+
+	var elem = document.getElementsByName(name)[0];
+	
+	switch (elem.nodeName){
+	
+		case "INPUT": return elem.value;
+	
+		case "TEXTAREA": return elem.value;
+	
+		case "SELECT": {
+			
+			if (elem.selectedIndex != -1){
+				return elem.options[elem.selectedIndex].value;
+			}
+			
+			else {
+				return "";
+			}
+		}
+		
+		default: console.log("Function \"get\" has been misused with a "+elem.nodeName+" element. This should not have happened!");
+	
+	}
+}
+
+
+
+function g_value(id){
+
+	return document.getElementById(id).options[document.getElementById(id).options.selectedIndex].value;
+
+}
+
+
+function GetIndexFromResourceID(resource_id){
+
+	for (var s=0;s<sessions.length;s++){
+	
+		for (var r=0; r<sessions[s].resources.writtenResources.length; r++){
+	
+			if (sessions[s].resources.writtenResources[r].id == resource_id){
+				return r;
+			}
+		
+		}
+		
+		for (var r=0; r<sessions[s].resources.mediaFiles.length; r++){
+	
+			if (sessions[s].resources.mediaFiles[r].id == resource_id){
+				return r;
+			}
+		
+		}
+	
+	
+	
+	}
+
+
+}
+
+
+function g(id){
+
+	return document.getElementById(id);
+
+}
+
+
+
+
 function randomString(length, chars) {
 	var result = '';
 	for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
@@ -34,440 +141,11 @@ function remove_invalid_chars(string){
 }
 
 
-function get_selected_radio_index(radios){
-
-
-	for (var r=0; r< radios.length; r++){
-	
-		if (radios[r].checked == true){
-		
-			return r;
-		
-		}
-	
-	}
-	
-	return 0;
-
-}
-
-
-function set_radio_index(radios, index){
-
-	if ((!index) || (typeof index == "undefined")){
-		var index = 0;
-	}
-
-	radios[index].checked = true;
-
-}
-
-
 function calcAgeAtDate(dateString,birthDate) {
 	
 	var date = +new Date(dateString);
 	var birthday = +new Date(birthDate);
 	return ~~((date - birthday) / (31557600000));
-}
-
-
-function set_form_value(element_id,value){
-
-	var element = g(element_id);
-
-	if (element.nodeName == "SELECT"){
-	
-		var options = [];
-		
-		for (var o=0;o<element.options.length;o++){
-		
-			options.push(element.options[o].value);
-		
-		
-		}
-		
-		if (options.indexOf(value) == -1){
-	
-			console.log("Now i should change the nodename of the object.");
-			
-			var new_element = change_ov_input(element_id, options);
-			
-			new_element.value = value;
-		
-		}
-		
-		else {
-		
-			element.value = value;
-			
-		}
-	
-	}
-	
-	else {
-	
-		element.value = value;
-	
-	}
-
-}
-
-
-function make_text_input(parent,title,name,id,value,hover){
-
-	if (!hover){
-		var hover = "";
-	}
-	
-	var span = document.createElement("span");
-	span.title = hover;
-	span.innerHTML = title;
-	
-	parent.appendChild(span);
-	parent.appendChild(document.createElement("br"));
-	
-	var input = document.createElement("input");
-	input.type = "text";
-	input.name = name;
-	input.id = id;
-	input.value = value;
-	input.title = hover;
-	
-	parent.appendChild(input);
-	
-	parent.appendChild(document.createElement("br"));
-
-	return input;	
-	
-}
-
-
-
-
-function make_checkbox(parent,title,name,id,checked,hover){
-
-	if (!hover){
-		var hover = "";
-	}
-	
-	var input = document.createElement("input");
-	input.type = "checkbox";
-	input.name = name;
-	input.id = id;
-	input.checked = checked;
-	input.title = hover;
-	
-	parent.appendChild(input);
-	
-	var span = new_element("span","","",parent,title);
-	span.title = hover;
-
-	parent.appendChild(document.createElement("br"));
-
-	return input;	
-	
-}
-
-
-function open_vocabulary(parent, title, name, id, size, options, value, hover){
-
-	if (!hover){
-		var hover = "";
-	}
-
-	var span = new_element("span","","",parent,title);
-	span.title = hover;
-	
-	parent.appendChild(document.createElement("br"));
-
-
-	var select = document.createElement("select");
-	select.name = name;
-	select.id = id;
-	select.size = size;
-	select.title = hover;
-	
-	for (var o=0; o<options.length; o++){
-	
-		NewOption = new Option(options[o], options[o], false, true);
-		select.options[select.options.length] = NewOption;
-	}
-	
-	if (options.indexOf(value) != -1) {
-		select.selectedIndex = options.indexOf(value);
-	}
-	
-	else {
-		select.selectedIndex = 0;
-	}
-
-
-	var input = document.createElement("input");
-	input.name = name;
-	input.id = id;
-	input.type = "text";
-	input.title = hover;
-	
-
-	if ((value == "") || (options.indexOf(value) !=-1)) {	
-		parent.appendChild(select);
-	}
-	
-	else {
-		input.value = value;
-		parent.appendChild(input);
-	}
-	
-	var img = new_element("img","","edit_img",parent);
-	img.src = path_to_images + "icons/textedit.png";
-	img.alt = "Custom Property";
-	img.title = "Custom Property";
-
-	
-	
-	img.addEventListener("click", function(){
-		
-		if (document.contains(select)){
-			remove_element(select);
-			parent.insertBefore(input,img);
-		}
-		
-		else {
-			remove_element(img.previousSibling);
-			parent.insertBefore(select,img);
-		}
-	
-	} );
-
-
-	parent.appendChild(document.createElement("br"));	
-
-}
-
-
-function copy_field(target_element_name,source_element_name){
-
-	var value = get(source_element_name);
-	
-	var source_element = document.getElementsByName(source_element_name)[0];
-	var target_element = document.getElementsByName(target_element_name)[0];
-	
-	
-	if (source_element.nodeName != target_element.nodeName){
-	
-		if (source_element.nodeName == "SELECT"){
-	
-			var options = getOptionValuesOfSelect(source_element);
-		}
-
-
-	
-		var new_e = document.createElement(source_element.nodeName);
-		new_e.name = target_element.name;
-		new_e.className = target_element.className;
-
-		target_element.parentNode.insertBefore(new_e,target_element);	
-		remove_element(target_element);
-	
-		if (new_e.nodeName == "SELECT"){
-	
-		
-	
-			for (var o=0; o<options.length; o++){
-	
-				NewOption = new Option(options[o], options[o], false, true);
-				new_e.options[new_e.options.length] = NewOption;
-			}
-	
-			new_e.selectedIndex = options.indexOf(value);
-	
-		}
-		
-		else {
-		
-			new_e.value = value;
-		}
-		
-	}
-	
-	else {
-
-		target_element.value = value;
-	
-	}
-	
-}
-
-
-function change_ov_input(id, options){
-
-	var object = g(id);
-	
-	
-	if (object.nodeName == "SELECT"){
-
-		var new_object = document.createElement("input");
-		new_object.type = "text";
-	
-	}
-
-	else {
-	
-		var new_object = document.createElement("select");
-		
-		
-		for (var o=0; o<options.length;o++){
-		
-			NewOption = new Option(options[o], options[o], false, true);
-			new_object.options[new_object.options.length] = NewOption;
-		
-		
-		}
-		
-		new_object.selectedIndex = 0;
-	
-	}
-	
-	new_object.id = object.id;
-	new_object.name = object.name;
-	new_object.className = object.className;
-
-	object.parentNode.insertBefore(new_object,object);
-	
-	remove_element(object);
-	
-	return new_object;
-	
-}
-
-
-function make_select(parent, title, name, id, size, options, value, hover){
-	//parameters: parent to append to, title, name of element, id of element, size, array of options
-	
-	if (!hover){
-		var hover = "";
-	}
-
-	var span = document.createElement("span");
-	span.innerHTML = title;
-	span.title = hover;
-	
-	parent.appendChild(span);
-	parent.appendChild(document.createElement("br"));
-	
-	var select = document.createElement("select");
-	select.name = name;
-	select.id = id;
-	select.size = size;
-	select.title = hover;
-	
-	parent.appendChild(select);
-	
-	parent.appendChild(document.createElement("br"));
-
-	for (var o=0; o<options.length; o++){
-	
-		NewOption = new Option(options[o], options[o], false, true);
-		select.options[select.options.length] = NewOption;
-	}
-
-	if (value !=0){
-		select.selectedIndex = options.indexOf(value);
-	}
-	
-	else {
-		select.selectedIndex = 0;
-	
-	}
-
-	
-
-	return select;	
-
-}
-
-
-function make_date_input(parent, title, name_prefix, id_prefix, y_value, m_value, d_value, hover){
-
-	if (!hover){
-		var hover = "";
-	}
-
-	var span = document.createElement("span");
-	span.innerHTML = title;
-	span.title = hover;
-	
-	parent.appendChild(span);
-	
-	span.appendChild(document.createElement("br"));
-	
-	var y_input = document.createElement("input");
-	y_input.name = name_prefix+"_year";
-	y_input.id = id_prefix+"_year";
-	y_input.className = "YearInput";
-	y_input.value = (y_value != "") ? y_value : "YYYY";
-	y_input.title = hover;
-	parent.appendChild(y_input);
-	
-	var span2 = document.createElement("span")
-	parent.appendChild(span2);
-	span2.innerHTML = " ";
-	
-	var m_input = document.createElement("input");
-	m_input.name = name_prefix+"_month";
-	m_input.id = id_prefix+"_month";
-	m_input.className = "MonthInput";
-	m_input.value = (m_value != "") ? m_value : "MM";
-	m_input.title = hover;
-	parent.appendChild(m_input);
-	
-	
-	var span2 = document.createElement("span")
-	parent.appendChild(span2);
-	span2.innerHTML = " ";
-	span2.title = hover;
-	
-	var d_input = document.createElement("input");
-	d_input.name = name_prefix+"_day";
-	d_input.id = id_prefix+"_day";
-	d_input.className = "DayInput";
-	d_input.value = (d_value != "") ? d_value : "DD";
-	d_input.title = hover;
-	parent.appendChild(d_input);
-	
-	parent.appendChild(document.createElement("br"));
-	
-}
-
-
-function make_textarea(t_cols,t_rows,parent,title,t_name,t_id,t_class,t_value, hover){
-
-	if (!hover){
-		var hover = "";
-	}
-	
-	var span = document.createElement("span");
-	span.innerHTML = title;
-	span.title= hover;
-	
-	parent.appendChild(span);
-	parent.appendChild(document.createElement("br"));
-	
-	var textarea = document.createElement("textarea");
-	textarea.name = t_name;
-	textarea.id = t_id;
-	textarea.value = t_value;
-	textarea.cols = t_cols;
-	textarea.rows = t_rows;
-	textarea.className = t_class;
-	textarea.title = hover;
-	
-	parent.appendChild(textarea);
-	
-	parent.appendChild(document.createElement("br"));	
-	
-	return textarea;
-	
 }
 
 
@@ -512,14 +190,6 @@ function RemoveEndingFromFilename(filename){
 	var pos_of_dot = filename.lastIndexOf(".");
 	
 	return filename.slice(0,pos_of_dot);
-
-}
-
-
-function create_textarea(id, className, rows, cols, containing_string){
-    
-    var return_string = "<textarea id=\""+id+"\" class=\""+className+"\" rows=\""+rows+"\" cols=\""+cols+"\">"+containing_string+"\n</textarea>";
-    return return_string;
 
 }
 
@@ -619,46 +289,6 @@ function bytesToSize(bytes, precision){
 }
 
 
-function new_element(element_tag,element_id,element_class,parent_to_append_to,innerHTML){
-
-	var element = document.createElement(element_tag);
-	
-	if (element_id != ""){
-		element.id = element_id;
-	}
-	
-	if (element_class != ""){
-		element.className = element_class;
-	}
-	
-	parent_to_append_to.appendChild(element);
-
-	if (innerHTML){
-	
-		element.innerHTML = innerHTML;
-	
-	}
-	
-	return element;
-}
-
-
-function remove(id){
-
-	console.log("Trying to remove element with id " + id);
-	
-    return (elem=document.getElementById(id)).parentNode.removeChild(elem);
-	
-}
-
-
-function remove_element(elem){
-
-	//console.log("Trying to remove element " + elem);
-	
-    return elem.parentNode.removeChild(elem);
-	
-}
 
 
 function get_file_type(filename){
@@ -719,19 +349,9 @@ function get_file_type(filename){
 	return fileinfo;
 }
 
-function hard_reset(){
-
-	localStorage.removeItem("actors");
-	localStorage.removeItem("form");
-	localStorage.removeItem("first_start");
-	location.reload();
-
-
-}
-
-
 
 function parseDate(str){
+
 	var t = str.match(/([1-2][0-9][0-9][0-9])\-([0-1][0-9])\-([0-3][0-9])/);
 	
 	if(t!==null){
@@ -754,7 +374,6 @@ function parseDate(str){
 	
 	return null;
 }
-
 
 
 function parse_birth_date(string){
@@ -784,66 +403,5 @@ function parse_birth_date(string){
 	
 	
 	return object;
-
-}
-
-
-function make_new_session_object(){
-
-	var session_object = {
-	
-		session: {
-		
-			name: "",
-		
-			date: {
-				year: "",
-				month: "",
-				day: ""
-			},	
-
-			location: {
-				continent: ""
-			},			
-		
-		},
-	
-		id: null,
-
-
-		project: {
-		
-			contact: {},
-		
-		},
-		
-		content: {
-		
-			communication_context: {}
-		
-		},
-		
-		actors: {
-			description: "",
-			actors: []
-			//which actors are in this session?
-			//Ex.: [21, 36];  //I. e. Session contains actor_ids 21 and 36
-		},
-	
-		resources: {
-		
-			writtenResources: [],
-			//values represent resource ids in respective session	
-		
-			mediaFiles: []
-			//values represent resource ids in respective session
-			
-		},
-		
-		expanded: false
-
-	};
-	
-	return session_object;
 
 }
