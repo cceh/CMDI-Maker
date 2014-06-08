@@ -58,14 +58,14 @@ img/logos/LOGO_SOAS.png
 javascript/actors.js
 javascript/actor_languages.js
 javascript/alertify.min.js
+javascript/app.js
 javascript/cmdi_generator.js
 javascript/content_languages.js
+javascript/dom.js
 javascript/FileSaver.js
-javascript/app.js
 javascript/helpers.js
 javascript/imdi_form.js
 javascript/imdi_generator.js
-javascript/interface.js
 javascript/LanguageIndex.js
 javascript/listeners.js
 javascript/output.js
