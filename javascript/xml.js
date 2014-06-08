@@ -25,7 +25,7 @@ var xml = (function () {
 	my.tab = 0;
 	
 
-	var tag = function(name,mode,keys){   //keys as array
+	my.tag = function(name,mode,keys){   //keys as array
 		//mode 0 = opening tag
 		//mode 1 = closing tag
 		//mode 2 = self-closing tag
@@ -103,28 +103,25 @@ var xml = (function () {
 		
 	}
 
-	var element = function (name,value,keys){
+	my.element = function (name,value,keys){
 		
 		var return_string="";
 	
 		if (value != ""){
 		
-			return_string+=tag(name,0,keys);
+			return_string+=my.tag(name,0,keys);
 			return_string+=value;
-			return_string+=tag(name,1);
+			return_string+=my.tag(name,1);
 		
 		}
 	
 		else {
-			return_string+=xml.tag(name,2,keys);
+			return_string+=my.tag(name,2,keys);
 		}
 		
 		return return_string;
 		
 	}
-	
-	my.tag = tag;
-	my.element = element;
 	
 	return my;
 	
