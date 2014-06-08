@@ -17,7 +17,7 @@ limitations under the License.
 
 function add_event_listeners() {
 
-	g('link_lets_go').addEventListener('click', function() {        APP.view("corpus");      });
+	g('link_lets_go').addEventListener('click', function() {        APP.view("VIEW_corpus");      });
 
 	// Views
 	g('start_window_icon').addEventListener('click', function() {        APP.view("start");      });

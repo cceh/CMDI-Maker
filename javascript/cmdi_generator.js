@@ -409,10 +409,10 @@ var cmdi_generator = function(){
 		return_string+=xml.tag("Resources",0);
 
 		//Resource Proxy List contains other CMDI files, e.g. CMDI sessions, if this is a corpus
-		if (sessions.length > 0){
+		if (session.sessions.length > 0){
 			return_string+=xml.tag("ResourceProxyList",0);
 			
-			for (var i=1;i<=sessions.length;i++){  
+			for (var i=1;i<=session.sessions.length;i++){  
 			
 				IDREFS.push(createIDREFS());
 				
