@@ -166,7 +166,7 @@ var resources = (function(){
 
 		my.available_resources = sortByKey(my.available_resources,0);
 
-		refreshFileListDisplay();
+		my.refreshFileListDisplay();
 	}
   
 

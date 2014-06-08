@@ -53,8 +53,8 @@ function add_event_listeners() {
 	g('link_export_corpus').addEventListener('click', function() { output.export_corpus(); });
 	g('link_settings').addEventListener('click', function() {        APP.view("settings");      });
 	g('link_about').addEventListener('click', function() {        APP.view("about");      });
-	g('link_clear_file_list').addEventListener('click', function() {clear_file_list(); });
-	g('link_sort_alphabetically').addEventListener('click', function() {sort_alphabetically(); });
+	g('link_clear_file_list').addEventListener('click', function() {resources.clearFileList(); });
+	g('link_sort_alphabetically').addEventListener('click', function() {resources.sortAlphabetically(); });
 	g('link_save_active_actor').addEventListener('click', function() {actor.save_active_actor(); });
 	g('link_delete_active_actor').addEventListener('click', function() {actor.delete_active_actor(); });
 	g("link_sort_actors_alphabetically").addEventListener('click', function() {actor.sort_actors_alphabetically(); });

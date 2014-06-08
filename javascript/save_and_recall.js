@@ -168,7 +168,7 @@ var save_and_recall = (function(){
 			object.active_view = "default";
 		}
 		
-		object.available_resources = available_resources;
+		object.available_resources = resources.available_resources;
 		
 		for (var s=0; s<session.sessions.length; s++){
 		
