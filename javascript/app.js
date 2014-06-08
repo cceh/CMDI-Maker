@@ -483,7 +483,7 @@ var APP = (function () {
 					
 						g("link_export_corpus").style.display = "inline";
 			
-						generate();
+						output.generate();
 					
 					}
 					
@@ -554,6 +554,16 @@ var APP = (function () {
 			}
 			
 		}
+	}
+	
+	
+	my.save_file = function (text, filename, mime_type){
+
+		var clean_filename = remove_invalid_chars(filename);
+
+		var blob = new Blob([text], {type: mime_type});
+		saveAs(blob, clean_filename);
+
 	}
 	
 	return my;

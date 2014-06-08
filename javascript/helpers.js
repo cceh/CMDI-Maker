@@ -350,6 +350,72 @@ function get_file_type(filename){
 }
 
 
+function is_corpus_properly_named(){
+
+	if (get("corpus_name") == ""){
+		
+		return false;
+		
+	}
+	
+	for (var c=0; c<not_allowed_chars.length; c++){
+	
+		if (get("corpus_name").indexOf(not_allowed_chars[c]) != -1){
+		
+			return false;
+			
+		}
+	
+	}
+
+	return true;
+
+}
+
+
+function get_actors_age(session, actor_id){
+
+	var i = actor.getActorsIndexFromID(actor_id);
+	
+	if (actors[i].age == ""){   //at first, check, if actor's age hasn't been specified yet
+	
+		if (document.metadata_form.radio_age_calc[0].checked == true){  //then, check if auto calculate feature in settings is activated
+			
+			var birthDate = actors[i].birth_date.year + "-" + actors[i].birth_date.month + "-" + actors[i].birth_date.day;
+			var sessionDate = get(session_dom_element_prefix+session+"_session_date_year") + "-" + get(session_dom_element_prefix+session+"_session_date_month") + "-" + get(session_dom_element_prefix+session+"_session_date_day"); 
+			var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
+			
+			if (age_calc_result != 0){
+			
+				console.log("Actor's age successfully calculated");			
+				return age_calc_result;
+		
+			}
+			
+			else {  //if age calc = 0, age could not be calculated
+			
+				return "Unspecified";
+			
+			}
+			
+		}
+		
+		else {	//if feature is activated, but age has not been specified
+		
+			return "Unspecified";
+		
+		}
+	}
+	
+	else { //if actor's age has been specified
+	
+		return actors[i].age;
+	
+	}
+
+}
+
+
 function parseDate(str){
 
 	var t = str.match(/([1-2][0-9][0-9][0-9])\-([0-1][0-9])\-([0-3][0-9])/);

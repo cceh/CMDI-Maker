@@ -120,6 +120,7 @@ var save_and_recall = (function(){
 	my.delete_recall_data = function(){
 
 		localStorage.removeItem("form");
+		alertify.log("Recall data deleted","",5000);
 
 	}
 

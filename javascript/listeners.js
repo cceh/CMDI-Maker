@@ -56,7 +56,7 @@ function add_event_listeners() {
 		save_and_recall.save_form();
 		alertify.log("Form saved","",5000);
 	});	
-	g('link_export_corpus').addEventListener('click', function() {export_corpus(); });
+	g('link_export_corpus').addEventListener('click', function() { output.export_corpus(); });
 	g('link_settings').addEventListener('click', function() {        APP.view("settings");      });
 	g('link_about').addEventListener('click', function() {        APP.view("about");      });
 	g('link_clear_file_list').addEventListener('click', function() {clear_file_list(); });
@@ -88,8 +88,8 @@ function add_event_listeners() {
 	document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
 	document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
 	
-	g('link_erase_actors_database').addEventListener('click', function() {        erase_actor_database();      });
-	g('link_delete_recall_data').addEventListener('click', function() {        delete_recall_data();      });
+	g('link_erase_actors_database').addEventListener('click', function() {        actor.erase_database();      });
+	g('link_delete_recall_data').addEventListener('click', function() {        save_and_recall.delete_recall_data();      });
 	g('link_hard_reset').addEventListener('click', function() {    
 
 		alertify.set({ labels: {

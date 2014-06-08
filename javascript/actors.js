@@ -44,7 +44,7 @@ var actor = (function(){
 				localStorage.setItem("actors","[]");
 
 				alertify.log("Actor Database deleted", "", "5000");
-				GetActorsFromWebStorage();
+				my.get_actors_from_web_storage();
 	  
 				for (var s=0;s<sessions.length;s++){
 					RemoveAllActorsFromSession(session.sessions[s].id);
