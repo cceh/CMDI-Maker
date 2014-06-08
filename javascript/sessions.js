@@ -398,6 +398,35 @@ var session = (function () {
 
 
 	}
+	
+	
+	my.getIndexFromResourceID = function (resource_id){
+
+		for (var s=0;s<session.sessions.length;s++){
+		
+			for (var r=0; r<session.sessions[s].resources.writtenResources.length; r++){
+		
+				if (session.sessions[s].resources.writtenResources[r].id == resource_id){
+					return r;
+				}
+			
+			}
+			
+			for (var r=0; r<session.sessions[s].resources.mediaFiles.length; r++){
+		
+				if (session.sessions[s].resources.mediaFiles[r].id == resource_id){
+					return r;
+				}
+			
+			}
+		
+		
+		
+		}
+
+
+	}
+	
 
 	my.displayNoSessionText = function(){
 
@@ -716,13 +745,13 @@ var session = (function () {
 
 		if (ids_of_sessions_written_resources.indexOf(resource_id) != -1){
 
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.splice(GetIndexFromResourceID(resource_id),1);
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
 		if (ids_of_sessions_media_files.indexOf(resource_id) != -1){
 
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.splice(GetIndexFromResourceID(resource_id),1);
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		

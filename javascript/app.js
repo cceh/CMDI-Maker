@@ -588,7 +588,12 @@ var APP = (function () {
 
 			dom.newElement("br","","",icon);
 			dom.newElement("span","","",icon,workflow[w].title);
-		
+			
+			icon.addEventListener('click', function(num) {
+				return function(){
+					APP.view(num);
+				}
+			}(workflow[w].view));
 		}
 	
 	}

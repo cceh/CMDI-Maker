@@ -86,34 +86,6 @@ function g_value(id){
 }
 
 
-function GetIndexFromResourceID(resource_id){
-
-	for (var s=0;s<sessions.length;s++){
-	
-		for (var r=0; r<sessions[s].resources.writtenResources.length; r++){
-	
-			if (sessions[s].resources.writtenResources[r].id == resource_id){
-				return r;
-			}
-		
-		}
-		
-		for (var r=0; r<sessions[s].resources.mediaFiles.length; r++){
-	
-			if (sessions[s].resources.mediaFiles[r].id == resource_id){
-				return r;
-			}
-		
-		}
-	
-	
-	
-	}
-
-
-}
-
-
 function g(id){
 
 	return document.getElementById(id);
@@ -299,46 +271,46 @@ function get_file_type(filename){
 		mimetype: "Unknown"
 	};
 	
-	var list = a(valid_lamus_written_resource_file_types,0);
+	var list = a(file_types.valid_lamus_written_resource_file_types,0);
 	var pos = list.indexOf(fileending);
 	
 	if (list.indexOf(fileending) != -1){
 	
-		fileinfo.type = valid_lamus_written_resource_file_types[pos][2];
-		fileinfo.mimetype = valid_lamus_written_resource_file_types[pos][1];
+		fileinfo.type = file_types.valid_lamus_written_resource_file_types[pos][2];
+		fileinfo.mimetype = file_types.valid_lamus_written_resource_file_types[pos][1];
 		return fileinfo;
 	
 	}
 	
-	list = a(valid_lamus_media_file_types,0);
+	list = a(file_types.valid_lamus_media_file_types,0);
 	pos = list.indexOf(fileending);
 	
 	if (list.indexOf(fileending) != -1){
 	
-		fileinfo.type = valid_lamus_media_file_types[pos][2];
-		fileinfo.mimetype = valid_lamus_media_file_types[pos][1];
+		fileinfo.type = file_types.valid_lamus_media_file_types[pos][2];
+		fileinfo.mimetype = file_types.valid_lamus_media_file_types[pos][1];
 		return fileinfo;
 	
 	}
 	
-	list = a(invalid_lamus_media_file_types,0);
+	list = a(file_types.invalid_lamus_media_file_types,0);
 	pos = list.indexOf(fileending);
 	
 	if (pos != -1){
 	
-		fileinfo.type = invalid_lamus_media_file_types[pos][2];
-		fileinfo.mimetype = invalid_lamus_media_file_types[pos][1];
+		fileinfo.type = file_types.invalid_lamus_media_file_types[pos][2];
+		fileinfo.mimetype = file_types.invalid_lamus_media_file_types[pos][1];
 		return fileinfo;
 	
 	}
 	
-	list = a(invalid_lamus_written_resource_file_types,0);
+	list = a(file_types.invalid_lamus_written_resource_file_types,0);
 	pos = list.indexOf(fileending);
 	
 	if (pos != -1){
 	
-		fileinfo.type = invalid_lamus_written_resource_file_types[pos][2];
-		fileinfo.mimetype = invalid_lamus_written_resource_file_types[pos][1];
+		fileinfo.type = file_types.invalid_lamus_written_resource_file_types[pos][2];
+		fileinfo.mimetype = file_types.invalid_lamus_written_resource_file_types[pos][1];
 		return fileinfo;
 	
 	}
