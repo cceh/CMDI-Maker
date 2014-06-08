@@ -218,12 +218,12 @@ var dom = (function() {
 		img.addEventListener("click", function(){
 			
 			if (document.contains(select)){
-				remove_element(select);
+				my.removeElement(select);
 				parent.insertBefore(input,img);
 			}
 			
 			else {
-				remove_element(img.previousSibling);
+				my.removeElement(img.previousSibling);
 				parent.insertBefore(select,img);
 			}
 		

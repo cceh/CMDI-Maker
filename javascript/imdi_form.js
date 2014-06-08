@@ -488,3 +488,36 @@ function make_new_session_object(){
 	return session_object;
 
 }
+
+var imdi_workflow = [
+	{
+		id: "corpus",
+		title: "Corpus",
+		view: "VIEW_corpus",
+		icon: "box.png"
+	},
+	{
+		id: "resources",
+		title: "Resources",
+		view: "VIEW_resources",
+		icon: "blocks.png"
+	},
+	{
+		id: "actors",
+		title: "Actors",
+		view: "VIEW_actors",
+		icon: "user.png"
+	},
+	{
+		id: "sessions",
+		title: "Sessions",
+		view: "VIEW_sessions",
+		icon: "edit.png"
+	},
+	{
+		id: "xml_output",
+		title: "XML Output",
+		view: "VIEW_xml_output",
+		icon: "data.png"
+	}
+];

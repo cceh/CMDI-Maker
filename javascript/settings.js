@@ -21,12 +21,14 @@ var LanguageCodePrefix = "ISO639-3:";
 var path_to_images = "img/";
 var path_to_icons = path_to_images + "icons/";
 
+
 var output_formats = [
 	{
 		title: "IMDI",
 		name: "imdi",
 		file_ending: "imdi",
 		output_name: "IMDI",
+		workflow: imdi_workflow,
 		generator_object: imdi_generator,
 		form: session_form,
 		actor_form: actor_form_imdi
@@ -36,6 +38,7 @@ var output_formats = [
 		name: "cmdi-imdi",
 		file_ending: "cmdi",
 		output_name: "CMDI",
+		workflow: imdi_workflow,
 		generator_object: cmdi_generator,
 		form: session_form,
 		actor_form: actor_form_imdi
@@ -56,6 +59,7 @@ var highlight_color = "skyblue";
 
 var session_dom_element_prefix = "session_";
 var copy_checkbox_element_prefix = "copy_check_";
+var view_id_prefix = "VIEWLINK_";
 
 var compatibility_warnings = {
 	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
@@ -168,12 +172,17 @@ var counters = {
 
 var preset_data;
 
+var workflow = imdi_workflow; //preliminary!!!
+
 var available_resources = [];
 // 0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
 // this array only contains file metadata retrieved by file upload form / drag and drop
   
 document.addEventListener('DOMContentLoaded', function() {
-
+	
+	
+	
+	APP.createWorkflow(workflow);
 	APP.view("wait");
 	g("version_span").innerHTML = version;
 	

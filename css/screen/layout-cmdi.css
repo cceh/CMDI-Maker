@@ -76,12 +76,6 @@ height: 16px;
 }
 
 
-#start, #sessions, #actors, #xml_window, #media_files, #settings, #about{
-
-display: none;
-
-}
-
 #actors{
 
 left: 0px;
@@ -357,14 +351,14 @@ margin-right: 10px;
 
 }
 
-#corpus h1, #lang_search_div h1{
+#VIEW_corpus h1, #lang_search_div h1{
 
 margin: 0px;
 padding: 5px;
 
 }
 
-#corpus p, #lang_search_div p{
+#VIEW_corpus p, #lang_search_div p{
 
 padding-left: 10px;
 

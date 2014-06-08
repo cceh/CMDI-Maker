@@ -378,7 +378,8 @@ var APP = (function () {
 			id = "start";
 		}
 		
-		var views = ["wait", "start", "corpus", "sessions", "media_files", "xml", "settings", "about", "actors"];
+		var views = ["wait", "start", "VIEW_corpus", "VIEW_sessions",
+		"VIEW_resources", "VIEW_xml_output", "settings", "about", "VIEW_actors"];
 		
 		if (views.indexOf(id) == -1){
 			console.log("Error: Unkown view requested (" + id +")!");
@@ -388,20 +389,21 @@ var APP = (function () {
 		
 		my.active_view = id;
 		
+		//make all views invisible
 		for (var v=0; v<views.length; v++){
 			g(views[v]).style.display = "none";
 		}
 
 		g("start_window_icon").style.backgroundColor = "";
-		g("corpus_window_icon").style.backgroundColor = "";
-		g("sessions_window_icon").style.backgroundColor = "";
-		g("manage_actors_icon").style.backgroundColor = "";
-		g("manage_media_files_icon").style.backgroundColor = "";
-		g("xml_output_icon").style.backgroundColor = "";
+		
+		//unhighlight all workflow icons
+		for (var w=0; w<workflow.length; w++){
+			g(view_id_prefix + workflow[w].id).style.backgroundColor = "";
+		}
+		
 		g("link_settings").style.backgroundColor = "";
 		g("link_about").style.backgroundColor = "";
 
-		
 		g("link_newSession").style.display = "none";
 		g("link_save_form").style.display = "none";
 		g("link_reset_form").style.display = "none";
@@ -417,6 +419,7 @@ var APP = (function () {
 		
 		g("module_icons").style.display = "block";
 		
+		//make the selected view visible
 		g(id).style.display = "block";
 		
 		switch (id){
@@ -433,9 +436,9 @@ var APP = (function () {
 			}
 			
 			
-			case "corpus": {
+			case "VIEW_corpus": {
 			
-				g("corpus_window_icon").style.backgroundColor = highlight_color;
+				g(view_id_prefix + "corpus").style.backgroundColor = highlight_color;
 				
 				g("link_save_form").style.display = "inline";
 				g("link_reset_form").style.display = "inline";
@@ -443,11 +446,10 @@ var APP = (function () {
 				break;
 			}
 
-			case "sessions": {
-				g('sessions').scrollTop = 0;
+			case "VIEW_sessions": {
+				g('VIEW_sessions').scrollTop = 0;
 				
-				g("sessions_window_icon").style.backgroundColor = highlight_color;
-				
+				g(view_id_prefix + "sessions").style.backgroundColor = highlight_color;
 				
 				g("link_newSession").style.display = "inline";
 				g("link_save_form").style.display = "inline";
@@ -457,9 +459,9 @@ var APP = (function () {
 				break;
 			}
 
-			case "actors": {
+			case "VIEW_actors": {
 				
-				g("manage_actors_icon").style.backgroundColor = highlight_color;
+				g(view_id_prefix + "actors").style.backgroundColor = highlight_color;
 				
 				g("link_save_active_actor").style.display = "inline";
 				
@@ -473,13 +475,13 @@ var APP = (function () {
 				break;
 			}
 		
-			case "xml": {
+			case "VIEW_xml_output": {
 			
 				if ((is_corpus_properly_named()) && (session.areAllSessionsProperlyNamed())){
 				
 					if (session.doesEverySessionHaveAProjectName()){
 
-						g("xml_output_icon").style.backgroundColor = highlight_color;
+						g(view_id_prefix + "xml_output").style.backgroundColor = highlight_color;
 					
 						g("link_export_corpus").style.display = "inline";
 			
@@ -495,7 +497,7 @@ var APP = (function () {
 					
 						alertify.alert("Every session must have a project name!");
 					
-						my.view("sessions");
+						my.view("VIEW_sessions");
 					
 					
 					}
@@ -512,11 +514,11 @@ var APP = (function () {
 					alertify.alert("The corpus and every session must have a proper name.<br>An unnamed corpus or sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
 					
 					if (!is_corpus_properly_named()){   //show corpus
-						my.view("corpus");
+						my.view("VIEW_corpus");
 					}
 					
 					else {  //show sessions
-						my.view("sessions");
+						my.view("VIEW_sessions");
 					}
 				}
 				
@@ -524,11 +526,11 @@ var APP = (function () {
 				
 			}
 
-			case "media_files": {
+			case "VIEW_resources": {
 
-				g('media_files').scrollTop = 0;
+				g('VIEW_resources').scrollTop = 0;
 				
-				g("manage_media_files_icon").style.backgroundColor = highlight_color;
+				g(view_id_prefix + "resources").style.backgroundColor = highlight_color;
 				
 				g("crps_icon").style.display = "inline";
 				g("link_clear_file_list").style.display = "inline";
@@ -564,6 +566,31 @@ var APP = (function () {
 		var blob = new Blob([text], {type: mime_type});
 		saveAs(blob, clean_filename);
 
+	}
+	
+	my.createWorkflow = function (workflow){
+	
+		var div = g("module_icons");
+	
+		for (var w=0; w<workflow.length; w++){
+		
+			if (w!=0){
+			
+				var arrow = dom.newElement("div","","wizard_arrow",div);
+				var image = dom.newElement("img","","wizard_icon",arrow);
+				image.src = path_to_icons + "right2.png";
+			
+			}
+			
+			var icon = dom.newElement("div",view_id_prefix + workflow[w].id,"icon_div",div);
+			var image = dom.newElement("img","","module_icon",icon);
+			image.src = path_to_icons + workflow[w].icon;
+
+			dom.newElement("br","","",icon);
+			dom.newElement("span","","",icon,workflow[w].title);
+		
+		}
+	
 	}
 	
 	return my;

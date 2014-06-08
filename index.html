@@ -24,6 +24,7 @@
 	
 	
 	<!-- Core -->
+	<script src="javascript/helpers.js" type="text/javascript"></script>
 	<script src="javascript/sessions.js" type="text/javascript"></script>
 	<script src="javascript/settings.js" type="text/javascript"></script>
 	<script src="javascript/app.js" type="text/javascript"></script>
@@ -32,7 +33,6 @@
 	<script src="javascript/output.js" type="text/javascript"></script>
 	<script src="javascript/resource_files.js" type="text/javascript"></script>
 	<script src="javascript/save_and_recall.js" type="text/javascript"></script>
-	<script src="javascript/helpers.js" type="text/javascript"></script>
 	<script src="javascript/dom.js" type="text/javascript"></script>
 	<script src="javascript/actors.js" type="text/javascript"></script>
 
@@ -52,34 +52,6 @@
 			</div>
 			
 			<div class="module_icons" id="module_icons">
-				<div class="icon_div" id="corpus_window_icon">
-					<img class="module_icon" src="img/icons/box.png"><br>Corpus
-				</div>
-				<div class="wizard_arrow">
-					<img class="wizard_icon" src="img/icons/right2.png">
-				</div>					
-				<div class="icon_div" id="manage_media_files_icon">
-					<img class="module_icon" src="img/icons/blocks.png"><br>Resources
-				</div>
-				<div class="wizard_arrow">
-					<img class="wizard_icon" src="img/icons/right2.png">
-				</div>	
-				<div class="icon_div" id="manage_actors_icon">
-					<img class="module_icon" src="img/icons/user.png"><br>Actors
-				</div>
-				<div class="wizard_arrow">
-					<img class="wizard_icon" src="img/icons/right2.png">
-				</div>	
-				<div class="icon_div" id="sessions_window_icon">
-					<img class="module_icon" src="img/icons/edit.png"><br>Sessions
-				</div>		
-				<div class="wizard_arrow">
-					<img class="wizard_icon" src="img/icons/right2.png">
-				</div>	
-				<div class="icon_div" id="xml_output_icon">
-					<img class="module_icon" src="img/icons/data.png"><br>XML Output
-				</div>
-				
 				<a href="http://class.uni-koeln.de/"><img src="img/logos/LOGO_CLASS.png" class="header_logo"></a>
 			</div>
 			
@@ -138,7 +110,7 @@
 				
 			</div>
 			
-			<div class="content" id="corpus">
+			<div class="content" id="VIEW_corpus">
 	
 				<div id="corpus_form">
 					<h1>Corpus</h1>
@@ -176,7 +148,7 @@
 			</div>	
 
 		
-			<div class="content" id="media_files">
+			<div class="content" id="VIEW_resources">
 				<div id="files">
 					
 					<div id="drop_zone">
@@ -207,7 +179,7 @@
 			</div>
 			
 
-			<div class="content" id="actors">
+			<div class="content" id="VIEW_actors">
 		
 				<div id="ac_list"></div>	
 		
@@ -227,10 +199,10 @@
 		
 			</div>
 		
-			<div class="content" id="sessions">
+			<div class="content" id="VIEW_sessions">
 			</div>
 			
-			<div class="content" id="xml">
+			<div class="content" id="VIEW_xml_output">
 			</div>
 			
 			<div class="content" id="settings">

@@ -22,11 +22,14 @@ function add_event_listeners() {
 	// Views
 	g('start_window_icon').addEventListener('click', function() {        APP.view("start");      });
 	
-	g('corpus_window_icon').addEventListener('click', function() {        APP.view("corpus");      });
-	g('sessions_window_icon').addEventListener('click', function() {        APP.view("sessions");      });
-	g('manage_actors_icon').addEventListener('click', function() {        APP.view("actors");      });
-	g('manage_media_files_icon').addEventListener('click', function() {        APP.view("media_files");      });
-	g('xml_output_icon').addEventListener('click', function() {        APP.view("xml");      });
+	//Workflow views
+	for (var w=0; w<workflow.length; w++){
+		g(view_id_prefix + workflow[w].id).addEventListener('click', function(num) {
+			return function(){
+				APP.view(num);
+			}
+		}(workflow[w].view));
+	}
 	
 	// Functions
     g('link_reset_form').addEventListener('click', function() {        
@@ -71,7 +74,7 @@ function add_event_listeners() {
 	g('link_copy_sessions').addEventListener('mousedown', function() {        g('link_copy_sessions').style.backgroundColor = "black";      });
 	g('link_copy_sessions').addEventListener('mouseup', function() {        g('link_copy_sessions').style.backgroundColor = "";      });
 	
-	g('crps_icon').addEventListener('click', function() {        create_session_per_resource();  APP.view("sessions");     });
+	g('crps_icon').addEventListener('click', function() {        create_session_per_resource();  APP.view("VIEW_sessions");     });
 	
 	//this cannot be done with css
 	g('crps_icon').addEventListener('mousedown', function() {        g('crps_icon').style.backgroundColor = "black";      });

@@ -22,7 +22,7 @@ var output = (function (){
 
 	my.generate = function (){	
 		
-		var xml_window = g('xml');
+		var xml_window = g('xml_output');
 		
 		xml_window.innerHTML = "";
 		

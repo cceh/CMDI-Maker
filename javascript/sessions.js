@@ -78,9 +78,11 @@ var session = (function () {
 
 	my.newSession = function(session_object){
 
+		var sessions_view = g("VIEW_sessions");
+		
 		//remove no sessions message before drawing new session
 		if (my.sessions.length == 0) {
-			g("sessions").innerHTML = "";
+			sessions_view.innerHTML = "";
 		};
 
 		var session_id = my.id_counter;
@@ -101,7 +103,7 @@ var session = (function () {
 		session_object.expanded = session_expanded;
 		my.sessions.push(session_object);
 		
-		var session_div = dom.newElement('div','session'+session_id,'session_div',g('sessions')); 
+		var session_div = dom.newElement('div','session'+session_id,'session_div',sessions_view); 
 		//sessions_count is right! but it has to be clear which session in sessions has which session_id
 
 		var session_header = dom.newElement('div','session'+session_id+'_header','session_header',session_div);
@@ -386,7 +388,7 @@ var session = (function () {
 	my.erase = function (session_id){
 
 		var node = document.getElementById("session"+session_id);
-		g("sessions").removeChild(node);
+		g("VIEW_sessions").removeChild(node);
 		
 		my.sessions.splice(my.getSessionIndexFromID(session_id),1);
 		
@@ -401,9 +403,11 @@ var session = (function () {
 
 		console.log("Showing no session text");
 
-		g("sessions").innerHTML = "";
+		var sessions_view = g("VIEW_sessions");
+		
+		sessions_view.innerHTML = "";
 
-		var no_sessions_message = dom.newElement("h2","no_session_text","no_session_text",g("sessions"));
+		var no_sessions_message = dom.newElement("h2","no_session_text","no_session_text",sessions_view);
 		no_sessions_message.innerHTML = "This corpus contains no sessions yet. Why not ";
 
 		var new_session_link = dom.newElement("a","new_session_link","new_session_link",no_sessions_message);
@@ -416,7 +420,7 @@ var session = (function () {
 		g("new_session_link").addEventListener('click', function() {session.newSession(); });
 		//we have to use g here instead of no_sessions_link, because letter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
 		
-		g("sessions").scrollTop = 0;
+		sessions_view.scrollTop = 0;
 
 	}
 
