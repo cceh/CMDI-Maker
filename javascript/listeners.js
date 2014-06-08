@@ -44,7 +44,7 @@ function add_event_listeners() {
 	
 			else {
 				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-				reset_form();
+				APP.reset_form();
 				alertify.log("Form reset","",5000);
 				
 			}
