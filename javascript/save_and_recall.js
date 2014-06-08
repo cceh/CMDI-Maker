@@ -88,8 +88,8 @@ var save_and_recall = (function(){
 			
 		}
 		
-		available_resources = recall_object.available_resources;
-		refreshFileListDisplay();
+		resources.available_resources = recall_object.available_resources;
+		resources.refreshFileListDisplay();
 		my.fill_corpus(recall_object.corpus);
 		session.eraseAll();
 		

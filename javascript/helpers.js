@@ -260,6 +260,23 @@ function bytesToSize(bytes, precision){
 }
 
 
+function sortByKey(array, key) {
+
+    return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+
+        if (typeof x == "string")
+        {
+            x = x.toLowerCase(); 
+            y = y.toLowerCase();
+        }
+
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+} 
+
+
 function get_file_type(filename){
 
 	var index_of_dot = filename.lastIndexOf(".");

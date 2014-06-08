@@ -65,7 +65,7 @@ function add_event_listeners() {
 	g('link_copy_sessions').addEventListener('mousedown', function() {        g('link_copy_sessions').style.backgroundColor = "black";      });
 	g('link_copy_sessions').addEventListener('mouseup', function() {        g('link_copy_sessions').style.backgroundColor = "";      });
 	
-	g('crps_icon').addEventListener('click', function() {        create_session_per_resource();  APP.view("VIEW_sessions");     });
+	g('crps_icon').addEventListener('click', function() {        resources.createSessionPerResource();  APP.view("VIEW_sessions");     });
 	
 	//this cannot be done with css
 	g('crps_icon').addEventListener('mousedown', function() {        g('crps_icon').style.backgroundColor = "black";      });
@@ -149,10 +149,10 @@ function add_event_listeners() {
 	
 	// Setup the drag and drop listeners
 	var dropZone = document.getElementById('drop_zone');
-	dropZone.addEventListener('dragover', handleDragOver, false);
-	dropZone.addEventListener('drop', handleFileDrop, false);
+	dropZone.addEventListener('dragover', resources.handleDragOver, false);
+	dropZone.addEventListener('drop', resources.handleFileDrop, false);
   
-	document.getElementById('files_input').addEventListener('change', handleFileInputChange, false);
+	document.getElementById('files_input').addEventListener('change', resources.handleFileInputChange, false);
 	
 	document.onkeydown = function(event) {
 	
@@ -165,7 +165,7 @@ function add_event_listeners() {
 		
 		if (event.keyCode == 27)  {   //escape pressed
 		
-			deselect_all_files();
+			resources.deselectAllFiles();
 		
 		}
 	

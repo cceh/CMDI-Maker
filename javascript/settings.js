@@ -157,11 +157,8 @@ var hellos = [
 var new_page = true;
   
 var content_languages = [];
-
 var actors = [];
 
-var selected_files = [];
-var last_selected_file = -1;
 var shift = false;
 
 var counters = {
@@ -174,13 +171,8 @@ var preset_data;
 
 var workflow = imdi_workflow; //preliminary!!!
 
-var available_resources = [];
-// 0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
-// this array only contains file metadata retrieved by file upload form / drag and drop
   
 document.addEventListener('DOMContentLoaded', function() {
-	
-	
 	
 	APP.createWorkflow(workflow);
 	APP.view("wait");
@@ -192,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	actor.create_form();
 	actor.get_actors_from_web_storage();
 	save_and_recall.get_recall_data();
-	refreshFileListDisplay();
+	resources.refreshFileListDisplay();
 	APP.check_if_first_start();
 	APP.create_copy_session_options();
 	add_event_listeners();   //listeners.js  

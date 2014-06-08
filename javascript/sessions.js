@@ -27,14 +27,14 @@ var session = (function () {
 
 		var select = document.createElement("select");
 		
-		for (var i=0;i<available_resources.length;i++){ 
+		for (var i=0;i<resources.available_resources.length;i++){ 
 			
-			NewOption = new Option( available_resources[i][0], i, false, true);
+			NewOption = new Option( resources.available_resources[i][0], i, false, true);
 			select.options[select.options.length] = NewOption;		
 			
 		}
 
-		if (available_resources.length > 0){
+		if (resources.available_resources.length > 0){
 		
 			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(select);
 		
@@ -54,7 +54,7 @@ var session = (function () {
 			
 		}
 
-		if (available_resources.length == 0){
+		if (resources.available_resources.length == 0){
 		
 			var p = document.createElement("h5");
 			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(p);
@@ -67,7 +67,7 @@ var session = (function () {
 			p.appendChild(a);
 
 			a.addEventListener('click', function() { 
-				APP.view("media_files");
+				APP.view("VIEW_resources");
 			} );
 			
 		
@@ -554,33 +554,35 @@ var session = (function () {
 	// if resource_file_index is -1, a new empty field with no available media file is created
 	//if without_questions == true, no alerts will be thrown (e.g. when resources are added at start up)
 
-		if (resource_file_index >= available_resources.length){
+		if (resource_file_index >= resources.available_resources.length){
 			return;
 		}
 		
 		var resource_id = counters.resource_id;
 
-		if ((GetValidityOfFile(available_resources[resource_file_index][0]) == 0) || (GetValidityOfFile(available_resources[resource_file_index][0]) == 2)){
+		if ((resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 0)
+		|| (resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 2)){
 			//Media File
 		
 			var resource_type = "mf";
 		
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.push({
-				name: available_resources[resource_file_index][0],
-				size: available_resources[resource_file_index][2],
+				name: resources.available_resources[resource_file_index][0],
+				size: resources.available_resources[resource_file_index][2],
 				id: counters.resource_id,
 				resource_file_index: resource_file_index
 			});
 
 		}
 		
-		else if ((GetValidityOfFile(available_resources[resource_file_index][0]) == 1) || (GetValidityOfFile(available_resources[resource_file_index][0]) == 3)){
+		else if ((resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 1)
+		|| (resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 3)){
 		
 			var resource_type = "wr";
 		
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
-				name: available_resources[resource_file_index][0],
-				size: available_resources[resource_file_index][2],
+				name: resources.available_resources[resource_file_index][0],
+				size: resources.available_resources[resource_file_index][2],
 				id: counters.resource_id,
 				resource_file_index: resource_file_index
 			});
@@ -595,7 +597,7 @@ var session = (function () {
 					ok     : "OK",
 				} });
 		
-				alertify.alert("We have a problem.<br>I don't know if this file is a Media File or a Written Resource:<br>" + available_resources[resource_file_index][0] + 
+				alertify.alert("We have a problem.<br>I don't know if this file is a Media File or a Written Resource:<br>" + resources.available_resources[resource_file_index][0] + 
 				"<br>As for now, I will handle it as a written resource. But you really shouldn't do that");
 			
 			}
@@ -603,8 +605,8 @@ var session = (function () {
 			var resource_type = "wr";
 			
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
-				name: available_resources[resource_file_index][0],
-				size: available_resources[resource_file_index][2],
+				name: resources.available_resources[resource_file_index][0],
+				size: resources.available_resources[resource_file_index][2],
 				id: counters.resource_id,
 				resource_file_index: resource_file_index
 			});
@@ -614,8 +616,8 @@ var session = (function () {
 		
 		if (resource_file_index!=-1){
 		// if an existing media file is added, adopt its name and date to the input fields
-			var filename = available_resources[resource_file_index][0];	//name
-			var filesize = available_resources[resource_file_index][2];	//size
+			var filename = resources.available_resources[resource_file_index][0];	//name
+			var filesize = resources.available_resources[resource_file_index][2];	//size
 
 		}
 		
@@ -628,7 +630,7 @@ var session = (function () {
 		//Rename the session if an EAF file is added for the first time and session has no name yet
 		if ((GetFileTypeFromFilename(filename) == "eaf") && (get(session_dom_element_prefix+session_id+"_session_name") == "")){
 		
-			var name = RemoveEndingFromFilename(available_resources[resource_file_index][0]);
+			var name = RemoveEndingFromFilename(resources.available_resources[resource_file_index][0]);
 			
 			g(session_dom_element_prefix+session_id+"_session_name").value = name;
 			
@@ -643,7 +645,7 @@ var session = (function () {
 		//only, if session date is still YYYY
 		if ((GetFileTypeFromFilename(filename) == "eaf") && (get(session_dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
 			
-			var date = parseDate(available_resources[resource_file_index][0]);
+			var date = parseDate(resources.available_resources[resource_file_index][0]);
 			
 			if (date != null){
 			
