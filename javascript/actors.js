@@ -135,9 +135,19 @@ var actor = (function(){
 
 	my.export_actors = function(){
 		
-		var actors_json = JSON.stringify(actors);
+		if (actors.length != 0){
 		
-		save_file(actors_json, "actors.json", "application/json;charset=utf-8");
+			var actors_json = JSON.stringify(actors);
+			
+			APP.save_file(actors_json, "actors.json", "application/json;charset=utf-8");
+			
+		}
+		
+		else {
+		
+			alertify.alert("There are no actors!")
+		
+		}
 
 
 	}

@@ -111,7 +111,7 @@ function add_event_listeners() {
 
 	});	
 	
-	g('link_export_actors').addEventListener('click', function() {        export_actors();      });	
+	g('link_export_actors').addEventListener('click', function() {        actor.export_actors();      });	
 	g('actors_file_input').addEventListener('change',actor.import_actors, false);
 	
 	g("content_language_select").onkeydown = function(event) {

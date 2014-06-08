@@ -37,6 +37,7 @@ function GetLanguageObjectIndexFromID(cl_id){
 
 }
 
+
 function GetActorLanguageObjectIndexFromID(al_id){
 
 	for (var l=0; l<languages_of_active_actor.length; l++){
@@ -118,8 +119,6 @@ function g(id){
 	return document.getElementById(id);
 
 }
-
-
 
 
 function randomString(length, chars) {
@@ -287,8 +286,6 @@ function bytesToSize(bytes, precision){
         return bytes + ' B';
     }
 }
-
-
 
 
 function get_file_type(filename){
