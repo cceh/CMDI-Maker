@@ -94,7 +94,7 @@ function export_corpus(){
  
 	save_corpus();
  
-	for (var s=0;s<sessions.length;s++){
+	for (var s=0;s<session.sessions.length;s++){
 		save_session(s);
 	}
  
@@ -111,12 +111,12 @@ function save_corpus(){
 }
 
 
-function save_session(session){
+function save_session(session_index){
 
 	var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
 	var file_ending = output_formats[output_format_index].file_ending;
 
-	save_file(g("textarea_session_"+session).value,get("session_"+sessions[session].id+"_session_name")+"."+file_ending, file_download_header);
+	save_file(g("textarea_session_"+session_index).value,get("session_"+session.sessions[session_index].id+"_session_name")+"."+file_ending, file_download_header);
 
 }
 
