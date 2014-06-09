@@ -310,7 +310,7 @@ var session = (function () {
 			h5.appendChild(link);
 			
 			link.addEventListener('click', function() { 
-				APP.view("actors");  
+				APP.view("VIEW_actors");  
 			} );
 		}
 		
