@@ -494,30 +494,35 @@ var imdi_workflow = [
 		id: "corpus",
 		title: "Corpus",
 		view: "VIEW_corpus",
-		icon: "box.png"
+		icon: "box.png",
+		module: undefined
 	},
 	{
 		id: "resources",
 		title: "Resources",
 		view: "VIEW_resources",
-		icon: "blocks.png"
+		icon: "blocks.png",
+		module: resources
 	},
 	{
 		id: "actors",
 		title: "Actors",
 		view: "VIEW_actors",
-		icon: "user.png"
+		icon: "user.png",
+		module: actor
 	},
 	{
 		id: "sessions",
 		title: "Sessions",
 		view: "VIEW_sessions",
-		icon: "edit.png"
+		icon: "edit.png",
+		module: session
 	},
 	{
 		id: "xml_output",
 		title: "XML Output",
 		view: "VIEW_xml_output",
-		icon: "data.png"
+		icon: "data.png",
+		module: output
 	}
 ];

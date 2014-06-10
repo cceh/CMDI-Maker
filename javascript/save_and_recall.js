@@ -60,7 +60,9 @@ var save_and_recall = (function(){
 		my.interval_time = time;
 		
 		// if not switched off
-		my.interval = window.setInterval(function() { my.save_form(); },my.interval_time*1000);
+		my.interval = window.setInterval(function() {
+			my.save_form();
+		}, my.interval_time*1000);
 
 	}
 
