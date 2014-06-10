@@ -19,7 +19,13 @@ var session = (function () {
 	var my = {};
 	
 	my.sessions = [];
+	
+	//Auto Save the my.sessions object (Not yet implemented!)
+	my.save = my.sessions;
+	
 	my.id_counter = 0;
+	
+	my.resource_id_counter = 0;
 	
 	my.refreshResources = function(s){
 
@@ -177,10 +183,10 @@ var session = (function () {
 			for (var r=0; r<session_object.resources.writtenResources.length; r++){
 			
 				var file = session_object.resources.writtenResources[r];	
-				file.id = counters.resource_id;
-				my.renderResource(counters.resource_id, session_id, "wr", file.name, file.size);
+				file.id = my.resource_id_counter;
+				my.renderResource(my.resource_id_counter, session_id, "wr", file.name, file.size);
 				
-				counters.resource_id += 1;
+				my.resource_id_counter += 1;
 		
 			}
 		
@@ -192,10 +198,10 @@ var session = (function () {
 			for (var r=0; r<session_object.resources.mediaFiles.length; r++){
 			
 				var file = session_object.resources.mediaFiles[r];
-				file.id = counters.resource_id;
+				file.id = my.resource_id_counter;
 				my.renderResource(file.id, session_id, "mf", file.name, file.size);
 
-				counters.resource_id += 1;
+				my.resource_id_counter += 1;
 			}
 		
 		}
@@ -204,8 +210,8 @@ var session = (function () {
 		
 		var all_available_actor_ids = [];
 		
-		for (var n=0; n<actors.length; n++){
-			all_available_actor_ids.push(actors[n].id);
+		for (var n=0; n<actor.actors.length; n++){
+			all_available_actor_ids.push(actor.actors[n].id);
 		}   // find a better place for that
 
 		my.refreshActorListInSession(my.getSessionIndexFromID(session_id),all_available_actor_ids);
@@ -223,8 +229,8 @@ var session = (function () {
 	my.refreshActorName = function(session_id, actor_id){
 
 		var div = g(session_dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
-		div.innerHTML = "<h2 class='actor_name_disp'>" + actors[actor.getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
-		div.innerHTML += "<p class='actor_role_disp'>" + actors[actor.getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
+		div.innerHTML = "<h2 class='actor_name_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
+		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
 
 
 	}
@@ -268,16 +274,16 @@ var session = (function () {
 
 		var select = document.createElement("select");
 		
-		for (var a=0;a<actors.length;a++){ 
+		for (var a=0;a<actor.actors.length;a++){ 
 		
-			var value = actors[a].name + " (" + actors[a].role + ")";
+			var value = actor.actors[a].name + " (" + actor.actors[a].role + ")";
 			
 			NewOption = new Option( value, a, false, true);
 			select.options[select.options.length] = NewOption;		
 			
 		}
 
-		if (actors.length > 0){
+		if (actor.actors.length > 0){
 		
 			aad.appendChild(select);
 		
@@ -292,12 +298,12 @@ var session = (function () {
 			aad.appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
-				return function(){ my.addActor(num, actors[select.selectedIndex].id);  };
+				return function(){ my.addActor(num, actor.actors[select.selectedIndex].id);  };
 			}(my.sessions[s].id) );
 			
 		}
 		
-		if (actors.length == 0){
+		if (actor.actors.length == 0){
 		
 			var link = document.createElement("a");
 			link.href="#";
@@ -344,8 +350,8 @@ var session = (function () {
 
 		var all_available_actor_ids = [];
 		
-		for (var n=0; n<actors.length; n++){
-			all_available_actor_ids.push(actors[n].id);
+		for (var n=0; n<actor.actors.length; n++){
+			all_available_actor_ids.push(actor.actors[n].id);
 		}
 		
 		
@@ -490,7 +496,7 @@ var session = (function () {
 		//if session doesn't already contain this actor
 		if (my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id) == -1){
 		
-			if (actors[actor.getActorsIndexFromID(actor_id)]){  //check if actor still exists before adding
+			if (actor.actors[actor.getActorsIndexFromID(actor_id)]){  //check if actor still exists before adding
 		
 				my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.push(actor_id);
 			
@@ -558,7 +564,7 @@ var session = (function () {
 			return;
 		}
 		
-		var resource_id = counters.resource_id;
+		var resource_id = my.resource_id_counter;
 
 		if ((resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 0)
 		|| (resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 2)){
@@ -569,7 +575,7 @@ var session = (function () {
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
-				id: counters.resource_id,
+				id: my.resource_id_counter,
 				resource_file_index: resource_file_index
 			});
 
@@ -583,7 +589,7 @@ var session = (function () {
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
-				id: counters.resource_id,
+				id: my.resource_id_counter,
 				resource_file_index: resource_file_index
 			});
 			
@@ -607,7 +613,7 @@ var session = (function () {
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
-				id: counters.resource_id,
+				id: my.resource_id_counter,
 				resource_file_index: resource_file_index
 			});
 			
@@ -662,9 +668,9 @@ var session = (function () {
 		
 		my.renderResource(resource_id, session_id, resource_type, filename, filesize);
 
-		counters.resource_id+=1;
+		my.resource_id_counter += 1;
 		
-		return counters.resource_id-1;
+		return my.resource_id_counter - 1;
 		
 	}
 
@@ -764,7 +770,6 @@ var session = (function () {
 	}
 
 
-
 	my.assignSession1Metadata = function(){
 
 		if (my.sessions.length < 2){
@@ -785,7 +790,7 @@ var session = (function () {
 			
 						// copy actors from session 1 to session session
 						for (var a=0;a<my.sessions[0].actors.actors.length;a++){
-							addActor_to_session(my.sessions[s].id,my.sessions[0].actors.actors[a]);
+							my.addActor(my.sessions[s].id,my.sessions[0].actors.actors[a]);
 						}
 					
 					}

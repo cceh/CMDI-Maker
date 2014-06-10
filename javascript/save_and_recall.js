@@ -17,6 +17,9 @@ limitations under the License.
 var save_and_recall = (function(){
 
 	var my = {};
+	
+	my.interval;
+	my.interval_time = 60;
 
 	my.get_recall_data = function(){
 
@@ -25,7 +28,7 @@ var save_and_recall = (function(){
 		if (!form){
 			console.log("No recall data found");
 			session.displayNoSessionText();
-			my.set_autosave_interval(interval_time);
+			my.set_autosave_interval(my.interval_time);
 			APP.view("default");
 			return;
 		}
@@ -42,7 +45,7 @@ var save_and_recall = (function(){
 
 	my.set_autosave_interval = function(time){
 
-		window.clearInterval(interval);
+		window.clearInterval(my.interval);
 		
 		if (time == -1){
 
@@ -54,10 +57,10 @@ var save_and_recall = (function(){
 		
 		console.log("Auto Save Time in seconds: " + time);
 		
-		interval_time = time;
+		my.interval_time = time;
 		
 		// if not switched off
-		interval = window.setInterval(function() { my.save_form(); },interval_time*1000);
+		my.interval = window.setInterval(function() { my.save_form(); },my.interval_time*1000);
 
 	}
 
@@ -84,7 +87,7 @@ var save_and_recall = (function(){
 		
 		for (var l=0;l<recall_object.content_languages.length;l++){
 		
-			set_content_language(recall_object.content_languages[l]);
+			content_languages.set(recall_object.content_languages[l]);
 			
 		}
 		
@@ -156,7 +159,7 @@ var save_and_recall = (function(){
 		object.corpus.title = g("corpus_title").value;
 		object.corpus.description = g("corpus_description").value;
 		
-		object.content_languages = content_languages;
+		object.content_languages = content_languages.content_languages;
 		
 		object.settings.save_interval_time = document.metadata_form.radio_auto_save.value;
 		

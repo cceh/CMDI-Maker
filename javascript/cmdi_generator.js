@@ -184,7 +184,7 @@ var cmdi_generator = function(){
 		return_string += xml.tag("Actors",0);
 		
 		for (var a=0;a<session.sessions[session.getSessionIndexFromID(session_id)].actors.actors.length;a++){
-			return_string += insert_cmdi_actor(session,session.sessions[session.getSessionIndexFromID(session_id)].actors.actors[a]);
+			return_string += insert_cmdi_actor(session_id,session.sessions[session.getSessionIndexFromID(session_id)].actors.actors[a]);
 		}
 		
 		return_string += xml.tag("Actors",1);  
@@ -321,28 +321,29 @@ var cmdi_generator = function(){
 	}
 
 
-	var insert_cmdi_actor = function(session,actor_id){
+	var insert_cmdi_actor = function(session_id,actor_id){
 
 		var i = actor.getActorsIndexFromID(actor_id);
+		var ac = actor.actors[i];
 
 		var return_string = "";
 		return_string+=xml.tag("Actor",0);
-		return_string+=xml.element("Role",actors[i].role);
-		return_string+=xml.element("Name",actors[i].name);
-		return_string+=xml.element("FullName",actors[i].full_name);
-		return_string+=xml.element("Code",actors[i].code);
-		return_string+=xml.element("FamilySocialRole",actors[i].family_social_role);
-		return_string+=xml.element("EthnicGroup",actors[i].ethnic_group);   
+		return_string+=xml.element("Role",ac.role);
+		return_string+=xml.element("Name",ac.name);
+		return_string+=xml.element("FullName",ac.full_name);
+		return_string+=xml.element("Code",ac.code);
+		return_string+=xml.element("FamilySocialRole",ac.family_social_role);
+		return_string+=xml.element("EthnicGroup",ac.ethnic_group);   
 		
 		//Age field
 		return_string += xml.tag("Age",0);
-		return_string += get_actors_age(session,actor_id);
+		return_string += actor.getAge(session_id,actor_id);
 		return_string += xml.tag("Age",1);	
 		//End of age field
 		
-		if ((actors[i].birth_date.year != "") && (actors[i].birth_date.year != "YYYY")){
+		if ((ac.birth_date.year != "") && (ac.birth_date.year != "YYYY")){
 		
-			return_string += xml.element("BirthDate",actors[i].birth_date.year+"-"+actors[i].birth_date.month+"-"+actors[i].birth_date.day);
+			return_string += xml.element("BirthDate",ac.birth_date.year+"-"+ac.birth_date.month+"-"+ac.birth_date.day);
 			
 		}
 		
@@ -352,34 +353,34 @@ var cmdi_generator = function(){
 		
 		}
 		
-		return_string+=xml.element("Sex",actors[i].sex);
-		return_string+=xml.element("Education",(actors[i].education != "") ? actors[i].education : "Unspecified" );
-		return_string+=xml.element("Anonymized",(actors[i].anonymized) ? "true" : "false"); 
+		return_string+=xml.element("Sex",ac.sex);
+		return_string+=xml.element("Education",(ac.education != "") ? ac.education : "Unspecified" );
+		return_string+=xml.element("Anonymized",(ac.anonymized) ? "true" : "false"); 
 		
 		return_string+=xml.tag("Contact",0);
-		return_string+=xml.element("Name",actors[i].contact.name);   
-		return_string+=xml.element("Address",actors[i].contact.address);   
-		return_string+=xml.element("Email",actors[i].contact.email);   
-		return_string+=xml.element("Organisation",actors[i].contact.organisation);   
+		return_string+=xml.element("Name",ac.contact.name);   
+		return_string+=xml.element("Address",ac.contact.address);   
+		return_string+=xml.element("Email",ac.contact.email);   
+		return_string+=xml.element("Organisation",ac.contact.organisation);   
 		return_string+=xml.tag("Contact",1);
 
 		return_string += xml.tag("Keys",2);
 		
 		return_string += xml.tag("descriptions",0);
-		return_string += xml.element("Description",actors[i].description);
+		return_string += xml.element("Description",ac.description);
 		return_string += xml.tag("descriptions",1);	
 		
 		return_string += xml.tag("Actor_Languages",0);
 		//return_string += xml.element("Description","");
 		
-		for (var l=0; l<actors[i].languages.length; l++){
+		for (var l=0; l<ac.languages.length; l++){
 		
 			return_string += xml.tag("Actor_Language",0);
-			return_string += xml.element("Id",LanguageCodePrefix+actors[i].languages[l].LanguageObject[0]);
-			return_string += xml.element("Name",actors[i].languages[l].LanguageObject[3]);
+			return_string += xml.element("Id",LanguageCodePrefix+ac.languages[l].LanguageObject[0]);
+			return_string += xml.element("Name",ac.languages[l].LanguageObject[3]);
 			
-			return_string += xml.element("MotherTongue",(actors[i].languages[l].MotherTongue) ? "true" : "false");
-			return_string += xml.element("PrimaryLanguage",(actors[i].languages[l].PrimaryLanguage) ? "true" : "false");		
+			return_string += xml.element("MotherTongue",(ac.languages[l].MotherTongue) ? "true" : "false");
+			return_string += xml.element("PrimaryLanguage",(ac.languages[l].PrimaryLanguage) ? "true" : "false");		
 
 			
 			return_string += xml.tag("Actor_Language",1);

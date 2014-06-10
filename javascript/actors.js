@@ -18,6 +18,11 @@ var actor = (function(){
 
 	var my = {};
 	
+	my.actors = [];
+	
+	//Auto Save my.actors (not yet implemented!)
+	my.save = my.actors;
+	
 	my.id_counter = 0;
 	my.active_actor = -1;
 
@@ -73,39 +78,39 @@ var actor = (function(){
 			g('link_duplicate_active_actor').style.display = "inline";
 		}
 
-		close_actor_language_select();	
+		my.languages.closeLanguageSelect();	
 		my.highlight_active_actor_div(actor_id);
-		clear_active_actor_languages();
+		my.languages.clearActiveActorLanguages();
 
 		my.active_actor = actor_id;
 
 		if (actor_id != -1){
 			//show data of selected actor in form
 
-			g("actor_form_title").innerHTML = actors[actor_id].name;
+			g("actor_form_title").innerHTML = my.actors[actor_id].name;
 
-			dom.setFormValue("actor_name",actors[actor_id].name);
-			dom.setFormValue("actor_full_name",actors[actor_id].full_name);
-			dom.setFormValue("actor_code",actors[actor_id].code);
-			dom.setFormValue("actor_role",actors[actor_id].role);
-			dom.setFormValue("actor_ethnic_group",actors[actor_id].ethnic_group);
-			dom.setFormValue("actor_family_social_role",actors[actor_id].family_social_role);
-			dom.setFormValue("actor_age",actors[actor_id].age);
-			dom.setFormValue("actor_birth_date_year",actors[actor_id].birth_date.year);
-			dom.setFormValue("actor_birth_date_month",actors[actor_id].birth_date.month);
-			dom.setFormValue("actor_birth_date_day",actors[actor_id].birth_date.day);
-			dom.setFormValue("actor_sex",actors[actor_id].sex);
-			dom.setFormValue("actor_education",actors[actor_id].education);
+			dom.setFormValue("actor_name",my.actors[actor_id].name);
+			dom.setFormValue("actor_full_name",my.actors[actor_id].full_name);
+			dom.setFormValue("actor_code",my.actors[actor_id].code);
+			dom.setFormValue("actor_role",my.actors[actor_id].role);
+			dom.setFormValue("actor_ethnic_group",my.actors[actor_id].ethnic_group);
+			dom.setFormValue("actor_family_social_role",my.actors[actor_id].family_social_role);
+			dom.setFormValue("actor_age",my.actors[actor_id].age);
+			dom.setFormValue("actor_birth_date_year",my.actors[actor_id].birth_date.year);
+			dom.setFormValue("actor_birth_date_month",my.actors[actor_id].birth_date.month);
+			dom.setFormValue("actor_birth_date_day",my.actors[actor_id].birth_date.day);
+			dom.setFormValue("actor_sex",my.actors[actor_id].sex);
+			dom.setFormValue("actor_education",my.actors[actor_id].education);
 			
-			dom.setFormValue("actor_contact_name",actors[actor_id].contact.name);
-			dom.setFormValue("actor_contact_address",actors[actor_id].contact.address);
-			dom.setFormValue("actor_contact_email",actors[actor_id].contact.email);
-			dom.setFormValue("actor_contact_organisation",actors[actor_id].contact.organisation);
-			dom.setFormValue("actor_description",actors[actor_id].description);
+			dom.setFormValue("actor_contact_name",my.actors[actor_id].contact.name);
+			dom.setFormValue("actor_contact_address",my.actors[actor_id].contact.address);
+			dom.setFormValue("actor_contact_email",my.actors[actor_id].contact.email);
+			dom.setFormValue("actor_contact_organisation",my.actors[actor_id].contact.organisation);
+			dom.setFormValue("actor_description",my.actors[actor_id].description);
 		
-			document.getElementsByName("actor_anonymized")[0].checked = actors[actor_id].anonymized;
+			document.getElementsByName("actor_anonymized")[0].checked = my.actors[actor_id].anonymized;
 			
-			show_languages_of_active_actor();
+			my.showLanguagesOfActiveActor();
 			g("save_actor_span").innerHTML = " Save changes to this actor";
 
 		}
@@ -124,22 +129,33 @@ var actor = (function(){
 	
 	my.getActorsIndexFromID = function(actor_id) {
 
-		for(var i = 0, len = actors.length; i < len; i++) {
-			if (actors[i].id == actor_id) return i;
+		for(var i = 0, len = my.actors.length; i < len; i++) {
+			if (my.actors[i].id == actor_id) return i;
 		}
 		
 		return alert("An error has occured.\nCould not find actors cache index from actor id!\n\nactor_id = " + actor_id);
 		
 	}
 	
+	
+	my.showLanguagesOfActiveActor = function(){
+
+		for (var l=0; l < my.actors[my.active_actor].languages.length; l++){
+		
+			my.languages.set(my.actors[my.active_actor].languages[l] );
+		
+		}
+
+	}
+	
 
 	my.export_actors = function(){
 		
-		if (actors.length != 0){
+		if (my.actors.length != 0){
 		
-			var actors_json = JSON.stringify(actors);
+			var actors_json = JSON.stringify(my.actors);
 			
-			APP.save_file(actors_json, "actors.json", "application/json;charset=utf-8");
+			APP.save_file(actors_json, "actors.json", file_download_header);
 			
 		}
 		
@@ -319,7 +335,7 @@ var actor = (function(){
 
 		document.getElementsByName("actor_anonymized")[0].checked = false;
 
-		clear_active_actor_languages();
+		my.languages.clearActiveActorLanguages();
 		
 	}
 
@@ -376,13 +392,13 @@ var actor = (function(){
 
 		object.anonymized = document.getElementsByName("actor_anonymized")[0].checked;
 		
-		for (var l=0; l<languages_of_active_actor.length; l++){
+		for (var l=0; l<my.languages.languages_of_active_actor.length; l++){
 		
-			var id = languages_of_active_actor[l].id;
+			var id = my.languages.languages_of_active_actor[l].id;
 		
 			var ActorLanguageObject = {
 				
-				LanguageObject: languages_of_active_actor[l].LanguageObject,
+				LanguageObject: my.languages.languages_of_active_actor[l].LanguageObject,
 				MotherTongue: g("mothertongue_" + id).checked,
 				PrimaryLanguage: g("primarylanguage_" + id).checked
 				
@@ -395,7 +411,7 @@ var actor = (function(){
 
 		//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
 		if (my.active_actor != -1) {
-			object.id = actors[my.active_actor].id;
+			object.id = my.actors[my.active_actor].id;
 			console.log("Saving actor with id "+object.id);
 		}
 		
@@ -469,16 +485,16 @@ var actor = (function(){
 		var actor_ids = [];
 		
 		//create array with all actor ids
-		for (var a=0; a<actors.length;a++){
-			actor_ids.push(actors[a].id);
+		for (var a=0; a<my.actors.length;a++){
+			actor_ids.push(my.actors[a].id);
 		}
 
 		//if this actor does already exist and is to be overwritten, overwrite the object in the array
 		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite == false)) {
-			actors.splice(my.getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
+			my.actors.splice(my.getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
 			
 			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
-			for (var s=0; s<sessions.length; s++){
+			for (var s=0; s<session.sessions.length; s++){
 		
 				//search for actor_id in this session's actors
 				if (session.sessions[s].actors.actors.indexOf(actor_to_put.id) != -1){
@@ -500,7 +516,7 @@ var actor = (function(){
 			
 			localStorage.setItem("actor_id_counter",my.id_counter);
 			
-			actors.push(actor_to_put);
+			my.actors.push(actor_to_put);
 		}
 	 
 		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
@@ -515,7 +531,7 @@ var actor = (function(){
 
 	my.highlight_active_actor_div = function(actor_id){
 
-		for (var i=0;i<actors.length;i++){
+		for (var i=0;i<my.actors.length;i++){
 			g("ac_list_entry_"+i).style.background = "#FF8BC7";
 		}
 
@@ -529,7 +545,7 @@ var actor = (function(){
 
 	my.delete_active_actor = function(){
 
-		var name_of_actor = actors[my.active_actor].name;
+		var name_of_actor = my.actors[my.active_actor].name;
 
 		alertify.set({ labels: {
 			ok     : "No",
@@ -545,7 +561,7 @@ var actor = (function(){
 			else {
 				// user clicked "cancel"
 				
-				actors.splice(my.active_actor,1);
+				my.actors.splice(my.active_actor,1);
 				my.refresh_list_display();
 				my.refresh_web_storage();
 				
@@ -561,16 +577,59 @@ var actor = (function(){
 
 	my.refresh_web_storage = function(){
 
-		localStorage.setItem("actors", JSON.stringify(actors));
+		localStorage.setItem("actors", JSON.stringify(my.actors));
 		
 		localStorage.setItem("actor_id_counter",my.id_counter);
+
+	}
+	
+	
+	my.getAge = function (session_id, actor_id){
+
+		var i = my.getActorsIndexFromID(actor_id);
+		
+		if (my.actors[i].age == ""){   //at first, check, if actor's age hasn't been specified yet
+		
+			if (document.metadata_form.radio_age_calc[0].checked == true){  //then, check if auto calculate feature in settings is activated
+				
+				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
+				var sessionDate = get(session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(session_dom_element_prefix+session_id+"_session_date_day"); 
+				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
+				
+				if (age_calc_result != 0){
+				
+					console.log("Actor's age successfully calculated");			
+					return age_calc_result;
+			
+				}
+				
+				else {  //if age calc = 0, age could not be calculated
+				
+					return "Unspecified";
+				
+				}
+				
+			}
+			
+			else {	//if feature is activated, but age has not been specified
+			
+				return "Unspecified";
+			
+			}
+		}
+		
+		else { //if actor's age has been specified
+		
+			return my.actors[i].age;
+		
+		}
 
 	}
 	
 
 	my.get_actors_from_web_storage = function(){
 
-		actors = [];  //Reset the cache!
+		my.actors = [];  //Reset the cache!
 		
 
 		var actors_db = localStorage.getItem("actors");
@@ -585,9 +644,9 @@ var actor = (function(){
 			my.id_counter = 0;
 		}
 		
-		actors = JSON.parse(actors_db);
+		my.actors = JSON.parse(actors_db);
 
-		console.log(actors.length + ' actors taken from Web Storage');
+		console.log(my.actors.length + ' actors taken from Web Storage');
 		
 		my.refresh_list_display();
 		
@@ -595,7 +654,7 @@ var actor = (function(){
 
 	my.sort_actors_alphabetically = function(){
 
-		actors = sortByKey(actors,"name");
+		my.actors = sortByKey(actors,"name");
 
 		my.refresh_web_storage();
 		my.refresh_list_display();
@@ -609,9 +668,9 @@ var actor = (function(){
 
 		g('ac_list').innerHTML = "";
 
-		for (var i=0;i<actors.length;i++){
+		for (var i=0;i<my.actors.length;i++){
 
-			var div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + actors[i].name + "</h2>" + "<p>"+actors[i].role+"</p>");
+			var div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + my.actors[i].name + "</h2>" + "<p>"+my.actors[i].role+"</p>");
 			//display name of actor
 		
 			div.addEventListener('click', function(num) { 
@@ -634,7 +693,7 @@ var actor = (function(){
 
 		session.refreshActorLists();
 
-		switch (actors.length){
+		switch (my.actors.length){
 		
 			case 0: {
 				my.show(-1);
@@ -648,8 +707,8 @@ var actor = (function(){
 			
 			default: {
 			
-				if (my.active_actor >= actors.length){
-					my.show(actors.length-1);
+				if (my.active_actor >= my.actors.length){
+					my.show(my.actors.length-1);
 				}
 				
 				else {

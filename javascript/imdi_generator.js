@@ -37,8 +37,9 @@ var imdi_generator = function(){
 		return_string += xml.element("Title",get('corpus_title'));   
 		return_string += xml.element("Description",get('corpus_description'),[["LanguageId",get_metadata_language()]]);       
     
-        for (var i=0; i<sessions.length; i++){
-			return_string += xml.element("CorpusLink",get(session_dom_element_prefix+session.sessions[i].id+"_session_name")+".imdi",[["Name",get(session_dom_element_prefix+session.sessions[i].id+"_session_name")]]);
+        for (var i=0; i<session.sessions.length; i++){
+			return_string += xml.element("CorpusLink",get(session_dom_element_prefix+session.sessions[i].id+"_session_name")+".imdi",
+			[["Name",get(session_dom_element_prefix+session.sessions[i].id+"_session_name")]]);
 		}
     
 		return_string += xml.tag("Corpus",1);
@@ -102,7 +103,7 @@ var imdi_generator = function(){
 		return_string+=xml.tag("Actors",0);
     
 		for (var a=0;a<session.sessions[session.getSessionIndexFromID(session_id)].actors.actors.length;a++){
-			return_string += insert_actor(session,session.sessions[session.getSessionIndexFromID(session_id)].actors.actors[a]);
+			return_string += insert_actor(session_id,session.sessions[session.getSessionIndexFromID(session_id)].actors.actors[a]);
 		}
 
 		return_string+=xml.tag("Actors",1);
@@ -174,7 +175,7 @@ var imdi_generator = function(){
 	}
 	
 
-	var insert_content_languages = function (session) {
+	var insert_content_languages = function () {
 
 		var return_string = "";
 	
@@ -288,45 +289,45 @@ var imdi_generator = function(){
 	}
 
 
-	var insert_actor = function (session, actor_id) {
+	var insert_actor = function (session_id, actor_id) {
 
 		var i = actor.getActorsIndexFromID(actor_id);
 
 		var return_string = "";
 		return_string += xml.tag("Actor",0);
-		return_string += xml.element("Role",actors[i].role,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Role.xml"],["Type","OpenVocabularyList"]]);
-		return_string += xml.element("Name",actors[i].name);
-		return_string += xml.element("FullName",actors[i].full_name);
-		return_string += xml.element("Code",actors[i].code);
-		return_string += xml.element("FamilySocialRole",actors[i].family_social_role,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-FamilySocialRole.xml"],["Type","OpenVocabularyList"]]);
+		return_string += xml.element("Role",actor.actors[i].role,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Role.xml"],["Type","OpenVocabularyList"]]);
+		return_string += xml.element("Name",actor.actors[i].name);
+		return_string += xml.element("FullName",actor.actors[i].full_name);
+		return_string += xml.element("Code",actor.actors[i].code);
+		return_string += xml.element("FamilySocialRole",actor.actors[i].family_social_role,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-FamilySocialRole.xml"],["Type","OpenVocabularyList"]]);
 		return_string += xml.tag("Languages",0);
 		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
 	
-		for (var l=0; l<actors[i].languages.length; l++){
+		for (var l=0; l<actor.actors[i].languages.length; l++){
 	
 			return_string += xml.tag("Language",0);
-			return_string += xml.element("Id",LanguageCodePrefix+actors[i].languages[l].LanguageObject[0]);
-			return_string += xml.element("Name",actors[i].languages[l].LanguageObject[3],[["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
-			return_string += xml.element("MotherTongue",(actors[i].languages[l].MotherTongue) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
-			return_string += xml.element("PrimaryLanguage",(actors[i].languages[l].PrimaryLanguage) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);		
+			return_string += xml.element("Id",LanguageCodePrefix+actor.actors[i].languages[l].LanguageObject[0]);
+			return_string += xml.element("Name",actor.actors[i].languages[l].LanguageObject[3],[["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
+			return_string += xml.element("MotherTongue",(actor.actors[i].languages[l].MotherTongue) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
+			return_string += xml.element("PrimaryLanguage",(actor.actors[i].languages[l].PrimaryLanguage) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);		
 			return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
 			return_string += xml.tag("Language",1);
 	
 		}
 	
 		return_string += xml.tag("Languages",1);
-		return_string += xml.element("EthnicGroup",actors[i].ethnic_group);   
+		return_string += xml.element("EthnicGroup",actor.actors[i].ethnic_group);   
 	
 		//Age field
 		return_string += xml.tag("Age",0);
-		return_string += get_actors_age(session,actor_id);
+		return_string += actor.getAge(session_id,actor_id);
 		return_string += xml.tag("Age",1);	
 		//End of age field
 	
 		return_string+=xml.tag("BirthDate",0);
 	
-		if ((actors[i].birth_date.year != "") && (actors[i].birth_date.year != "YYYY")){
-			return_string += actors[i].birth_date.year + "-" + actors[i].birth_date.month + "-" + actors[i].birth_date.day;
+		if ((actor.actors[i].birth_date.year != "") && (actor.actors[i].birth_date.year != "YYYY")){
+			return_string += actor.actors[i].birth_date.year + "-" + actor.actors[i].birth_date.month + "-" + actor.actors[i].birth_date.day;
 		}	
 	
 		else {
@@ -334,17 +335,17 @@ var imdi_generator = function(){
 		}
 	
 		return_string += xml.tag("BirthDate",1);	
-		return_string += xml.element("Sex",actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Education",(actors[i].education != "") ? actors[i].education : "Unspecified" );
-		return_string += xml.element("Anonymized",(actors[i].anonymized) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]); 
+		return_string += xml.element("Sex",actor.actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("Education",(actor.actors[i].education != "") ? actor.actors[i].education : "Unspecified" );
+		return_string += xml.element("Anonymized",(actor.actors[i].anonymized) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]); 
 		return_string += xml.tag("Contact",0);
-		return_string += xml.element("Name",actors[i].contact.name);   
-		return_string += xml.element("Address",actors[i].contact.address);   
-		return_string += xml.element("Email",actors[i].contact.email);   
-		return_string += xml.element("Organisation",actors[i].contact.organisation);   
+		return_string += xml.element("Name",actor.actors[i].contact.name);   
+		return_string += xml.element("Address",actor.actors[i].contact.address);   
+		return_string += xml.element("Email",actor.actors[i].contact.email);   
+		return_string += xml.element("Organisation",actor.actors[i].contact.organisation);   
 		return_string += xml.tag("Contact",1);
 		return_string += xml.tag("Keys",2);
-		return_string += xml.element("Description",actors[i].description,[["LanguageId",get_metadata_language()],["Link",""]]);
+		return_string += xml.element("Description",actor.actors[i].description,[["LanguageId",get_metadata_language()],["Link",""]]);
 		return_string += xml.tag("Actor",1);
 		return return_string;
     

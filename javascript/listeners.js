@@ -71,8 +71,8 @@ function add_event_listeners() {
 	g('crps_icon').addEventListener('mousedown', function() {        g('crps_icon').style.backgroundColor = "black";      });
 	g('crps_icon').addEventListener('mouseup', function() {        g('crps_icon').style.backgroundColor = "";      });
 
-	g('content_language_search_button').addEventListener('click', function() {  searchContentLanguage();     });
-	g('content_language_iso_ok').addEventListener('click', function() {  addISOLanguage();     });
+	g('content_language_search_button').addEventListener('click', function() {  content_languages.search();     });
+	g('content_language_iso_ok').addEventListener('click', function() {  content_languages.addByISO();     });
 	
 	document.getElementsByName("radio_auto_save").selectedIndex = 3;
 	
@@ -111,14 +111,14 @@ function add_event_listeners() {
 	g("content_language_select").onkeydown = function(event) {
 
 		if (event.keyCode == 13) {  //if enter is pressed
-			searchContentLanguage();
+			content_languages.search();
 		}
 	};
 	
 	g("content_language_iso_input").onkeydown = function(event) {
 
 		if (event.keyCode == 13) {  //if enter is pressed
-			addISOLanguage();
+			content_languages.addByISO();
 		}
 	};
 	
@@ -130,20 +130,20 @@ function add_event_listeners() {
 		}
 	};
 	
-	g('actor_language_search_button').addEventListener('click', function() {  search_actor_language();   });
+	g('actor_language_search_button').addEventListener('click', function() {  actor.languages.search();   });
 	g('actor_language_iso_ok').addEventListener('click', function() {  addactorISOLanguage();     });
 
 	g("actor_language_select").onkeydown = function(event) {
 
 		if (event.keyCode == 13) {  //if enter is pressed
-			search_actor_language();
+			actor.languages.search();
 		}
 	};
 	
 	g("actor_language_iso_input").onkeydown = function(event) {
 
 		if (event.keyCode == 13) {  //if enter is pressed
-			addactorISOLanguage();
+			actor.languages.addByISO();
 		}
 	};
 	
@@ -157,8 +157,8 @@ function add_event_listeners() {
 	document.onkeydown = function(event) {
 	
 		if (event.keyCode == 16) {  //if shift is pressed
-			if (shift == false){
-				shift = true;
+			if (resources.shift == false){
+				resources.shift = true;
 				console.log("shift on");
 			}
 		}
@@ -174,7 +174,7 @@ function add_event_listeners() {
 	document.onkeyup = function(event) {
 	
 		if (event.keyCode == 16) {  //if shift is let go
-			shift = false;
+			resources.shift = false;
 			console.log("shift off");
 		}
 		

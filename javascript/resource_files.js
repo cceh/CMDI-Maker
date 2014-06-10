@@ -27,6 +27,8 @@ var resources = (function(){
 	// this array only contains file metadata retrieved by file upload form / drag and drop
 
 	my.last_selected_file = -1;
+	
+	my.shift = false;
 
 	my.getValidityOfFile = function(filename){
 	// returns 0=valid media file, 1=valid written resource, 2=invalid media file, 3=invalid written resource, -1=unknown file
@@ -281,7 +283,7 @@ var resources = (function(){
 
 	my.clickedOnFile = function(i){
 		
-		if (shift == true){
+		if (my.shift == true){
 			
 			if (i < my.last_selected_file){
 			

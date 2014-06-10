@@ -20,7 +20,12 @@ var version = "v1.0.2";
 var LanguageCodePrefix = "ISO639-3:";
 var path_to_images = "img/";
 var path_to_icons = path_to_images + "icons/";
+var file_download_header = "text/xml;charset=utf-8";
+var highlight_color = "skyblue";
 
+var session_dom_element_prefix = "session_";
+var copy_checkbox_element_prefix = "copy_check_";
+var view_id_prefix = "VIEWLINK_";
 
 var output_formats = [
 	{
@@ -45,21 +50,16 @@ var output_formats = [
 	}
 ];
 
-var file_download_header = "text/xml;charset=utf-8";
 
 var output_textarea_rows = 40;
 var output_textarea_columns = 130;
 var form_textarea_rows = 18;
 var form_textarea_columns = 5;
 
-var interval;
-var interval_time = 60;
+var new_page = true;
+var preset_data;
 
-var highlight_color = "skyblue";
-
-var session_dom_element_prefix = "session_";
-var copy_checkbox_element_prefix = "copy_check_";
-var view_id_prefix = "VIEWLINK_";
+var workflow = imdi_workflow; //preliminary!!!
 
 var compatibility_warnings = {
 	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
@@ -153,23 +153,6 @@ var hellos = [
 	["Hallå!", "Scanian"],
 	["Salam!", "Urdu"]
 ];
-
-var new_page = true;
-  
-var content_languages = [];
-var actors = [];
-
-var shift = false;
-
-var counters = {
-	resource_id: 0,
-	cl_id: 0,
-	al_id: 0
-};
-
-var preset_data;
-
-var workflow = imdi_workflow; //preliminary!!!
 
   
 document.addEventListener('DOMContentLoaded', function() {
