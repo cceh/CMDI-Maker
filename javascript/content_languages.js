@@ -229,6 +229,10 @@ var content_languages = (function() {
 
 		}
 		
+		alertify.set({ labels: {
+			ok     : "OK"
+		} });
+		
 		alertify.alert("ISO code " + input + " not found in database.");
 		
 
