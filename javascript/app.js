@@ -367,8 +367,7 @@ var APP = (function () {
 		g("corpus_description").value = "";
 		
 		session.eraseAll();
-		
-		RemoveAllContentLanguages();
+		content_languages.removeAll();
 	}
 
 

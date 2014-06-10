@@ -186,7 +186,7 @@ var content_languages = (function() {
 	}
 
 
-	my.removeAllContentLanguages = function(){
+	my.removeAll = function(){
 
 		while (my.content_languages.length > 0){
 		
