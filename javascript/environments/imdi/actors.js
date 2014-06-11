@@ -29,9 +29,9 @@ var actor = (function(){
 	my.active_actor = -1;
 	
 	my.init = function(){
-	
-	
-		var view = dom.newElement("div","VIEW_actors","content",g("content_wrapper"));
+		
+		var view = dom.newElement("div",my.view_id,"content",g("content_wrapper"));
+		
 		dom.newElement("div","ac_list","",view);
 		var ac_view = dom.newElement("div","ac_view","",view);
 		dom.newElement("div","actor_title_div","",ac_view,'<h1 id="actor_form_title">New Actor</h1>');
@@ -39,7 +39,6 @@ var actor = (function(){
 		dom.newElement("div","actor_language_results_div","",view);
 		
 		my.create_form();
-		my.get_actors_from_web_storage();
 		
 		g('actor_language_search_button').addEventListener('click', function() {  actor.languages.search();   });
 		g('actor_language_iso_ok').addEventListener('click', function() {  addactorISOLanguage();     });
@@ -58,6 +57,7 @@ var actor = (function(){
 			}
 		};
 		
+		my.get_actors_from_web_storage();
 	}
 	
 	
@@ -130,16 +130,18 @@ var actor = (function(){
 
 		console.log("Showing actor "+actor_id);
 		
-		//new actors cannot be deleted, so remove the icon, when available:
+		if (APP.active_view == my.view_id){
 		
-		if (actor_id == -1) {
-			g('link_delete_active_actor').style.display = "none";
-			g('link_duplicate_active_actor').style.display = "none";
-		}
-		
-		else {
-			g('link_delete_active_actor').style.display = "inline";
-			g('link_duplicate_active_actor').style.display = "inline";
+			if (actor_id == -1) {
+				g('link_delete_active_actor').style.display = "none";
+				g('link_duplicate_active_actor').style.display = "none";
+			}
+			
+			else {
+				g('link_delete_active_actor').style.display = "inline";
+				g('link_duplicate_active_actor').style.display = "inline";
+			}
+			
 		}
 
 
@@ -176,7 +178,10 @@ var actor = (function(){
 			document.getElementsByName("actor_anonymized")[0].checked = my.actors[actor_id].anonymized;
 			
 			my.showLanguagesOfActiveActor();
+			
+			if (APP.active_view == my.view_id){
 			g("save_actor_span").innerHTML = " Save changes to this actor";
+			}
 
 		}
 
@@ -184,7 +189,9 @@ var actor = (function(){
 
 			my.blank_form();
 
+			if (APP.active_view == my.view_id){
 			g("save_actor_span").innerHTML = " Save Actor";
+			}
 
 		}
 
@@ -731,10 +738,6 @@ var actor = (function(){
 
 	my.refresh_list_display = function(){
 	
-		if (APP.active_view != "VIEW_actors"){
-			return;
-		}
-
 		g('ac_list').innerHTML = "";
 
 		for (var i=0;i<my.actors.length;i++){

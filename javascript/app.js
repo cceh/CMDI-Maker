@@ -23,7 +23,7 @@ var APP = (function () {
 	my.active_environment;
 	
 	my.init = function (){
-	
+
 		my.createEnvironment(environment);  //preliminary!
 		g("version_span").innerHTML = version;
 		my.say_hello();
@@ -443,6 +443,16 @@ var APP = (function () {
 		if (typeof module_or_id === 'string') {
 			
 			var id = module_or_id;
+			
+			//find the module for this id
+			for (var m=0; m<my.active_environment.length; m++){
+				if (my.active_environment[m].view == id){
+					var module = my.active_environment[m].module;
+					break;
+				}
+			
+			}
+			
 		
 		}
 		
@@ -481,23 +491,11 @@ var APP = (function () {
 		
 		g("module_icons").style.display = "block";
 		
+		my.showFunctionsForView(module);
+
+		
 		//make the selected view visible
 		g(id).style.display = "block";
-		
-		//make all functions invisible
-		var functions = g("functions").children;
-		for (var f=0; f<functions.length; f++){
-			functions[f].style.display = "none";
-		}	
-
-		//if this view is from a module and has functions, make them visible
-		if (module && module.functions){
-		
-			//make functions visible
-			for (var f=0; f < module.functions.length; f++){
-				module.functions[f].style.display = "inline";
-			}	
-		}
 		
 		if (id == "VIEW_sessions"){
 			g('VIEW_sessions').scrollTop = 0;
@@ -588,7 +586,38 @@ var APP = (function () {
 
 
 	}
+	
+	
+	my.showFunctionsForView = function (module){
+	
+		//make all functions invisible
+		var functions = g("functions").children;
+		for (var f=0; f<functions.length; f++){
+			functions[f].style.display = "none";
+		}	
+		
+		//If this view is not from a module, it wont have functions
+		if (!module){
+			return;
+		}
 
+		//if this module has functions, make them visible
+		if (module.functions){
+			//make functions visible
+			for (var f=0; f < module.functions.length; f++){
+				var func = module.functions[f];
+			
+				if (func.type == "function_wrap"){
+					g(module.functions[f].wrapper_id).style.display = "inline";
+				}
+				
+				else {
+					g(module.functions[f].id).style.display = "inline";
+				}
+			}	
+		}
+
+	}
 	
 	my.save_file = function (text, filename, mime_type){
 
@@ -603,13 +632,14 @@ var APP = (function () {
 	my.createEnvironment = function (environment){
 	
 		for (var e=0; e<environment.length; e++){
-			environment[e].module.init();
+		
+			var module = environment[e].module;
+			
+			module.init();
 			
 			//initialize functions for the interface
-			if (environment[e].module.functions){
-			
-				my.init_functions(environment[e].module.functions);
-			
+			if (module.functions){
+				my.init_functions(module.functions);
 			}
 		}
 		
@@ -644,7 +674,6 @@ var APP = (function () {
 			icon.addEventListener('click', function(num) {
 				return function(){
 					APP.view(num.view);
-					APP.init_functions(num.module.functions);
 				}
 			}(workflow[w]));
 		}
