@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-var content_languages = (function() {
+corpus.content_languages = (function() {
 
 	var my = {};
 	
@@ -25,6 +25,46 @@ var content_languages = (function() {
 	my.save = my.content_languages;
 	
 	my.id_counter = 0;
+	
+	
+	my.init = function(){
+	
+		var div = dom.newElement("div","content_languages","",g("VIEW_corpus"),
+			'<div id="lang_search_div">'+
+			'<h1>Set Global Languages of Content</h1>'+
+			'<p><input type="text" name="content_language_select" id="content_language_select" size="1"> '+
+			'<input type="button" id="content_language_search_button" value="Search"> or type in ISO code '+
+			'<input type="text" name="content_language_iso_input" id="content_language_iso_input" size="1"> '+
+			'<input type="button" id="content_language_iso_ok" value="OK">'+
+			'</p>'+
+			'</div>'+
+
+			'<div id="current_content_languages_display">'+
+			'<h1>Current Content Languages</h1>	'+			
+			'</div>'+
+					
+			'<div id="content_language_results_div">'+
+			'</div>'
+		);
+		
+		g('content_language_search_button').addEventListener('click', function() {  corpus.content_languages.search();     });
+		g('content_language_iso_ok').addEventListener('click', function() {  corpus.content_languages.addByISO();     });
+
+		g("content_language_select").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				corpus.content_languages.search();
+			}
+		};
+		
+		g("content_language_iso_input").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				corpus.content_languages.addByISO();
+			}
+		};		
+	
+	}
 
 
 	my.search = function(){
@@ -91,7 +131,7 @@ var content_languages = (function() {
 		//clrd = content language results div
 		img.src = path_to_icons + "reset.png";
 		img.addEventListener('click', function() { 
-			content_languages.closeCLS();  
+			corpus.content_languages.closeCLS();  
 		} );
 		
 		dom.newElement("h3","","",clrd, "(ISO639-3 Code, Country ID, Language Name)");
@@ -105,7 +145,7 @@ var content_languages = (function() {
 		
 			a.addEventListener('click', function(num) { 
 				return function(){
-					content_languages.set(num);  
+					corpus.content_languages.set(num);  
 				};
 			}(results[j]) );
 		}
@@ -161,7 +201,7 @@ var content_languages = (function() {
 		img.src = path_to_icons+"reset.png";
 		img.addEventListener('click', function(num) { 
 			return function(){
-				content_languages.remove(num);  
+				corpus.content_languages.remove(num);  
 			};
 		}(my.id_counter) );
 		

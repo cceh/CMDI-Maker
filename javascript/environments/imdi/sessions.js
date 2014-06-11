@@ -20,6 +20,8 @@ var session = (function () {
 
 	var my = {};
 	
+	my.view_id = "VIEW_sessions";
+	
 	my.sessions = [];
 	
 	//Auto Save the my.sessions object (Not yet implemented!)
@@ -28,6 +30,68 @@ var session = (function () {
 	my.id_counter = 0;
 	
 	my.resource_id_counter = 0;
+	
+	my.init = function(){
+	
+		dom.newElement("div","VIEW_sessions","content",g("content_wrapper"));
+
+	}
+	
+	
+	my.functions = [
+		{
+			label: "New Session",
+			icon: "plus.png",
+			id: "link_newSession",
+			onclick: function() {session.newSession(); }
+		},
+		{
+			label: "Save Form",
+			icon: "save.png",
+			id: "link_save_form",
+			onclick: function() {
+				save_and_recall.save_form();
+				alertify.log("Form saved","",5000);
+			}
+		},
+		{
+			label: "Reset Form",
+			icon: "reset.png",
+			id: "link_reset_form",
+			onclick: function() {       
+
+				alertify.set({ labels: {
+					ok     : "No",
+					cancel : "Yes, delete form"
+				} });
+				
+				alertify.confirm("Really?<br>You want to reset the form and delete corpus and all sessions?", function (e) {
+					if (e) {
+						// user clicked "ok"
+					}
+			
+					else {
+						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+						APP.reset_form();
+						alertify.log("Form reset","",5000);
+						
+					}
+				});
+			}
+		},
+		{
+			label: "Copy Session 1 metadata to all sessions",
+			icon: "copy.png",
+			id: "link_copy_sessions",
+			wrapper_id: "copy_sessions_div",
+			type: "function_wrap",
+			sub_div: "copy_sessions_select",
+			onclick: function() { session.assignSession1Metadata(); }
+		}
+	];
+	
+
+	
 	
 	my.refreshResources = function(s){
 

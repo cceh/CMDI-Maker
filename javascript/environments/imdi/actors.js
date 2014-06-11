@@ -20,11 +20,74 @@ var actor = (function(){
 	
 	my.actors = [];
 	
+	my.view_id = "VIEW_actors";
+	
 	//Auto Save my.actors (not yet implemented!)
 	my.save = my.actors;
 	
 	my.id_counter = 0;
 	my.active_actor = -1;
+	
+	my.init = function(){
+	
+	
+		var view = dom.newElement("div","VIEW_actors","content",g("content_wrapper"));
+		dom.newElement("div","ac_list","",view);
+		var ac_view = dom.newElement("div","ac_view","",view);
+		dom.newElement("div","actor_title_div","",ac_view,'<h1 id="actor_form_title">New Actor</h1>');
+		dom.newElement("div","actor_content_div","",ac_view);
+		dom.newElement("div","actor_language_results_div","",view);
+		
+		my.create_form();
+		my.get_actors_from_web_storage();
+		
+		g('actor_language_search_button').addEventListener('click', function() {  actor.languages.search();   });
+		g('actor_language_iso_ok').addEventListener('click', function() {  addactorISOLanguage();     });
+
+		g("actor_language_select").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				actor.languages.search();
+			}
+		};
+		
+		g("actor_language_iso_input").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				actor.languages.addByISO();
+			}
+		};
+		
+	}
+	
+	
+	my.functions = [
+		{
+			id: "link_save_active_actor",
+			icon: "save.png",
+			label_span_id: "save_actor_span",
+			onclick: function() { actor.save_active_actor(); }
+		},
+		{
+			id: "link_delete_active_actor",
+			icon: "reset.png",
+			label: "Delete this actor",
+			onclick: function() { actor.delete_active_actor(); }
+		},
+		{
+			id: "link_sort_actors_alphabetically",
+			icon: "az.png",
+			label: "Sort Actors alphabetically",
+			onclick: function() { actor.sortAlphabetically(); }
+		},
+		{
+			id: "link_duplicate_active_actor",
+			icon: "duplicate_user.png",
+			label: "Save and duplicate this actor",
+			onclick: function() { actor.duplicate_active_actor(); }
+		}	
+	];
+	
 
 	my.erase_database = function(){
 
@@ -67,7 +130,8 @@ var actor = (function(){
 
 		console.log("Showing actor "+actor_id);
 		
-		//new actors cannot be deleted, so remove the icon:
+		//new actors cannot be deleted, so remove the icon, when available:
+		
 		if (actor_id == -1) {
 			g('link_delete_active_actor').style.display = "none";
 			g('link_duplicate_active_actor').style.display = "none";
@@ -77,6 +141,7 @@ var actor = (function(){
 			g('link_delete_active_actor').style.display = "inline";
 			g('link_duplicate_active_actor').style.display = "inline";
 		}
+
 
 		my.languages.closeLanguageSelect();	
 		my.highlight_active_actor_div(actor_id);
@@ -665,6 +730,10 @@ var actor = (function(){
 
 
 	my.refresh_list_display = function(){
+	
+		if (APP.active_view != "VIEW_actors"){
+			return;
+		}
 
 		g('ac_list').innerHTML = "";
 

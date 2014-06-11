@@ -16,7 +16,7 @@ limitations under the License.
 
 // Settings
 var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version = "v1.0.3";
+var version = "v1.0.4";
 var LanguageCodePrefix = "ISO639-3:";
 var path_to_images = "img/";
 var path_to_icons = path_to_images + "icons/";
@@ -25,7 +25,8 @@ var highlight_color = "skyblue";
 
 var session_dom_element_prefix = "session_";
 var copy_checkbox_element_prefix = "copy_check_";
-var view_id_prefix = "VIEWLINK_";
+var viewlink_id_prefix = "VIEWLINK_";
+var view_id_prefix = "VIEW_";
 
 var output_formats = [
 	{
@@ -33,7 +34,7 @@ var output_formats = [
 		name: "imdi",
 		file_ending: "imdi",
 		output_name: "IMDI",
-		workflow: imdi_workflow,
+		environment: imdi_environment,
 		generator_object: imdi_generator,
 		form: session_form,
 		actor_form: actor_form_imdi
@@ -43,7 +44,7 @@ var output_formats = [
 		name: "cmdi-imdi",
 		file_ending: "cmdi",
 		output_name: "CMDI",
-		workflow: imdi_workflow,
+		environment: imdi_environment,
 		generator_object: cmdi_generator,
 		form: session_form,
 		actor_form: actor_form_imdi
@@ -59,7 +60,7 @@ var form_textarea_columns = 5;
 var new_page = true;
 var preset_data;
 
-var workflow = imdi_workflow; //preliminary!!!
+var environment = imdi_environment; //preliminary!!!
 
 var compatibility_warnings = {
 	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
@@ -156,20 +157,5 @@ var hellos = [
 
   
 document.addEventListener('DOMContentLoaded', function() {
-	
-	APP.createWorkflow(workflow);
-	APP.view("wait");
-	g("version_span").innerHTML = version;
-	
-	APP.say_hello();
-	APP.create_output_format_select();
-	APP.display_metadata_languages();
-	actor.create_form();
-	actor.get_actors_from_web_storage();
-	save_and_recall.get_recall_data();
-	resources.refreshFileListDisplay();
-	APP.check_if_first_start();
-	APP.create_copy_session_options();
-	add_event_listeners();   //listeners.js  
-
+	APP.init();
 }, false);

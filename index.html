@@ -17,15 +17,16 @@
 
 	<!-- Environments -->
 		<!-- IMDI -->
-		<script src="javascript/sessions.js" type="text/javascript"></script>
-		<script src="javascript/content_languages.js" type="text/javascript"></script>
-		<script src="javascript/output.js" type="text/javascript"></script>
-		<script src="javascript/resource_files.js" type="text/javascript"></script>
-		<script src="javascript/imdi_generator.js" type="text/javascript"></script>
-		<script src="javascript/cmdi_generator.js" type="text/javascript"></script>
-		<script src="javascript/actors.js" type="text/javascript"></script>
-		<script src="javascript/actor_languages.js" type="text/javascript"></script>	
-		<script src="javascript/imdi_form.js" type="text/javascript"></script>
+		<script src="javascript/environments/imdi/sessions.js" type="text/javascript"></script>
+		<script src="javascript/environments/imdi/output.js" type="text/javascript"></script>
+		<script src="javascript/environments/imdi/corpus.js" type="text/javascript"></script>
+			<script src="javascript/environments/imdi/content_languages.js" type="text/javascript"></script>
+		<script src="javascript/environments/imdi/resource_files.js" type="text/javascript"></script>
+		<script src="javascript/environments/imdi/imdi_generator.js" type="text/javascript"></script>
+		<script src="javascript/environments/imdi/cmdi_generator.js" type="text/javascript"></script>
+		<script src="javascript/environments/imdi/actors.js" type="text/javascript"></script>
+			<script src="javascript/environments/imdi/actor_languages.js" type="text/javascript"></script>	
+		<script src="javascript/environments/imdi/imdi_form.js" type="text/javascript"></script>
 	
 	<!-- Core -->
 	<script src="javascript/helpers.js" type="text/javascript"></script>
@@ -33,7 +34,6 @@
 	<script src="javascript/app.js" type="text/javascript"></script>
 	<script src="javascript/save_and_recall.js" type="text/javascript"></script>
 	<script src="javascript/dom.js" type="text/javascript"></script>
-	<script src="javascript/listeners.js" type="text/javascript"></script>
 	<script async src="javascript/LanguageIndex.js" type="text/javascript"></script>
 	
 </head>
@@ -43,7 +43,7 @@
 	<form action="generate" name="metadata_form" method="post">
 		<div class="module_header">
 			
-			<div class="module_title icon_div_hover" id="start_window_icon">
+			<div class="module_title icon_div_hover" id="VIEWLINK_start">
 				<img class="webapp_icon" src="img/icons/textedit.png">
 				<p class="module_headline" id="module_headline">CMDI Maker</p>
 			</div>
@@ -55,21 +55,18 @@
 			
 		<div id="content_wrapper">
 		
-			<div class="content" id="wait">
-				<div id="wait_wrapper">
-					<img id="wait_img" src="img/icons/textedit.png">
-					
-					<h1>Ooops!<br>Something has happened that should not have happened!</h1>
-				</div>
-			</div>
-			
-			<div class="content" id="start">
+			<div class="content" id="VIEW_start">
 			
 				<h1 id="hello" class="ultra_big"></h1>
 				<h2 class="center">Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>
 				Every time you load this page, you can pick up where you left off.</h2>
 				
 				<h2 class="center"><a id="link_lets_go" href="#">Let's go!</a></h2>
+				
+				<h2 class="center">Need help?</h2>
+				<p class="center"><a href="https://www.youtube.com/watch?v=eDY4opFAIT0">Tutorial Video on YouTube (German)</a></p>
+				<p class="center"><a href="https://github.com/digitallinguists/CMDI-Maker">View Source Code on GitHub</a></p>	
+				<p class="center">Support: <a href="mailto:cmdi-maker-support@uni-koeln.de">cmdi-maker-support@uni-koeln.de</a></p>		
 				
 				<h2 class="center">CMDI Maker is supported by</h2>
 				
@@ -107,109 +104,12 @@
 						<img src="img/logos/LOGO_SOAS.png">
 					</a>
 
-
 				</div>
-				
-				<h2 class="center">Learn</h2>
-				<p class="center"><a href="https://www.youtube.com/watch?v=eDY4opFAIT0">Tutorial Video on YouTube (German)</a></p>
-				<p class="center"><a href="https://github.com/digitallinguists/CMDI-Maker">View Source Code on GitHub</a></p>
 				
 			</div>
-			
-			<div class="content" id="VIEW_corpus">
-	
-				<div id="corpus_form">
-					<h1>Corpus</h1>
-					<p><span title="A short archivable name of your corpus">Name</span><br>
-					<input title="A short archivable name of your corpus" type="text" name="corpus_name" id="corpus_name" value=""><br> 
-	
-					<span title="The complete and extensive title of your corpus">Title</span><br>
-					<input title="The complete and extensive title of your corpus" type="text" name="corpus_title" id="corpus_title" value=""><br> 
-
-					Description<br>
-					<textarea name="corpus_description" id="corpus_description" cols="19" rows="5"></textarea>
-					</p>
-				</div>
-				
-				<div id="content_languages">
-				
-					<div id="lang_search_div">
-					<h1>Set Global Languages of Content</h1>
-					<p><input type="text" name="content_language_select" id="content_language_select" size="1">
-					<input type="button" id="content_language_search_button" value="Search"> or type in ISO code
-					<input type="text" name="content_language_iso_input" id="content_language_iso_input" size="1">
-					<input type="button" id="content_language_iso_ok" value="OK">
-					</p>
-					</div>
-
-					<div id="current_content_languages_display">
-					<h1>Current Content Languages</h1>					
-					</div>
-					
-					<div id="content_language_results_div">
-					</div>
-				
-				</div>
-				
-			</div>	
 
 		
-			<div class="content" id="VIEW_resources">
-				<div id="files">
-					
-					<div id="drop_zone">
-						<h2>Drag and drop media files here</h2>
-					</div>
-					<input type="file" id="files_input" name="files_input" multiple>
-					
-					<div class="workspace-usageTable">
-						<h3>Usage</h3>
-						<h4>Click</h4>
-						<p>Select resource, click again to deselect a single resource</p>
-						
-						<h4>Shift</h4>
-						<p>Hold shift to select multiple resources</p>
-						
-						<h4>Escape</h4>
-						<p>Press escape to deselect all resources</p>
-					</div>
-				</div>
-
-				<div id="file_list_div">
-					<div id="list"></div>			
-					<div id="file_content"></div>
-				</div>
-			
-			</div>
-			
-
-			<div class="content" id="VIEW_actors">
-		
-				<div id="ac_list"></div>	
-		
-				<div id="ac_view">
-				
-					<div id="actor_title_div">
-						<h1 id="actor_form_title">New Actor</h1>
-					</div>
-				
-					<div id="actor_content_div">
-					</div>
-					
-				</div>
-				
-				<div id="actor_language_results_div">
-				</div>
-		
-			</div>
-		
-			<div class="content" id="VIEW_sessions">
-			</div>
-			
-			<div class="content" id="VIEW_xml_output">
-			</div>
-			
-			<div class="content" id="settings">
+			<div class="content" id="VIEW_settings">
 			
 				<h1>Settings</h1>
 
@@ -267,7 +167,7 @@
 			
 			
 			
-		<div class="content" id="about">
+		<div class="content" id="VIEW_about">
 		
 			<img id="about_img" src="img/logo-128.png">
 			
@@ -335,82 +235,11 @@
 	</div> <!--content_wrapper-->
 		
 		<div class="functions" id="functions">
-		
-			<div class="function_icon" id="link_newSession">
-				<img class="function_img" src="img/icons/plus.png"><h3>New Session</h3>
-			</div>
-	
-			<div class="function_icon" id="link_save_form">
-				<img class="function_img" src="img/icons/save.png"><h3>Save Form</h3>
-			</div>
-			
-			<div class="function_icon" id="link_reset_form">
-				<img class="function_img" src="img/icons/reset.png"><h3>Reset Form</h3>
-			</div>
-			
-			<div class="function_wrap" id="copy_sessions_div"> 
-				<div class="function_icon" id="link_copy_sessions">
-					<img class="function_img" src="img/icons/copy.png"><h3>Copy Session 1 metadata to all sessions</h3>
-				</div>
-				
-				<div id="copy_sessions_select">
-				</div>
-				
-			</div>
-			
-			<div class="function_icon" id="link_export_corpus">
-				<img class="function_img" src="img/icons/download.png"><h3>Download Corpus including all Sessions</h3>
-			</div>
-			
-			<div class="function_icon" id="link_save_active_actor">
-				<img class="function_img" id="save_icon" src="img/icons/save.png"><h3><span id="save_actor_span"></span></h3>
-			</div>
-			
-			<div class="function_icon" id="link_delete_active_actor">
-				<img class="function_img" id="delete_icon" src="img/icons/reset.png"><h3>Delete this actor</h3>
-			</div> 						
-			
-			<div class="function_icon" id="link_sort_actors_alphabetically">
-				<img class="function_img" src="img/icons/az.png"><h3>Sort Actors alphabetically</h3>
-			</div>
-			
-			<div class="function_icon" id="link_duplicate_active_actor">
-				<img class="function_img" src="img/icons/duplicate_user.png"><h3>Save and duplicate this actor</h3>
-			</div>
-
-			<div class="function_wrap" id="crps_div">
-				<div class="function_icon" id="crps_icon">
-					<img class="function_img" src="img/icons/plus.png"><h3>Create one session per file</h3>
-				</div>
-				
-				<div id="crps_filetype_select">
-					<h3 class="inner_function_h3">Files</h3>
-					<input type="radio" name="radio_file_type" value="selected" checked> Selected Files<br>
-					<input type="radio" name="radio_file_type" value="eaf"> EAF<br>
-					<input type="radio" name="radio_file_type" value="wav"> WAV<br>
-					<input type="radio" name="radio_file_type" value="mpg"> MPG<br>
-					<input type="radio" name="radio_file_type" value="mp4"> MP4<br>
-
-				</div>
-				
-				
-			</div>
-			
-			<div class="function_icon" id="link_sort_alphabetically">
-				<img class="function_img" src="img/icons/az.png"><h3>Sort Files alphabetically</h3>
-			</div>	
-			
-			<div class="function_icon" id="link_clear_file_list">
-				<img class="function_img" src="img/icons/reset.png"><h3>Clear File List</h3>
-			</div>	
-
 		</div>
 		
 		<div id="misc">
-		
-			<img id="link_settings" title="Settings" class="misc_icon" src="img/icons/gear2.png">
-			<img title="About" id="link_about" class="misc_icon" src="img/icons/about.png">
-		
+			<img id="VIEWLINK_settings" title="Settings" class="misc_icon" src="img/icons/gear2.png">
+			<img title="About" id="VIEWLINK_about" class="misc_icon" src="img/icons/about.png">
 		</div>
 
 	</form>

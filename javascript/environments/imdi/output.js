@@ -19,6 +19,24 @@ var output = (function (){
 
 	var my = {};
 	
+	my.init = function(){
+	
+		dom.newElement("div","VIEW_xml_output","content",g("content_wrapper"));
+	
+	}
+	
+	my.view_id = "VIEW_xml_output";
+	
+	my.functions = [
+		{
+			id: "link_export_corpus",
+			icon: "download.png",
+			label: "Download Corpus including all Sessions",
+			onclick: function() { output.export_corpus(); }
+		}
+	
+	];
+	
 
 	my.generate = function (){	
 		

@@ -89,7 +89,7 @@ var save_and_recall = (function(){
 		
 		for (var l=0;l<recall_object.content_languages.length;l++){
 		
-			content_languages.set(recall_object.content_languages[l]);
+			corpus.content_languages.set(recall_object.content_languages[l]);
 			
 		}
 		
@@ -161,7 +161,7 @@ var save_and_recall = (function(){
 		object.corpus.title = g("corpus_title").value;
 		object.corpus.description = g("corpus_description").value;
 		
-		object.content_languages = content_languages.content_languages;
+		object.content_languages = corpus.content_languages.content_languages;
 		
 		object.settings.save_interval_time = document.metadata_form.radio_auto_save.value;
 		

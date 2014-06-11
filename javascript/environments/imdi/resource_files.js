@@ -29,6 +29,78 @@ var resources = (function(){
 	my.last_selected_file = -1;
 	
 	my.shift = false;
+	
+	my.view_id = "VIEW_resources";
+		
+		
+	my.functions = [
+		{
+			label: "Create one session per file",
+			icon: "plus.png",
+			id: "crps_icon",
+			wrapper_id: "crps_div",
+			type: "function_wrap",
+			sub_div: "crps_filetype_select",
+			onclick: function() { resources.createSessionPerResource();  APP.view("VIEW_sessions"); },
+			sub_div_innerHTML: 	'<h3 class="inner_function_h3">Files</h3>'+
+						'<input type="radio" name="radio_file_type" value="selected" checked> Selected Files<br>'+
+						'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
+						'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
+						'<input type="radio" name="radio_file_type" value="mpg"> MPG<br>'+
+						'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>'
+		},
+		{
+			id: "link_sort_alphabetically",
+			icon: "az.png",
+			label: "Sort Files alphabetically",
+			onclick: function() { resources.sortAlphabetically(); }
+		},
+		{
+			id: "link_remove_files",
+			icon: "reset.png",
+			label: "Remove",
+			onclick: function() { resources.removeSelectedFiles(); }
+		},
+		{
+			id: "link_clear_file_list",
+			icon: "reset.png",
+			label: "Clear File List",
+			onclick: function() { resources.clearFileList(); }
+		},
+	
+	
+	
+	];
+	
+	
+	my.init = function(){
+	
+		var view = dom.newElement("div","VIEW_resources","content",g("content_wrapper"));
+		var div = dom.newElement("div","files","",view);
+		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
+		
+		var input = dom.newElement("input","files_input","",div);
+		input.name = "files_input";
+		input.type = "file";
+		input.multiple = true;
+
+		var usage_table = dom.newElement("div","","workspace-usageTable",div,
+		'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
+		'<h4>Shift</h4><p>Hold shift to select multiple resources</p>'+
+		'<h4>Escape</h4><p>Press escape to deselect all resources</p>');
+		
+		var file_list_div = dom.newElement("div","file_list_div","",view);
+		var list = dom.newElement("div","list","",file_list_div);
+		
+		
+		// Setup the drag and drop listeners
+		var dropZone = g('drop_zone');
+		dropZone.addEventListener('dragover', resources.handleDragOver, false);
+		dropZone.addEventListener('drop', resources.handleFileDrop, false);
+	  
+		g('files_input').addEventListener('change', resources.handleFileInputChange, false);
+		
+	}
 
 	my.getValidityOfFile = function(filename){
 	// returns 0=valid media file, 1=valid written resource, 2=invalid media file, 3=invalid written resource, -1=unknown file
@@ -217,6 +289,41 @@ var resources = (function(){
 		}
 
 
+	}
+	
+	
+	my.removeSelectedFiles = function(){
+		
+		for (var f = 0; f<my.selected_files.length; f++){
+		
+			my.available_resources[my.selected_files[f]] = null;
+		
+		
+		}
+		
+		var f = 0;
+		
+		while (f < my.available_resources.length){
+		
+			if (my.available_resources[f] == null){
+				my.available_resources.splice(f,1);
+			}
+			
+			else {
+				f++;
+			}
+	
+		}
+		
+		my.refreshFileListDisplay();
+	}
+	
+	
+	my.removeFile = function(index){
+	
+		my.available_resources.splice(index,1);
+		my.refreshFileListDisplay();
+	
 	}
 
 

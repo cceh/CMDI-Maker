@@ -20,6 +20,22 @@ var APP = (function () {
 	var my = {};
 	
 	my.active_view;
+	my.active_environment;
+	
+	my.init = function (){
+	
+		my.createEnvironment(environment);  //preliminary!
+		g("version_span").innerHTML = version;
+		my.say_hello();
+		my.create_output_format_select();
+		my.display_metadata_languages();
+		save_and_recall.get_recall_data();
+		resources.refreshFileListDisplay();
+		my.check_if_first_start();
+		my.create_copy_session_options();
+		my.addEventListeners(); 
+
+	}
 
 	my.create_output_format_select = function (){
 
@@ -357,6 +373,57 @@ var APP = (function () {
 
 
 	}
+	
+	
+	my.init_functions = function(functions){
+	
+		var functions_div = g("functions");
+	
+		for (var f=0; f<functions.length; f++){
+		
+			if (functions[f].type != "function_wrap"){
+				var function_div = dom.newElement("div", functions[f].id, "function_icon",functions_div);
+				var img = dom.newElement("img","","function_img", function_div);
+				img.src = path_to_icons + functions[f].icon;
+				var label = dom.newElement("h3","","", function_div, functions[f].label);
+				
+				if (functions[f].label_span_id){
+					dom.newElement("span", functions[f].label_span_id, "", label);
+				}
+					
+				else if (functions[f].label) {  //if label is there
+					label.innerHTML = functions[f].label;
+				}
+				
+				function_div.addEventListener('click', functions[f].onclick);
+
+			}
+
+			else {
+			
+				var function_wrap = dom.newElement("div",functions[f].wrapper_id,"function_wrap",functions_div);
+				
+				var function_div = dom.newElement("div", functions[f].id, "function_icon",function_wrap);
+				var img = dom.newElement("img","","function_img", function_div);
+				img.src = path_to_icons + functions[f].icon;
+				dom.newElement("h3","","", function_div, functions[f].label);
+				
+				function_div.addEventListener('click', functions[f].onclick);
+
+				var sub_div = dom.newElement("div",functions[f].sub_div,"",function_wrap);
+				
+				if (functions[f].sub_div_innerHTML){
+					sub_div.innerHTML = functions[f].sub_div_innerHTML;
+				}
+				
+				
+				//this cannot be done with css
+				function_div.addEventListener('mousedown', function() { function_div.style.backgroundColor = "black"; });
+				function_div.addEventListener('mouseup', function() { function_div.style.backgroundColor = ""; });
+			}
+		
+		}
+	}
 
 	
 	my.reset_form = function (){
@@ -367,115 +434,85 @@ var APP = (function () {
 		g("corpus_description").value = "";
 		
 		session.eraseAll();
-		content_languages.removeAll();
+		corpus.content_languages.removeAll();
 	}
 
 
-	my.view = function (id){
+	my.view = function (module_or_id){
+		
+		if (typeof module_or_id === 'string') {
+			
+			var id = module_or_id;
+		
+		}
+		
+		else { //if argument is a module
+			
+			var module = module_or_id;
+			var id = module.view_id;
+		
+		}
+		
+		console.log("VIEW: " + id);
 		
 		if (id == "default"){
-			id = "start";
+			id = "VIEW_start";
 		}
 		
-		var views = ["wait", "start", "VIEW_corpus", "VIEW_sessions",
-		"VIEW_resources", "VIEW_xml_output", "settings", "about", "VIEW_actors"];
-		
-		if (views.indexOf(id) == -1){
-			console.log("Error: Unkown view requested (" + id +")!");
-			my.view("default");
-			return;
-		}
-		
-		my.active_view = id;
+		var views = g("content_wrapper").children;
+		var view_ids = [];
 		
 		//make all views invisible
 		for (var v=0; v<views.length; v++){
-			g(views[v]).style.display = "none";
-		}
-
-		g("start_window_icon").style.backgroundColor = "";
+			views[v].style.display = "none";
+			view_ids.push(views[v].id);
+		}		
 		
-		//unhighlight all workflow icons
-		for (var w=0; w<workflow.length; w++){
-			g(view_id_prefix + workflow[w].id).style.backgroundColor = "";
-		}
-		
-		g("link_settings").style.backgroundColor = "";
-		g("link_about").style.backgroundColor = "";
+		//check if view exists, if not, throw error
+		if (view_ids.indexOf(id) == -1){
+			console.log("Error: Unkown view requested (" + id +")!");
+			my.view("default");
+			return;
+		}			
 
-		g("link_newSession").style.display = "none";
-		g("link_save_form").style.display = "none";
-		g("link_reset_form").style.display = "none";
-		g("link_copy_sessions").style.display = "none";
-		g("link_export_corpus").style.display = "none";
-		g("link_clear_file_list").style.display = "none";
-		g("link_sort_alphabetically").style.display = "none";
-		g("link_save_active_actor").style.display = "none";
-		g("link_delete_active_actor").style.display = "none";
-		g("link_sort_actors_alphabetically").style.display = "none";
-		g("link_duplicate_active_actor").style.display = "none";
-		g("crps_icon").style.display = "none";
+		my.active_view = id;
+
+		my.highlightViewIcon(id);
 		
 		g("module_icons").style.display = "block";
 		
 		//make the selected view visible
 		g(id).style.display = "block";
 		
-		switch (id){
+		//make all functions invisible
+		var functions = g("functions").children;
+		for (var f=0; f<functions.length; f++){
+			functions[f].style.display = "none";
+		}	
+
+		//if this view is from a module and has functions, make them visible
+		if (module && module.functions){
 		
-			case "wait": {
-				g("module_icons").style.display = "none";
-			}
-			
-			case "start": {
-			
-				g("start_window_icon").style.backgroundColor = highlight_color;		
-				break;			
-			
-			}
-			
-			
-			case "VIEW_corpus": {
-			
-				g(view_id_prefix + "corpus").style.backgroundColor = highlight_color;
-				
-				g("link_save_form").style.display = "inline";
-				g("link_reset_form").style.display = "inline";
-
-				break;
-			}
-
-			case "VIEW_sessions": {
-				g('VIEW_sessions').scrollTop = 0;
-				
-				g(view_id_prefix + "sessions").style.backgroundColor = highlight_color;
-				
-				g("link_newSession").style.display = "inline";
-				g("link_save_form").style.display = "inline";
-				g("link_reset_form").style.display = "inline";
-				g("link_copy_sessions").style.display = "inline";
-				
-				break;
-			}
-
-			case "VIEW_actors": {
-				
-				g(view_id_prefix + "actors").style.backgroundColor = highlight_color;
-				
-				g("link_save_active_actor").style.display = "inline";
-				
-				if (actor.active_actor != -1){
-					g("link_delete_active_actor").style.display = "inline";
-					g("link_duplicate_active_actor").style.display = "inline";
-				}
-				
-				g("link_sort_actors_alphabetically").style.display = "inline";
-				
-				break;
-			}
+			//make functions visible
+			for (var f=0; f < module.functions.length; f++){
+				module.functions[f].style.display = "inline";
+			}	
+		}
 		
-			case "VIEW_xml_output": {
-			
+		if (id == "VIEW_sessions"){
+			g('VIEW_sessions').scrollTop = 0;
+		}
+		
+		if (id == "VIEW_actors"){		
+		
+			if (actor.active_actor != -1){
+				g("link_delete_active_actor").style.display = "inline";
+				g("link_duplicate_active_actor").style.display = "inline";
+			}
+		}
+		
+		if (id == "VIEW_xml_output"){		
+		
 				if ((is_corpus_properly_named()) && (session.areAllSessionsProperlyNamed())){
 				
 					if (session.doesEverySessionHaveAProjectName()){
@@ -520,43 +557,38 @@ var APP = (function () {
 						my.view("VIEW_sessions");
 					}
 				}
-				
-				break;
-				
 			}
-
-			case "VIEW_resources": {
-
-				g('VIEW_resources').scrollTop = 0;
-				
-				g(view_id_prefix + "resources").style.backgroundColor = highlight_color;
-				
-				g("crps_icon").style.display = "inline";
-				g("link_clear_file_list").style.display = "inline";
-				g("link_sort_alphabetically").style.display = "inline";
-				
-				break;
-			}
-			
-			case "settings": {
-			
-				g("link_settings").style.backgroundColor = highlight_color;
-				
-				break;
-
-			}
-			
-			
-			case "about": {
-				
-				g("link_about").style.backgroundColor = highlight_color;
-
-				break;
-			}
-			
+	
+	
+		if (id == "VIEW_resources"){		
+	
+			g('VIEW_resources').scrollTop = 0;
+	
 		}
 	}
 	
+	
+	my.highlightViewIcon = function (id) {
+		
+		//unhighlight all workflow icons
+		for (var w=0; w<my.active_environment.length; w++){
+			g(viewlink_id_prefix + my.active_environment[w].id).style.backgroundColor = "";
+		}
+
+		//Unhighlight APP VIEWLINKS
+		g("VIEWLINK_settings").style.backgroundColor = "";
+		g("VIEWLINK_about").style.backgroundColor = "";
+		g("VIEWLINK_start").style.backgroundColor = "";
+		
+		//remove "VIEW_" from id    //THIS IS TERRIBLE!!!!!!!
+		id = id.slice(5,id.length);
+		id = viewlink_id_prefix + id;
+		
+		g(id).style.backgroundColor = highlight_color;		
+
+
+	}
+
 	
 	my.save_file = function (text, filename, mime_type){
 
@@ -566,6 +598,27 @@ var APP = (function () {
 		saveAs(blob, clean_filename);
 
 	}
+	
+	
+	my.createEnvironment = function (environment){
+	
+		for (var e=0; e<environment.length; e++){
+			environment[e].module.init();
+			
+			//initialize functions for the interface
+			if (environment[e].module.functions){
+			
+				my.init_functions(environment[e].module.functions);
+			
+			}
+		}
+		
+		my.createWorkflow(environment);
+		
+		my.active_environment = environment;
+	
+	}
+	
 	
 	my.createWorkflow = function (workflow){
 	
@@ -581,7 +634,7 @@ var APP = (function () {
 			
 			}
 			
-			var icon = dom.newElement("div",view_id_prefix + workflow[w].id,"icon_div",div);
+			var icon = dom.newElement("div",viewlink_id_prefix + workflow[w].id,"icon_div",div);
 			var image = dom.newElement("img","","module_icon",icon);
 			image.src = path_to_icons + workflow[w].icon;
 
@@ -590,11 +643,82 @@ var APP = (function () {
 			
 			icon.addEventListener('click', function(num) {
 				return function(){
-					APP.view(num);
+					APP.view(num.view);
+					APP.init_functions(num.module.functions);
 				}
-			}(workflow[w].view));
+			}(workflow[w]));
 		}
 	
+	}
+	
+	my.addEventListeners = function(){
+	
+		g('link_lets_go').addEventListener('click', function() {        APP.view("VIEW_corpus");      });
+		g('VIEWLINK_start').addEventListener('click', function() {        APP.view("VIEW_start");      });
+		g('VIEWLINK_settings').addEventListener('click', function() {        APP.view("VIEW_settings");      });
+		g('VIEWLINK_about').addEventListener('click', function() {        APP.view("VIEW_about");      });
+		
+		document.getElementsByName("radio_auto_save").selectedIndex = 3;
+		
+		document.getElementsByName("radio_auto_save")[0].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(-1);     });
+		document.getElementsByName("radio_auto_save")[1].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(30);     });
+		document.getElementsByName("radio_auto_save")[2].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(60);     });	
+		document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
+		document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
+		
+		g('link_erase_actors_database').addEventListener('click', function() {        actor.erase_database();      });
+		g('link_delete_recall_data').addEventListener('click', function() {        save_and_recall.delete_recall_data();      });
+		g('link_hard_reset').addEventListener('click', function() {    
+
+			alertify.set({ labels: {
+				ok     : "No",
+				cancel : "Yes, delete everything"
+			} });
+
+			alertify.confirm("Really?<br>You want to hard reset CMDI Maker? All your actors and stuff will be deleted!", function (e) {
+
+				if (e) {
+					// user clicked "ok"
+				}
+		
+				else {
+					// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+					APP.hard_reset();
+				}
+			});
+
+		});	
+		
+		g('link_export_actors').addEventListener('click', function() {        actor.export_actors();      });	
+		g('actors_file_input').addEventListener('change',actor.import_actors, false);
+
+		
+		document.onkeydown = function(event) {
+		
+			if (event.keyCode == 16) {  //if shift is pressed
+				if (resources.shift == false){
+					resources.shift = true;
+					console.log("shift on");
+				}
+			}
+			
+			if (event.keyCode == 27)  {   //escape pressed
+			
+				resources.deselectAllFiles();
+			
+			}
+		
+		};
+
+		document.onkeyup = function(event) {
+		
+			if (event.keyCode == 16) {  //if shift is let go
+				resources.shift = false;
+				console.log("shift off");
+			}
+			
+		};
+
 	}
 	
 	return my;

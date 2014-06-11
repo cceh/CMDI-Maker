@@ -489,13 +489,13 @@ function make_new_session_object(){
 
 }
 
-var imdi_workflow = [
+var imdi_environment = [
 	{
 		id: "corpus",
 		title: "Corpus",
 		view: "VIEW_corpus",
 		icon: "box.png",
-		module: undefined
+		module: corpus
 	},
 	{
 		id: "resources",
