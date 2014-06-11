@@ -464,8 +464,6 @@ var APP = (function () {
 		
 		}
 		
-		console.log("VIEW: " + id);
-		
 		if (id == "default"){
 			id = "VIEW_start";
 		}
