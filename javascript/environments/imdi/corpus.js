@@ -99,7 +99,29 @@ var corpus = (function(){
 			}
 		}
 	];
+	
+	
+	my.isCorpusProperlyNamed = function (){
 
+		if (get("corpus_name") == ""){
+			
+			return false;
+			
+		}
+		
+		for (var c=0; c<not_allowed_chars.length; c++){
+		
+			if (get("corpus_name").indexOf(not_allowed_chars[c]) != -1){
+			
+				return false;
+				
+			}
+		
+		}
+
+		return true;
+
+	}
 
 	return my;
 	

@@ -38,6 +38,13 @@ var session = (function () {
 	}
 	
 	
+	my.view = function(){
+	
+		g(my.view_id).scrollTop = 0;
+	
+	}
+	
+	
 	my.functions = [
 		{
 			label: "New Session",
@@ -91,8 +98,6 @@ var session = (function () {
 	];
 	
 
-	
-	
 	my.refreshResources = function(s){
 
 		g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";

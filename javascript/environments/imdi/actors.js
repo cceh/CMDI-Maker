@@ -38,7 +38,7 @@ var actor = (function(){
 		dom.newElement("div","actor_content_div","",ac_view);
 		dom.newElement("div","actor_language_results_div","",view);
 		
-		my.create_form();
+		my.createForm();
 		
 		g('actor_language_search_button').addEventListener('click', function() {  actor.languages.search();   });
 		g('actor_language_iso_ok').addEventListener('click', function() {  addactorISOLanguage();     });
@@ -58,6 +58,23 @@ var actor = (function(){
 		};
 		
 		my.get_actors_from_web_storage();
+	}
+	
+	
+	my.view = function(){
+	
+		if (actor.active_actor != -1){
+			g("link_delete_active_actor").style.display = "inline";
+			g("link_duplicate_active_actor").style.display = "inline";
+			
+			g("save_actor_span").innerHTML = "Save changes to this actor";
+		}
+		
+		else {
+		
+			g("save_actor_span").innerHTML = "Save actor";
+		}
+	
 	}
 	
 	
@@ -104,7 +121,7 @@ var actor = (function(){
 			}
 		
 			else {
-				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button
 				
 				my.id_counter = 0;
 				localStorage.setItem("actor_id_counter",0);
@@ -115,7 +132,7 @@ var actor = (function(){
 				my.get_actors_from_web_storage();
 	  
 				for (var s=0;s<sessions.length;s++){
-					RemoveAllActorsFromSession(session.sessions[s].id);
+					session.removeAllActorsFromSession(session.sessions[s].id);
 				}
 				
 				
@@ -502,7 +519,7 @@ var actor = (function(){
 	}
 	
 	
-	my.create_form = function(){
+	my.createForm = function(){
 
 		APP.makeInput(g("actor_content_div"), actor_form_imdi, "actor_", "actor_", undefined);
 
@@ -637,9 +654,6 @@ var actor = (function(){
 				my.refresh_list_display();
 				my.refresh_web_storage();
 				
-				
-
-	  
 				alertify.log("Actor "+name_of_actor+" deleted", "", "5000");
 
 			}
@@ -724,9 +738,9 @@ var actor = (function(){
 		
 	}
 
-	my.sort_actors_alphabetically = function(){
+	my.sortAlphabetically = function(){
 
-		my.actors = sortByKey(actors,"name");
+		my.actors = sortByKey(my.actors,"name");
 
 		my.refresh_web_storage();
 		my.refresh_list_display();

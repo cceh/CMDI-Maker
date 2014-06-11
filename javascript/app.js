@@ -26,7 +26,7 @@ var APP = (function () {
 
 		my.createEnvironment(environment);  //preliminary!
 		g("version_span").innerHTML = version;
-		my.say_hello();
+		my.sayHello();
 		my.create_output_format_select();
 		my.display_metadata_languages();
 		save_and_recall.get_recall_data();
@@ -322,7 +322,7 @@ var APP = (function () {
 	}
 
 
-	my.say_hello = function (){
+	my.sayHello = function (){
 
 
 		var index = Math.floor(Math.random() * hellos.length);
@@ -340,6 +340,7 @@ var APP = (function () {
 	my.hard_reset = function(){
 
 		localStorage.removeItem("actors");
+		localStorage.removeItem("actor_id_counter");
 		localStorage.removeItem("form");
 		localStorage.removeItem("first_start");
 		location.reload();
@@ -497,72 +498,12 @@ var APP = (function () {
 		//make the selected view visible
 		g(id).style.display = "block";
 		
-		if (id == "VIEW_sessions"){
-			g('VIEW_sessions').scrollTop = 0;
+		//if a module view is selected, call the view method of the module
+		//every module can have a view method for things to be done, before viewing the page
+		if (module && module.view){
+			module.view();
 		}
-		
-		if (id == "VIEW_actors"){		
-		
-			if (actor.active_actor != -1){
-				g("link_delete_active_actor").style.display = "inline";
-				g("link_duplicate_active_actor").style.display = "inline";
-			}
-		}
-		
-		if (id == "VIEW_xml_output"){		
-		
-				if ((is_corpus_properly_named()) && (session.areAllSessionsProperlyNamed())){
-				
-					if (session.doesEverySessionHaveAProjectName()){
-
-						g(view_id_prefix + "xml_output").style.backgroundColor = highlight_color;
-					
-						g("link_export_corpus").style.display = "inline";
-			
-						output.generate();
-					
-					}
-					
-					else {
-					
-						alertify.set({ labels: {
-							ok     : "OK"
-						} });
-					
-						alertify.alert("Every session must have a project name!");
-					
-						my.view("VIEW_sessions");
-					
-					
-					}
-					
-					
-				}
-				
-				else {
-					
-					alertify.set({ labels: {
-						ok     : "OK"
-					} });
-					
-					alertify.alert("The corpus and every session must have a proper name.<br>An unnamed corpus or sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
-					
-					if (!is_corpus_properly_named()){   //show corpus
-						my.view("VIEW_corpus");
-					}
-					
-					else {  //show sessions
-						my.view("VIEW_sessions");
-					}
-				}
-			}
 	
-	
-		if (id == "VIEW_resources"){		
-	
-			g('VIEW_resources').scrollTop = 0;
-	
-		}
 	}
 	
 	

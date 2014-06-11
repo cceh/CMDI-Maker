@@ -27,6 +27,51 @@ var output = (function (){
 	
 	my.view_id = "VIEW_xml_output";
 	
+	
+	my.view = function(){
+	
+		if ((corpus.isCorpusProperlyNamed()) && (session.areAllSessionsProperlyNamed())){
+			
+			if (session.doesEverySessionHaveAProjectName()){
+
+				my.generate();
+				
+			}
+			
+			else {
+				
+				alertify.set({ labels: {
+					ok     : "OK"
+				} });
+				
+				alertify.alert("Every session must have a project name!");
+			
+				APP.view("VIEW_sessions");
+			
+			
+			}
+			
+		}
+		
+		else {
+			
+			alertify.set({ labels: {
+				ok     : "OK"
+			} });
+			
+			alertify.alert("The corpus and every session must have a proper name.<br>An unnamed corpus or sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
+			
+			if (!corpus.isCorpusProperlyNamed()){   //show corpus
+				APP.view("VIEW_corpus");
+			}
+			
+			else {  //show sessions
+				APP.view("VIEW_sessions");
+			}
+		}
+	}
+	
+
 	my.functions = [
 		{
 			id: "link_export_corpus",

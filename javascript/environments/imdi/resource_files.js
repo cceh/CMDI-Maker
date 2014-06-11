@@ -31,8 +31,14 @@ var resources = (function(){
 	my.shift = false;
 	
 	my.view_id = "VIEW_resources";
-		
-		
+	
+	my.view = function(){
+	
+		g('VIEW_resources').scrollTop = 0;
+	
+	}
+	
+	
 	my.functions = [
 		{
 			label: "Create one session per file",

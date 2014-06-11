@@ -309,29 +309,6 @@ function get_file_type(filename){
 }
 
 
-function is_corpus_properly_named(){
-
-	if (get("corpus_name") == ""){
-		
-		return false;
-		
-	}
-	
-	for (var c=0; c<not_allowed_chars.length; c++){
-	
-		if (get("corpus_name").indexOf(not_allowed_chars[c]) != -1){
-		
-			return false;
-			
-		}
-	
-	}
-
-	return true;
-
-}
-
-
 function parseDate(str){
 
 	var t = str.match(/([1-2][0-9][0-9][0-9])\-([0-1][0-9])\-([0-3][0-9])/);
