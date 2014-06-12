@@ -63,6 +63,29 @@ var corpus = (function(){
 	}
 	
 	
+	my.recall = function(corpus){
+	
+		g("corpus_name").value = corpus.name;
+		g("corpus_title").value = corpus.title;
+		g("corpus_description").value = corpus.description;
+	
+	}
+	
+	
+	my.getSaveData = function(){
+	
+		var object = {};
+	
+		object.name = g("corpus_name").value;
+		object.title = g("corpus_title").value;
+		object.description = g("corpus_description").value;
+	
+	
+		return object;
+	
+	}
+	
+	
 	my.functions = [
 		{
 			label: "Save Form",

@@ -39,6 +39,20 @@ var resources = (function(){
 	}
 	
 	
+	my.recall = function(data){
+	
+		my.available_resources = data;
+		my.refreshFileListDisplay();
+	
+	}
+	
+	my.getSaveData = function(){
+	
+		return my.available_resources;
+	
+	}
+	
+	
 	my.functions = [
 		{
 			label: "Create one session per file",

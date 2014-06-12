@@ -27,17 +27,17 @@ var APP = (function () {
 		my.createEnvironment(environment);  //preliminary!
 		g("version_span").innerHTML = version;
 		my.sayHello();
-		my.create_output_format_select();
+		my.createOutputFormatSelect();
 		my.display_metadata_languages();
-		save_and_recall.get_recall_data();
+		save_and_recall.getRecallData();
 		resources.refreshFileListDisplay();
-		my.check_if_first_start();
+		my.checkIfFirstStart();
 		my.create_copy_session_options();
 		my.addEventListeners(); 
 
 	}
 
-	my.create_output_format_select = function (){
+	my.createOutputFormatSelect = function (){
 
 		var parent = g("output_format_select");
 
@@ -297,7 +297,7 @@ var APP = (function () {
 	}
 
 
-	my.check_if_first_start = function (){
+	my.checkIfFirstStart = function (){
 
 		var first_start = localStorage.getItem("first_start");
 		
@@ -339,9 +339,7 @@ var APP = (function () {
 	
 	my.hard_reset = function(){
 
-		localStorage.removeItem("actors");
-		localStorage.removeItem("actor_id_counter");
-		localStorage.removeItem("form");
+		save_and_recall.deleteAllData();
 		localStorage.removeItem("first_start");
 		location.reload();
 
@@ -372,6 +370,63 @@ var APP = (function () {
 		
 		}
 
+
+	}
+	
+	
+	my.fillObjectWithFormElement = function(object, element_id_prefix, form_element){
+	//object = the object to be filled with form data
+	//form_element = element of the form as specified in session_form
+
+		if ((form_element.type == "text") || (form_element.type == "textarea") || (form_element.type == "select") || (form_element.type == "open_vocabulary")){
+
+			object[form_element.name] = get(element_id_prefix+form_element.name);
+			
+		}
+		
+		if (form_element.type == "date"){
+		
+			object[form_element.name]["year"] = get(element_id_prefix+form_element.name+"_year");
+			object[form_element.name]["month"] = get(element_id_prefix+form_element.name+"_month");
+			object[form_element.name]["day"] = get(element_id_prefix+form_element.name+"_day");
+		}
+		
+		if (form_element.type == "column"){
+		
+			element_id_prefix += form_element.name + "_";
+			
+			for (var f=0; f<form_element.fields.length; f++){
+				
+				my.fillObjectWithFormElement(object, element_id_prefix, form_element.fields[f]);
+			
+			}
+		}
+		
+		if (form_element.type == "subarea"){
+		
+			element_id_prefix += form_element.name + "_";
+			
+			for (var f=0; f<form_element.fields.length; f++){
+				
+				my.fillObjectWithFormElement(object[form_element.name], element_id_prefix, form_element.fields[f]);
+			
+			}
+		}
+		
+		if (form_element.type == "form"){
+		
+			for (var f=0; f<form_element.fields.length; f++){
+				
+				my.fillObjectWithFormElement(object[form_element.fields[f].name], element_id_prefix, form_element.fields[f]);
+			
+			}
+		}
+		
+		if (form_element.type == "special"){
+		
+			return;
+		
+		}
 
 	}
 	

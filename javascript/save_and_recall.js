@@ -21,9 +21,9 @@ var save_and_recall = (function(){
 	my.interval;
 	my.interval_time = 60;
 
-	my.get_recall_data = function(){
+	my.getRecallData = function(){
 
-		var form = localStorage.getItem("form");
+		var form = localStorage.getItem(local_storage_key);
 
 		if (!form){
 			console.log("No recall data found");
@@ -87,44 +87,30 @@ var save_and_recall = (function(){
 		
 		}
 		
-		for (var l=0;l<recall_object.content_languages.length;l++){
-		
-			corpus.content_languages.set(recall_object.content_languages[l]);
-			
-		}
-		
-		resources.available_resources = recall_object.available_resources;
-		resources.refreshFileListDisplay();
-		my.fill_corpus(recall_object.corpus);
-		session.eraseAll();
-		
-		for (var s=0; s<recall_object.sessions.length; s++){
-		
-			session.newSession(recall_object.sessions[s]);
-		
-		}
-		
-		if (session.sessions.length == 0){
-			session.displayNoSessionText();
-		}
+		corpus.content_languages.recall(recall_object.content_languages);
+		resources.recall(recall_object.available_resources);
+		corpus.recall(recall_object.corpus);
+		session.recall(recall_object.sessions);
 		
 		my.set_autosave_interval(recall_object.settings.save_interval_time);
 
 		APP.view(recall_object.active_view);	
 		
 	}
-
-	my.fill_corpus = function(corpus){
-
-		g("corpus_name").value = corpus.name;
-		g("corpus_title").value = corpus.title;
-		g("corpus_description").value = corpus.description;
-
+	
+	
+	my.deleteAllData = function(){
+	
+		localStorage.removeItem("actors");
+		localStorage.removeItem("actor_id_counter");
+		localStorage.removeItem(local_storage_key);
+		
 	}
+
 
 	my.delete_recall_data = function(){
 
-		localStorage.removeItem("form");
+		localStorage.removeItem(local_storage_key);
 		alertify.log("Recall data deleted","",5000);
 
 	}
@@ -133,7 +119,7 @@ var save_and_recall = (function(){
 		
 		var form_object = my.make_object_out_of_form();
 		
-		localStorage.setItem("form", JSON.stringify(form_object));
+		localStorage.setItem(local_storage_key, JSON.stringify(form_object));
 
 	}
 
@@ -141,12 +127,6 @@ var save_and_recall = (function(){
 
 		var object = {
 		
-			corpus: {},
-			sessions: [],
-			
-			content_languages: [],
-			available_resources: [],
-			
 			settings: {
 				save_interval_time: 0,
 				output_format: dom.getSelectedRadioIndex(document.metadata_form.output_format),
@@ -157,97 +137,21 @@ var save_and_recall = (function(){
 			
 		};
 		
-		object.corpus.name = g("corpus_name").value;
-		object.corpus.title = g("corpus_title").value;
-		object.corpus.description = g("corpus_description").value;
+		object.corpus = corpus.getSaveData();
 		
 		object.content_languages = corpus.content_languages.content_languages;
 		
 		object.settings.save_interval_time = document.metadata_form.radio_auto_save.value;
 		
-		if (APP.active_view != "wait"){
-			object.active_view = APP.active_view;
-		}
+		object.active_view = APP.active_view;
 		
-		else {
-			object.active_view = "default";
-		}
-		
-		object.available_resources = resources.available_resources;
-		
-		for (var s=0; s<session.sessions.length; s++){
-		
-			var session_object = make_new_session_object();
-			
-			my.fill_object_with_form_element(session_object, session_dom_element_prefix+session.sessions[s].id+"_", session_form);		
-			
-			session_object.actors.actors = session.sessions[s].actors.actors;
-			session_object.resources = session.sessions[s].resources;
-			session_object.expanded = session.sessions[s].expanded;
-			
-			object.sessions.push(session_object);
-		}
+		object.available_resources = resources.getSaveData();
+		object.sessions = session.getSaveData();
 		
 		return object;
 
 	}
 
-
-	my.fill_object_with_form_element = function(object, element_id_prefix, form_element){
-	//object = the object to be filled with form data
-	//form_element = element of the form as specified in session_form
-
-		if ((form_element.type == "text") || (form_element.type == "textarea") || (form_element.type == "select") || (form_element.type == "open_vocabulary")){
-
-			object[form_element.name] = get(element_id_prefix+form_element.name);
-			
-		}
-		
-		if (form_element.type == "date"){
-		
-			object[form_element.name]["year"] = get(element_id_prefix+form_element.name+"_year");
-			object[form_element.name]["month"] = get(element_id_prefix+form_element.name+"_month");
-			object[form_element.name]["day"] = get(element_id_prefix+form_element.name+"_day");
-		}
-		
-		if (form_element.type == "column"){
-		
-			element_id_prefix += form_element.name + "_";
-			
-			for (var f=0; f<form_element.fields.length; f++){
-				
-				my.fill_object_with_form_element(object, element_id_prefix, form_element.fields[f]);
-			
-			}
-		}
-		
-		if (form_element.type == "subarea"){
-		
-			element_id_prefix += form_element.name + "_";
-			
-			for (var f=0; f<form_element.fields.length; f++){
-				
-				my.fill_object_with_form_element(object[form_element.name], element_id_prefix, form_element.fields[f]);
-			
-			}
-		}
-		
-		if (form_element.type == "form"){
-		
-			for (var f=0; f<form_element.fields.length; f++){
-				
-				my.fill_object_with_form_element(object[form_element.fields[f].name], element_id_prefix, form_element.fields[f]);
-			
-			}
-		}
-		
-		if (form_element.type == "special"){
-		
-			return;
-		
-		}
-
-	}
 	
 	return my;
 	

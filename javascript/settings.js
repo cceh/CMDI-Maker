@@ -22,6 +22,7 @@ var path_to_images = "img/";
 var path_to_icons = path_to_images + "icons/";
 var file_download_header = "text/xml;charset=utf-8";
 var highlight_color = "skyblue";
+var local_storage_key = "CMDI-Maker";
 
 var session_dom_element_prefix = "session_";
 var copy_checkbox_element_prefix = "copy_check_";

@@ -65,6 +65,17 @@ corpus.content_languages = (function() {
 		};		
 	
 	}
+	
+	
+	my.recall = function(data){
+	
+		for (var l=0;l<data.length;l++){
+		
+			my.set(data[l]);
+			
+		}
+		
+	}
 
 
 	my.search = function(){

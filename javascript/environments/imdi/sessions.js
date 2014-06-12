@@ -45,6 +45,45 @@ var session = (function () {
 	}
 	
 	
+	my.recall = function(data){
+	
+		my.eraseAll();
+		
+		for (var s=0; s<data.length; s++){
+		
+			my.newSession(data[s]);
+		
+		}
+		
+		if (my.sessions.length == 0){
+			my.displayNoSessionText();
+		}
+	
+	}
+	
+	
+	my.getSaveData = function(){
+	
+		var array = [];
+	
+		for (var s=0; s<my.sessions.length; s++){
+		
+			var session_object = make_new_session_object();
+			
+			APP.fillObjectWithFormElement(session_object, session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
+			
+			session_object.actors.actors = my.sessions[s].actors.actors;
+			session_object.resources = my.sessions[s].resources;
+			session_object.expanded = my.sessions[s].expanded;
+			
+			array.push(session_object);
+		}
+	
+		return array;
+	
+	}
+	
+	
 	my.functions = [
 		{
 			label: "New Session",
