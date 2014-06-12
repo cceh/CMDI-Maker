@@ -55,7 +55,7 @@ var session = (function () {
 		{
 			label: "Save Form",
 			icon: "save.png",
-			id: "link_save_form",
+			id: "session_link_save_form",
 			onclick: function() {
 				save_and_recall.save_form();
 				alertify.log("Form saved","",5000);
@@ -64,7 +64,7 @@ var session = (function () {
 		{
 			label: "Reset Form",
 			icon: "reset.png",
-			id: "link_reset_form",
+			id: "session_link_reset_form",
 			onclick: function() {       
 
 				alertify.set({ labels: {

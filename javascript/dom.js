@@ -63,7 +63,7 @@ var dom = (function() {
 	}
 
 
-	my.setFormValue = function (element_id,value){
+	my.setFormValue = function (element_id, value, open_vocabulary){
 
 		var element = g(element_id);
 
@@ -78,10 +78,9 @@ var dom = (function() {
 			
 			}
 			
+			//if options of select contain do not contain the value, we have to change the input type to text
 			if (options.indexOf(value) == -1){
 		
-				console.log("Now i should change the nodename of the object.");
-				
 				var new_element = my.changeOVInput(element_id, options);
 				
 				new_element.value = value;
@@ -96,9 +95,23 @@ var dom = (function() {
 		
 		}
 		
-		else {
+		else {  //if element is not select
 		
-			element.value = value;
+			//if the element is text input, but there's an entry in the open vocabulary for the value
+			//that's great, because we can then go back to a select
+			if ((element.type == "text") && (open_vocabulary) && (open_vocabulary.indexOf(value) != -1)){
+			
+				var new_element = my.changeOVInput(element_id, open_vocabulary);
+				
+				new_element.value = value;
+			
+			}
+			
+			else {
+		
+				element.value = value;
+				
+			}
 		
 		}
 
@@ -250,14 +263,12 @@ var dom = (function() {
 				var options = my.getOptionValuesOfSelect(source_element);
 			}
 
-
-		
 			var new_e = document.createElement(source_element.nodeName);
 			new_e.name = target_element.name;
 			new_e.className = target_element.className;
 
 			target_element.parentNode.insertBefore(new_e,target_element);	
-			remove_element(target_element);
+			my.removeElement(target_element);
 		
 			if (new_e.nodeName == "SELECT"){
 		

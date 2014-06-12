@@ -176,9 +176,9 @@ var actor = (function(){
 			dom.setFormValue("actor_name",my.actors[actor_id].name);
 			dom.setFormValue("actor_full_name",my.actors[actor_id].full_name);
 			dom.setFormValue("actor_code",my.actors[actor_id].code);
-			dom.setFormValue("actor_role",my.actors[actor_id].role);
+			dom.setFormValue("actor_role",my.actors[actor_id].role, actor_form_imdi.fields[1].fields[0].vocabulary);
 			dom.setFormValue("actor_ethnic_group",my.actors[actor_id].ethnic_group);
-			dom.setFormValue("actor_family_social_role",my.actors[actor_id].family_social_role);
+			dom.setFormValue("actor_family_social_role",my.actors[actor_id].family_social_role, actor_form_imdi.fields[1].fields[2].vocabulary);
 			dom.setFormValue("actor_age",my.actors[actor_id].age);
 			dom.setFormValue("actor_birth_date_year",my.actors[actor_id].birth_date.year);
 			dom.setFormValue("actor_birth_date_month",my.actors[actor_id].birth_date.month);
@@ -405,9 +405,9 @@ var actor = (function(){
 		dom.setFormValue("actor_name","");
 		dom.setFormValue("actor_full_name","");
 		dom.setFormValue("actor_code","");
-		dom.setFormValue("actor_role","Unknown");
+		dom.setFormValue("actor_role","Unknown", actor_form_imdi.fields[1].fields[0].vocabulary);
 		dom.setFormValue("actor_ethnic_group","");
-		dom.setFormValue("actor_family_social_role","Unknown");
+		dom.setFormValue("actor_family_social_role","Unknown", actor_form_imdi.fields[1].fields[2].vocabulary);
 		dom.setFormValue("actor_age","");
 		dom.setFormValue("actor_birth_date_year","YYYY");
 		dom.setFormValue("actor_birth_date_month","MM");
