@@ -82,7 +82,7 @@ var dom = (function() {
 		
 				console.log("Now i should change the nodename of the object.");
 				
-				var new_element = change_ov_input(element_id, options);
+				var new_element = my.changeOVInput(element_id, options);
 				
 				new_element.value = value;
 			
@@ -325,7 +325,7 @@ var dom = (function() {
 
 		object.parentNode.insertBefore(new_object,object);
 		
-		remove_element(object);
+		my.removeElement(object);
 		
 		return new_object;
 		
