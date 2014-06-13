@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1.0.4
+# v1.0.5
 
 CACHE:
 index.html
@@ -60,7 +60,8 @@ javascript/envionments/imdi/actor_languages.js
 javascript/envionments/imdi/cmdi_generator.js
 javascript/envionments/imdi/content_languages.js
 javascript/envionments/imdi/corpus.js
-javascript/envionments/imdi/imdi_form.js
+javascript/envionments/imdi/imdi_environment.js
+javascript/envionments/imdi/imdi_forms.js
 javascript/envionments/imdi/imdi_generator.js
 javascript/envionments/imdi/output.js
 javascript/envionments/imdi/resource_files.js
