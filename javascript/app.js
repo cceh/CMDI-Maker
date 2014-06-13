@@ -44,7 +44,6 @@ var APP = (function () {
 		my.createEnvironment(environment);  //preliminary!
 		g("version_span").innerHTML = version;
 		my.sayHello();
-		my.createOutputFormatSelect();
 		my.display_metadata_languages();
 		save_and_recall.getRecallData();
 		resources.refreshFileListDisplay();
@@ -55,33 +54,6 @@ var APP = (function () {
 	}
 
 	
-	my.createOutputFormatSelect = function (){
-
-		var parent = g("output_format_select");
-
-		dom.newElement("h2","","",parent, "Output Format");
-		
-		for (var f=0; f<output_formats.length; f++){
-		
-			var input = dom.newElement("input","output_format_radio_"+f, "", parent);
-			input.type = "radio";
-			input.name = "output_format";
-			
-			dom.newElement("span", "","",parent, " " + output_formats[f].title);
-			
-			if (f == 0){
-				input.checked = true;
-			}
-			
-			dom.newElement("br","","",parent);
-			
-		}
-		
-		dom.newElement("br","","",parent);
-
-	}
-
-
 	my.makeInput = function (parent, field, element_id_prefix, element_class_prefix, session_object){
 
 		switch (field.type){
@@ -604,7 +576,6 @@ var APP = (function () {
 		
 		else {
 			id = id.substr(view_id_prefix.length);
-			console.log("ID: "+id);
 			g(viewlink_id_prefix+id).style.backgroundColor = highlight_color;
 		}
 
@@ -654,9 +625,79 @@ var APP = (function () {
 	
 	my.createEnvironment = function (environment){
 	
+		my.createEnvironmentSettings(environment.settings);
+	
 		my.createWorkflow(environment.workflow);
 		
 		my.active_environment = environment;
+	
+	}
+	
+	
+	my.createEnvironmentSettings = function (settings){
+	
+		var environment_settings = g("environment_settings");
+	
+		for (var s=0; s<settings.length; s++){
+		
+			var h2 = dom.newElement("h2","","",environment_settings);	
+			
+			if (settings[s].onclick){
+	
+				var a = dom.newElement("a","","",h2,settings[s].title);
+				a.href = "#";
+				a.addEventListener("click", settings[s].onclick);
+
+			}
+			
+			else {
+			
+				h2.innerHTML = settings[s].title;
+			
+			}
+			
+			if (settings[s].description){
+				var description = dom.newElement("p","","",environment_settings,settings[s].description);
+			}
+
+			if (settings[s].type == "radio"){
+			
+				for (var r=0; r<settings[s].options.length; r++){
+				
+					var input = dom.newElement("input","","",environment_settings);
+					input.type = "radio";
+					input.name = settings[s].radio_name;
+					
+					dom.newElement("span","","",environment_settings,settings[s].options[r]);
+					
+					dom.newElement("br","","",environment_settings);	
+					
+					if (r == settings[s].default_option) {
+						input.checked = true;
+					};
+				}	
+			
+			}
+			
+			if (settings[s].type == "file"){
+		
+				var input = dom.newElement("input",settings[s].file_input_id,"",environment_settings);
+				input.type = "file";
+				input.name = settings[s].file_input_name;
+				dom.newElement("br","","",environment_settings);
+		
+			}
+			
+			if (settings[s].type == "empty"){
+				
+				var div = dom.newElement("div",settings[s].id,"",environment_settings);
+		
+			}
+			
+			dom.newElement("br","","",environment_settings);
+			
+		}
+	
 	
 	}
 	
@@ -718,9 +759,14 @@ var APP = (function () {
 	my.addEventListeners = function(){
 	
 		g('link_lets_go').addEventListener('click', function() {        APP.view(corpus);      });
-		g('VIEWLINK_start').addEventListener('click', function() {        APP.view("VIEW_start");      });
-		g('VIEWLINK_settings').addEventListener('click', function() {        APP.view("VIEW_settings");      });
-		g('VIEWLINK_about').addEventListener('click', function() {        APP.view("VIEW_about");      });
+		
+		for (var v=0; v<my.views.length; v++){
+			g(viewlink_id_prefix + my.views[v].id).addEventListener('click', function(num) {
+				return function(){
+					APP.view(view_id_prefix + num);
+				}
+			}(my.views[v].id));
+		}
 		
 		document.getElementsByName("radio_auto_save").selectedIndex = 3;
 		
@@ -730,7 +776,6 @@ var APP = (function () {
 		document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
 		document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
 		
-		g('link_erase_actors_database').addEventListener('click', function() {        actor.erase_database();      });
 		g('link_delete_recall_data').addEventListener('click', function() {        save_and_recall.delete_recall_data();      });
 		g('link_hard_reset').addEventListener('click', function() {    
 
@@ -753,7 +798,6 @@ var APP = (function () {
 
 		});	
 		
-		g('link_export_actors').addEventListener('click', function() {        actor.export_actors();      });	
 		g('actors_file_input').addEventListener('change',actor.import_actors, false);
 
 		

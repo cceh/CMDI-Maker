@@ -488,9 +488,3 @@ function make_new_session_object(){
 	return session_object;
 
 }
-
-var imdi_environment = {
-	name: "imdi",
-	title: "IMDI",
-	workflow: [corpus, resources, actor, session, output]
-};

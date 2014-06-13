@@ -135,8 +135,8 @@ var actor = (function(){
 				alertify.log("Actor Database deleted", "", "5000");
 				my.get_actors_from_web_storage();
 	  
-				for (var s=0;s<sessions.length;s++){
-					session.removeAllActorsFromSession(session.sessions[s].id);
+				for (var s=0;s<session.sessions.length;s++){
+					session.removeAllActors(session.sessions[s].id);
 				}
 				
 				
@@ -200,7 +200,7 @@ var actor = (function(){
 			
 			my.showLanguagesOfActiveActor();
 			
-			if (APP.active_view == my.view_id){
+			if (APP.active_view == view_id_prefix + my.identity.id){
 			g("save_actor_span").innerHTML = " Save changes to this actor";
 			}
 
@@ -302,11 +302,11 @@ var actor = (function(){
 			}
 			
 			for (var a=0; a<imported_actors.length; a++){
-				save_actor(imported_actors[a], true);
+				my.save(imported_actors[a], true);
 			}
 			
-			RefreshActorsInWebStorage();
-			RefreshActorsListDisplay();
+			my.refresh_web_storage();
+			my.refresh_list_display();
 			
 			alertify.log(imported_actors.length + " actors imported");
 		

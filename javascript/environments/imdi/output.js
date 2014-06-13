@@ -25,10 +25,56 @@ var output = (function (){
 		icon: "data.png"
 	}
 	
+	
 	my.init = function(){
 	
-		return;
+		my.createOutputFormatSelect(my.formats);
 	
+	}
+	
+	
+	my.formats = [
+		{
+			title: "IMDI",
+			name: "imdi",
+			file_ending: "imdi",
+			output_name: "IMDI",
+			generator_object: imdi_generator,
+			form: session_form,
+			actor_form: actor_form_imdi
+		},
+		{
+			title: "CMDI with IMDI Profile",
+			name: "cmdi-imdi",
+			file_ending: "cmdi",
+			output_name: "CMDI",
+			generator_object: cmdi_generator,
+			form: session_form,
+			actor_form: actor_form_imdi
+		}
+	];
+	
+	
+	my.createOutputFormatSelect = function (formats){
+
+		var parent = g("output_format_select");
+
+		for (var f=0; f<formats.length; f++){
+		
+			var input = dom.newElement("input","output_format_radio_"+f, "", parent);
+			input.type = "radio";
+			input.name = "output_format";
+			
+			dom.newElement("span", "","",parent, " " + formats[f].title);
+			
+			if (f == 0){
+				input.checked = true;
+			}
+			
+			dom.newElement("br","","",parent);
+			
+		}
+
 	}
 	
 	
@@ -97,8 +143,8 @@ var output = (function (){
 		var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
 		
 		// initiate object for imdi_structure class
-		xml_strings = new output_formats[output_format_index].generator_object();
-		var output_format = output_formats[output_format_index].output_name;
+		xml_strings = new my.formats[output_format_index].generator_object();
+		var output_format = my.formats[output_format_index].output_name;
 
 		my.createOutputDIV(xml_window, output_format + " Corpus", "textarea_corpus", xml_strings.corpus,
 			function(num){
@@ -154,7 +200,7 @@ var output = (function (){
 	my.save_corpus = function (){
 
 		var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
-		var file_ending = output_formats[output_format_index].file_ending;
+		var file_ending = my.formats[output_format_index].file_ending;
 
 		APP.save_file(g("textarea_corpus").value,get("corpus_name")+"."+file_ending, file_download_header);
 
@@ -164,7 +210,7 @@ var output = (function (){
 	my.save_session = function (session_index){
 
 		var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
-		var file_ending = output_formats[output_format_index].file_ending;
+		var file_ending = my.formats[output_format_index].file_ending;
 
 		APP.save_file(g("textarea_session_"+session_index).value,get("session_"+session.sessions[session_index].id+"_session_name")+"."+file_ending, file_download_header);
 

@@ -29,30 +29,6 @@ var copy_checkbox_element_prefix = "copy_check_";
 var viewlink_id_prefix = "VIEWLINK_";
 var view_id_prefix = "VIEW_";
 
-var output_formats = [
-	{
-		title: "IMDI",
-		name: "imdi",
-		file_ending: "imdi",
-		output_name: "IMDI",
-		environment: imdi_environment,
-		generator_object: imdi_generator,
-		form: session_form,
-		actor_form: actor_form_imdi
-	},
-	{
-		title: "CMDI with IMDI Profile",
-		name: "cmdi-imdi",
-		file_ending: "cmdi",
-		output_name: "CMDI",
-		environment: imdi_environment,
-		generator_object: cmdi_generator,
-		form: session_form,
-		actor_form: actor_form_imdi
-	}
-];
-
-
 var output_textarea_rows = 40;
 var output_textarea_columns = 130;
 var form_textarea_rows = 18;
