@@ -27,7 +27,6 @@ var save_and_recall = (function(){
 
 		if (!form){
 			console.log("No recall data found");
-			session.displayNoSessionText();
 			my.set_autosave_interval(my.interval_time);
 			APP.view("default");
 			return;
@@ -87,10 +86,16 @@ var save_and_recall = (function(){
 		
 		}
 		
-		corpus.content_languages.recall(recall_object.content_languages);
-		resources.recall(recall_object.available_resources);
-		corpus.recall(recall_object.corpus);
-		session.recall(recall_object.sessions);
+		var workflow = APP.active_environment.workflow;
+		
+		//for every workflow module, recall its save data
+		for (var m=0; m<workflow.length; m++){
+		
+			if (workflow[m].module.recall){
+				workflow[m].module.recall(recall_object[workflow[m].id]);
+			}
+			
+		}
 		
 		my.set_autosave_interval(recall_object.settings.save_interval_time);
 
@@ -132,21 +137,23 @@ var save_and_recall = (function(){
 				output_format: dom.getSelectedRadioIndex(document.metadata_form.output_format),
 				calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false),
 				metadata_creator: get("metadata_creator"),
-				metadata_language: g("metadata_language_select").selectedIndex
+				metadata_language: g("metadata_language_select").selectedIndex,
+				save_interval_time: document.metadata_form.radio_auto_save.value
 			}
 			
 		};
 		
-		object.corpus = corpus.getSaveData();
-		
-		object.content_languages = corpus.content_languages.content_languages;
-		
-		object.settings.save_interval_time = document.metadata_form.radio_auto_save.value;
-		
 		object.active_view = APP.active_view;
 		
-		object.available_resources = resources.getSaveData();
-		object.sessions = session.getSaveData();
+		var workflow = APP.active_environment.workflow;
+		
+		for (var m=0; m<workflow.length; m++){
+			
+			if (workflow[m].module.getSaveData){
+				object[workflow[m].id] = workflow[m].module.getSaveData();
+			}
+			
+		}
 		
 		return object;
 

@@ -489,40 +489,44 @@ function make_new_session_object(){
 
 }
 
-var imdi_environment = [
-	{
-		id: "corpus",
-		title: "Corpus",
-		view: "VIEW_corpus",
-		icon: "box.png",
-		module: corpus
-	},
-	{
-		id: "resources",
-		title: "Resources",
-		view: "VIEW_resources",
-		icon: "blocks.png",
-		module: resources
-	},
-	{
-		id: "actors",
-		title: "Actors",
-		view: "VIEW_actors",
-		icon: "user.png",
-		module: actor
-	},
-	{
-		id: "sessions",
-		title: "Sessions",
-		view: "VIEW_sessions",
-		icon: "edit.png",
-		module: session
-	},
-	{
-		id: "xml_output",
-		title: "XML Output",
-		view: "VIEW_xml_output",
-		icon: "data.png",
-		module: output
-	}
-];
+var imdi_environment = {
+	name: "imdi",
+	title: "IMDI",
+	workflow: [
+		{
+			id: "corpus",
+			title: "Corpus",
+			view: "VIEW_corpus",
+			icon: "box.png",
+			module: corpus
+		},
+		{
+			id: "resources",
+			title: "Resources",
+			view: "VIEW_resources",
+			icon: "blocks.png",
+			module: resources
+		},
+		{
+			id: "actor",
+			title: "Actors",
+			view: "VIEW_actors",
+			icon: "user.png",
+			module: actor
+		},
+		{
+			id: "session",
+			title: "Sessions",
+			view: "VIEW_sessions",
+			icon: "edit.png",
+			module: session
+		},
+		{
+			id: "xml_output",
+			title: "XML Output",
+			view: "VIEW_xml_output",
+			icon: "data.png",
+			module: output
+		}
+	]
+};

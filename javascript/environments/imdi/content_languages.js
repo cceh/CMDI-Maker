@@ -21,12 +21,9 @@ corpus.content_languages = (function() {
 	
 	my.content_languages = [];
 	
-	//Auto save my.content_languages (not yet implemented!)
-	my.save = my.content_languages;
-	
 	my.id_counter = 0;
 	
-	
+
 	my.init = function(){
 	
 		var div = dom.newElement("div","content_languages","",g("VIEW_corpus"),
@@ -76,6 +73,13 @@ corpus.content_languages = (function() {
 		}
 		
 	}
+	
+	
+	my.getSaveData = function(){
+	
+		return my.content_languages;
+		
+	}
 
 
 	my.search = function(){
@@ -119,12 +123,8 @@ corpus.content_languages = (function() {
 			if ( (name_hits.indexOf(LanguageIndex[j][0]) != -1)  &&  (LanguageIndex[j][2] == "L" )){		//look for their l-name entry
 			
 				results.push(LanguageIndex[j]);
-				
-				//name_hits.splice(name_hits.indexOf(LanguageIndex[j][0]),1);   //delete the ID in name_hits, so that it won't be taken/chosen again
 			
 			}
-		
-		
 		
 		}
 		
@@ -156,13 +156,22 @@ corpus.content_languages = (function() {
 		
 			a.addEventListener('click', function(num) { 
 				return function(){
-					corpus.content_languages.set(num);  
+					corpus.content_languages.choose(num);  
 				};
 			}(results[j]) );
 		}
 		
 		
 		
+	}
+	
+	
+	my.choose = function(LanguageObject){
+	
+		if (my.set(LanguageObject)){
+			alertify.log("\"" + LanguageObject[3]+"\" is a new Global Content Language", "", "5000");	
+		}
+	
 	}
 
 
@@ -223,9 +232,9 @@ corpus.content_languages = (function() {
 
 		my.closeCLS();
 
-		alertify.log("\"" + LanguageObject[3]+"\" is a new Global Content Language", "", "5000");
-		
 		my.id_counter+=1;
+		
+		return true;
 		
 	}
 
@@ -272,7 +281,7 @@ corpus.content_languages = (function() {
 		
 			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
 
-				my.set(LanguageIndex[j]);
+				my.choose(LanguageIndex[j]);
 				g("content_language_iso_input").value = "";
 				return;
 

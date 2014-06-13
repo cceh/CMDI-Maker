@@ -68,6 +68,8 @@ var corpus = (function(){
 		g("corpus_name").value = corpus.name;
 		g("corpus_title").value = corpus.title;
 		g("corpus_description").value = corpus.description;
+		
+		my.content_languages.recall(corpus.content_languages);
 	
 	}
 	
@@ -80,7 +82,8 @@ var corpus = (function(){
 		object.title = g("corpus_title").value;
 		object.description = g("corpus_description").value;
 	
-	
+		object.content_languages = my.content_languages.getSaveData();
+		
 		return object;
 	
 	}

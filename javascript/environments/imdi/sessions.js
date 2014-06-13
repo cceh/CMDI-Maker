@@ -34,6 +34,7 @@ var session = (function () {
 	my.init = function(){
 	
 		dom.newElement("div","VIEW_sessions","content",g("content_wrapper"));
+		session.displayNoSessionText();
 
 	}
 	

@@ -501,9 +501,9 @@ var APP = (function () {
 			var id = module_or_id;
 			
 			//find the module for this id
-			for (var m=0; m<my.active_environment.length; m++){
-				if (my.active_environment[m].view == id){
-					var module = my.active_environment[m].module;
+			for (var m=0; m<my.active_environment.workflow.length; m++){
+				if (my.active_environment.workflow[m].view == id){
+					var module = my.active_environment.workflow[m].module;
 					break;
 				}
 			
@@ -563,8 +563,8 @@ var APP = (function () {
 	my.highlightViewIcon = function (id) {
 		
 		//unhighlight all workflow icons
-		for (var w=0; w<my.active_environment.length; w++){
-			g(viewlink_id_prefix + my.active_environment[w].id).style.backgroundColor = "";
+		for (var w=0; w<my.active_environment.workflow.length; w++){
+			g(viewlink_id_prefix + my.active_environment.workflow[w].id).style.backgroundColor = "";
 		}
 
 		//Unhighlight APP VIEWLINKS
@@ -625,26 +625,35 @@ var APP = (function () {
 	
 	my.createEnvironment = function (environment){
 	
-		for (var e=0; e<environment.length; e++){
-		
-			var module = environment[e].module;
-			
-			module.init();
-			
-			//initialize functions for the interface
-			if (module.functions){
-				my.init_functions(module.functions);
-			}
-		}
-		
-		my.createWorkflow(environment);
+		my.createWorkflow(environment.workflow);
 		
 		my.active_environment = environment;
 	
 	}
 	
 	
-	my.createWorkflow = function (workflow){
+	my.createWorkflow = function(workflow){
+	
+		for (var e=0; e<workflow.length; e++){
+		
+			var module = workflow[e].module;
+			
+			if (module.init){
+				module.init();
+			}
+			
+			//initialize functions for the interface
+			if (module.functions){
+				my.init_functions(module.functions);
+			}
+		}
+	
+		my.createWorkflowDisplay(workflow);
+	
+	}
+	
+	
+	my.createWorkflowDisplay = function (workflow){
 	
 		var div = g("module_icons");
 	
