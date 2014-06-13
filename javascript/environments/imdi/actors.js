@@ -45,7 +45,7 @@ var actor = (function(){
 		my.createForm();
 		
 		g('actor_language_search_button').addEventListener('click', function() {  actor.languages.search();   });
-		g('actor_language_iso_ok').addEventListener('click', function() {  addactorISOLanguage();     });
+		g('actor_language_iso_ok').addEventListener('click', function() {  actor.languages.addByISO();    });
 
 		g("actor_language_select").onkeydown = function(event) {
 
