@@ -22,6 +22,23 @@ var APP = (function () {
 	my.active_view;
 	my.active_environment;
 	
+	my.views = [
+		{
+			id: "start",
+			place: "top"
+		},
+		{
+			id: "settings",
+			icon: "gear2.png",
+			place: "bottom"
+		},
+		{
+			id: "about",
+			icon: "about.png",
+			place: "bottom"
+		}
+	];
+	
 	my.init = function (){
 
 		my.createEnvironment(environment);  //preliminary!
@@ -493,6 +510,21 @@ var APP = (function () {
 		session.eraseAll();
 		corpus.content_languages.removeAll();
 	}
+	
+	
+	my.getModuleOfViewID = function(id){
+	
+		//find the module for this id
+		for (var m=0; m<my.active_environment.workflow.length; m++){
+			if ((view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
+				return my.active_environment.workflow[m];
+			}
+		
+		}
+		
+		return undefined;
+	
+	}
 
 
 	my.view = function (module_or_id){
@@ -500,17 +532,8 @@ var APP = (function () {
 		if (typeof module_or_id === 'string') {
 			
 			var id = module_or_id;
+			var module = my.getModuleOfViewID(id);
 			
-			//find the module for this id
-			for (var m=0; m<my.active_environment.workflow.length; m++){
-				if (my.active_environment.workflow[m].identity.id == id){
-					var module = my.active_environment.workflow[m].module;
-					break;
-				}
-			
-			}
-			
-		
 		}
 		
 		else { //if argument is a module
@@ -563,24 +586,27 @@ var APP = (function () {
 	
 	my.highlightViewIcon = function (id) {
 		
-		//unhighlight all workflow icons
+		//Unhighlight all workflow icons
 		for (var w=0; w<my.active_environment.workflow.length; w++){
 			g(viewlink_id_prefix + my.active_environment.workflow[w].identity.id).style.backgroundColor = "";
 		}
 
 		//Unhighlight APP VIEWLINKS
-		g("VIEWLINK_settings").style.backgroundColor = "";
-		g("VIEWLINK_about").style.backgroundColor = "";
-		g("VIEWLINK_start").style.backgroundColor = "";
+		for (var v=0; v<my.views.length; v++){
+			g(viewlink_id_prefix + my.views[v].id).style.backgroundColor = "";
+		}
 		
-		//remove "VIEW_" from id    //THIS IS TERRIBLE!!!!!!!
-		id = id.slice(5,id.length);
-		id = viewlink_id_prefix + id;
+		var module = my.getModuleOfViewID(id);
 		
-		console.log("trying to highlight viewicon : " + id);
+		if (module){
+			g(viewlink_id_prefix + module.identity.id).style.backgroundColor = highlight_color;
+		}
 		
-		g(id).style.backgroundColor = highlight_color;		
-
+		else {
+			id = id.substr(view_id_prefix.length);
+			console.log("ID: "+id);
+			g(viewlink_id_prefix+id).style.backgroundColor = highlight_color;
+		}
 
 	}
 	
