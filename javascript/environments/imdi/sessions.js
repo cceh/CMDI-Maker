@@ -28,9 +28,6 @@ var session = (function () {
 	
 	my.sessions = [];
 	
-	//Auto Save the my.sessions object (Not yet implemented!)
-	my.save = my.sessions;
-	
 	my.id_counter = 0;
 	
 	my.resource_id_counter = 0;
@@ -88,6 +85,34 @@ var session = (function () {
 	}
 	
 	
+	my.createCopySessionOptions = function (){
+
+		var div = g("copy_sessions_select");
+		
+		if (!session_form.fields_to_copy){
+		
+			dom.newElement("span", "", "", div, "This function is currently unavailable!");
+			return;
+			
+		}
+
+		var options = session_form.fields_to_copy;
+
+		for (var c=0; c<options.length; c++){
+		
+			var input = dom.newElement("input", copy_checkbox_element_prefix+options[c].name, "", div);
+			input.type = "checkbox";
+			input.checked = true;
+			
+			dom.newElement("span", "", "", div, " "+options[c].label);
+			dom.newElement("br", "", "", div);
+		
+		}
+
+
+	}
+	
+	
 	my.functions = [
 		{
 			label: "New Session",
@@ -136,7 +161,8 @@ var session = (function () {
 			wrapper_id: "copy_sessions_div",
 			type: "function_wrap",
 			sub_div: "copy_sessions_select",
-			onclick: function() { session.assignSession1Metadata(); }
+			onclick: function() { session.assignSession1Metadata(); },
+			after_that: my.createCopySessionOptions
 		}
 	];
 	

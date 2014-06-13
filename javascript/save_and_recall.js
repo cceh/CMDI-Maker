@@ -21,7 +21,7 @@ var save_and_recall = (function(){
 	my.interval;
 	my.interval_time = 60;
 
-	my.getRecallData = function(){
+	my.getRecallDataForApp = function(){
 
 		var form = localStorage.getItem(local_storage_key);
 
@@ -34,13 +34,32 @@ var save_and_recall = (function(){
 		
 		var form_object = JSON.parse(form);
 		
-		console.log("Recall object: ");
+		console.log("APP Recall object: ");
 		console.log(form_object);
 		
 		my.fill_form(form_object);	
 		
 	}
+	
+	
+	my.getRecallDataForEnvironment = function(environment){
 
+		var form = localStorage.getItem(environment.id);
+
+		if (!form){
+			console.log("No recall data for environment found");
+			return;
+		}
+		
+		var form_object = JSON.parse(form);
+		
+		console.log("Environment Recall object: ");
+		console.log(form_object);
+		
+		my.recallEnvironment(form_object);	
+		
+	}
+	
 
 	my.set_autosave_interval = function(time){
 
@@ -64,14 +83,10 @@ var save_and_recall = (function(){
 		}, my.interval_time*1000);
 
 	}
+	
+	
+	my.recallEnvironment = function (recall_object){
 
-
-	my.fill_form = function(recall_object){
-
-		console.log("Filling the form with recalled data");
-		
-		g("metadata_language_select").selectedIndex = recall_object.settings.metadata_language;
-		g("metadata_creator").value = recall_object.settings.metadata_creator;
 		dom.setRadioIndex(document.metadata_form.output_format, recall_object.settings.output_format);
 		
 		if (recall_object.settings.calc_actors_age == true){
@@ -86,6 +101,7 @@ var save_and_recall = (function(){
 		
 		}
 		
+		
 		var workflow = APP.active_environment.workflow;
 		
 		//for every workflow module, recall its save data
@@ -96,11 +112,29 @@ var save_and_recall = (function(){
 			}
 			
 		}
-		
-		my.set_autosave_interval(recall_object.settings.save_interval_time);
+	
+	}
 
-		APP.view(recall_object.active_view);	
+
+	my.fill_form = function(recall_object){
+
+		console.log("Filling the form with recalled data");
 		
+		g("metadata_language_select").selectedIndex = recall_object.settings.metadata_language;
+		g("metadata_creator").value = recall_object.settings.metadata_creator;
+		
+
+		my.set_autosave_interval(recall_object.settings.save_interval_time);
+		
+		if (recall_object.active_environment_id){
+		
+			var environment = APP.getEnvironmentFromID(recall_object.active_environment_id);
+			APP.createEnvironment(environment);
+			my.getRecallDataForEnvironment(environment);
+		
+		}
+		
+		APP.view(recall_object.active_view);
 	}
 	
 	
@@ -124,8 +158,10 @@ var save_and_recall = (function(){
 	my.save_form = function(){
 		
 		var form_object = my.retrieveDataToSave();
-		
 		localStorage.setItem(local_storage_key, JSON.stringify(form_object));
+		
+		var environment_object = my.retrieveEnvironmentDataToSave();
+		localStorage.setItem(APP.active_environment.id, JSON.stringify(environment_object));
 
 	}
 
@@ -135,9 +171,6 @@ var save_and_recall = (function(){
 		var object = {
 		
 			settings: {
-				save_interval_time: 0,
-				output_format: dom.getSelectedRadioIndex(document.metadata_form.output_format),
-				calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false),
 				metadata_creator: get("metadata_creator"),
 				metadata_language: g("metadata_language_select").selectedIndex,
 				save_interval_time: document.metadata_form.radio_auto_save.value
@@ -146,6 +179,24 @@ var save_and_recall = (function(){
 		};
 		
 		object.active_view = APP.active_view;
+		object.active_environment_id = APP.active_environment.id;
+		
+		return object;
+
+	}
+	
+	
+	my.retrieveEnvironmentDataToSave = function(){
+
+		var object = {
+		
+			settings: {
+				save_interval_time: 0,
+				output_format: dom.getSelectedRadioIndex(document.metadata_form.output_format),
+				calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false)
+			}
+			
+		};
 		
 		var workflow = APP.active_environment.workflow;
 		

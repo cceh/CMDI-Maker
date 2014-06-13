@@ -17,6 +17,7 @@ limitations under the License.
 
 var imdi_environment = {
 	name: "imdi",
+	id: "imdi",
 	title: "IMDI",
 	workflow: [corpus, resources, actor, session, output],
 	settings: [
@@ -47,7 +48,8 @@ var imdi_environment = {
 			description: "Please import UTF-8 encoded files only!",
 			type: "file",
 			file_input_id: "actors_file_input",
-			file_input_name: "actors_file_input"
+			file_input_name: "actors_file_input",
+			onchange: function () {actor.import_actors();}
 		},
 		{
 			title: "Delete Actors Database",

@@ -37,8 +37,6 @@ var form_textarea_columns = 5;
 var new_page = true;
 var preset_data;
 
-var environment = imdi_environment; //preliminary!!!
-
 var compatibility_warnings = {
 	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
 	' This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.</div></div>',

@@ -22,6 +22,8 @@ var APP = (function () {
 	my.active_view;
 	my.active_environment;
 	
+	my.environments = [imdi_environment];
+	
 	my.views = [
 		{
 			id: "start",
@@ -39,16 +41,16 @@ var APP = (function () {
 		}
 	];
 	
+	
 	my.init = function (){
-
-		my.createEnvironment(environment);  //preliminary!
+	
+		my.checkIfFirstStart();
+		save_and_recall.getRecallDataForApp();
+		//my.createEnvironment(imdi_environment);  //preliminary!
 		g("version_span").innerHTML = version;
 		my.sayHello();
 		my.display_metadata_languages();
-		save_and_recall.getRecallData();
-		resources.refreshFileListDisplay();
-		my.checkIfFirstStart();
-		my.create_copy_session_options();
+		//save_and_recall.getRecallData();
 		my.addEventListeners(); 
 
 	}
@@ -336,34 +338,6 @@ var APP = (function () {
 	}
 
 
-	my.create_copy_session_options = function (){
-
-		var div = g("copy_sessions_select");
-		
-		if (!session_form.fields_to_copy){
-		
-			dom.newElement("span", "", "", div, "This function is currently unavailable!");
-			return;
-			
-		}
-
-		var options = session_form.fields_to_copy;
-
-		for (var c=0; c<options.length; c++){
-		
-			var input = dom.newElement("input", copy_checkbox_element_prefix+options[c].name, "", div);
-			input.type = "checkbox";
-			input.checked = true;
-			
-			dom.newElement("span", "", "", div, " "+options[c].label);
-			dom.newElement("br", "", "", div);
-		
-		}
-
-
-	}
-	
-	
 	my.fillObjectWithFormElement = function(object, element_id_prefix, form_element){
 	//object = the object to be filled with form data
 	//form_element = element of the form as specified in session_form
@@ -467,6 +441,10 @@ var APP = (function () {
 				function_div.addEventListener('mousedown', function() { function_div.style.backgroundColor = "black"; });
 				function_div.addEventListener('mouseup', function() { function_div.style.backgroundColor = ""; });
 			}
+			
+			if (functions[f].after_that){
+				functions[f].after_that();
+			}
 		
 		}
 	}
@@ -485,13 +463,16 @@ var APP = (function () {
 	
 	
 	my.getModuleOfViewID = function(id){
-	
-		//find the module for this id
-		for (var m=0; m<my.active_environment.workflow.length; m++){
-			if ((view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
-				return my.active_environment.workflow[m];
-			}
 		
+		if (typeof active_environment != "undefined"){
+		
+			//find the module for this id
+			for (var m=0; m<my.active_environment.workflow.length; m++){
+				if ((view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
+					return my.active_environment.workflow[m];
+				}
+			
+			}
 		}
 		
 		return undefined;
@@ -558,9 +539,12 @@ var APP = (function () {
 	
 	my.highlightViewIcon = function (id) {
 		
-		//Unhighlight all workflow icons
-		for (var w=0; w<my.active_environment.workflow.length; w++){
-			g(viewlink_id_prefix + my.active_environment.workflow[w].identity.id).style.backgroundColor = "";
+		if (typeof my.active_environment != "undefined"){
+		
+			//Unhighlight all workflow icons
+			for (var w=0; w<my.active_environment.workflow.length; w++){
+				g(viewlink_id_prefix + my.active_environment.workflow[w].identity.id).style.backgroundColor = "";
+			}
 		}
 
 		//Unhighlight APP VIEWLINKS
@@ -625,6 +609,8 @@ var APP = (function () {
 	
 	my.createEnvironment = function (environment){
 	
+		console.log("Creating environment: " + environment.id);
+	
 		my.createEnvironmentSettings(environment.settings);
 	
 		my.createWorkflow(environment.workflow);
@@ -685,6 +671,8 @@ var APP = (function () {
 				input.type = "file";
 				input.name = settings[s].file_input_name;
 				dom.newElement("br","","",environment_settings);
+				
+				input.addEventListener('change', settings[s].onchange, false);
 		
 			}
 			
@@ -756,9 +744,36 @@ var APP = (function () {
 	
 	}
 	
+	my.getEnvironmentFromID = function(id){
+	
+		for (var e=0; e<APP.environments.length; e++){
+			
+			if (APP.environments[e].id == id){
+				return APP.environments[e];
+			}
+			
+		}
+		
+		return undefined;
+	
+	}
+
+	
 	my.addEventListeners = function(){
 	
-		g('link_lets_go').addEventListener('click', function() {        APP.view(corpus);      });
+		g('link_lets_go').addEventListener('click', function() {
+			if (typeof my.active_environment != "undefined"){
+		
+				APP.view(corpus);
+			}
+
+			else {
+			
+				my.createEnvironment(imdi_environment);
+				APP.view(corpus);
+			}
+			
+		});
 		
 		for (var v=0; v<my.views.length; v++){
 			g(viewlink_id_prefix + my.views[v].id).addEventListener('click', function(num) {
@@ -797,9 +812,6 @@ var APP = (function () {
 			});
 
 		});	
-		
-		g('actors_file_input').addEventListener('change',actor.import_actors, false);
-
 		
 		document.onkeydown = function(event) {
 		
