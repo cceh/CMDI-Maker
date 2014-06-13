@@ -20,17 +20,21 @@ var actor = (function(){
 	
 	my.actors = [];
 	
-	my.view_id = "VIEW_actors";
-	
 	//Auto Save my.actors (not yet implemented!)
 	my.save = my.actors;
+	
+	my.identity = {
+		id: "actor",
+		title: "Actors",
+		icon: "user.png"
+	};
 	
 	my.id_counter = 0;
 	my.active_actor = -1;
 	
 	my.init = function(){
 		
-		var view = dom.newElement("div",my.view_id,"content",g("content_wrapper"));
+		var view = g(view_id_prefix + my.identity.id);
 		
 		dom.newElement("div","ac_list","",view);
 		var ac_view = dom.newElement("div","ac_view","",view);
@@ -147,7 +151,7 @@ var actor = (function(){
 
 		console.log("Showing actor "+actor_id);
 		
-		if (APP.active_view == my.view_id){
+		if (APP.active_view == view_id_prefix + my.identity.id){
 		
 			if (actor_id == -1) {
 				g('link_delete_active_actor').style.display = "none";
@@ -206,8 +210,8 @@ var actor = (function(){
 
 			my.blank_form();
 
-			if (APP.active_view == my.view_id){
-			g("save_actor_span").innerHTML = " Save Actor";
+			if (APP.active_view == view_id_prefix + my.identity.id){
+				g("save_actor_span").innerHTML = " Save Actor";
 			}
 
 		}

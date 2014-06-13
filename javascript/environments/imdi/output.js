@@ -19,13 +19,17 @@ var output = (function (){
 
 	var my = {};
 	
-	my.init = function(){
-	
-		dom.newElement("div","VIEW_xml_output","content",g("content_wrapper"));
-	
+	my.identity = {
+		id: "xml_output",
+		title: "XML Output",
+		icon: "data.png"
 	}
 	
-	my.view_id = "VIEW_xml_output";
+	my.init = function(){
+	
+		return;
+	
+	}
 	
 	
 	my.view = function(){
@@ -46,7 +50,7 @@ var output = (function (){
 				
 				alertify.alert("Every session must have a project name!");
 			
-				APP.view("VIEW_sessions");
+				APP.view(session);
 			
 			
 			}
@@ -62,11 +66,11 @@ var output = (function (){
 			alertify.alert("The corpus and every session must have a proper name.<br>An unnamed corpus or sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
 			
 			if (!corpus.isCorpusProperlyNamed()){   //show corpus
-				APP.view("VIEW_corpus");
+				APP.view(corpus);
 			}
 			
 			else {  //show sessions
-				APP.view("VIEW_sessions");
+				APP.view(session);
 			}
 		}
 	}

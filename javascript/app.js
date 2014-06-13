@@ -37,6 +37,7 @@ var APP = (function () {
 
 	}
 
+	
 	my.createOutputFormatSelect = function (){
 
 		var parent = g("output_format_select");
@@ -502,7 +503,7 @@ var APP = (function () {
 			
 			//find the module for this id
 			for (var m=0; m<my.active_environment.workflow.length; m++){
-				if (my.active_environment.workflow[m].view == id){
+				if (my.active_environment.workflow[m].identity.id == id){
 					var module = my.active_environment.workflow[m].module;
 					break;
 				}
@@ -515,7 +516,7 @@ var APP = (function () {
 		else { //if argument is a module
 			
 			var module = module_or_id;
-			var id = module.view_id;
+			var id = view_id_prefix + module.identity.id;
 		
 		}
 		
@@ -564,7 +565,7 @@ var APP = (function () {
 		
 		//unhighlight all workflow icons
 		for (var w=0; w<my.active_environment.workflow.length; w++){
-			g(viewlink_id_prefix + my.active_environment.workflow[w].id).style.backgroundColor = "";
+			g(viewlink_id_prefix + my.active_environment.workflow[w].identity.id).style.backgroundColor = "";
 		}
 
 		//Unhighlight APP VIEWLINKS
@@ -575,6 +576,8 @@ var APP = (function () {
 		//remove "VIEW_" from id    //THIS IS TERRIBLE!!!!!!!
 		id = id.slice(5,id.length);
 		id = viewlink_id_prefix + id;
+		
+		console.log("trying to highlight viewicon : " + id);
 		
 		g(id).style.backgroundColor = highlight_color;		
 
@@ -636,7 +639,10 @@ var APP = (function () {
 	
 		for (var e=0; e<workflow.length; e++){
 		
-			var module = workflow[e].module;
+			var module = workflow[e];
+			
+			//create a view for the module
+			dom.newElement("div",view_id_prefix+module.identity.id,"content",g("content_wrapper"));
 			
 			if (module.init){
 				module.init();
@@ -667,16 +673,16 @@ var APP = (function () {
 			
 			}
 			
-			var icon = dom.newElement("div",viewlink_id_prefix + workflow[w].id,"icon_div",div);
+			var icon = dom.newElement("div",viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
 			var image = dom.newElement("img","","module_icon",icon);
-			image.src = path_to_icons + workflow[w].icon;
+			image.src = path_to_icons + workflow[w].identity.icon;
 
 			dom.newElement("br","","",icon);
-			dom.newElement("span","","",icon,workflow[w].title);
+			dom.newElement("span","","",icon,workflow[w].identity.title);
 			
 			icon.addEventListener('click', function(num) {
 				return function(){
-					APP.view(num.view);
+					APP.view(num);
 				}
 			}(workflow[w]));
 		}
@@ -685,7 +691,7 @@ var APP = (function () {
 	
 	my.addEventListeners = function(){
 	
-		g('link_lets_go').addEventListener('click', function() {        APP.view("VIEW_corpus");      });
+		g('link_lets_go').addEventListener('click', function() {        APP.view(corpus);      });
 		g('VIEWLINK_start').addEventListener('click', function() {        APP.view("VIEW_start");      });
 		g('VIEWLINK_settings').addEventListener('click', function() {        APP.view("VIEW_settings");      });
 		g('VIEWLINK_about').addEventListener('click', function() {        APP.view("VIEW_about");      });

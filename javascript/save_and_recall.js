@@ -91,8 +91,8 @@ var save_and_recall = (function(){
 		//for every workflow module, recall its save data
 		for (var m=0; m<workflow.length; m++){
 		
-			if (workflow[m].module.recall){
-				workflow[m].module.recall(recall_object[workflow[m].id]);
+			if (workflow[m].recall){
+				workflow[m].recall(recall_object[workflow[m].identity.id]);
 			}
 			
 		}
@@ -120,15 +120,17 @@ var save_and_recall = (function(){
 
 	}
 
+	
 	my.save_form = function(){
 		
-		var form_object = my.make_object_out_of_form();
+		var form_object = my.retrieveDataToSave();
 		
 		localStorage.setItem(local_storage_key, JSON.stringify(form_object));
 
 	}
 
-	my.make_object_out_of_form = function(){
+	
+	my.retrieveDataToSave = function(){
 
 		var object = {
 		
@@ -149,8 +151,8 @@ var save_and_recall = (function(){
 		
 		for (var m=0; m<workflow.length; m++){
 			
-			if (workflow[m].module.getSaveData){
-				object[workflow[m].id] = workflow[m].module.getSaveData();
+			if (workflow[m].getSaveData){
+				object[workflow[m].identity.id] = workflow[m].getSaveData();
 			}
 			
 		}

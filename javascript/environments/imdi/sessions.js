@@ -20,7 +20,11 @@ var session = (function () {
 
 	var my = {};
 	
-	my.view_id = "VIEW_sessions";
+	my.identity = {
+		id: "session",
+		title: "Sessions",
+		icon: "edit.png",
+	};
 	
 	my.sessions = [];
 	
@@ -33,7 +37,6 @@ var session = (function () {
 	
 	my.init = function(){
 	
-		dom.newElement("div","VIEW_sessions","content",g("content_wrapper"));
 		session.displayNoSessionText();
 
 	}
@@ -41,7 +44,7 @@ var session = (function () {
 	
 	my.view = function(){
 	
-		g(my.view_id).scrollTop = 0;
+		g(view_id_prefix + my.identity.id).scrollTop = 0;
 	
 	}
 	
@@ -184,7 +187,7 @@ var session = (function () {
 			p.appendChild(a);
 
 			a.addEventListener('click', function() { 
-				APP.view("VIEW_resources");
+				APP.view(resources);
 			} );
 			
 		
@@ -195,7 +198,7 @@ var session = (function () {
 
 	my.newSession = function(session_object){
 
-		var sessions_view = g("VIEW_sessions");
+		var sessions_view = g(view_id_prefix + my.identity.id);
 		
 		//remove no sessions message before drawing new session
 		if (my.sessions.length == 0) {
@@ -427,7 +430,7 @@ var session = (function () {
 			h5.appendChild(link);
 			
 			link.addEventListener('click', function() { 
-				APP.view("VIEW_actors");  
+				APP.view(actor);  
 			} );
 		}
 		
@@ -549,7 +552,7 @@ var session = (function () {
 
 		console.log("Showing no session text");
 
-		var sessions_view = g("VIEW_sessions");
+		var sessions_view = g(view_id_prefix + my.identity.id);
 		
 		sessions_view.innerHTML = "";
 

@@ -26,6 +26,12 @@ var resources = (function(){
 	// 0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
 	// this array only contains file metadata retrieved by file upload form / drag and drop
 
+	my.identity = {
+		id: "resources",
+		title: "Resources",
+		icon: "blocks.png",
+	};
+	
 	my.last_selected_file = -1;
 	
 	my.shift = false;
@@ -61,7 +67,7 @@ var resources = (function(){
 			wrapper_id: "crps_div",
 			type: "function_wrap",
 			sub_div: "crps_filetype_select",
-			onclick: function() { resources.createSessionPerResource();  APP.view("VIEW_sessions"); },
+			onclick: function() { resources.createSessionPerResource();  APP.view(session); },
 			sub_div_innerHTML: 	'<h3 class="inner_function_h3">Files</h3>'+
 						'<input type="radio" name="radio_file_type" value="selected" checked> Selected Files<br>'+
 						'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
@@ -95,7 +101,7 @@ var resources = (function(){
 	
 	my.init = function(){
 	
-		var view = dom.newElement("div","VIEW_resources","content",g("content_wrapper"));
+		var view = g(view_id_prefix + my.identity.id);
 		var div = dom.newElement("div","files","",view);
 		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
 		

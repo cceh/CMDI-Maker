@@ -26,16 +26,18 @@ var corpus = (function(){
 	
 	};
 	
+	my.identity = {
+		id: "corpus",
+		title: "Corpus",
+		icon: "box.png"
+	};
+	
 	//Auto Save my.corpus (not yet implemented!)
 	my.save = my.corpus;
 	
-	my.view_id = "VIEW_corpus";
-	
 	my.init = function(){
-	
-		var view = dom.newElement("div","VIEW_corpus","content",g("content_wrapper"));
 		
-		var corpus_form = dom.newElement("div","corpus_form","",view,
+		var corpus_form = dom.newElement("div","corpus_form","",g(view_id_prefix + my.identity.id),
 
 			'<h1>Corpus</h1>'+
 			'<p><span title="A short archivable name of your corpus">Name</span><br>'+
