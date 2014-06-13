@@ -56,7 +56,7 @@ var save_and_recall = (function(){
 		console.log("Environment Recall object: ");
 		console.log(form_object);
 		
-		my.recallEnvironment(form_object);	
+		my.recallEnvironmentData(form_object);	
 		
 	}
 	
@@ -85,7 +85,7 @@ var save_and_recall = (function(){
 	}
 	
 	
-	my.recallEnvironment = function (recall_object){
+	my.recallEnvironmentData = function (recall_object){
 
 		dom.setRadioIndex(document.metadata_form.output_format, recall_object.settings.output_format);
 		
@@ -191,7 +191,6 @@ var save_and_recall = (function(){
 		var object = {
 		
 			settings: {
-				save_interval_time: 0,
 				output_format: dom.getSelectedRadioIndex(document.metadata_form.output_format),
 				calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false)
 			}

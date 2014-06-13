@@ -464,10 +464,11 @@ var APP = (function () {
 	
 	my.getModuleOfViewID = function(id){
 		
-		if (typeof active_environment != "undefined"){
+		if (typeof my.active_environment != "undefined"){
 		
 			//find the module for this id
 			for (var m=0; m<my.active_environment.workflow.length; m++){
+
 				if ((view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
 					return my.active_environment.workflow[m];
 				}
@@ -481,7 +482,7 @@ var APP = (function () {
 
 
 	my.view = function (module_or_id){
-		
+	
 		if (typeof module_or_id === 'string') {
 			
 			var id = module_or_id;
@@ -567,7 +568,7 @@ var APP = (function () {
 	
 	
 	my.showFunctionsForView = function (module){
-	
+
 		//make all functions invisible
 		var functions = g("functions").children;
 		for (var f=0; f<functions.length; f++){
