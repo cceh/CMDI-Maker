@@ -30,6 +30,10 @@ var actor = (function(){
 	my.active_actor = -1;
 	
 	my.init = function(){
+	
+		my.actors = [];
+		my.id_counter = 0;
+		my.active_actor = -1;
 		
 		var view = g(view_id_prefix + my.identity.id);
 		
