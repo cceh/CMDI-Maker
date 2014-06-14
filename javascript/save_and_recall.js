@@ -149,16 +149,16 @@ var save_and_recall = (function(){
 
 	my.deleteEnvironmentData = function(){
 
-			try {
-				localStorage.removeItem(APP.active_environment.id);
-			}
-			
-			catch (e){
-				alertify.log("No data for active profile found","",5000);
-				return;
-			}
-			
-			alertify.log("Recall data for active profile deleted","",5000);
+		try {
+			localStorage.removeItem(APP.active_environment.id);
+		}
+		
+		catch (e){
+			alertify.log("No data for active profile found","",5000);
+			return;
+		}
+		
+		alertify.log("Recall data for active profile deleted","",5000);
 
 	}
 

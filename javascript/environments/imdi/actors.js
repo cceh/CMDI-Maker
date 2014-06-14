@@ -20,9 +20,6 @@ var actor = (function(){
 	
 	my.actors = [];
 	
-	//Auto Save my.actors (not yet implemented!)
-	my.save = my.actors;
-	
 	my.identity = {
 		id: "actor",
 		title: "Actors",
@@ -61,7 +58,33 @@ var actor = (function(){
 			}
 		};
 		
-		my.get_actors_from_web_storage();
+		my.refreshListDisplay();
+		
+	}
+	
+	
+	my.getSaveData = function(){
+	
+		var object = {};
+		
+		object.actors = my.actors;
+		object.id_counter = my.id_counter;
+		object.active_actor = my.active_actor;
+		
+		return object;
+	
+	}
+	
+	
+	my.recall = function(data){
+	
+		my.actors = data.actors;
+		my.id_counter = data.id_counter;
+		my.active_actor = data.active_actor;
+		
+		my.refreshListDisplay();
+		my.show(my.active_actor);
+	
 	}
 	
 	
@@ -128,12 +151,10 @@ var actor = (function(){
 				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button
 				
 				my.id_counter = 0;
-				localStorage.setItem("actor_id_counter",0);
-				
-				localStorage.setItem("actors","[]");
+				my.actors = [];
 
-				alertify.log("Actor Database deleted", "", "5000");
-				my.get_actors_from_web_storage();
+				alertify.log("All actors deleted", "", "5000");
+				save_and_recall.save();
 	  
 				for (var s=0;s<session.sessions.length;s++){
 					session.removeAllActors(session.sessions[s].id);
@@ -305,8 +326,8 @@ var actor = (function(){
 				my.save(imported_actors[a], true);
 			}
 			
-			my.refresh_web_storage();
-			my.refresh_list_display();
+			save_and_recall.save();
+			my.refreshListDisplay();
 			
 			alertify.log(imported_actors.length + " actors imported");
 		
@@ -614,8 +635,8 @@ var actor = (function(){
 	 
 		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
 
-		my.refresh_web_storage();
-		my.refresh_list_display();
+		save_and_recall.save();
+		my.refreshListDisplay();
 		
 		return true;
 
@@ -655,22 +676,13 @@ var actor = (function(){
 				// user clicked "cancel"
 				
 				my.actors.splice(my.active_actor,1);
-				my.refresh_list_display();
-				my.refresh_web_storage();
+				my.refreshListDisplay();
+				save_and_recall.save();
 				
 				alertify.log("Actor "+name_of_actor+" deleted", "", "5000");
 
 			}
 		});
-	}
-
-
-	my.refresh_web_storage = function(){
-
-		localStorage.setItem("actors", JSON.stringify(my.actors));
-		
-		localStorage.setItem("actor_id_counter",my.id_counter);
-
 	}
 	
 	
@@ -717,43 +729,19 @@ var actor = (function(){
 	}
 	
 
-	my.get_actors_from_web_storage = function(){
-
-		my.actors = [];  //Reset the cache!
-
-		var actors_db = localStorage.getItem("actors");
-		
-		if (actors_db == null){
-			actors_db = "[]";
-		}
-		
-		my.id_counter = localStorage.getItem("actor_id_counter");
-		
-		if (my.id_counter == null){
-			my.id_counter = 0;
-		}
-		
-		my.actors = JSON.parse(actors_db);
-
-		console.log(my.actors.length + ' actors taken from Web Storage');
-		
-		my.refresh_list_display();
-		
-	}
-
 	my.sortAlphabetically = function(){
 
 		my.actors = sortByKey(my.actors,"name");
 
-		my.refresh_web_storage();
-		my.refresh_list_display();
+		save_and_recall.save();
+		my.refreshListDisplay();
 		
 		alertify.log("Actors sorted.","",5000);
 
 	}
 
 
-	my.refresh_list_display = function(){
+	my.refreshListDisplay = function(){
 	
 		g('ac_list').innerHTML = "";
 
@@ -780,7 +768,9 @@ var actor = (function(){
 
 		g('ac_list').appendChild(div);	
 
-		session.refreshActorLists();
+		if (session){
+			session.refreshActorLists();
+		}
 
 		switch (my.actors.length){
 		
