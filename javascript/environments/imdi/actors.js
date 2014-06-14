@@ -720,7 +720,6 @@ var actor = (function(){
 	my.get_actors_from_web_storage = function(){
 
 		my.actors = [];  //Reset the cache!
-		
 
 		var actors_db = localStorage.getItem("actors");
 		

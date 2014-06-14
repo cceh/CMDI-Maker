@@ -169,8 +169,10 @@ var save_and_recall = (function(){
 		var form_object = my.retrieveDataToSave();
 		localStorage.setItem(local_storage_key, JSON.stringify(form_object));
 		
-		var environment_object = my.retrieveEnvironmentDataToSave();
-		localStorage.setItem(APP.active_environment.id, JSON.stringify(environment_object));
+		if (APP.active_environment){
+			var environment_object = my.retrieveEnvironmentDataToSave();
+			localStorage.setItem(APP.active_environment.id, JSON.stringify(environment_object));
+		}
 
 	}
 
@@ -188,7 +190,10 @@ var save_and_recall = (function(){
 		};
 		
 		object.active_view = APP.active_view;
-		object.active_environment_id = APP.active_environment.id;
+		
+		if (APP.active_environment){
+			object.active_environment_id = APP.active_environment.id;
+		}
 		
 		return object;
 

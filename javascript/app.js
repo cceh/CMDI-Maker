@@ -608,6 +608,34 @@ var APP = (function () {
 	}
 	
 	
+	my.unloadActiveEnvironment = function (){
+	
+		console.log("Unloading active environment: " + my.active_environment.id);
+	
+		save_and_recall.save();
+		
+		g("environment_settings").innerHTML = "";
+	
+		for (var e=0; e<my.active_environment.workflow.length; e++){
+		
+			var module = my.active_environment.workflow[e];
+			
+			//delete module view
+			dom.remove(view_id_prefix+module.identity.id);
+			
+		}
+		
+		g("functions").innerHTML = "";
+	
+		g("module_icons").innerHTML = "";
+		
+		my.active_environment = undefined;
+		
+		my.view("VIEW_start");
+	
+	}
+	
+	
 	my.createEnvironment = function (environment){
 	
 		console.log("Creating environment: " + environment.id);

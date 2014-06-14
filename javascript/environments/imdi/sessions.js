@@ -27,14 +27,17 @@ var session = (function () {
 	};
 	
 	my.sessions = [];
-	
 	my.id_counter = 0;
-	
 	my.resource_id_counter = 0;
+	//PRELIMIARY!!! REMOVE THE NUMBERS!!!
 	
 	my.init = function(){
 	
 		session.displayNoSessionText();
+		
+		my.sessions = [];
+		my.id_counter = 0;
+		my.resource_id_counter = 0;
 
 	}
 	
