@@ -128,21 +128,7 @@ var save_and_recall = (function(){
 	
 	my.deleteAllData = function(){
 	
-		localStorage.removeItem("actors");
-		localStorage.removeItem("actor_id_counter");
-		localStorage.removeItem(local_storage_key);
-		
-		for (var e=0; e<APP.environments.length; e++){
-		
-			try {
-				localStorage.removeItem(APP.environments[e].identity.id);
-			}
-			
-			catch (e){
-				continue;
-			}
-		
-		}
+		localStorage.clear();
 		
 	}
 
