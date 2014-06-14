@@ -150,7 +150,7 @@ var save_and_recall = (function(){
 	my.deleteEnvironmentData = function(){
 
 			try {
-				localStorage.removeItem(APP.active_environment.identity.id);
+				localStorage.removeItem(APP.active_environment.id);
 			}
 			
 			catch (e){
