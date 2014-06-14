@@ -378,6 +378,7 @@ var session = (function () {
 
 	}
 	
+	
 	my.getName = function(session_index){
 
 		if (my.sessions[session_index].name == ""){
@@ -497,8 +498,6 @@ var session = (function () {
 			all_available_actor_ids.push(actor.actors[n].id);
 		}
 		
-		
-
 		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
 		
 			my.refreshActorListInSession(s,all_available_actor_ids);

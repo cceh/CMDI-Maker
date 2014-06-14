@@ -52,6 +52,7 @@ var resources = (function(){
 	
 	}
 	
+	
 	my.getSaveData = function(){
 	
 		return my.available_resources;
@@ -126,8 +127,11 @@ var resources = (function(){
 	  
 		g('files_input').addEventListener('change', resources.handleFileInputChange, false);
 		
+		my.refreshFileListDisplay(true);
+		
 	}
 
+	
 	my.getValidityOfFile = function(filename){
 	// returns 0=valid media file, 1=valid written resource, 2=invalid media file, 3=invalid written resource, -1=unknown file
 
@@ -162,7 +166,7 @@ var resources = (function(){
 	}
 
 	
-	my.refreshFileListDisplay = function() {
+	my.refreshFileListDisplay = function(not_in_sessions) {
 
 		// files is a FileList of File objects. List some properties.
 		var output = [];
@@ -231,10 +235,12 @@ var resources = (function(){
 		}
 		
 		if (my.available_resources.length == 0){
-			list.innerHTML = "<h2>No media files imported.</h2>";
+			list.innerHTML = "<h2>No resource files imported.</h2>";
 		}
 
-		session.refreshResourcesOfAllSessions();
+		if ((session) && (!not_in_sessions)){
+			session.refreshResourcesOfAllSessions();
+		}
 		
 		my.selected_files = [];
 		

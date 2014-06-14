@@ -62,7 +62,7 @@ var actor = (function(){
 			}
 		};
 		
-		my.refreshListDisplay();
+		my.refreshListDisplay(true);
 		
 	}
 	
@@ -745,7 +745,7 @@ var actor = (function(){
 	}
 
 
-	my.refreshListDisplay = function(){
+	my.refreshListDisplay = function(not_in_sessions){
 	
 		g('ac_list').innerHTML = "";
 
@@ -772,7 +772,7 @@ var actor = (function(){
 
 		g('ac_list').appendChild(div);	
 
-		if (session){
+		if ((session) && (!not_in_sessions)){
 			session.refreshActorLists();
 		}
 
