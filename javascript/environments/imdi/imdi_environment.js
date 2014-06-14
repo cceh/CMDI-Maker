@@ -57,5 +57,32 @@ var imdi_environment = {
 			type: "link",
 			onclick: function (){actor.erase_database();}
 		}
-	]
+	],
+	recall: function (settings){
+	
+		dom.setRadioIndex(document.metadata_form.output_format, settings.output_format);
+		
+		if (settings.calc_actors_age == true){
+		
+			document.metadata_form.radio_age_calc[0].checked = true;
+		
+		}
+		
+		else {
+		
+			document.metadata_form.radio_age_calc[1].checked = true;	
+		
+		}
+	
+	},
+	getSaveData: function(){
+	
+		var object = {};
+
+		object.output_format = dom.getSelectedRadioIndex(document.metadata_form.output_format);
+		object.calc_actors_age = (document.getElementsByName("radio_age_calc")[0].checked ? true : false);
+	
+		return object;
+	
+	}
 };

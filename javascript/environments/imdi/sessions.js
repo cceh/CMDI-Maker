@@ -125,7 +125,7 @@ var session = (function () {
 			icon: "save.png",
 			id: "session_link_save_form",
 			onclick: function() {
-				save_and_recall.save_form();
+				save_and_recall.save();
 				alertify.log("Form saved","",5000);
 			}
 		},

@@ -79,7 +79,7 @@ var save_and_recall = (function(){
 		
 		// if not switched off
 		my.interval = window.setInterval(function() {
-			my.save_form();
+			my.save();
 		}, my.interval_time*1000);
 
 	}
@@ -87,20 +87,8 @@ var save_and_recall = (function(){
 	
 	my.recallEnvironmentData = function (recall_object){
 
-		dom.setRadioIndex(document.metadata_form.output_format, recall_object.settings.output_format);
-		
-		if (recall_object.settings.calc_actors_age == true){
-		
-			document.metadata_form.radio_age_calc[0].checked = true;
-		
-		}
-		
-		else {
-		
-			document.metadata_form.radio_age_calc[1].checked = true;	
-		
-		}
-		
+		//recall environment settigns
+		APP.active_environment.recall(recall_object.settings);
 		
 		var workflow = APP.active_environment.workflow;
 		
@@ -144,18 +132,39 @@ var save_and_recall = (function(){
 		localStorage.removeItem("actor_id_counter");
 		localStorage.removeItem(local_storage_key);
 		
+		for (var e=0; e<APP.environments.length; e++){
+		
+			try {
+				localStorage.removeItem(APP.environments[e].identity.id);
+			}
+			
+			catch (e){
+				continue;
+			}
+		
+		}
+		
 	}
 
 
-	my.delete_recall_data = function(){
+	my.deleteEnvironmentData = function(){
 
-		localStorage.removeItem(local_storage_key);
-		alertify.log("Recall data deleted","",5000);
+			try {
+				localStorage.removeItem(APP.active_environment.identity.id);
+			}
+			
+			catch (e){
+				alertify.log("No data for active profile found","",5000);
+				return;
+			}
+			
+			alertify.log("Recall data for active profile deleted","",5000);
 
 	}
 
 	
-	my.save_form = function(){
+	my.save = function(){
+	//This saves the app data and the data of the active environment
 		
 		var form_object = my.retrieveDataToSave();
 		localStorage.setItem(local_storage_key, JSON.stringify(form_object));
@@ -188,14 +197,10 @@ var save_and_recall = (function(){
 	
 	my.retrieveEnvironmentDataToSave = function(){
 
-		var object = {
+		var object = {};
 		
-			settings: {
-				output_format: dom.getSelectedRadioIndex(document.metadata_form.output_format),
-				calc_actors_age: (document.getElementsByName("radio_age_calc")[0].checked ? true : false)
-			}
-			
-		};
+		//get environment settings
+		object.settings = APP.active_environment.getSaveData();
 		
 		var workflow = APP.active_environment.workflow;
 		

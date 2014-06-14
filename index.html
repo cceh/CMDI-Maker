@@ -119,10 +119,6 @@
 				<div id="environment_settings">
 				</div>
 				
-				<!--
-				<div id="output_format_select">
-				</div>-->
-				
 				<h2>Auto Save Interval</h2>
 				<input type="radio" name="radio_auto_save" value="-1"> Off<br>
 				<input type="radio" name="radio_auto_save" value="30"> Every 30 seconds<br>
@@ -130,15 +126,7 @@
 				<input type="radio" name="radio_auto_save" value="300"> Every 5 minutes<br>
 				<input type="radio" name="radio_auto_save" value="600"> Every 10 minutes<br>
 				<br>
-				<!--
-				<h2>Calculate Actor's Age</h2>
-				When this feature is activated, CMDI Maker checks if the age of an actor (if it has not been specified already) can be calculated from the actor's birth date and the session date.<br>
-				When an age can be calculated, it will appear in the output file.<br>
-				(Age = Session Date - Actor's Birth Date)<br>
-				<input type="radio" name="radio_age_calc" value="1" checked> On<br>
-				<input type="radio" name="radio_age_calc" value="0"> Off<br>
-				<br>
-				-->
+
 				<h2>Global Language of Metadata</h2>
 				<select name="metadata_language" id="metadata_language_select" size="1">
 				</select><br>
@@ -148,23 +136,11 @@
 				<p>The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name.<br>
 				<input name="metadata_creator" id="metadata_creator" value="CMDI Maker User"></p>
 				<br>
-			<!--
-				<h2><a href="#" id="link_export_actors">Export Actors as JSON</a></h2>
-				<br>
-				
-				<h2>Import Actors from JSON or IMDI</h2>
-				<p>Please import UTF-8 encoded files only!</p>
-				<input type="file" id="actors_file_input" name="actors_file_input"><br>
-				<br>
-				
-				<h2><a href="#" id="link_erase_actors_database">Delete Actors Database</a></h2>
-				<p>CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window.</p>
-				<br>
-				-->
+
 				<h2><a href="#" id="link_delete_recall_data">Delete Recall Data</a></h2>
-				<p>CMDI Maker saves the metadata form in the browser. Your input is kept, even if you close the browser window.<br>
-				However, if Auto Save is on, new data will be saved automatically!<br>
-				This function deletes all data of the active profile!</p>
+				<p>CMDI Maker saves the data you input in a browser database. Your data is kept, even when you close the browser window.
+				However, if Auto Save is on, new data will be saved automatically.<br>
+				This function only deletes the data from the active profile!</p>
 				<br>		
 
 				<h2><a href="#" id="link_hard_reset">Hard Reset</a></h2>
