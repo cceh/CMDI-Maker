@@ -45,14 +45,12 @@ var APP = (function () {
 	my.init = function (){
 	
 		my.checkIfFirstStart();
-		save_and_recall.getRecallDataForApp();
-		//my.createEnvironment(imdi_environment);  //preliminary!
 		g("version_span").innerHTML = version;
 		my.sayHello();
-		my.display_metadata_languages();
-		//save_and_recall.getRecallData();
+		my.displayMetadataLanguages();
 		my.addEventListeners(); 
-
+		
+		save_and_recall.getRecallDataForApp();
 	}
 
 	
@@ -276,7 +274,7 @@ var APP = (function () {
 	}
 
 
-	my.display_metadata_languages = function (){
+	my.displayMetadataLanguages = function (){
 
 		for (var j=0;j<MetadataLanguageIDs.length;j++){
 
