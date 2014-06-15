@@ -79,8 +79,9 @@ var output = (function (){
 	
 	
 	my.view = function(){
-	
-		if ((corpus.isCorpusProperlyNamed()) && (session.areAllSessionsProperlyNamed())){
+		
+		//corpus must have a proper name or no name at all
+		if ((corpus.isCorpusProperlyNamed() || get("corpus_name") == "") && (session.areAllSessionsProperlyNamed())){
 			
 			if (session.doesEverySessionHaveAProjectName()){
 
@@ -98,7 +99,6 @@ var output = (function (){
 			
 				APP.view(session);
 			
-			
 			}
 			
 		}
@@ -109,14 +109,16 @@ var output = (function (){
 				ok     : "OK"
 			} });
 			
-			alertify.alert("The corpus and every session must have a proper name.<br>An unnamed corpus or sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
-			
-			if (!corpus.isCorpusProperlyNamed()){   //show corpus
+			//if corpus has a name, but an invalid one
+			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") != ""){   //show corpus
 				APP.view(corpus);
+				alertify.alert("The corpus must have a proper name or no name at all.<br>Not allowed chars are: " + not_allowed_chars);
+			
 			}
 			
 			else {  //show sessions
 				APP.view(session);
+				alertify.alert("Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: " + not_allowed_chars);
 			}
 		}
 	}
@@ -146,13 +148,16 @@ var output = (function (){
 		xml_strings = new my.formats[output_format_index].generator_object();
 		var output_format = my.formats[output_format_index].output_name;
 
-		my.createOutputDIV(xml_window, output_format + " Corpus", "textarea_corpus", xml_strings.corpus,
-			function(num){
-				return function(){
-					output.save_corpus();
-				}
-			}(s)
-		);
+		//if corpus is to be created
+		if (get("corpus_name") != ""){
+			my.createOutputDIV(xml_window, output_format + " Corpus", "textarea_corpus", xml_strings.corpus,
+				function(num){
+					return function(){
+						output.save_corpus();
+					}
+				}(s)
+			);
+		}
 		
 		for (var s=0;s<session.sessions.length;s++){
 			
