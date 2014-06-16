@@ -135,5 +135,15 @@ var imdi_environment = {
 			
 		}
 	
+	},
+	reset: function(){
+	
+		g("corpus_name").value = "";
+		g("corpus_title").value = "";
+		g("corpus_description").value = "";
+		
+		session.eraseAll();
+		corpus.content_languages.removeAll();
+	
 	}
 };

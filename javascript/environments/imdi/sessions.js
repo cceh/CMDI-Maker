@@ -124,6 +124,16 @@ var session = (function () {
 			onclick: function() {session.newSession(); }
 		},
 		{
+			label: "Copy Session 1 metadata to all sessions",
+			icon: "copy.png",
+			id: "link_copy_sessions",
+			wrapper_id: "copy_sessions_div",
+			type: "function_wrap",
+			sub_div: "copy_sessions_select",
+			onclick: function() { session.assignSession1Metadata(); },
+			after_that: my.createCopySessionOptions
+		},
+		{
 			label: "Reset Form",
 			icon: "reset.png",
 			id: "session_link_reset_form",
@@ -147,16 +157,6 @@ var session = (function () {
 					}
 				});
 			}
-		},
-		{
-			label: "Copy Session 1 metadata to all sessions",
-			icon: "copy.png",
-			id: "link_copy_sessions",
-			wrapper_id: "copy_sessions_div",
-			type: "function_wrap",
-			sub_div: "copy_sessions_select",
-			onclick: function() { session.assignSession1Metadata(); },
-			after_that: my.createCopySessionOptions
 		}
 	];
 	

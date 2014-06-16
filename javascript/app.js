@@ -386,8 +386,18 @@ var APP = (function () {
 				
 				
 				//this cannot be done with css
-				function_div.addEventListener('mousedown', function() { function_div.style.backgroundColor = "black"; });
-				function_div.addEventListener('mouseup', function() { function_div.style.backgroundColor = ""; });
+				function_div.addEventListener('mousedown', function(elem) {
+					return function(){
+						elem.style.backgroundColor = "black";
+					}
+				}(function_div));
+				
+				function_div.addEventListener('mouseup', function(elem) {
+					return function(){
+						elem.style.backgroundColor = "";
+					}
+				}(function_div));
+			
 			}
 			
 			if (functions[f].after_that){
@@ -400,13 +410,8 @@ var APP = (function () {
 	
 	my.reset_form = function (){
 		
-		
-		g("corpus_name").value = "";
-		g("corpus_title").value = "";
-		g("corpus_description").value = "";
-		
-		session.eraseAll();
-		corpus.content_languages.removeAll();
+		APP.active_environment.reset();
+
 	}
 	
 	
