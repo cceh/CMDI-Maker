@@ -16,7 +16,7 @@ limitations under the License.
 
 // Settings
 var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version = "v1.0.5";
+var version = "v1.0.6";
 var LanguageCodePrefix = "ISO639-3:";
 var path_to_images = "img/";
 var path_to_icons = path_to_images + "icons/";
