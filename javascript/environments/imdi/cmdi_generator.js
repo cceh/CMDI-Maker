@@ -176,7 +176,12 @@ var cmdi_generator = function(){
 		
 		return_string += xml.tag("CommunicationContext",1);
 		
-		return_string += xml.tag("Content_Languages",2);
+		return_string += xml.tag("Content_Languages",0);
+		return_string += insert_content_languages(session_id);
+		return_string += xml.tag("Content_Languages",1);
+		
+		
+		
 		return_string += xml.tag("Keys",2);
 	 
 		return_string += xml.tag("Content",1);
@@ -215,6 +220,26 @@ var cmdi_generator = function(){
 		
 	}
 
+	
+	var insert_content_languages = function (session_id) {
+
+		var return_string = "";
+		
+		var languages = corpus.content_languages.content_languages;
+	
+		for (var l=0;l<languages.length;l++){  //for all content languages // no session separate languages yet
+	
+			return_string += xml.tag("Content_Language",0);
+			return_string += xml.element("Id",LanguageCodePrefix+languages[l][0]);
+			return_string += xml.element("Name",languages[l][3]);
+			return_string += xml.tag("Content_Language",1);
+	
+		}
+
+		return return_string;
+		
+	}
+	
 
 	var insert_cmdi_written_resource = function(link,size){
 

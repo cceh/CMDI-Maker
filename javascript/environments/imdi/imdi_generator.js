@@ -178,12 +178,14 @@ var imdi_generator = function(){
 	var insert_content_languages = function () {
 
 		var return_string = "";
+		
+		var languages = corpus.content_languages.content_languages;
 	
-		for (var l=0;l<content_languages.length;l++){  //for all content languages // no session separate languages yet
+		for (var l=0;l<languages.length;l++){  //for all content languages // no session separate languages yet
 	
 			return_string += xml.tag("Language",0);
-			return_string += xml.element("Id",LanguageCodePrefix+content_languages[l][0]);
-			return_string += xml.element("Name",content_languages[l][3],[["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
+			return_string += xml.element("Id",LanguageCodePrefix+languages[l][0]);
+			return_string += xml.element("Name",languages[l][3],[["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
 			//return_string += xml.element("Dominant","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
 			//return_string += xml.element("SourceLanguage","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
 			//return_string += xml.element("TargetLanguage","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
@@ -196,6 +198,7 @@ var imdi_generator = function(){
 		return return_string;
 		
 	}
+	
 	
 	var create_imdi_header = function (imdi_type,originator,version,date) {
     
