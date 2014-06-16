@@ -128,39 +128,16 @@ corpus.content_languages = (function() {
 		
 		}
 		
-		
-		var clrd = g("content_language_results_div");	
-		clrd.style.display = "block";
-		
-		g("current_content_languages_display").style.display = "none";
-		
-		clrd.innerHTML = "";
-		
-		dom.newElement("h1","","",clrd,"Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s")); 
-		
-		var img = dom.newElement("img","close_clrd_icon","",clrd);
-		img.src = path_to_icons + "reset.png";
-		img.addEventListener('click', function() { 
-			corpus.content_languages.closeCLS();  
-		} );
-		
-		dom.newElement("h3","","",clrd, "(ISO639-3 Code, Country ID, Language Name)");
-
+		var titles = [];
 		
 		for (var j=0;j<results.length;j++){
+
+			titles.push(results[j][0] + ", "+results[j][1]+", " + results[j][3]);
+
+		}		
 		
-			var a = dom.newElement("a",'cl_results_link_'+j,'cl_results_link',clrd);
-			dom.newElement("div","",'content_lang_search_entry',a,results[j][0] + ", "+results[j][1]+", " + results[j][3]);
-			a.href = '#';
-		
-			a.addEventListener('click', function(num) { 
-				return function(){
-					corpus.content_languages.choose(num);  
-				};
-			}(results[j]) );
-		}
-		
-		
+		dom.showSelectFrame(results, titles, corpus.content_languages.choose, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
+		"(ISO639-3 Code, Country ID, Language Name)"); 
 		
 	}
 	

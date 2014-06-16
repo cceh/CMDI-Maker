@@ -522,6 +522,85 @@ var dom = (function() {
 		
 	}
 	
+	
+	my.hideAllChildren = function(elem){
+		
+		var children = elem.children;
+	
+		for (var c=0; c<children.length; c++){
+	
+			children[c].style.display = "none";
+	
+		}
+		
+	}
+	
+	
+	my.showAllChildren = function(elem){
+		
+		var children = elem.children;
+	
+		for (var c=0; c<children.length; c++){
+	
+			children[c].style.display = "";
+	
+		}
+		
+	}
+	
+	
+	my.closeSelectFrame = function(){
+		
+		if (g("SF")){	
+			my.showAllChildren(g("SF").parentNode);
+			my.remove("SF");			
+		}
+	
+	}
+	
+	
+	my.showSelectFrame = function(options, titles, callback, title, subtitle){
+	//options are the parameters for the callback method
+	
+		//first, make sure, existing select frames are closed
+		my.closeSelectFrame();
+	
+		var active_view = g(APP.active_view);
+		
+		my.hideAllChildren(active_view);
+		
+		var frame = my.newElement("div","SF","SF",active_view,"");	
+		frame.style.display = "block";
+		
+		dom.newElement("h1","","",frame,title); 
+		
+		var img = dom.newElement("img","","close_select_frame_icon",frame);
+		img.src = path_to_icons + "reset.png";
+		img.addEventListener('click', function() { 
+			my.closeSelectFrame(); 
+		} );
+		
+		dom.newElement("h3","","",frame,subtitle);
+
+		
+		for (var j=0;j<options.length;j++){
+		
+			var a = dom.newElement("a",'cl_results_link_'+j,'cl_results_link',frame);
+			dom.newElement("div","",'SF_search_entry',a,titles[j]);
+			a.href = '#';
+		
+			a.addEventListener('click', function(num) {
+				return function(){
+					my.closeSelectFrame();
+					callback(num);
+				};
+			}(options[j]) );
+		}
+	
+	
+	
+	}
+	
 	return my;
 	
 })();

@@ -730,6 +730,7 @@ var APP = (function () {
 	
 	}
 	
+	
 	my.getEnvironmentFromID = function(id){
 	
 		for (var e=0; e<APP.environments.length; e++){

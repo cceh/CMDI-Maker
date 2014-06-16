@@ -105,42 +105,16 @@ actor.languages = (function (parent){
 		
 		}
 		
-		g("ac_view").style.display = "none";
-		
-		var alrd = g("actor_language_results_div");	
-		
-		alrd.style.display = "block";
-		alrd.innerHTML = "";
-		
-		dom.newElement("h1", "", "", alrd, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s")); 
-		
-		var img = dom.newElement("img","close_alrd_icon","",alrd);
-		img.src = "img/icons/reset.png";
-		img.addEventListener('click', function() { 
-			actor.languages.closeLanguageSelect();  
-		} );
-		
-		var h3 = dom.newElement("h3","","",alrd,"(ISO639-3 Code, Country ID, Language Name)");
+		var titles = [];
 		
 		for (var j=0;j<results.length;j++){
+
+			titles.push(results[j][0] + ", "+results[j][1]+", " + results[j][3]);
+
+		}		
 		
-			var a = dom.newElement("a", 'al_results_link_'+j, 'al_results_link',alrd,
-			"<div class='actor_lang_search_entry'>" + results[j][0] + ", "+results[j][1]+", " + results[j][3] + "</div>");
-			a.href = '#';
-		
-		}
-		
-		for (var j=0;j<results.length;j++){
-			//adding event listeners to objects has to be executed in a separate for loop. otherwise .innerHTML would overwrite them again.
-			
-			g('al_results_link_'+j).addEventListener('click', function(num) { 
-				return function(){ 
-					
-					actor.languages.addFromForm(num);
-					
-				};
-			}(results[j]) );
-		}
+		dom.showSelectFrame(results, titles, actor.languages.addFromForm, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
+		"(ISO639-3 Code, Country ID, Language Name)"); 
 
 	}
 

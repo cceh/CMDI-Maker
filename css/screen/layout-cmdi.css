@@ -109,7 +109,7 @@ color: #4D87C7;
 }
 
 
-#close_clrd_icon, #close_alrd_icon {
+#close_clrd_icon, #close_alrd_icon, .close_select_frame_icon {
 
 float: right;
 width: 25px;
@@ -207,7 +207,21 @@ user-select: none;
 
 }
 
-.content_lang_search_entry, .actor_lang_search_entry{
+/*--- SF ---*/
+
+.SF {
+
+overflow: hidden;
+padding: 20px;
+background-color: lightskyblue;
+padding-top: 15px;
+display: none;
+color: black;
+border-radius: 10px;
+
+}
+
+.SF_search_entry{
 
 background: bisque;
 border-radius: 5px;
@@ -221,13 +235,13 @@ float: left;
 width: 200px;
 }
 
-#content_language_results_div  a, #actor_language_results_div  a{
+.SF a{
 
 color: black;
 
 }
 
-#content_language_results_div  a:hover div, #actor_language_results_div  a:hover div{
+.SF a:hover div{
 
 background-color: rgb(255, 139, 199);
 
@@ -385,17 +399,7 @@ float: left;
 
 }
 
-#content_language_results_div {
 
-overflow: hidden;
-padding: 20px;
-background-color: lightskyblue;
-padding-top: 15px;
-display: none;
-color: black;
-border-radius: 10px;
-
-}
 
 /*--- Resource Files ---*/
 
@@ -605,21 +609,6 @@ color: blue;
 
 /*--- Actors ---*/
 
-#actor_language_results_div{
-overflow: hidden;
-padding: 20px;
-background-color: lightskyblue;
-padding-top: 15px;
-display: none;
-color: black;
-border-radius: 10px;
-
-position: absolute;
-right: 30px;
-left: 260px;
-
-}
-
 .current_actor_language_entry{
 
 background-color: tomato;
@@ -642,13 +631,6 @@ overflow: hidden;
 	width: 350px;
 
 }
-
-/*
-.current_actor_language_entry > span{
-	float: left;
-
-}
-*/
 
 #ac_list{
 
