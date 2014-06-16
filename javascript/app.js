@@ -488,6 +488,7 @@ var APP = (function () {
 			module.view();
 		}
 	
+		dom.closeSelectFrame();
 	}
 	
 	

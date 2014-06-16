@@ -134,7 +134,7 @@ corpus.content_languages = (function() {
 
 			titles.push(results[j][0] + ", "+results[j][1]+", " + results[j][3]);
 
-		}		
+		}
 		
 		dom.showSelectFrame(results, titles, corpus.content_languages.choose, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
 		"(ISO639-3 Code, Country ID, Language Name)"); 
