@@ -160,7 +160,7 @@ var APP = (function () {
 			
 			case "form": {
 			
-				var table = dom.newElement("table",element_id_prefix+"_table","session_table",parent);
+				var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
 				var tr = dom.newElement("tr","","",table);
 				
 				for (var f=0; f<field.fields.length; f++){
@@ -173,57 +173,7 @@ var APP = (function () {
 			}
 			
 			case "special": {
-			
-				if (field.name == "actors"){
-				
-					dom.newElement("br","","",parent);
-					
-					dom.newElement("div",element_id_prefix+"actors", "actors", parent);
-					dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
-				
-				}
-				
-				if (field.name == "resources"){
-				
-					dom.newElement("div",element_id_prefix+"resources", "mfs", parent);
-					dom.newElement("div",element_id_prefix+"add_mf_div", "", parent);
-				
-				}
-				
-				if (field.name == "actor_languages"){
-				
-					var p = dom.newElement("p","", "", parent);
-
-					var input = dom.newElement("input","actor_language_select","",p);
-					input.type = "text";
-					input.size = 1;
-					input.name = "actor_language_select";
-					
-					dom.newElement("span","","",p," ");
-
-					var input = dom.newElement("input","actor_language_search_button","",p);
-					input.type = "button";
-					input.value = "Search";
-
-					dom.newElement("br","","",p);
-					dom.newElement("span","","",p,"or type in ISO code ");
-					
-					var input = dom.newElement("input","actor_language_iso_input","",p);
-					input.type = "text";
-					input.size = 1;
-					input.name = "actor_language_iso_input";
-					
-					dom.newElement("span","","",p," ");
-					
-					var input = dom.newElement("input","actor_language_iso_ok","",p);
-					input.type = "button";
-					input.value = "OK";			
-					
-					dom.newElement("div","current_actor_languages_display", "", parent);									
-
-				
-				}
-				
+				APP.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
 				break;
 			
 			}
@@ -596,6 +546,7 @@ var APP = (function () {
 
 	}
 	
+	
 	my.save_file = function (text, filename, mime_type){
 
 		var clean_filename = remove_invalid_chars(filename);
@@ -636,13 +587,16 @@ var APP = (function () {
 	
 	my.createEnvironment = function (environment){
 	
+		//Variable has to be set first, because later methods depend on it
+		my.active_environment = environment;	
+		
 		console.log("Creating environment: " + environment.id);
 	
 		my.createEnvironmentSettings(environment.settings);
 	
 		my.createWorkflow(environment.workflow);
 		
-		my.active_environment = environment;
+
 	
 	}
 	
@@ -809,6 +763,8 @@ var APP = (function () {
 				}
 			}(my.views[v].id));
 		}
+		
+		g("LINK_save_form").addEventListener("click", function(){ save_and_recall.userSave(); });
 		
 		document.getElementsByName("radio_auto_save").selectedIndex = 3;
 		

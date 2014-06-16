@@ -93,15 +93,6 @@ var corpus = (function(){
 	
 	my.functions = [
 		{
-			label: "Save Form",
-			icon: "save.png",
-			id: "link_save_form",
-			onclick: function() {
-				save_and_recall.save();
-				alertify.log("Form saved","",5000);
-			}
-		},
-		{
 			label: "Reset Form",
 			icon: "reset.png",
 			id: "link_reset_form",

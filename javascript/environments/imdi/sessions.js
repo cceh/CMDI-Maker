@@ -124,15 +124,6 @@ var session = (function () {
 			onclick: function() {session.newSession(); }
 		},
 		{
-			label: "Save Form",
-			icon: "save.png",
-			id: "session_link_save_form",
-			onclick: function() {
-				save_and_recall.save();
-				alertify.log("Form saved","",5000);
-			}
-		},
-		{
 			label: "Reset Form",
 			icon: "reset.png",
 			id: "session_link_reset_form",
@@ -252,10 +243,10 @@ var session = (function () {
 		session_object.expanded = session_expanded;
 		my.sessions.push(session_object);
 		
-		var session_div = dom.newElement('div','session'+session_id,'session_div',sessions_view); 
+		var session_div = dom.newElement('div',session_dom_element_prefix+session_id,'session_div',sessions_view); 
 		//sessions_count is right! but it has to be clear which session in sessions has which session_id
 
-		var session_header = dom.newElement('div','session'+session_id+'_header','session_header',session_div);
+		var session_header = dom.newElement('div',session_dom_element_prefix+session_id+'_header','session_header',session_div);
 		session_header.addEventListener('click', function(num) { 
 			return function(){
 				my.display(num);  
@@ -296,7 +287,7 @@ var session = (function () {
 		session_display_link.href = "#";
 
 
-		var session_content = dom.newElement('div','session'+session_id+'_content','session_content',session_div);
+		var session_content = dom.newElement('div',session_dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
 		APP.makeInput(session_content, session_form, session_dom_element_prefix+session_id+"_", session_dom_element_prefix, session_object);
@@ -535,8 +526,7 @@ var session = (function () {
 
 	my.erase = function (session_id){
 
-		var node = document.getElementById("session"+session_id);
-		g("VIEW_sessions").removeChild(node);
+		dom.remove(session_dom_element_prefix+session_id);
 		
 		my.sessions.splice(my.getSessionIndexFromID(session_id),1);
 		
@@ -624,7 +614,7 @@ var session = (function () {
 		
 		else {
 		
-			alert("There is no session that can be erased!\nTo erase one, you have to create one first.");
+			alert("There is no session to be erased!\nTo erase one, you have to create one first.");
 		
 		}
 	}
@@ -692,7 +682,7 @@ var session = (function () {
 		
 		dom.remove(session_dom_element_prefix+session_id+"_actor_"+actor_id);
 		
-		save_and_recall.save_form();
+		save_and_recall.save();
 		
 	}
 
@@ -1033,14 +1023,14 @@ var session = (function () {
 	
 	my.display = function(session_id){
 	
-		if (document.getElementById("session"+session_id+"_content").style.display != "none"){
-			document.getElementById("session"+session_id+"_content").style.display = "none";
+		if (document.getElementById(session_dom_element_prefix+session_id+"_content").style.display != "none"){
+			document.getElementById(session_dom_element_prefix+session_id+"_content").style.display = "none";
 			document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_icons+"up.png";
 			my.sessions[my.getSessionIndexFromID(session_id)].expanded = false;
 		}
 		
 		else {
-			document.getElementById("session"+session_id+"_content").style.display = "block";
+			document.getElementById(session_dom_element_prefix+session_id+"_content").style.display = "block";
 			document.getElementById(session_dom_element_prefix+session_id+"_expand_img").src=path_to_icons+"down.png";
 			my.sessions[my.getSessionIndexFromID(session_id)].expanded = true;
 		}

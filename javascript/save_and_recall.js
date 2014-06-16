@@ -147,6 +147,12 @@ var save_and_recall = (function(){
 		alertify.log("Recall data for active profile deleted","",5000);
 
 	}
+	
+	
+	my.userSave = function(){
+		my.save();
+		alertify.log("Form saved","",5000);
+	}
 
 	
 	my.save = function(){
