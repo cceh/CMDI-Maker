@@ -362,7 +362,7 @@ var resources = (function(){
 	my.createSessionForResource = function(resource_index){
 
 		var session_object = make_new_session_object();
-		session_object.session.name = RemoveEndingFromFilename(my.available_resources[resource_index][0]);
+		session_object.session.name = remove_invalid_chars(RemoveEndingFromFilename(my.available_resources[resource_index][0]));
 		
 		session_object.expanded = false; //collapse automatically generated session
 

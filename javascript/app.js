@@ -601,7 +601,7 @@ var APP = (function () {
 	
 		my.createWorkflow(environment.workflow);
 		
-
+		my.view("default");
 	
 	}
 	
