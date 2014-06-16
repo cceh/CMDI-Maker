@@ -139,7 +139,6 @@ corpus.content_languages = (function() {
 		dom.newElement("h1","","",clrd,"Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s")); 
 		
 		var img = dom.newElement("img","close_clrd_icon","",clrd);
-		//clrd = content language results div
 		img.src = path_to_icons + "reset.png";
 		img.addEventListener('click', function() { 
 			corpus.content_languages.closeCLS();  
@@ -238,6 +237,7 @@ corpus.content_languages = (function() {
 		
 	}
 
+	
 	my.closeCLS = function(){
 
 		g("content_language_results_div").style.display = "none";
