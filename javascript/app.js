@@ -685,13 +685,13 @@ var APP = (function () {
 			//create a view for the module
 			dom.newElement("div",view_id_prefix+module.identity.id,"content",g("content_wrapper"));
 			
-			if (module.init){
-				module.init();
-			}
-			
 			//initialize functions for the interface
 			if (module.functions){
 				my.init_functions(module.functions);
+			}
+
+			if (module.init){
+				module.init();
 			}
 		}
 	

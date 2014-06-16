@@ -94,17 +94,7 @@ var actor = (function(){
 	
 	my.view = function(){
 	
-		if (actor.active_actor != -1){
-			g("link_delete_active_actor").style.display = "inline";
-			g("link_duplicate_active_actor").style.display = "inline";
-			
-			g("save_actor_span").innerHTML = "Save changes to this actor";
-		}
-		
-		else {
-		
-			g("save_actor_span").innerHTML = "Save actor";
-		}
+		my.show(my.active_actor);
 	
 	}
 	
@@ -176,21 +166,20 @@ var actor = (function(){
 
 		console.log("Showing actor "+actor_id);
 		
-		if (APP.active_view == view_id_prefix + my.identity.id){
-		
-			if (actor_id == -1) {
-				g('link_delete_active_actor').style.display = "none";
-				g('link_duplicate_active_actor').style.display = "none";
-			}
+		if (actor_id == -1) {
+			g('link_delete_active_actor').style.display = "none";
+			g('link_duplicate_active_actor').style.display = "none";
 			
-			else {
-				g('link_delete_active_actor').style.display = "inline";
-				g('link_duplicate_active_actor').style.display = "inline";
-			}
-			
+			g("save_actor_span").innerHTML = "Save actor";
 		}
-
-
+		
+		else {
+			g('link_delete_active_actor').style.display = "inline";
+			g('link_duplicate_active_actor').style.display = "inline";
+			
+			g("save_actor_span").innerHTML = "Save changes to this actor";
+		}
+		
 		my.languages.closeLanguageSelect();	
 		my.highlight_active_actor_div(actor_id);
 		my.languages.clearActiveActorLanguages();
