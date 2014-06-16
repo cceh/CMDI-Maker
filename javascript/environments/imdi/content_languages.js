@@ -86,16 +86,10 @@ corpus.content_languages = (function() {
 
 		var non_letters = " ,";
 
-
 		var input = g("content_language_select").value;
 		
-		
 		if (input.length < 3){
-		
-			g("content_language_results_div").innerHTML = "";
-			
-			my.closeCLS();
-			
+	
 			alertify.alert("Please specify your search request.\nType in at least 3 characters.");
 			
 			return;
@@ -106,7 +100,6 @@ corpus.content_languages = (function() {
 		var results = [];
 
 		for (var i=0;i<LanguageIndex.length;i++){
-
 			
 			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
 				
@@ -206,8 +199,6 @@ corpus.content_languages = (function() {
 		dom.newElement("br","","",div);
 		dom.newElement("span","","",div,"Country ID: " + LanguageObject[1]);
 
-		my.closeCLS();
-
 		my.id_counter+=1;
 		
 		return true;
@@ -215,14 +206,6 @@ corpus.content_languages = (function() {
 	}
 
 	
-	my.closeCLS = function(){
-
-		g("content_language_results_div").style.display = "none";
-		g("current_content_languages_display").style.display = "inline";
-
-	}
-
-
 	my.removeAll = function(){
 
 		while (my.content_languages.length > 0){

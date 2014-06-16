@@ -436,6 +436,8 @@ var APP = (function () {
 
 	my.view = function (module_or_id){
 	
+		dom.closeSelectFrame();
+	
 		if (typeof module_or_id === 'string') {
 			
 			var id = module_or_id;
@@ -488,7 +490,6 @@ var APP = (function () {
 			module.view();
 		}
 	
-		dom.closeSelectFrame();
 	}
 	
 	
@@ -521,13 +522,20 @@ var APP = (function () {
 	}
 	
 	
-	my.showFunctionsForView = function (module){
-
+	my.makeAllFunctionsInvisible = function(){
+	
 		//make all functions invisible
 		var functions = g("functions").children;
 		for (var f=0; f<functions.length; f++){
 			functions[f].style.display = "none";
-		}	
+		}		
+	
+	}
+	
+	
+	my.showFunctionsForView = function (module){
+
+		my.makeAllFunctionsInvisible();
 		
 		//If this view is not from a module, it wont have functions
 		if (!module){

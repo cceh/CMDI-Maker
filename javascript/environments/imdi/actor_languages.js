@@ -72,8 +72,6 @@ actor.languages = (function (parent){
 		
 			g("actor_language_results_div").innerHTML = "";
 			
-			close_actor_language_select();
-			
 			alertify.alert("Please specify your search request.\nType in at least 3 characters.");
 			
 			return;
@@ -162,8 +160,6 @@ actor.languages = (function (parent){
 		}
 		
 		dom.newElement("span","","",div, "Primary Language");
-
-		my.closeLanguageSelect();
 
 		my.id_counter += 1;
 

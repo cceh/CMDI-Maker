@@ -552,8 +552,15 @@ var dom = (function() {
 	my.closeSelectFrame = function(){
 		
 		if (g("SF")){	
-			my.showAllChildren(g("SF").parentNode);
-			my.remove("SF");			
+		
+			var view = g("SF").parentNode;
+		
+			my.showAllChildren(view);
+			my.remove("SF");
+
+			var module = APP.getModuleOfViewID(view.id);
+			APP.showFunctionsForView(module);
+			
 		}
 	
 	}
@@ -597,7 +604,7 @@ var dom = (function() {
 			}(options[j]) );
 		}
 	
-	
+		APP.makeAllFunctionsInvisible();
 	
 	}
 	
