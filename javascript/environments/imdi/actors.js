@@ -87,7 +87,6 @@ var actor = (function(){
 		my.active_actor = data.active_actor;
 		
 		my.refreshListDisplay();
-		my.show(my.active_actor);
 	
 	}
 	
