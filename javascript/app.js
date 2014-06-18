@@ -727,11 +727,19 @@ var APP = (function () {
 		
 			var h2 = dom.newElement("h2","","",parent);	
 			
+			if ((settings[s].importance) && (settings[s].importance == "high")){
+				h2.style.color = "red";
+			}
+			
 			if (settings[s].onclick){
 	
 				var a = dom.newElement("a","","",h2,settings[s].title);
 				a.href = "#";
 				a.addEventListener("click", settings[s].onclick);
+				
+				if ((settings[s].importance) && (settings[s].importance == "high")){
+					a.style.color = "red";
+				}
 
 			}
 			
