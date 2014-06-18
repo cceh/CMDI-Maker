@@ -436,7 +436,7 @@ function make_new_session_object(){
 		session: {
 		
 			name: "",
-		
+
 			date: {
 				year: "",
 				month: "",
@@ -450,7 +450,6 @@ function make_new_session_object(){
 		},
 	
 		id: null,
-
 
 		project: {
 		

@@ -361,16 +361,11 @@ var resources = (function(){
 
 	my.createSessionForResource = function(resource_index){
 
-		var session_object = make_new_session_object();
-		session_object.session.name = remove_invalid_chars(RemoveEndingFromFilename(my.available_resources[resource_index][0]));
+		var name = remove_invalid_chars(RemoveEndingFromFilename(my.available_resources[resource_index][0]));
+		var expanded = false; //collapse automatically generated session
 		
-		session_object.expanded = false; //collapse automatically generated session
-
-		var session_id = session.newSession(session_object);
-		
-		session.addResource(session_id, resource_index);
-		
-		alertify.log("A new session has been created.<br>Name: " + session.sessions[session.getSessionIndexFromID(session_id)].name, "", "5000");
+		var resources = [];
+		resources.push(resource_index);
 		
 		//if another file's name of available_resources starts with the same name as this file, add it to the session, too!
 		for (var f2=0; f2<my.available_resources.length; f2++){
@@ -381,12 +376,13 @@ var resources = (function(){
 		
 			if (isSubstringAStartOfAWordInString(RemoveEndingFromFilename(my.available_resources[f2][0]), RemoveEndingFromFilename(my.available_resources[resource_index][0]))) {
 			
-				session.addResource(session_id, f2);
+				resources.push(f2);
 			
 			}
 		
 		}
-
+		
+		session.createNewSessionWithResources(name, expanded, resources);
 
 	}
 

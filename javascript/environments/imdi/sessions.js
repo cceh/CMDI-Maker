@@ -50,40 +50,41 @@ var session = (function () {
 	
 	
 	my.recall = function(data){
-	
-		my.eraseAll();
 		
 		for (var s=0; s<data.length; s++){
 		
-			my.newSession(data[s]);
-		
+			my.sessions.push(data[s]);
+			my.sessions[s].id = my.getNewSessionID();
 		}
 		
-		if (my.sessions.length == 0){
-			my.displayNoSessionText();
-		}
+		my.refreshSessionsDisplay();
 	
 	}
 	
 	
 	my.getSaveData = function(){
 	
+		my.refreshSessionsArray();
+	
+		return my.sessions;
+	
+	}
+	
+	
+	my.refreshSessionsArray = function(){
+	
 		var array = [];
 	
 		for (var s=0; s<my.sessions.length; s++){
 		
-			var session_object = make_new_session_object();
+			var session_object = my.sessions[s];
 			
 			APP.fillObjectWithFormElement(session_object, session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
 			
-			session_object.actors.actors = my.sessions[s].actors.actors;
-			session_object.resources = my.sessions[s].resources;
-			session_object.expanded = my.sessions[s].expanded;
-			
 			array.push(session_object);
 		}
-	
-		return array;
+		
+		my.sessions = array;	
 	
 	}
 	
@@ -157,6 +158,12 @@ var session = (function () {
 					}
 				});
 			}
+		},
+		{
+			label: "Sort by Name",
+			icon: "az.png",
+			id: "session_link_sort_by_name",
+			onclick: function() { session.sortAlphabetically(); }
 		}
 	];
 	
@@ -216,32 +223,91 @@ var session = (function () {
 	}
 
 
-	my.newSession = function(session_object){
+	my.newSession = function(){
 
-		var sessions_view = g(view_id_prefix + my.identity.id);
+		var session_object = make_new_session_object();
+		session_object.id = my.getNewSessionID();
 		
-		//remove no sessions message before drawing new session
-		if (my.sessions.length == 0) {
-			sessions_view.innerHTML = "";
-		};
+		//new sessions are always expanded
+		session_object.expanded = true;
+		
+		//push new session object into sessions array
+		my.sessions.push(session_object);
 
+		my.drawNewSession(session_object);
+		
+		return session_object.id;
+	}
+	
+	
+	my.getNewSessionID = function(){
+	
+		//this is the id, always unique, even if session created after one is deleted
 		var session_id = my.id_counter;
 		
-		if (!session_object){
-			var session_expanded = true;
-			
-			var session_object = make_new_session_object();
+		my.id_counter += 1;
+		
+		return session_id;
+	
+	}
+	
+	
+	my.createNewSessionWithResources = function(name, expanded, resources){
+	
+		var session_object = make_new_session_object();
+		session_object.session.name = name;
+		session_object.expanded = expanded;
+		session_object.id = my.getNewSessionID();
+		my.sessions.push(session_object);
+		
+		my.drawNewSession(session_object);
+		
+		for (var r=0; r<resources.length; r++){
+		
+			my.addResource(session_object.id, resources[r]);
 			
 		}
 		
-		else {
-			var session_expanded = session_object.expanded;
+		alertify.log("A new session has been created.<br>Name: " + name, "", "5000");
+		
+		return session_object.id;
+		
+	}
+	
+	
+	my.refreshSessionsDisplay = function(){
+	
+		var sessions_view = g(view_id_prefix + my.identity.id);
+		
+		sessions_view.innerHTML = "";
+		
+		if (my.sessions.length == 0){
+	
+			my.displayNoSessionText();
+			return;
+	
 		}
-
-		//push new session object into sessions array
-		session_object.id = session_id;
-		session_object.expanded = session_expanded;
-		my.sessions.push(session_object);
+		
+		for (var s=0; s<my.sessions.length; s++){
+		
+			my.drawNewSession(my.sessions[s]);
+		
+		}
+	
+	}
+	
+	
+	my.drawNewSession = function(session_object){
+	
+		var session_id = session_object.id;
+		var session_expanded = session_object.expanded;
+	
+		var sessions_view = g(view_id_prefix + my.identity.id);
+	
+		//remove no sessions message before drawing new session
+		if (g("no_session_text")) {
+			sessions_view.innerHTML = "";
+		};
 		
 		var session_div = dom.newElement('div',session_dom_element_prefix+session_id,'session_div',sessions_view); 
 		//sessions_count is right! but it has to be clear which session in sessions has which session_id
@@ -258,13 +324,13 @@ var session = (function () {
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name == "")){
 		
 			session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
-			my.sessions[my.getSessionIndexFromID(session_id)].name = "";
+			my.sessions[my.getSessionIndexFromID(session_id)].session.name = "";
 			
 		}
 		
 		else {
 			session_label.innerHTML = "<h1 class=\"session_heading\">Session: " + session_object.session.name + "   </h1>";
-			my.sessions[my.getSessionIndexFromID(session_id)].name = session_object.session.name;
+			my.sessions[my.getSessionIndexFromID(session_id)].session.name = session_object.session.name;
 		
 		}
 
@@ -301,7 +367,7 @@ var session = (function () {
 			}
 		}(session_id) );
 		
-
+		
 		if (typeof(session_object.actors.actors) != "undefined"){
 		
 			for (var a=0; a<session_object.actors.actors.length; a++){
@@ -353,10 +419,8 @@ var session = (function () {
 		if (session_expanded == false){
 			my.display(session_id);
 		}
-		
-		my.id_counter+=1;   //this is the id, always unique, even if session created after one is deleted
-		
-		return my.id_counter-1;
+	
+	
 	}
 	
 	
@@ -495,6 +559,19 @@ var session = (function () {
 
 		}
 
+	}
+	
+	
+	my.sortAlphabetically = function(){
+		
+		//Before we sort the sessions, we save the newest user input
+		my.refreshSessionsArray();
+		
+		my.sessions = sortBySubKey(my.sessions,["session","name"]);
+		my.refreshSessionsDisplay();
+		
+		console.log("Sessions sorted by name");
+		
 	}
 
 

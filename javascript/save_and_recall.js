@@ -165,6 +165,8 @@ var save_and_recall = (function(){
 			var environment_object = my.retrieveEnvironmentDataToSave();
 			localStorage.setItem(APP.active_environment.id, JSON.stringify(environment_object));
 		}
+		
+		console.log("Form saved");
 
 	}
 

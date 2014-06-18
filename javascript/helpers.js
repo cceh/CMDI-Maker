@@ -233,14 +233,31 @@ function bytesToSize(bytes, precision){
 }
 
 
+function sortBySubKey(array,keys){
+
+    return array.sort(function(a, b) {
+        var x = a[keys[0]][keys[1]];
+        var y = b[keys[0]][keys[1]];
+
+        if (typeof x == "string"){
+            x = x.toLowerCase(); 
+            y = y.toLowerCase();
+        }
+
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+
+
+}
+
+
 function sortByKey(array, key) {
 
     return array.sort(function(a, b) {
         var x = a[key];
         var y = b[key];
 
-        if (typeof x == "string")
-        {
+        if (typeof x == "string"){
             x = x.toLowerCase(); 
             y = y.toLowerCase();
         }
