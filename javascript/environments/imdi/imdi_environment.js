@@ -34,7 +34,16 @@ var imdi_environment = {
 				"When an age can be calculated, it will appear in the output file.<br>"+
 				"(Age = Session Date - Actor's Birth Date)",
 			type: "radio",
-			options: ["On", "Off"],
+			options: [
+				{
+					title: "On",
+					value: 1,
+				},
+				{
+					title: "Off",
+					value: 0
+				}
+			],
 			default_option: 0,
 			radio_name: "radio_age_calc"
 		},

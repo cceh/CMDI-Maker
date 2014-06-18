@@ -169,6 +169,22 @@ var save_and_recall = (function(){
 		console.log("Form saved");
 
 	}
+	
+	my.saveAllToFile = function(){
+	
+		var CMP_object = {};
+		
+		CMP_object.app = my.retrieveDataToSave();
+		
+		if (APP.active_environment){
+			var environment_object = my.retrieveEnvironmentDataToSave();
+			CMP_object.environments = {};
+			CMP_object.environments[APP.active_environment.id] = environment_object;
+		}
+	
+		APP.save_file(JSON.stringify(CMP_object), "CMDI-Maker-Project.cmp");
+	
+	}
 
 	
 	my.retrieveDataToSave = function(){

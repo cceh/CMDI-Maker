@@ -42,11 +42,106 @@ var APP = (function () {
 	];
 	
 	
+	my.settings = [
+		{
+			title: "Auto Save Interval",
+			radio_name: "radio_auto_save",
+			type: "radio",
+			options: [
+				{
+					title: "Off",
+					value: -1
+				},
+				{
+					title: "Every 30 seconds",
+					value: 30
+				},
+				{
+					title: "Every 60 seconds",
+					value: 60
+				},
+				{
+					title: "Every 5 minutes",
+					value: 300
+				},
+				{
+					title: "Every 10 minutes",
+					value: 600
+				}
+			],
+			default_option: 2
+		},
+		{
+			
+			title: "Global Language of Metadata",
+			type: "select",
+			name: "metadata_language",
+			id: "metadata_language_select"
+		},
+		{
+			title: "CMDI Metadata Creator",
+			description: "The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name.",
+			type: "text",
+			name: "metadata_creator",
+			id: "metadata_creator",
+			value: "CMDI Maker User"
+		},
+		{
+			title: "Save Project",
+			description: "This saves all your data into one file. This file can be imported by CMDI Maker again.",
+			type: "link",
+			onclick: function () { save_and_recall.saveAllToFile(); }
+		},
+		{
+			title: "Load Project",
+			description: "Loads a CMP file with CMDI Maker project data.",
+			type: "file",
+			file_input_id: "project_file_input",
+			file_input_name: "project_file_input",
+			onchange: function () {return;}  //TO DO!!!
+		},
+		{
+			title: "Delete Recall Data",
+			type: "link",
+			description: "CMDI Maker saves the data you input in a browser database. Your data is kept, even when you close the browser window.<br>"+
+				"However, if Auto Save is on, new data will be saved automatically.<br>"+
+				"This function only deletes the data from the active profile!",
+			onclick: function() {save_and_recall.deleteEnvironmentData();}
+		},
+		{
+			title: "Hard Reset",
+			importance: "high",
+			description: "Deletes all data that CMDI Maker has ever stored on your PC.",
+			onclick: function() {    
+
+				alertify.set({ labels: {
+					ok     : "No",
+					cancel : "Yes, delete everything"
+				} });
+
+				alertify.confirm("Really?<br>You want to hard reset CMDI Maker? All your actors and stuff will be deleted!", function (e) {
+
+					if (e) {
+						// user clicked "ok"
+					}
+			
+					else {
+						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+						APP.hard_reset();
+					}
+				});
+
+			}
+		}
+	]
+	
+	
 	my.init = function (){
 	
 		my.checkIfFirstStart();
 		g("version_span").innerHTML = version;
 		my.sayHello();
+		my.initSettings(my.settings, g("core_settings"));
 		my.displayMetadataLanguages();
 		my.addEventListeners(); 
 		
@@ -564,6 +659,10 @@ var APP = (function () {
 	my.save_file = function (text, filename, mime_type){
 
 		var clean_filename = remove_invalid_chars(filename);
+		
+		if (!mime_type){
+			var mime_type = file_download_header;
+		}
 
 		var blob = new Blob([text], {type: mime_type});
 		saveAs(blob, clean_filename);
@@ -606,7 +705,7 @@ var APP = (function () {
 		
 		console.log("Creating environment: " + environment.id);
 	
-		my.createEnvironmentSettings(environment.settings);
+		my.initEnvironmentSettings(environment.settings);
 	
 		my.createWorkflow(environment.workflow);
 		
@@ -615,13 +714,18 @@ var APP = (function () {
 	}
 	
 	
-	my.createEnvironmentSettings = function (settings){
+	my.initEnvironmentSettings = function (settings){
 	
-		var environment_settings = g("environment_settings");
+		my.initSettings(settings, g("environment_settings"));
+	
+	}
+	
+	
+	my.initSettings = function (settings, parent){
 	
 		for (var s=0; s<settings.length; s++){
 		
-			var h2 = dom.newElement("h2","","",environment_settings);	
+			var h2 = dom.newElement("h2","","",parent);	
 			
 			if (settings[s].onclick){
 	
@@ -638,20 +742,21 @@ var APP = (function () {
 			}
 			
 			if (settings[s].description){
-				var description = dom.newElement("p","","",environment_settings,settings[s].description);
+				var description = dom.newElement("p","","",parent,settings[s].description);
 			}
 
 			if (settings[s].type == "radio"){
 			
 				for (var r=0; r<settings[s].options.length; r++){
 				
-					var input = dom.newElement("input","","",environment_settings);
+					var input = dom.newElement("input","","",parent);
 					input.type = "radio";
 					input.name = settings[s].radio_name;
+					input.value = settings[s].options[r].value
 					
-					dom.newElement("span","","",environment_settings,settings[s].options[r]);
+					dom.newElement("span","","",parent,settings[s].options[r].title);
 					
-					dom.newElement("br","","",environment_settings);	
+					dom.newElement("br","","",parent);	
 					
 					if (r == settings[s].default_option) {
 						input.checked = true;
@@ -660,12 +765,34 @@ var APP = (function () {
 			
 			}
 			
+			if (settings[s].type == "select"){
+			
+				var select = dom.newElement("select",settings[s].id,"",parent);
+				select.size = 1;
+				select.name = settings[s].name;
+				
+				dom.newElement("br","","",parent);
+			
+			}
+			
 			if (settings[s].type == "file"){
 		
-				var input = dom.newElement("input",settings[s].file_input_id,"",environment_settings);
+				var input = dom.newElement("input",settings[s].file_input_id,"",parent);
 				input.type = "file";
 				input.name = settings[s].file_input_name;
-				dom.newElement("br","","",environment_settings);
+				dom.newElement("br","","",parent);
+				
+				input.addEventListener('change', settings[s].onchange, false);
+		
+			}
+			
+			if (settings[s].type == "text"){
+		
+				var input = dom.newElement("input",settings[s].id,"",parent);
+				input.type = "text";
+				input.name = settings[s].name;
+				input.value = settings[s].value;				
+				dom.newElement("br","","",parent);
 				
 				input.addEventListener('change', settings[s].onchange, false);
 		
@@ -673,11 +800,11 @@ var APP = (function () {
 			
 			if (settings[s].type == "empty"){
 				
-				var div = dom.newElement("div",settings[s].id,"",environment_settings);
+				var div = dom.newElement("div",settings[s].id,"",parent);
 		
 			}
 			
-			dom.newElement("br","","",environment_settings);
+			dom.newElement("br","","",parent);
 			
 		}
 	
@@ -788,29 +915,7 @@ var APP = (function () {
 		document.getElementsByName("radio_auto_save")[2].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(60);     });	
 		document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
 		document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
-		
-		g('link_delete_recall_data').addEventListener('click', function() {save_and_recall.deleteEnvironmentData();});
-		g('link_hard_reset').addEventListener('click', function() {    
 
-			alertify.set({ labels: {
-				ok     : "No",
-				cancel : "Yes, delete everything"
-			} });
-
-			alertify.confirm("Really?<br>You want to hard reset CMDI Maker? All your actors and stuff will be deleted!", function (e) {
-
-				if (e) {
-					// user clicked "ok"
-				}
-		
-				else {
-					// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-					APP.hard_reset();
-				}
-			});
-
-		});	
-		
 		document.onkeydown = function(event) {
 		
 			if (event.keyCode == 16) {  //if shift is pressed
