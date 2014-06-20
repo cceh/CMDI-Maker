@@ -23,6 +23,7 @@ var path_to_icons = path_to_images + "icons/";
 var file_download_header = "text/xml;charset=utf-8";
 var highlight_color = "skyblue";
 var local_storage_key = "CMDI-Maker";
+var project_file_name = "CMDI-Maker-Project.cmp";
 
 var session_dom_element_prefix = "session_";
 var copy_checkbox_element_prefix = "copy_check_";
@@ -33,9 +34,6 @@ var output_textarea_rows = 40;
 var output_textarea_columns = 130;
 var form_textarea_rows = 18;
 var form_textarea_columns = 5;
-
-var new_page = true;
-var preset_data;
 
 var compatibility_warnings = {
 	general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+

@@ -37,7 +37,7 @@ var save_and_recall = (function(){
 		console.log("APP Recall object: ");
 		console.log(form_object);
 		
-		my.fill_form(form_object);	
+		return form_object;	
 		
 	}
 	
@@ -104,28 +104,6 @@ var save_and_recall = (function(){
 	}
 
 
-	my.fill_form = function(recall_object){
-
-		console.log("Filling the form with recalled data");
-		
-		g("metadata_language_select").selectedIndex = recall_object.settings.metadata_language;
-		g("metadata_creator").value = recall_object.settings.metadata_creator;
-		
-
-		my.set_autosave_interval(recall_object.settings.save_interval_time);
-		
-		if (recall_object.active_environment_id){
-		
-			var environment = APP.getEnvironmentFromID(recall_object.active_environment_id);
-			APP.createEnvironment(environment);
-			my.getRecallDataForEnvironment(environment);
-		
-		}
-		
-		APP.view(recall_object.active_view);
-	}
-	
-	
 	my.deleteAllData = function(){
 	
 		localStorage.clear();
@@ -182,7 +160,7 @@ var save_and_recall = (function(){
 			CMP_object.environments[APP.active_environment.id] = environment_object;
 		}
 	
-		APP.save_file(JSON.stringify(CMP_object), "CMDI-Maker-Project.cmp");
+		APP.save_file(JSON.stringify(CMP_object), project_file_name);
 	
 	}
 
@@ -194,7 +172,8 @@ var save_and_recall = (function(){
 			settings: {
 				metadata_creator: get("metadata_creator"),
 				metadata_language: g("metadata_language_select").selectedIndex,
-				save_interval_time: document.metadata_form.radio_auto_save.value
+				save_interval_time: document.metadata_form.radio_auto_save.value,
+				active_language_id: APP.active_language.id
 			}
 			
 		};

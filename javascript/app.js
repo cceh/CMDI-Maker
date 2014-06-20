@@ -19,10 +19,44 @@ var APP = (function () {
 
 	var my = {};
 	
+	my.environments = [imdi_environment];
+	my.languages = [LP_english, LP_german];
+	
+	my.getLPFromID = function(id){
+	
+		for (var l=0; l<my.languages.length; l++){
+		
+			if (id == my.languages[l].id){
+				return my.languages[l];
+			}
+		
+		}
+		
+		console.log("ERROR: No language object with id " + id + " found!");
+		return undefined;
+	
+	}
+	
+	my.getIndexFromLPID = function(id){
+	
+		for (var l=0; l<my.languages.length; l++){
+		
+			if (id == my.languages[l].id){
+				console.log("returning index " + l + " for id " + id);
+				return l;
+			}
+		
+		}
+		
+		console.log("ERROR: No language object with id " + id + " found!");
+		return undefined;
+	
+	}
+	
 	my.active_view;
 	my.active_environment;
-	
-	my.environments = [imdi_environment];
+	my.active_language;
+
 	
 	my.views = [
 		{
@@ -42,111 +76,145 @@ var APP = (function () {
 	];
 	
 	
-	my.settings = [
-		{
-			title: "Auto Save Interval",
-			radio_name: "radio_auto_save",
-			type: "radio",
-			options: [
-				{
-					title: "Off",
-					value: -1
-				},
-				{
-					title: "Every 30 seconds",
-					value: 30
-				},
-				{
-					title: "Every 60 seconds",
-					value: 60
-				},
-				{
-					title: "Every 5 minutes",
-					value: 300
-				},
-				{
-					title: "Every 10 minutes",
-					value: 600
-				}
-			],
-			default_option: 2
-		},
-		{
-			
-			title: "Global Language of Metadata",
-			type: "select",
-			name: "metadata_language",
-			id: "metadata_language_select"
-		},
-		{
-			title: "CMDI Metadata Creator",
-			description: "The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name.",
-			type: "text",
-			name: "metadata_creator",
-			id: "metadata_creator",
-			value: "CMDI Maker User"
-		},
-		{
-			title: "Save Project",
-			description: "This saves all your data into one file. This file can be imported by CMDI Maker again.",
-			type: "link",
-			onclick: function () { save_and_recall.saveAllToFile(); }
-		},
-		{
-			title: "Load Project",
-			description: "Loads a CMP file with CMDI Maker project data.",
-			type: "file",
-			file_input_id: "project_file_input",
-			file_input_name: "project_file_input",
-			onchange: function () {return;}  //TO DO!!!
-		},
-		{
-			title: "Delete Recall Data",
-			type: "link",
-			description: "CMDI Maker saves the data you input in a browser database. Your data is kept, even when you close the browser window.<br>"+
-				"However, if Auto Save is on, new data will be saved automatically.<br>"+
-				"This function only deletes the data from the active profile!",
-			onclick: function() {save_and_recall.deleteEnvironmentData();}
-		},
-		{
-			title: "Hard Reset",
-			importance: "high",
-			description: "Deletes all data that CMDI Maker has ever stored on your PC.",
-			onclick: function() {    
-
-				alertify.set({ labels: {
-					ok     : "No",
-					cancel : "Yes, delete everything"
-				} });
-
-				alertify.confirm("Really?<br>You want to hard reset CMDI Maker? All your actors and stuff will be deleted!", function (e) {
-
-					if (e) {
-						// user clicked "ok"
-					}
-			
-					else {
-						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-						APP.hard_reset();
-					}
-				});
-
-			}
+	my.l = function(arg1, arg2, arg3){
+		
+		if (arg3){
+			return my.active_language[arg1][arg2][arg3];
 		}
-	]
+		
+		if (arg2){
+			return my.active_language[arg1][arg2];
+		}
+		
+		return my.active_language[arg1];
+	
+	}
+	
+	
+	my.settings = function(){
+	
+		return [
+			{
+				title: my.l("settings","program_language"),
+				type: "select",
+				name: "language_select",
+				id: "language_select"
+			},
+			{
+				title: my.l("settings","auto_save_interval"),
+				radio_name: "radio_auto_save",
+				type: "radio",
+				options: [
+					{
+						title: my.l("settings","off"),
+						value: -1
+					},
+					{
+						title: my.l("settings","every_30_seconds"),
+						value: 30
+					},
+					{
+						title: my.l("settings","every_60_seconds"),
+						value: 60
+					},
+					{
+						title: my.l("settings","every_5_minutes"),
+						value: 300
+					},
+					{
+						title: my.l("settings","every_10_minutes"),
+						value: 600
+					}
+				],
+				default_option: 2
+			},
+			{
+				
+				title: my.l("settings","global_language_of_metadata"),
+				type: "select",
+				name: "metadata_language",
+				id: "metadata_language_select"
+			},
+			{
+				title: my.l("settings","cmdi_metadata_creator"),
+				description: my.l("settings","cmdi_metadata_creator_description"),
+				type: "text",
+				name: "metadata_creator",
+				id: "metadata_creator",
+				value: "CMDI Maker User"
+			},
+			{
+				title: my.l("settings","save_project"),
+				description: my.l("save_project_description"),
+				type: "link",
+				onclick: function () { save_and_recall.saveAllToFile(); }
+			},
+			{
+				title: my.l("settings","load_project"),
+				description: my.l("settings","load_project_description"),
+				type: "file",
+				file_input_id: "project_file_input",
+				file_input_name: "project_file_input",
+				onchange: function () {return;}  //TO DO!!!
+			},
+			{
+				title: my.l("settings","delete_recall_data"),
+				type: "link",
+				description: my.l("settings","delete_recall_data_description"),
+				onclick: function() {save_and_recall.deleteEnvironmentData();}
+			},
+			{
+				title: my.l("settings","hard_reset"),
+				importance: "high",
+				description: my.l("settings","hard_reset_description"),
+				onclick: function() {    
+
+					alertify.set({ labels: {
+						ok     : "No",
+						cancel : "Yes, delete everything"
+					} });
+
+					alertify.confirm(my.l("confirm","hard_reset"), function (e) {
+
+						if (e) {
+							// user clicked "ok"
+						}
+				
+						else {
+							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+							APP.hard_reset();
+						}
+					});
+
+				}
+			}
+		];
+	}
 	
 	
 	my.init = function (){
-	
+		
+		my.active_language = my.languages[0];
+		
+		var recall_object = save_and_recall.getRecallDataForApp();
+		
+		if (recall_object){
+			my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
+		}
+		
 		my.checkIfFirstStart();
 		g("version_span").innerHTML = version;
 		my.sayHello();
-		my.initSettings(my.settings, g("core_settings"));
+		my.initSettings(my.settings(), g("core_settings"));
 		my.displayMetadataLanguages();
-		my.addEventListeners(); 
+		my.displayLanguages();
+		my.addEventListeners();
 		
-		save_and_recall.getRecallDataForApp();
-	}
+		if (recall_object){
+			my.recall(recall_object);
+		}
+		
+	};
 
 	
 	my.makeInput = function (parent, field, element_id_prefix, element_class_prefix, session_object){
@@ -320,14 +388,31 @@ var APP = (function () {
 
 
 	my.displayMetadataLanguages = function (){
+	
+		var select = g("metadata_language_select");
 
 		for (var j=0;j<MetadataLanguageIDs.length;j++){
 
 			NewOption = new Option(MetadataLanguageIDs[j][1], MetadataLanguageIDs[j][0], false, true);
-			g("metadata_language_select").options[g("metadata_language_select").options.length] = NewOption;
+			select.options[select.options.length] = NewOption;
 		}
 	  
-		g("metadata_language_select").selectedIndex = 0;
+		select.selectedIndex = 0;
+
+	}
+	
+	
+	my.displayLanguages = function (){
+		
+		var select = g("language_select");
+	
+		for (var j=0;j<my.languages.length;j++){
+
+			NewOption = new Option(my.languages[j].name, my.languages[j].id, false, true);
+			select.options[select.options.length] = NewOption;
+		}
+	  
+		select.selectedIndex = 0;
 
 	}
 
@@ -350,7 +435,7 @@ var APP = (function () {
 		
 		else {
 		
-			alertify.log("Welcome back!", "", 5000);
+			alertify.log(my.l("welcome_back"), "", 5000);
 		
 		}
 
@@ -365,7 +450,7 @@ var APP = (function () {
 		g("hello").innerHTML = hellos[index][0];
 		
 		g("hello").addEventListener("click", function () {
-			alertify.log("This is " + hellos[index][1] + "!");
+			alertify.log(my.l("this_is","before") + hellos[index][1] + my.l("this_is","after"));
 		});
 
 
@@ -656,6 +741,13 @@ var APP = (function () {
 	}
 	
 	
+	my.save = function(){
+	
+		save_and_recall.save();
+	
+	}
+	
+	
 	my.save_file = function (text, filename, mime_type){
 
 		var clean_filename = remove_invalid_chars(filename);
@@ -923,6 +1015,8 @@ var APP = (function () {
 		document.getElementsByName("radio_auto_save")[2].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(60);     });	
 		document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
 		document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
+		
+		g("language_select").addEventListener("change", function(){APP.changeLanguage(g("language_select").selectedIndex);});
 
 		document.onkeydown = function(event) {
 		
@@ -950,7 +1044,48 @@ var APP = (function () {
 			
 		};
 
+	};
+	
+	
+	my.recall = function(recall_object){
+
+		console.log("Filling the form with recalled data");
+		
+		g("metadata_language_select").selectedIndex = recall_object.settings.metadata_language;
+		g("metadata_creator").value = recall_object.settings.metadata_creator;
+		
+		if (recall_object.settings.active_language_id){
+		
+			var index = APP.getIndexFromLPID(recall_object.settings.active_language_id);
+		
+			APP.active_language = APP.getLPFromID(recall_object.settings.active_language_id);
+			g("language_select").selectedIndex = index;
+			console.log("recall_object.active_language_id = " + recall_object.settings.active_language_id + ", index = " + index);
+			
+		}		
+
+		save_and_recall.set_autosave_interval(recall_object.settings.save_interval_time);
+		
+		if (recall_object.active_environment_id){
+		
+			var environment = APP.getEnvironmentFromID(recall_object.active_environment_id);
+			APP.createEnvironment(environment);
+			save_and_recall.getRecallDataForEnvironment(environment);
+		
+		}
+		
+		APP.view(recall_object.active_view);
 	}
+	
+	
+	my.changeLanguage = function(index){
+		
+		my.active_language = my.languages[index];
+		save_and_recall.save();
+		location.reload();
+	
+	}
+	
 	
 	return my;
 	
