@@ -77,6 +77,8 @@ var APP = (function () {
 	
 	
 	my.l = function(arg1, arg2, arg3){
+	
+		//if there is no word in this language, take the word in the first one
 		
 		if (arg3){
 			return my.active_language[arg1][arg2][arg3];
@@ -205,6 +207,7 @@ var APP = (function () {
 		my.checkIfFirstStart();
 		g("version_span").innerHTML = version;
 		my.sayHello();
+		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.initSettings(my.settings(), g("core_settings"));
 		my.displayMetadataLanguages();
 		my.displayLanguages();
