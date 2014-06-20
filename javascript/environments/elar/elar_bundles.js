@@ -122,7 +122,7 @@ var elar_bundles = (function () {
 			label: "New Session",
 			icon: "plus.png",
 			id: "link_newSession",
-			onclick: function() {session.newSession(); }
+			onclick: function() {my.newSession(); }
 		},
 		{
 			label: "Copy Session 1 metadata to all sessions",
@@ -131,7 +131,7 @@ var elar_bundles = (function () {
 			wrapper_id: "copy_sessions_div",
 			type: "function_wrap",
 			sub_div: "copy_sessions_select",
-			onclick: function() { session.assignSession1Metadata(); },
+			onclick: function() { my.assignSession1Metadata(); },
 			after_that: my.createCopySessionOptions
 		},
 		{
@@ -163,7 +163,7 @@ var elar_bundles = (function () {
 			label: "Sort by Name",
 			icon: "az.png",
 			id: "session_link_sort_by_name",
-			onclick: function() { session.sortAlphabetically(); }
+			onclick: function() { my.sortAlphabetically(); }
 		}
 	];
 	
@@ -196,7 +196,7 @@ var elar_bundles = (function () {
 			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
-				return function(){ session.addResource(num, select.selectedIndex);  };
+				return function(){ my.addResource(num, select.selectedIndex);  };
 			}(my.sessions[s].id) );
 			
 		}

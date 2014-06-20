@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+"use strict";
 
 var APP = (function () {
 
@@ -42,7 +43,6 @@ var APP = (function () {
 		for (var l=0; l<my.languages.length; l++){
 		
 			if (id == my.languages[l].id){
-				console.log("returning index " + l + " for id " + id);
 				return l;
 			}
 		
@@ -81,14 +81,34 @@ var APP = (function () {
 		//if there is no word in this language, take the word in the first one
 		
 		if (arg3){
-			return my.active_language[arg1][arg2][arg3];
+			if (my.active_language[arg1][arg2][arg3]){
+				return my.active_language[arg1][arg2][arg3];
+			}
+			
+			else {
+				return my.languages[0][arg1][arg2][arg3];
+			}
 		}
 		
 		if (arg2){
-			return my.active_language[arg1][arg2];
+			if (my.active_language[arg1][arg2]){
+				return my.active_language[arg1][arg2];
+			}
+			
+			else {
+				return my.languages[0][arg1][arg2];
+			}
 		}
 		
-		return my.active_language[arg1];
+		if (my.active_language[arg1]){
+			return my.active_language[arg1];
+		}
+		
+		else {
+			return my.languages[0][arg1];
+		}
+		
+		return "";
 	
 	}
 	
@@ -100,10 +120,18 @@ var APP = (function () {
 				title: my.l("settings","program_language"),
 				type: "select",
 				name: "language_select",
-				id: "language_select"
+				id: "language_select",
+				onchange: function(){APP.changeLanguage(g("language_select").selectedIndex);}
 			},
 			{
-				title: my.l("settings","auto_save_interval"),
+				title: my.l("settings","profile"),
+				type: "select",
+				name: "profile_select",
+				id: "profile_select",
+				onchange: function(){APP.changeEnvironment(g("profile_select").selectedIndex-1);}
+			},
+			{
+				title: my.l("settings","auto_save"),
 				radio_name: "radio_auto_save",
 				type: "radio",
 				options: [
@@ -211,6 +239,7 @@ var APP = (function () {
 		my.initSettings(my.settings(), g("core_settings"));
 		my.displayMetadataLanguages();
 		my.displayLanguages();
+		my.displayEnvironments();
 		my.addEventListeners();
 		
 		if (recall_object){
@@ -220,183 +249,13 @@ var APP = (function () {
 	};
 
 	
-	my.makeInput = function (parent, field, element_id_prefix, element_class_prefix, session_object){
-
-		switch (field.type){
-			
-			case "text": {
-			
-				var input = dom.makeTextInput(parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name] : ""),
-					field.comment
-				);
-				
-				break;
-			}
-			
-			case "date": {
-			
-				var input = dom.makeDateInput(parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name]["year"] : ""),
-					(session_object && session_object[field.name] ? session_object[field.name]["month"] : ""),				
-					(session_object && session_object[field.name] ? session_object[field.name]["day"] : ""),					
-					field.comment
-				);
-				
-				break;
-			}
-			
-			case "textarea": {
-			
-				var input = dom.makeTextarea(
-					form_textarea_rows,
-					form_textarea_columns,
-					parent,
-					field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name] : ""),
-					field.comment
-				);
-				break;
-			}			
-			
-			case "subarea": {
-			
-				var h3 = document.createElement("h3");
-				h3.innerHTML = field.heading;
-				parent.title = field.comment;
-				parent.appendChild(h3);
-				
-				if (field.fields){
-				
-					element_id_prefix += field.name + "_";
-			
-					for (var f=0; f<field.fields.length; f++){
-					
-						my.makeInput(parent, field.fields[f], element_id_prefix, element_class_prefix, session_object[field.name]);
-				
-					}
-				
-				}
-				
-				break;
-			}
-			
-			case "column": {
-			
-				if (field.name != ""){
-				
-					var td_name = field.name+"_td";
-				
-				}
-				
-				else {
-				
-					var td_name = "td";
-				
-				}
-			
-				var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
-				var h2 = dom.newElement("h2","","",td,field.title);
-				
-				if (field.fields){
-				
-					if (field.name != ""){
-				
-						element_id_prefix += field.name + "_";
-						
-					}
-				
-					for (var f=0; f<field.fields.length; f++){
-					
-						my.makeInput(td, field.fields[f], element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
-				
-					}
-				
-				}
-				
-				break;
-			}
-			
-			case "form": {
-			
-				var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
-				var tr = dom.newElement("tr","","",table);
-				
-				for (var f=0; f<field.fields.length; f++){
-					
-					my.makeInput(tr, field.fields[f], element_id_prefix, element_class_prefix, session_object);
-				
-				}
-				
-				break;
-			}
-			
-			case "special": {
-				APP.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
-				break;
-			
-			}
-			
-			case "select": {
-				var input = dom.makeSelect(
-					parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					field.size,
-					field.vocabulary,
-					(session_object && session_object[field.name] ? session_object[field.name] : ""),
-					field.comment
-				);
-				break;
-			}
-
-			case "open_vocabulary": {
-				var input = dom.openVocabulary(
-					parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					field.size,
-					field.vocabulary,
-					(session_object && session_object[field.name] ? session_object[field.name] : ""),
-					field.comment
-				);
-				break;
-			}
-			
-			case "check": {
-				var input = dom.makeCheckbox(
-					parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name] : false),
-					field.comment
-				);
-				break;
-			}
-			
-		}
-
-		if (field.onkeypress){
-			input.onkeypress = field.onkeypress;
-		}
-
-	}
-
-
 	my.displayMetadataLanguages = function (){
 	
 		var select = g("metadata_language_select");
 
 		for (var j=0;j<MetadataLanguageIDs.length;j++){
 
-			NewOption = new Option(MetadataLanguageIDs[j][1], MetadataLanguageIDs[j][0], false, true);
+			var NewOption = new Option(MetadataLanguageIDs[j][1], MetadataLanguageIDs[j][0], false, true);
 			select.options[select.options.length] = NewOption;
 		}
 	  
@@ -411,7 +270,25 @@ var APP = (function () {
 	
 		for (var j=0;j<my.languages.length;j++){
 
-			NewOption = new Option(my.languages[j].name, my.languages[j].id, false, true);
+			var NewOption = new Option(my.languages[j].name, my.languages[j].id, false, true);
+			select.options[select.options.length] = NewOption;
+		}
+	  
+		select.selectedIndex = 0;
+
+	}
+	
+	
+	my.displayEnvironments = function (){
+		
+		var select = g("profile_select");
+		
+		var NewOption = new Option("", 0, false, true);
+		select.options[select.options.length] = NewOption;
+	
+		for (var j=0;j<my.environments.length;j++){
+
+			NewOption = new Option(my.environments[j].title, my.environments[j].id, false, true);
 			select.options[select.options.length] = NewOption;
 		}
 	  
@@ -804,6 +681,8 @@ var APP = (function () {
 	
 		my.createWorkflow(environment.workflow);
 		
+		/*g("profile_select").selectedIndex = */ //TO DO!!
+		
 		my.view("default");
 	
 	}
@@ -874,6 +753,10 @@ var APP = (function () {
 				select.size = 1;
 				select.name = settings[s].name;
 				
+				if (settings[s].onchange){
+					select.addEventListener("change", settings[s].onchange, false);
+				}
+				
 				dom.newElement("br","","",parent);
 			
 			}
@@ -930,7 +813,6 @@ var APP = (function () {
 			}
 
 			if (module.init){
-				console.log("Initializing " + module.identity.id);
 				module.init();
 			}
 		}
@@ -1019,36 +901,23 @@ var APP = (function () {
 		document.getElementsByName("radio_auto_save")[2].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(60);     });	
 		document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
 		document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
-		
-		g("language_select").addEventListener("change", function(){APP.changeLanguage(g("language_select").selectedIndex);});
-
-		document.onkeydown = function(event) {
-		
-			if (event.keyCode == 16) {  //if shift is pressed
-				if (resources.shift == false){
-					resources.shift = true;
-					console.log("shift on");
-				}
-			}
-			
-			if (event.keyCode == 27)  {   //escape pressed
-			
-				resources.deselectAllFiles();
-			
-			}
-		
-		};
-
-		document.onkeyup = function(event) {
-		
-			if (event.keyCode == 16) {  //if shift is let go
-				resources.shift = false;
-				console.log("shift off");
-			}
-			
-		};
 
 	};
+	
+	
+	my.changeEnvironment = function(index){
+
+		save_and_recall.save();
+		APP.unloadActiveEnvironment();
+		dom.scrollTop();
+		
+		if (index == -1){
+			return;
+		}
+		
+		APP.createEnvironment(APP.environments[index]);
+	
+	}
 	
 	
 	my.recall = function(recall_object){
@@ -1064,7 +933,6 @@ var APP = (function () {
 		
 			APP.active_language = APP.getLPFromID(recall_object.settings.active_language_id);
 			g("language_select").selectedIndex = index;
-			console.log("recall_object.active_language_id = " + recall_object.settings.active_language_id + ", index = " + index);
 			
 		}		
 
@@ -1075,10 +943,28 @@ var APP = (function () {
 			var environment = APP.getEnvironmentFromID(recall_object.active_environment_id);
 			APP.createEnvironment(environment);
 			save_and_recall.getRecallDataForEnvironment(environment);
+			
+			g("profile_select").selectedIndex = APP.getEnvironmentIndexFromID(recall_object.active_environment_id) + 1;
 		
 		}
 		
 		APP.view(recall_object.active_view);
+	}
+	
+	
+	my.getEnvironmentIndexFromID = function(id){
+	
+		for (var e=0; e<my.environments.length; e++){
+		
+			if (my.environments[e].id == id){
+				return e;
+			}
+		
+		}
+	
+		console.log("ERROR: Unknown environment id: " + id);
+		return undefined;
+	
 	}
 	
 	

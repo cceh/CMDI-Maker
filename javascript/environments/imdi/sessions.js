@@ -33,7 +33,7 @@ var session = (function () {
 	
 	my.init = function(){
 	
-		session.displayNoSessionText();
+		my.displayNoSessionText();
 		
 		my.sessions = [];
 		my.id_counter = 0;
@@ -44,7 +44,7 @@ var session = (function () {
 	
 	my.view = function(){
 	
-		g(view_id_prefix + my.identity.id).scrollTop = 0;
+		dom.scrollTop();
 	
 	}
 	
@@ -122,7 +122,7 @@ var session = (function () {
 			label: "New Session",
 			icon: "plus.png",
 			id: "link_newSession",
-			onclick: function() {session.newSession(); }
+			onclick: function() {my.newSession(); }
 		},
 		{
 			label: "Copy Session 1 metadata to all sessions",
@@ -131,7 +131,7 @@ var session = (function () {
 			wrapper_id: "copy_sessions_div",
 			type: "function_wrap",
 			sub_div: "copy_sessions_select",
-			onclick: function() { session.assignSession1Metadata(); },
+			onclick: function() { my.assignSession1Metadata(); },
 			after_that: my.createCopySessionOptions
 		},
 		{
@@ -163,7 +163,7 @@ var session = (function () {
 			label: "Sort by Name",
 			icon: "az.png",
 			id: "session_link_sort_by_name",
-			onclick: function() { session.sortAlphabetically(); }
+			onclick: function() { my.sortAlphabetically(); }
 		}
 	];
 	
@@ -176,7 +176,7 @@ var session = (function () {
 		
 		for (var i=0;i<resources.available_resources.length;i++){ 
 			
-			NewOption = new Option( resources.available_resources[i][0], i, false, true);
+			var NewOption = new Option( resources.available_resources[i][0], i, false, true);
 			select.options[select.options.length] = NewOption;		
 			
 		}
@@ -196,7 +196,7 @@ var session = (function () {
 			g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
-				return function(){ session.addResource(num, select.selectedIndex);  };
+				return function(){ my.addResource(num, select.selectedIndex);  };
 			}(my.sessions[s].id) );
 			
 		}
@@ -477,7 +477,7 @@ var session = (function () {
 		
 			var value = actor.actors[a].name + " (" + actor.actors[a].role + ")";
 			
-			NewOption = new Option( value, a, false, true);
+			var NewOption = new Option( value, a, false, true);
 			select.options[select.options.length] = NewOption;		
 			
 		}
@@ -617,19 +617,19 @@ var session = (function () {
 	
 	my.getIndexFromResourceID = function (resource_id){
 
-		for (var s=0;s<session.sessions.length;s++){
+		for (var s=0;s<my.sessions.length;s++){
 		
-			for (var r=0; r<session.sessions[s].resources.writtenResources.length; r++){
+			for (var r=0; r<my.sessions[s].resources.writtenResources.length; r++){
 		
-				if (session.sessions[s].resources.writtenResources[r].id == resource_id){
+				if (my.sessions[s].resources.writtenResources[r].id == resource_id){
 					return r;
 				}
 			
 			}
 			
-			for (var r=0; r<session.sessions[s].resources.mediaFiles.length; r++){
+			for (var r=0; r<my.sessions[s].resources.mediaFiles.length; r++){
 		
-				if (session.sessions[s].resources.mediaFiles[r].id == resource_id){
+				if (my.sessions[s].resources.mediaFiles[r].id == resource_id){
 					return r;
 				}
 			
@@ -661,7 +661,7 @@ var session = (function () {
 
 		no_sessions_message.innerHTML += "?";
 
-		g("new_session_link").addEventListener('click', function() {session.newSession(); });
+		g("new_session_link").addEventListener('click', function() {my.newSession(); });
 		//we have to use g here instead of no_sessions_link, because letter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
 		
 		sessions_view.scrollTop = 0;
@@ -741,7 +741,7 @@ var session = (function () {
 		img.src = path_to_icons+"reset.png";
 
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ session.removeActor(num, num2);  
+			return function(){ my.removeActor(num, num2);  
 			};
 		}(session_id, actor_id) );
 
@@ -849,7 +849,7 @@ var session = (function () {
 			
 			g(session_dom_element_prefix+session_id+"_session_name").value = name;
 			
-			RefreshSessionNameDisplay(session_id);
+			my.refreshSessionHeading(session_id);
 		
 			alertify.log("Session name has been taken from EAF file name, since session has not been manually named yet.","",8000);
 		
@@ -908,7 +908,7 @@ var session = (function () {
 		var img = dom.newElement("img","delete_resource_" + resource_id +"_icon","delete_resource_icon",div);
 		img.src = path_to_icons+"reset.png";
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ session.removeResource(num, num2);  
+			return function(){ my.removeResource(num, num2);  
 			};
 		}(session_id,resource_id) );
 		

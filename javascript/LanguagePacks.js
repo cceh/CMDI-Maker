@@ -22,7 +22,8 @@ var LP_english = {
 	
 	settings: {
 		settings: "Settings",
-		auto_save_interval: "Auto Save Interval",
+		profile: "Profile",
+		auto_save: "Auto Save",
 		off: "Off",
 		every_30_seconds: "Every 30 seconds",
 		every_60_seconds: "Every 60 seconds",
@@ -67,7 +68,8 @@ var LP_german = {
 	
 	settings: {
 		settings: "Einstellungen",
-		auto_save_interval: "Intervall für die automatische Speicherung",
+		profile: "Profil",
+		auto_save: "Automatische Speicherung",
 		off: "Aus",
 		every_30_seconds: "Alle 30 Sekunden",
 		every_60_seconds: "Alle 60 Sekunden",

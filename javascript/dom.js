@@ -192,7 +192,7 @@ var dom = (function() {
 		
 		for (var o=0; o<options.length; o++){
 		
-			NewOption = new Option(options[o], options[o], false, true);
+			var NewOption = new Option(options[o], options[o], false, true);
 			select.options[select.options.length] = NewOption;
 		}
 		
@@ -369,7 +369,7 @@ var dom = (function() {
 
 		for (var o=0; o<options.length; o++){
 		
-			NewOption = new Option(options[o], options[o], false, true);
+			var NewOption = new Option(options[o], options[o], false, true);
 			select.options[select.options.length] = NewOption;
 		}
 
@@ -605,6 +605,13 @@ var dom = (function() {
 		}
 	
 		APP.makeAllFunctionsInvisible();
+	
+	}
+	
+	
+	my.scrollTop = function(){
+	
+		g("content_wrapper").scrollTop = 0;
 	
 	}
 	

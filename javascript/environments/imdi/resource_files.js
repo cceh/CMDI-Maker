@@ -40,7 +40,7 @@ var resources = (function(){
 	
 	my.view = function(){
 	
-		g('VIEW_resources').scrollTop = 0;
+		dom.scrollTop();
 	
 	}
 	
@@ -119,15 +119,40 @@ var resources = (function(){
 		var file_list_div = dom.newElement("div","file_list_div","",view);
 		var list = dom.newElement("div","list","",file_list_div);
 		
-		
 		// Setup the drag and drop listeners
 		var dropZone = g('drop_zone');
-		dropZone.addEventListener('dragover', resources.handleDragOver, false);
-		dropZone.addEventListener('drop', resources.handleFileDrop, false);
+		dropZone.addEventListener('dragover', my.handleDragOver, false);
+		dropZone.addEventListener('drop', my.handleFileDrop, false);
 	  
-		g('files_input').addEventListener('change', resources.handleFileInputChange, false);
+		g('files_input').addEventListener('change', my.handleFileInputChange, false);
 		
 		my.refreshFileListDisplay(true);
+		
+		document.onkeydown = function(event) {
+		
+			if (event.keyCode == 16) {  //if shift is pressed
+				if (my.shift == false){
+					my.shift = true;
+					console.log("shift on");
+				}
+			}
+			
+			if (event.keyCode == 27)  {   //escape pressed
+			
+				my.deselectAllFiles();
+			
+			}
+		
+		};
+		
+		document.onkeyup = function(event) {
+		
+			if (event.keyCode == 16) {  //if shift is let go
+				my.shift = false;
+				console.log("shift off");
+			}
+			
+		};
 		
 	}
 
