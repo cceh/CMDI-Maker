@@ -896,12 +896,17 @@ var APP = (function () {
 		
 		document.getElementsByName("radio_auto_save").selectedIndex = 3;
 		
-		document.getElementsByName("radio_auto_save")[0].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(-1);     });
-		document.getElementsByName("radio_auto_save")[1].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(30);     });
-		document.getElementsByName("radio_auto_save")[2].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(60);     });	
-		document.getElementsByName("radio_auto_save")[3].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(300);     });
-		document.getElementsByName("radio_auto_save")[4].addEventListener( "click", function() {    save_and_recall.set_autosave_interval(600);     });	
-
+		for (var r=0; r<document.getElementsByName("radio_auto_save").length; r++){
+		
+			var radio = document.getElementsByName("radio_auto_save")[r];
+		
+			radio.addEventListener( "click", function(num) {
+				return function(){
+					save_and_recall.set_autosave_interval(num);
+				}
+			}(radio.value));
+		}
+		
 	};
 	
 	
