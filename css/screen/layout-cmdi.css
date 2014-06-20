@@ -365,14 +365,14 @@ margin-right: 10px;
 
 }
 
-#VIEW_corpus h1, #lang_search_div h1{
+#VIEW_corpus h1, #lang_search_div h1, #VIEW_elar_project h1{
 
 margin: 0px;
 padding: 5px;
 
 }
 
-#VIEW_corpus p, #lang_search_div p{
+#VIEW_corpus p, #lang_search_div p, #VIEW_elar_project p{
 
 padding-left: 10px;
 

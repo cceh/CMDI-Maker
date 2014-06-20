@@ -19,7 +19,7 @@ var APP = (function () {
 
 	var my = {};
 	
-	my.environments = [imdi_environment];
+	my.environments = [imdi_environment, elar_environment];
 	my.languages = [LP_english, LP_german];
 	
 	my.getLPFromID = function(id){
@@ -930,6 +930,7 @@ var APP = (function () {
 			}
 
 			if (module.init){
+				console.log("Initializing " + module.identity.id);
 				module.init();
 			}
 		}
