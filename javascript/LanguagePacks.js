@@ -52,6 +52,11 @@ var LP_english = {
 	},
 	
 	welcome_back: "Welcome back!",
+	greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
+	"When you load this page, you can pick up where you left off.",
+	lets_go: "Let's go!",
+	is_supported_by: "CMDI Maker is supported by",
+	need_help: "Need help?",
 	
 	this_is: {
 		before: "This is ",
@@ -98,6 +103,11 @@ var LP_german = {
 	},
 	
 	welcome_back: "Willkommen zurück!",
+	greeting_text: "Willkommen!<br>Dies ist eine Offline-Webanwendung. Du kannst sie fortan auch ohne Internetverbindung nutzen.<br>"+
+	"Wenn Du diese Seite lädst, kannst du genau dort weitermachen, wo du aufgehört hast.",
+	lets_go: "Los geht's!",
+	is_supported_by: "CMDI Maker wird unterstützt von",
+	need_help: "Brauchst Du Hilfe?",
 	
 	this_is: {
 		before: "Das ist ",

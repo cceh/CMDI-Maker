@@ -333,7 +333,10 @@ var APP = (function () {
 			alertify.log(my.l("this_is","before") + hellos[index][1] + my.l("this_is","after"));
 		});
 
-
+		g("greeting_text").innerHTML = my.l("greeting_text");
+		g("link_lets_go").innerHTML = my.l("lets_go");
+		g("supported_by_label").innerHTML = my.l("is_supported_by");
+		g("need_help_label").innerHTML = my.l("need_help");
 	}
 	
 	
