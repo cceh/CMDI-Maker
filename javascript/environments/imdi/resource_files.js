@@ -45,6 +45,69 @@ var resources = (function(){
 	}
 	
 	
+	my.compatibility_warnings = {
+	
+		general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
+		' This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.</div></div>',
+		
+		invalid_media_file: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
+		' This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).</div></div>',
+		
+		invalid_written_resource: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
+		' This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.</div></div>'
+	
+	};
+	
+	
+	my.file_types = {
+
+		valid_lamus_written_resource_file_types: [
+			["eaf","text/x-eaf+xml","Annotation"],
+			["mdf","Unknown","Unspecified"],
+			["pdf","application/pdf","Primary Text"],
+			["xml","text/xml","Annotation"],
+			["txt","text/plain","Unspecified"],
+			["htm","text/html","Unspecified"],
+			["html","text/html","Unspecified"]
+		],
+
+		valid_lamus_media_file_types: [
+			["wav","audio/x-wav","audio"],
+			["mpg","video/mpeg","video"],
+			["mpeg","video/mpeg","video"],
+			["mp4","video/mp4","video"],
+			["aif","audio/x-aiff","audio"],
+			["aiff","audio/x-aiff","audio"],
+			["jpg","image/jpeg","image"],
+			["jpeg","image/jpeg","image"],
+			["png","image/png","image"],
+			["tif","image/tiff","image"],
+			["tiff","image/tiff","image"],
+			["smil","application/smil+xml","video"]
+		],
+
+		invalid_lamus_written_resource_file_types: [
+			["docx","application/vnd.openxmlformats-officedocument.wordprocessingml.document","Unspecified"],
+			["doc","application/msword","Unspecified"],
+			["odf","application/vnd.oasis.opendocument.formula","Unspecified"],
+			["odt","application/vnd.oasis.opendocument.text","Unspecified"],
+			["xls","application/vnd.ms-excel","Unspecified"],
+			["xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","Unspecified"],
+			["ppt","application/vnd.ms-powerpoint","Unspecified"],
+			["pptx","application/vnd.openxmlformats-officedocument.presentationml.presentation","Unspecified"]
+		],
+
+		invalid_lamus_media_file_types: [
+			["mkv","Unknown","video"],
+			["mov","video/quicktime","video"],
+			["mp3","Unknown","audio"],
+			["avi","video/x-msvideo","video"],
+			["au","audio/basic","audio"]
+		]
+
+	};
+	
+	
 	my.recall = function(data){
 	
 		my.available_resources = data;
@@ -162,26 +225,26 @@ var resources = (function(){
 
 		var file_type = GetFileTypeFromFilename(filename);
 		
-		for (var j=0;j<file_types.valid_lamus_media_file_types.length; j++){
-			if (file_type == file_types.valid_lamus_media_file_types[j][0]) {
+		for (var j=0;j<my.file_types.valid_lamus_media_file_types.length; j++){
+			if (file_type == my.file_types.valid_lamus_media_file_types[j][0]) {
 				return 0;
 			}
 		}
 		
-		for (var j=0;j<file_types.valid_lamus_written_resource_file_types.length; j++){
-			if (file_type == file_types.valid_lamus_written_resource_file_types[j][0]){
+		for (var j=0;j<my.file_types.valid_lamus_written_resource_file_types.length; j++){
+			if (file_type == my.file_types.valid_lamus_written_resource_file_types[j][0]){
 				return 1;
 			}
 		}
 
-		for (var j=0;j<file_types.invalid_lamus_media_file_types.length; j++){
-			if (file_type == file_types.invalid_lamus_media_file_types[j][0]){
+		for (var j=0;j<my.file_types.invalid_lamus_media_file_types.length; j++){
+			if (file_type == my.file_types.invalid_lamus_media_file_types[j][0]){
 				return 2;
 			}
 		}	
 
-		for (var j=0;j<file_types.invalid_lamus_written_resource_file_types.length; j++){
-			if (file_type == file_types.invalid_lamus_written_resource_file_types[j][0]){
+		for (var j=0;j<my.file_types.invalid_lamus_written_resource_file_types.length; j++){
+			if (file_type == my.file_types.invalid_lamus_written_resource_file_types[j][0]){
 				return 3;
 			}
 		}		
@@ -217,19 +280,19 @@ var resources = (function(){
 				}
 			
 				case 2: {
-					var compatibility_warning = compatibility_warnings.invalid_media_file;
+					var compatibility_warning = my.compatibility_warnings.invalid_media_file;
 					var file_entry_class = "media_file_entry";
 					break;
 				}
 				
 				case 3: {
-					var compatibility_warning = compatibility_warnings.invalid_written_resource;
+					var compatibility_warning = my.compatibility_warnings.invalid_written_resource;
 					var file_entry_class = "written_resource_file_entry";
 					break;
 				}
 				
 				default: {
-					var compatibility_warning = compatibility_warnings.general;
+					var compatibility_warning = my.compatibility_warnings.general;
 					var file_entry_class = "invalid_file_entry";
 					break;
 				}

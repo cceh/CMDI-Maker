@@ -408,7 +408,7 @@ var APP = (function () {
 	
 	my.saveAllOutputFiles = function(){
 	
-		var textareas = document.getElementsByClassName("xml_textarea");
+		var textareas = document.getElementsByClassName(xml_textarea_class_name);
 		
 		for (var t=0; t<textareas.length; t++){
 		

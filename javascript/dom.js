@@ -621,11 +621,11 @@ var dom = (function() {
 		var div = my.newElement("div", "", "output_div", parent);
 		
 		var img = my.newElement("img","","download_icon",div);
-		img.src = path_to_images + "icons/save.png";
+		img.src = path_to_icons + "save.png";
 		
 		var h1 = my.newElement("h1", "", "", div, title);
 		
-		var textarea = my.newElement("textarea", textarea_id, "xml_textarea", div, value);
+		var textarea = my.newElement("textarea", textarea_id, xml_textarea_class_name, div, value);
 		textarea.cols = output_textarea_columns;
 		textarea.rows = output_textarea_rows;
 		textarea.filename = filename;
