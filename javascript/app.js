@@ -228,7 +228,7 @@ var APP = (function () {
 		
 		var recall_object = save_and_recall.getRecallDataForApp();
 		
-		if (recall_object){
+		if (recall_object && recall_object.settings.active_language_id){
 			my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
 		}
 		
@@ -916,7 +916,11 @@ var APP = (function () {
 	my.changeEnvironment = function(index){
 
 		save_and_recall.save();
-		APP.unloadActiveEnvironment();
+		
+		if (typeof APP.active_environment != "undefined"){
+			APP.unloadActiveEnvironment();
+		}
+		
 		dom.scrollTop();
 		
 		if (index == -1){
