@@ -406,6 +406,19 @@ var APP = (function () {
 	}
 	
 	
+	my.saveAllOutputFiles = function(){
+	
+		var textareas = document.getElementsByClassName("xml_textarea");
+		
+		for (var t=0; t<textareas.length; t++){
+		
+			APP.save_file(textareas[t].value, textareas[t].filename);
+			
+		}
+	
+	}
+	
+	
 	my.init_functions = function(functions){
 	
 		var functions_div = g("functions");

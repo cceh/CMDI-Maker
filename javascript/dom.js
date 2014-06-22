@@ -616,19 +616,23 @@ var dom = (function() {
 	}
 	
 
-	my.createXMLOutputDIV = function (parent, title, textarea_id, value, on_download){
+	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename){
 
 		var div = my.newElement("div", "", "output_div", parent);
 		
 		var img = my.newElement("img","","download_icon",div);
 		img.src = path_to_images + "icons/save.png";
-		img.addEventListener("click", on_download);
 		
 		var h1 = my.newElement("h1", "", "", div, title);
 		
 		var textarea = my.newElement("textarea", textarea_id, "xml_textarea", div, value);
 		textarea.cols = output_textarea_columns;
 		textarea.rows = output_textarea_rows;
+		textarea.filename = filename;
+		
+		img.addEventListener("click", function(){
+			APP.save_file(textarea.value, filename, file_download_header);
+		});
 
 	}
 	
