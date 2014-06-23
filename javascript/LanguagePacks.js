@@ -45,6 +45,12 @@ var LP_english = {
 		program_language: "Program Language"
 	},
 	
+	save_and_recall: {
+		active_profile_data_deleted: "Recall data for active profile deleted",
+		no_data_found: "No data for active profile found",
+		form_saved: "Form saved"
+	},
+	
 	confirm: {
 		no: "No",
 		yes_delete_everything: "Yes, delete everything",
@@ -57,6 +63,7 @@ var LP_english = {
 	lets_go: "Let's go!",
 	is_supported_by: "CMDI Maker is supported by",
 	need_help: "Need help?",
+	help_pages_description: "On the help pages you will find video tutorials in several languages, a mailing list, go-to persons and much more!",
 	
 	this_is: {
 		before: "This is ",
@@ -96,6 +103,12 @@ var LP_german = {
 		program_language: "Anzeigesprache"
 	},
 	
+	save_and_recall: {
+		active_profile_data_deleted: "Daten des aktiven Profils gelöscht",
+		no_data_found: "Keine Daten für das aktive Profil gefunden!",
+		form_saved: "Eingaben gespeichert"
+	},
+	
 	confirm: {
 		no: "Nein",
 		yes_delete_everything: "Ja, alles löschen",
@@ -108,6 +121,7 @@ var LP_german = {
 	lets_go: "Los geht's!",
 	is_supported_by: "CMDI Maker wird unterstützt von",
 	need_help: "Brauchst Du Hilfe?",
+	help_pages_description: "Auf den Hilfe-Seiten findest Du Video-Tutorials in verschiedenen Sprachen, eine Mailing-Liste, Ansprechpartner und vieles mehr!",
 	
 	this_is: {
 		before: "Das ist ",

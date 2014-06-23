@@ -120,18 +120,18 @@ var save_and_recall = (function(){
 		}
 		
 		catch (e){
-			alertify.log("No data for active profile found","",5000);
+			alertify.log(APP.l("save_and_recall","no_data_found"),"",5000);
 			return;
 		}
 		
-		alertify.log("Recall data for active profile deleted","",5000);
+		alertify.log(APP.l("save_and_recall","active_profile_data_deleted"),"",5000);
 
 	}
 	
 	
 	my.userSave = function(){
 		my.save();
-		alertify.log("Form saved","",5000);
+		alertify.log(APP.l("save_and_recall","form_saved"),"",5000);
 	}
 
 	

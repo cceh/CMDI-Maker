@@ -337,6 +337,7 @@ var APP = (function () {
 		g("link_lets_go").innerHTML = my.l("lets_go");
 		g("supported_by_label").innerHTML = my.l("is_supported_by");
 		g("need_help_label").innerHTML = my.l("need_help");
+		g("help_pages_description").innerHTML = my.l("help_pages_description");
 	}
 	
 	
