@@ -69,17 +69,17 @@ var imdi_environment = {
 	],
 	recall: function (settings){
 	
-		dom.setRadioIndex(document.metadata_form.output_format, settings.output_format);
+		dom.setRadioIndex(document.getElementsByName("output_format"), settings.output_format);
 		
 		if (settings.calc_actors_age == true){
 		
-			document.metadata_form.radio_age_calc[0].checked = true;
+			document.getElementsByName("radio_age_calc")[0].checked = true;
 		
 		}
 		
 		else {
 		
-			document.metadata_form.radio_age_calc[1].checked = true;	
+			document.getElementsByName("radio_age_calc")[1].checked = true;	
 		
 		}
 	
@@ -88,7 +88,7 @@ var imdi_environment = {
 	
 		var object = {};
 
-		object.output_format = dom.getSelectedRadioIndex(document.metadata_form.output_format);
+		object.output_format = dom.getValueOfRadios("output_format");
 		object.calc_actors_age = (document.getElementsByName("radio_age_calc")[0].checked ? true : false);
 	
 		return object;

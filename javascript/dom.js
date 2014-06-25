@@ -36,6 +36,13 @@ var dom = (function() {
 
 	}
 
+	my.getValueOfRadios = function (radios_name){
+		
+		var radios = document.getElementsByName(radios_name);
+		var index = my.getSelectedRadioIndex(radios);
+		return radios[index].value;
+
+	}
 
 	my.setRadioIndex = function (radios, index){
 
@@ -549,6 +556,45 @@ var dom = (function() {
 	}
 	
 	
+	my.makeAllFunctionsInvisible = function(){
+	
+		//make all functions invisible
+		var functions = g("functions").children;
+		for (var f=0; f<functions.length; f++){
+			functions[f].style.display = "none";
+		}		
+	
+	}
+	
+	
+	my.showFunctionsForView = function (module){
+
+		my.makeAllFunctionsInvisible();
+		
+		//If this view is not from a module, it wont have functions
+		if (!module){
+			return;
+		}
+
+		//if this module has functions, make them visible
+		if (module.functions){
+			//make functions visible
+			for (var f=0; f < module.functions.length; f++){
+				var func = module.functions[f];
+			
+				if (func.type == "function_wrap"){
+					g(module.functions[f].wrapper_id).style.display = "inline";
+				}
+				
+				else {
+					g(module.functions[f].id).style.display = "inline";
+				}
+			}	
+		}
+
+	}
+	
+	
 	my.closeSelectFrame = function(){
 		
 		if (g("SF")){	
@@ -559,7 +605,7 @@ var dom = (function() {
 			my.remove("SF");
 
 			var module = APP.getModuleOfViewID(view.id);
-			APP.showFunctionsForView(module);
+			my.showFunctionsForView(module);
 			
 		}
 	
@@ -604,7 +650,7 @@ var dom = (function() {
 			}(options[j]) );
 		}
 	
-		APP.makeAllFunctionsInvisible();
+		my.makeAllFunctionsInvisible();
 	
 	}
 	

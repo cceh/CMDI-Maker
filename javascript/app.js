@@ -121,14 +121,14 @@ var APP = (function () {
 				type: "select",
 				name: "language_select",
 				id: "language_select",
-				onchange: function(){APP.changeLanguage(g("language_select").selectedIndex);}
+				onchange: function(){my.changeLanguage(g("language_select").selectedIndex);}
 			},
 			{
 				title: my.l("settings","profile"),
 				type: "select",
 				name: "profile_select",
 				id: "profile_select",
-				onchange: function(){APP.changeEnvironment(g("profile_select").selectedIndex-1);}
+				onchange: function(){my.changeEnvironment(g("profile_select").selectedIndex-1);}
 			},
 			{
 				title: my.l("settings","auto_save"),
@@ -212,7 +212,7 @@ var APP = (function () {
 				
 						else {
 							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-							APP.hard_reset();
+							my.hard_reset();
 						}
 					});
 
@@ -344,7 +344,6 @@ var APP = (function () {
 	my.hard_reset = function(){
 
 		save_and_recall.deleteAllData();
-		localStorage.removeItem("first_start");
 		location.reload();
 
 	}
@@ -413,7 +412,7 @@ var APP = (function () {
 		
 		for (var t=0; t<textareas.length; t++){
 		
-			APP.save_file(textareas[t].value, textareas[t].filename);
+			my.save_file(textareas[t].value, textareas[t].filename);
 			
 		}
 	
@@ -487,7 +486,7 @@ var APP = (function () {
 	
 	my.reset_form = function (){
 		
-		APP.active_environment.reset();
+		my.active_environment.reset();
 
 	}
 	
@@ -555,8 +554,7 @@ var APP = (function () {
 		
 		g("module_icons").style.display = "block";
 		
-		my.showFunctionsForView(module);
-
+		dom.showFunctionsForView(module);
 		
 		//make the selected view visible
 		g(id).style.display = "block";
@@ -594,45 +592,6 @@ var APP = (function () {
 		else {
 			id = id.substr(view_id_prefix.length);
 			g(viewlink_id_prefix+id).style.backgroundColor = highlight_color;
-		}
-
-	}
-	
-	
-	my.makeAllFunctionsInvisible = function(){
-	
-		//make all functions invisible
-		var functions = g("functions").children;
-		for (var f=0; f<functions.length; f++){
-			functions[f].style.display = "none";
-		}		
-	
-	}
-	
-	
-	my.showFunctionsForView = function (module){
-
-		my.makeAllFunctionsInvisible();
-		
-		//If this view is not from a module, it wont have functions
-		if (!module){
-			return;
-		}
-
-		//if this module has functions, make them visible
-		if (module.functions){
-			//make functions visible
-			for (var f=0; f < module.functions.length; f++){
-				var func = module.functions[f];
-			
-				if (func.type == "function_wrap"){
-					g(module.functions[f].wrapper_id).style.display = "inline";
-				}
-				
-				else {
-					g(module.functions[f].id).style.display = "inline";
-				}
-			}	
 		}
 
 	}
@@ -862,7 +821,7 @@ var APP = (function () {
 			
 			icon.addEventListener('click', function(num) {
 				return function(){
-					APP.view(num);
+					my.view(num);
 				}
 			}(workflow[w]));
 		}
@@ -872,10 +831,10 @@ var APP = (function () {
 	
 	my.getEnvironmentFromID = function(id){
 	
-		for (var e=0; e<APP.environments.length; e++){
+		for (var e=0; e<my.environments.length; e++){
 			
-			if (APP.environments[e].id == id){
-				return APP.environments[e];
+			if (my.environments[e].id == id){
+				return my.environments[e];
 			}
 			
 		}
@@ -890,13 +849,13 @@ var APP = (function () {
 		g('link_lets_go').addEventListener('click', function() {
 			if (typeof my.active_environment != "undefined"){
 		
-				APP.view(corpus);
+				my.view(corpus);
 			}
 
 			else {
 			
 				my.createEnvironment(imdi_environment);
-				APP.view(corpus);
+				my.view(corpus);
 			}
 			
 		});
@@ -904,7 +863,7 @@ var APP = (function () {
 		for (var v=0; v<my.views.length; v++){
 			g(viewlink_id_prefix + my.views[v].id).addEventListener('click', function(num) {
 				return function(){
-					APP.view(view_id_prefix + num);
+					my.view(view_id_prefix + num);
 				}
 			}(my.views[v].id));
 		}
@@ -931,8 +890,8 @@ var APP = (function () {
 
 		save_and_recall.save();
 		
-		if (typeof APP.active_environment != "undefined"){
-			APP.unloadActiveEnvironment();
+		if (typeof my.active_environment != "undefined"){
+			my.unloadActiveEnvironment();
 		}
 		
 		dom.scrollTop();
@@ -941,7 +900,7 @@ var APP = (function () {
 			return;
 		}
 		
-		APP.createEnvironment(APP.environments[index]);
+		my.createEnvironment(my.environments[index]);
 	
 	}
 	
@@ -955,9 +914,9 @@ var APP = (function () {
 		
 		if (recall_object.settings.active_language_id){
 		
-			var index = APP.getIndexFromLPID(recall_object.settings.active_language_id);
+			var index = my.getIndexFromLPID(recall_object.settings.active_language_id);
 		
-			APP.active_language = APP.getLPFromID(recall_object.settings.active_language_id);
+			my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
 			g("language_select").selectedIndex = index;
 			
 		}		
@@ -966,15 +925,15 @@ var APP = (function () {
 		
 		if (recall_object.active_environment_id){
 		
-			var environment = APP.getEnvironmentFromID(recall_object.active_environment_id);
-			APP.createEnvironment(environment);
+			var environment = my.getEnvironmentFromID(recall_object.active_environment_id);
+			my.createEnvironment(environment);
 			save_and_recall.getRecallDataForEnvironment(environment);
 			
-			g("profile_select").selectedIndex = APP.getEnvironmentIndexFromID(recall_object.active_environment_id) + 1;
+			g("profile_select").selectedIndex = my.getEnvironmentIndexFromID(recall_object.active_environment_id) + 1;
 		
 		}
 		
-		APP.view(recall_object.active_view);
+		my.view(recall_object.active_view);
 	}
 	
 	

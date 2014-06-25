@@ -32,24 +32,15 @@ var corpus = (function(){
 		icon: "box.png"
 	};
 	
-	//Auto Save my.corpus (not yet implemented!)
-	my.save = my.corpus;
-	
 	my.init = function(){
 		
-		var corpus_form = dom.newElement("div","corpus_form","",g(view_id_prefix + my.identity.id),
-
-			'<h1>Corpus</h1>'+
-			'<p><span title="A short archivable name of your corpus">Name</span><br>'+
-			'<input title="A short archivable name of your corpus" type="text" name="corpus_name" id="corpus_name" value=""><br> '+
-	
-			'<span title="The complete and extensive title of your corpus">Title</span><br>'+
-			'<input title="The complete and extensive title of your corpus" type="text" name="corpus_title" id="corpus_title" value=""><br> '+
-
-			'Description<br>'+
-			'<textarea name="corpus_description" id="corpus_description" cols="19" rows="5"></textarea>'+
-			'</p>'
-		);
+		var corpus_form = dom.newElement("div","corpus_form","",g(view_id_prefix + my.identity.id));
+		dom.newElement("h1","","",corpus_form,"Corpus");
+		var p = dom.newElement("p","","",corpus_form);
+		
+		dom.makeTextInput(p,"Name","corpus_name","corpus_name","","A short archivable name of your corpus");
+		dom.makeTextInput(p,"Title","corpus_title","corpus_title","","The complete and extensive title of your corpus");
+		dom.makeTextarea(form_textarea_rows,form_textarea_columns,p,"Description","corpus_description","corpus_description","","","");
 		
 		g("corpus_name").onkeypress = function(e) {
 			var chr = String.fromCharCode(e.which);

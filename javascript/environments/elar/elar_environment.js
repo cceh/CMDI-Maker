@@ -18,8 +18,8 @@ limitations under the License.
 var elar_environment = {
 	name: "elar",
 	id: "elar",
-	title: "SOAS",
-	workflow: [elar_project, elar_resources, elar_persons, elar_bundles, elar_output],
+	title: "ELAR",
+	workflow: [],
 	settings: [
 		{
 			
@@ -64,17 +64,7 @@ var elar_environment = {
 	],
 	recall: function (settings){
 		
-		if (settings.calc_actors_age == true){
-		
-			document.metadata_form.radio_age_calc[0].checked = true;
-		
-		}
-		
-		else {
-		
-			document.metadata_form.radio_age_calc[1].checked = true;	
-		
-		}
+		return;
 	
 	},
 	getSaveData: function(){

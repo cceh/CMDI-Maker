@@ -64,6 +64,7 @@ var output = (function (){
 			var input = dom.newElement("input","output_format_radio_"+f, "", parent);
 			input.type = "radio";
 			input.name = "output_format";
+			input.value = f;
 			
 			dom.newElement("span", "","",parent, " " + formats[f].title);
 			
@@ -79,6 +80,13 @@ var output = (function (){
 	
 	
 	my.view = function(){
+	
+		//if there is nothing to be done, return
+		if ((get("corpus_name") == "") && (session.sessions.length == 0)){
+			alertify.alert("You must create some sessions first!");
+			APP.view(session);
+			return;
+		}
 		
 		//corpus must have a proper name or no name at all
 		if ((corpus.isCorpusProperlyNamed() || get("corpus_name") == "") && (session.areAllSessionsProperlyNamed())){
@@ -142,12 +150,12 @@ var output = (function (){
 		xml_window.innerHTML = "";
 		
 		//get index of selected output format
-		var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
+		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		
 		// initiate object for imdi_structure class
 		xml_strings = new my.formats[output_format_index].generator_object();
 		var output_format = my.formats[output_format_index].output_name;
-		var output_format_index = dom.getSelectedRadioIndex(document.metadata_form.output_format);
+		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		var file_ending = my.formats[output_format_index].file_ending;
 		
 		//if corpus is to be created

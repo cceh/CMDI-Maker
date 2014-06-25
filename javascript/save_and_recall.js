@@ -64,8 +64,13 @@ var save_and_recall = (function(){
 	
 
 	my.set_autosave_interval = function(time){
-
-		window.clearInterval(my.interval);
+	
+		window.clearInterval(my.interval);	
+		
+		if (!time){
+			console.log("ERROR: set_autosave_interval called without time parameter!");
+			return;
+		}
 		
 		if (time == -1){
 
@@ -174,7 +179,7 @@ var save_and_recall = (function(){
 			settings: {
 				metadata_creator: get("metadata_creator"),
 				metadata_language: g("metadata_language_select").selectedIndex,
-				save_interval_time: document.metadata_form.radio_auto_save.value,
+				save_interval_time: dom.getValueOfRadios("radio_auto_save"),
 				active_language_id: APP.active_language.id
 			}
 			

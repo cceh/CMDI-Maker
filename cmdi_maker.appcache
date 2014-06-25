@@ -55,16 +55,7 @@ img/logos/LOGO_CLASS.png
 img/logos/LOGO_HRELP.png
 img/logos/LOGO_Uni_Koeln.png
 img/logos/LOGO_SOAS.png
-javascript/environments/elar/elar_persons.js
-javascript/environments/elar/elar_person_languages.js
-javascript/environments/elar/cmdi_generator.js
-javascript/environments/elar/elar_content_languages.js
-javascript/environments/elar/elar_project.js
 javascript/environments/elar/elar_environment.js
-javascript/environments/elar/elar_forms.js
-javascript/environments/elar/elar_output.js
-javascript/environments/elar/resources.js
-javascript/environments/elar/elar_bundles.js
 javascript/environments/imdi/actors.js
 javascript/environments/imdi/actor_languages.js
 javascript/environments/imdi/cmdi_generator.js
