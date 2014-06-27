@@ -85,6 +85,10 @@ imdi_environment.workflow[4] = (function (){
 	
 		//if there is nothing to be done, return
 		if ((get("corpus_name") == "") && (session.sessions.length == 0)){
+		
+			alertify.set({ labels: {
+				ok     : "OK"
+			} });
 			alertify.alert("You must create some sessions first!");
 			APP.view(session);
 			return;

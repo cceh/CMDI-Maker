@@ -523,7 +523,7 @@ var APP = (function () {
 		}
 		
 		else { //if argument is a module
-			
+
 			var module = module_or_id;
 			var id = view_id_prefix + module.identity.id;
 		
@@ -884,6 +884,9 @@ var APP = (function () {
 			}
 			
 			else {
+				alertify.set({ labels: {
+					ok     : my.l("ok")
+				} });
 				alertify.alert(my.l("error","no_workflow"));
 			}
 			

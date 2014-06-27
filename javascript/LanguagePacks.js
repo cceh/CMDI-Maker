@@ -57,6 +57,8 @@ var LP_english = {
 		hard_reset: "Really?<br>You want to hard reset CMDI Maker? All your actors and stuff will be deleted!",
 	},
 	
+	ok: "OK",
+	
 	welcome_back: "Welcome back!",
 	greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
 	"When you load this page, you can pick up where you left off.",
@@ -119,6 +121,7 @@ var LP_german = {
 		hard_reset: "Willst du das wirklich?<br>Alle deine Daten werden gelöscht!",
 	},
 	
+	ok: "OK",
 	welcome_back: "Willkommen zurück!",
 	greeting_text: "Willkommen!<br>Dies ist eine Offline-Webanwendung. Du kannst sie fortan auch ohne Internetverbindung nutzen.<br>"+
 	"Wenn Du diese Seite lädst, kannst du genau dort weitermachen, wo du aufgehört hast.",
