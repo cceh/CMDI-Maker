@@ -15,9 +15,11 @@ limitations under the License.
 */
 
 
-var output = (function (){
+imdi_environment.workflow[4] = (function (){
 
 	var my = {};
+	var corpus;
+	var session;
 	
 	my.identity = {
 		id: "xml_output",
@@ -28,6 +30,8 @@ var output = (function (){
 	
 	my.init = function(){
 	
+		corpus = imdi_environment.workflow[0];
+		session = imdi_environment.workflow[3];
 		my.createOutputFormatSelect(my.formats);
 	
 	}
@@ -39,18 +43,14 @@ var output = (function (){
 			name: "imdi",
 			file_ending: "imdi",
 			output_name: "IMDI",
-			generator_object: imdi_generator,
-			form: session_form,
-			actor_form: actor_form_imdi
+			generator_object: imdi_environment.imdi_generator,
 		},
 		{
 			title: "CMDI with IMDI Profile",
 			name: "cmdi-imdi",
 			file_ending: "cmdi",
 			output_name: "CMDI",
-			generator_object: cmdi_generator,
-			form: session_form,
-			actor_form: actor_form_imdi
+			generator_object: imdi_environment.cmdi_generator,
 		}
 	];
 	

@@ -14,7 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-var cmdi_generator = function(){
+
+imdi_environment.cmdi_generator = function(){
+	
+	var corpus = imdi_environment.workflow[0];
+	var resources = imdi_environment.workflow[1];
+	var actor = imdi_environment.workflow[2];
+	var session = imdi_environment.workflow[3];
 
 	var imdi_corpus_profile="clarin.eu:cr1:p_1274880881885";
 	var imdi_session_profile="clarin.eu:cr1:p_1271859438204";
@@ -253,9 +259,9 @@ var cmdi_generator = function(){
 		return_string += xml.element("Date","Unspecified");
 		//no input yet, but should come soon
 		
-		return_string += xml.element("Type",get_file_type(link).type);
-		return_string += xml.element("SubType",get_file_type(link).type);
-		return_string += xml.element("Format",get_file_type(link).mimetype);
+		return_string += xml.element("Type",resources.getFileType(link).type);
+		return_string += xml.element("SubType",resources.getFileType(link).type);
+		return_string += xml.element("Format",resources.getFileType(link).mimetype);
 		return_string += xml.element("Size",size);
 		
 		return_string += xml.tag("Validation",0);
@@ -304,8 +310,8 @@ var cmdi_generator = function(){
 		var return_string = "";
 		return_string += xml.tag("MediaFile",0);
 		return_string += xml.element("ResourceLink",link);
-		return_string += xml.element("Type",get_file_type(link).type);
-		return_string += xml.element("Format",get_file_type(link).mimetype);
+		return_string += xml.element("Type",resources.getFileType(link).type);
+		return_string += xml.element("Format",resources.getFileType(link).mimetype);
 		return_string += xml.element("Size",size);
 		
 		return_string += xml.element("Quality","Unspecified");

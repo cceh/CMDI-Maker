@@ -14,7 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-var imdi_generator = function(){
+
+imdi_environment.imdi_generator = function(){
+
+	var corpus = imdi_environment.workflow[0];
+	var resources = imdi_environment.workflow[1];
+	var actor = imdi_environment.workflow[2];
+	var session = imdi_environment.workflow[3];
 
 	var imdi_version = "IMDI 3.04";
 	
@@ -115,6 +121,7 @@ var imdi_generator = function(){
 			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.mediaFiles[r].id;
 			console.log("looking for mediafile with id " + id);
 			return_string += insert_mediafile(get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
+		
 		}
 	
 		for (var r=0; r<session.sessions[session.getSessionIndexFromID(session_id)].resources.writtenResources.length; r++){  
@@ -122,6 +129,7 @@ var imdi_generator = function(){
 			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.writtenResources[r].id;	
 			console.log("looking for wr with id " + id);
 			return_string += insert_written_resource(get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
+		
 		}
     
 		return_string+=xml.tag("Resources",1);
@@ -218,9 +226,9 @@ var imdi_generator = function(){
 		return_string += xml.element("MediaResourceLink","");
 		return_string += xml.element("Date","Unspecified");
 		//no input yet, but should come soon
-	    return_string += xml.element("Type",get_file_type(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Type.xml"],["Type","OpenVocabulary"]]);
-		return_string += xml.element("SubType",get_file_type(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-SubType.xml"],["Type","OpenVocabularyList"]]);
-		return_string += xml.element("Format",get_file_type(link).mimetype,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Format.xml"],["Type","OpenVocabulary"]]);
+	    return_string += xml.element("Type",resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Type.xml"],["Type","OpenVocabulary"]]);
+		return_string += xml.element("SubType",resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-SubType.xml"],["Type","OpenVocabularyList"]]);
+		return_string += xml.element("Format",resources.getFileType(link).mimetype,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Format.xml"],["Type","OpenVocabulary"]]);
 		return_string += xml.element("Size",size);
 		return_string += xml.tag("Validation",0);
 		return_string += xml.element("Type","",[["Link","http://www.mpi.nl/IMDI/Schema/Validation-Type.xml"],["Type","ClosedVocabulary"]]);
@@ -254,14 +262,13 @@ var imdi_generator = function(){
 	}
 	
 	
-	
 	var insert_mediafile = function (link,size) {
 
 		var return_string = "";
 		return_string += xml.tag("MediaFile",0);
 		return_string += xml.element("ResourceLink",link);
-		return_string += xml.element("Type",get_file_type(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Type.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Format",get_file_type(link).mimetype,[["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Format.xml"],["Type","OpenVocabulary"]]);
+		return_string += xml.element("Type",resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Type.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("Format",resources.getFileType(link).mimetype,[["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Format.xml"],["Type","OpenVocabulary"]]);
 		return_string += xml.element("Size",size);
 		return_string += xml.element("Quality","Unspecified",[["Link","http://www.mpi.nl/IMDI/Schema/Quality.xml"],["Type","ClosedVocabulary"]]);
 		// no input yet

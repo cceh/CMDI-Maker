@@ -65,7 +65,7 @@ javascript/environments/imdi/imdi_environment.js
 javascript/environments/imdi/imdi_forms.js
 javascript/environments/imdi/imdi_generator.js
 javascript/environments/imdi/output.js
-javascript/environments/imdi/resource_files.js
+javascript/environments/imdi/resources.js
 javascript/environments/imdi/sessions.js
 javascript/alertify.min.js
 javascript/app.js

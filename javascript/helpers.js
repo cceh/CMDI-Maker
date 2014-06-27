@@ -267,65 +267,6 @@ function sortByKey(array, key) {
 } 
 
 
-function get_file_type(filename){
-
-	var index_of_dot = filename.lastIndexOf(".");
-
-	var fileending = filename.slice(index_of_dot+1);
-	
-	var fileinfo = {
-		type: "Unknown",
-		mimetype: "Unknown"
-	};
-	
-	var list = a(file_types.valid_lamus_written_resource_file_types,0);
-	var pos = list.indexOf(fileending);
-	
-	if (list.indexOf(fileending) != -1){
-	
-		fileinfo.type = file_types.valid_lamus_written_resource_file_types[pos][2];
-		fileinfo.mimetype = file_types.valid_lamus_written_resource_file_types[pos][1];
-		return fileinfo;
-	
-	}
-	
-	list = a(file_types.valid_lamus_media_file_types,0);
-	pos = list.indexOf(fileending);
-	
-	if (list.indexOf(fileending) != -1){
-	
-		fileinfo.type = file_types.valid_lamus_media_file_types[pos][2];
-		fileinfo.mimetype = file_types.valid_lamus_media_file_types[pos][1];
-		return fileinfo;
-	
-	}
-	
-	list = a(file_types.invalid_lamus_media_file_types,0);
-	pos = list.indexOf(fileending);
-	
-	if (pos != -1){
-	
-		fileinfo.type = file_types.invalid_lamus_media_file_types[pos][2];
-		fileinfo.mimetype = file_types.invalid_lamus_media_file_types[pos][1];
-		return fileinfo;
-	
-	}
-	
-	list = a(file_types.invalid_lamus_written_resource_file_types,0);
-	pos = list.indexOf(fileending);
-	
-	if (pos != -1){
-	
-		fileinfo.type = file_types.invalid_lamus_written_resource_file_types[pos][2];
-		fileinfo.mimetype = file_types.invalid_lamus_written_resource_file_types[pos][1];
-		return fileinfo;
-	
-	}
-
-	return fileinfo;
-}
-
-
 function parseDate(str){
 
 	var t = str.match(/([1-2][0-9][0-9][0-9])\-([0-1][0-9])\-([0-3][0-9])/);

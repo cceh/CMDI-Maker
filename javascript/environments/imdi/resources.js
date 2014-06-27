@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 
-
-var resources = (function(){
+imdi_environment.workflow[1] = (function(){
 
 	var my = {};
+	var session;
 	
 	my.selected_files = [];
 	
@@ -57,6 +57,67 @@ var resources = (function(){
 		' This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.</div></div>'
 	
 	};
+	
+	
+	my.getFileType = function(filename){
+	
+		var file_types = my.file_types;
+
+		var index_of_dot = filename.lastIndexOf(".");
+
+		var fileending = filename.slice(index_of_dot+1);
+		
+		var fileinfo = {
+			type: "Unknown",
+			mimetype: "Unknown"
+		};
+		
+		var list = a(file_types.valid_lamus_written_resource_file_types,0);
+		var pos = list.indexOf(fileending);
+		
+		if (list.indexOf(fileending) != -1){
+		
+			fileinfo.type = file_types.valid_lamus_written_resource_file_types[pos][2];
+			fileinfo.mimetype = file_types.valid_lamus_written_resource_file_types[pos][1];
+			return fileinfo;
+		
+		}
+		
+		list = a(file_types.valid_lamus_media_file_types,0);
+		pos = list.indexOf(fileending);
+		
+		if (list.indexOf(fileending) != -1){
+		
+			fileinfo.type = file_types.valid_lamus_media_file_types[pos][2];
+			fileinfo.mimetype = file_types.valid_lamus_media_file_types[pos][1];
+			return fileinfo;
+		
+		}
+		
+		list = a(file_types.invalid_lamus_media_file_types,0);
+		pos = list.indexOf(fileending);
+		
+		if (pos != -1){
+		
+			fileinfo.type = file_types.invalid_lamus_media_file_types[pos][2];
+			fileinfo.mimetype = file_types.invalid_lamus_media_file_types[pos][1];
+			return fileinfo;
+		
+		}
+		
+		list = a(file_types.invalid_lamus_written_resource_file_types,0);
+		pos = list.indexOf(fileending);
+		
+		if (pos != -1){
+		
+			fileinfo.type = file_types.invalid_lamus_written_resource_file_types[pos][2];
+			fileinfo.mimetype = file_types.invalid_lamus_written_resource_file_types[pos][1];
+			return fileinfo;
+		
+		}
+
+		return fileinfo;
+	}
 	
 	
 	my.file_types = {
@@ -131,7 +192,7 @@ var resources = (function(){
 			wrapper_id: "crps_div",
 			type: "function_wrap",
 			sub_div: "crps_filetype_select",
-			onclick: function() { resources.createSessionPerResource();  APP.view(session); },
+			onclick: function() { my.createSessionPerResource();  APP.view(session); },
 			sub_div_innerHTML: 	'<h3 class="inner_function_h3">Files</h3>'+
 						'<input type="radio" name="radio_file_type" value="selected" checked> Selected Files<br>'+
 						'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
@@ -143,19 +204,19 @@ var resources = (function(){
 			id: "link_sort_alphabetically",
 			icon: "az.png",
 			label: "Sort Files alphabetically",
-			onclick: function() { resources.sortAlphabetically(); }
+			onclick: function() { my.sortAlphabetically(); }
 		},
 		{
 			id: "link_remove_files",
 			icon: "reset.png",
 			label: "Remove",
-			onclick: function() { resources.removeSelectedFiles(); }
+			onclick: function() { my.removeSelectedFiles(); }
 		},
 		{
 			id: "link_clear_file_list",
 			icon: "reset.png",
 			label: "Clear File List",
-			onclick: function() { resources.clearFileList(); }
+			onclick: function() { my.clearFileList(); }
 		},
 	
 	
@@ -164,6 +225,8 @@ var resources = (function(){
 	
 	
 	my.init = function(){
+	
+		session = imdi_environment.workflow[3];
 	
 		var view = g(view_id_prefix + my.identity.id);
 		var div = dom.newElement("div","files","",view);

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-corpus.content_languages = (function() {
+imdi_environment.workflow[0].content_languages = (function() {
 
 	var my = {};
 	

@@ -16,9 +16,12 @@ limitations under the License.
 
 "use strict";
 
-var session = (function () {
+imdi_environment.workflow[3] = (function(resources, actor) {
 
 	var my = {};
+	my.makeNewSessionObject = imdi_environment.make_new_session_object;
+	
+	var session_form = imdi_environment.session_form;
 	
 	my.identity = {
 		id: "session",
@@ -169,12 +172,13 @@ var session = (function () {
 	
 
 	my.refreshResources = function(s){
+	//refresh resources for one session
 
 		g(session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";
 
 		var select = document.createElement("select");
 		
-		for (var i=0;i<resources.available_resources.length;i++){ 
+		for (var i=0; i<resources.available_resources.length; i++){ 
 			
 			var NewOption = new Option( resources.available_resources[i][0], i, false, true);
 			select.options[select.options.length] = NewOption;		
@@ -225,7 +229,7 @@ var session = (function () {
 
 	my.newSession = function(){
 
-		var session_object = make_new_session_object();
+		var session_object = my.makeNewSessionObject();
 		session_object.id = my.getNewSessionID();
 		
 		//new sessions are always expanded
@@ -254,7 +258,7 @@ var session = (function () {
 	
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
-		var session_object = make_new_session_object();
+		var session_object = my.makeNewSessionObject();
 		session_object.session.name = name;
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
@@ -357,7 +361,6 @@ var session = (function () {
 
 		//create the form
 		APP.makeInput(session_content, session_form, session_dom_element_prefix+session_id+"_", session_dom_element_prefix, session_object);
-
 		
 		g(session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		
@@ -543,14 +546,14 @@ var session = (function () {
 	}
 
 
-	my.refreshActorLists = function(){
+	my.refreshActorLists = function(actors){
 		//Offer possibility to add every available actor to all session
 		//refresh all sessions with available actors
 
 		var all_available_actor_ids = [];
 		
-		for (var n=0; n<actor.actors.length; n++){
-			all_available_actor_ids.push(actor.actors[n].id);
+		for (var n=0; n<actors.length; n++){
+			all_available_actor_ids.push(actors[n].id);
 		}
 		
 		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
@@ -1116,4 +1119,4 @@ var session = (function () {
 
 	return my;
 
-})();
+})(imdi_environment.workflow[1],imdi_environment.workflow[2]);

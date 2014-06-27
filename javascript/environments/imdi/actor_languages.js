@@ -15,10 +15,11 @@ limitations under the License.
 */
 
 
-actor.languages = (function (parent){
+imdi_environment.workflow[2].languages = (function (){
 //Sub-object of actor
 
 	var my = {};
+	var actor = imdi_environment.workflow[2];
 
 	my.languages_of_active_actor = [];
 	

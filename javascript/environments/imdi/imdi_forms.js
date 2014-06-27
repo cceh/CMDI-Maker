@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-var session_form = {
+imdi_environment.session_form = {
 
 	title: "imdi-form",
 	type: "form",
@@ -301,7 +301,7 @@ var session_form = {
 	]
 };
 
-var actor_form_imdi = {
+imdi_environment.actor_form = {
 
 	title: "imdi-actors",
 	type: "form",
@@ -429,7 +429,7 @@ var actor_form_imdi = {
 };
 
 
-function make_new_session_object(){
+imdi_environment.make_new_session_object = function(){
 
 	var session_object = {
 	

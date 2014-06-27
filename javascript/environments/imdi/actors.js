@@ -14,9 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-var actor = (function(){
+
+imdi_environment.workflow[2] = (function(){
 
 	var my = {};
+	var session;
+	
+	var actor_form = imdi_environment.actor_form;
 	
 	my.actors = [];
 	
@@ -35,6 +39,8 @@ var actor = (function(){
 		my.id_counter = 0;
 		my.active_actor = -1;
 		
+		session = imdi_environment.workflow[3];
+		
 		var view = g(view_id_prefix + my.identity.id);
 		
 		dom.newElement("div","ac_list","",view);
@@ -45,20 +51,20 @@ var actor = (function(){
 		
 		my.createForm();
 		
-		g('actor_language_search_button').addEventListener('click', function() {  actor.languages.search();   });
-		g('actor_language_iso_ok').addEventListener('click', function() {  actor.languages.addByISO();    });
+		g('actor_language_search_button').addEventListener('click', function() {  my.languages.search();   });
+		g('actor_language_iso_ok').addEventListener('click', function() {  my.languages.addByISO();    });
 
 		g("actor_language_select").onkeydown = function(event) {
 
 			if (event.keyCode == 13) {  //if enter is pressed
-				actor.languages.search();
+				my.languages.search();
 			}
 		};
 		
 		g("actor_language_iso_input").onkeydown = function(event) {
 
 			if (event.keyCode == 13) {  //if enter is pressed
-				actor.languages.addByISO();
+				my.languages.addByISO();
 			}
 		};
 		
@@ -103,25 +109,25 @@ var actor = (function(){
 			id: "link_save_active_actor",
 			icon: "save.png",
 			label_span_id: "save_actor_span",
-			onclick: function() { actor.save_active_actor(); }
+			onclick: function() { my.save_active_actor(); }
 		},
 		{
 			id: "link_delete_active_actor",
 			icon: "reset.png",
 			label: "Delete this actor",
-			onclick: function() { actor.delete_active_actor(); }
+			onclick: function() { my.delete_active_actor(); }
 		},
 		{
 			id: "link_sort_actors_alphabetically",
 			icon: "az.png",
 			label: "Sort Actors alphabetically",
-			onclick: function() { actor.sortAlphabetically(); }
+			onclick: function() { my.sortAlphabetically(); }
 		},
 		{
 			id: "link_duplicate_active_actor",
 			icon: "duplicate_user.png",
 			label: "Save and duplicate this actor",
-			onclick: function() { actor.duplicate_active_actor(); }
+			onclick: function() { my.duplicate_active_actor(); }
 		}	
 	];
 	
@@ -193,9 +199,9 @@ var actor = (function(){
 			dom.setFormValue("actor_name",my.actors[actor_id].name);
 			dom.setFormValue("actor_full_name",my.actors[actor_id].full_name);
 			dom.setFormValue("actor_code",my.actors[actor_id].code);
-			dom.setFormValue("actor_role",my.actors[actor_id].role, actor_form_imdi.fields[1].fields[0].vocabulary);
+			dom.setFormValue("actor_role",my.actors[actor_id].role, actor_form.fields[1].fields[0].vocabulary);
 			dom.setFormValue("actor_ethnic_group",my.actors[actor_id].ethnic_group);
-			dom.setFormValue("actor_family_social_role",my.actors[actor_id].family_social_role, actor_form_imdi.fields[1].fields[2].vocabulary);
+			dom.setFormValue("actor_family_social_role",my.actors[actor_id].family_social_role, actor_form.fields[1].fields[2].vocabulary);
 			dom.setFormValue("actor_age",my.actors[actor_id].age);
 			dom.setFormValue("actor_birth_date_year",my.actors[actor_id].birth_date.year);
 			dom.setFormValue("actor_birth_date_month",my.actors[actor_id].birth_date.month);
@@ -400,7 +406,7 @@ var actor = (function(){
 				}
 				
 				
-				actor.languages.push(Actor_Language);
+				my.languages.push(Actor_Language);
 			
 			}
 			
@@ -422,9 +428,9 @@ var actor = (function(){
 		dom.setFormValue("actor_name","");
 		dom.setFormValue("actor_full_name","");
 		dom.setFormValue("actor_code","");
-		dom.setFormValue("actor_role","Unknown", actor_form_imdi.fields[1].fields[0].vocabulary);
+		dom.setFormValue("actor_role","Unknown", actor_form.fields[1].fields[0].vocabulary);
 		dom.setFormValue("actor_ethnic_group","");
-		dom.setFormValue("actor_family_social_role","Unknown", actor_form_imdi.fields[1].fields[2].vocabulary);
+		dom.setFormValue("actor_family_social_role","Unknown", actor_form.fields[1].fields[2].vocabulary);
 		dom.setFormValue("actor_age","");
 		dom.setFormValue("actor_birth_date_year","YYYY");
 		dom.setFormValue("actor_birth_date_month","MM");
@@ -538,7 +544,7 @@ var actor = (function(){
 	
 	my.createForm = function(){
 
-		APP.makeInput(g("actor_content_div"), actor_form_imdi, "actor_", "actor_", undefined);
+		APP.makeInput(g("actor_content_div"), actor_form, "actor_", "actor_", undefined);
 
 	}
 
@@ -761,7 +767,7 @@ var actor = (function(){
 		g('ac_list').appendChild(div);	
 
 		if ((session) && (!not_in_sessions)){
-			session.refreshActorLists();
+			session.refreshActorLists(my.actors);
 		}
 
 		switch (my.actors.length){
