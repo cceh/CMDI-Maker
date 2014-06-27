@@ -56,6 +56,9 @@ img/logos/LOGO_HRELP.png
 img/logos/LOGO_Uni_Koeln.png
 img/logos/LOGO_SOAS.png
 javascript/environments/eldp/eldp_environment.js
+javascript/environments/eldp/actors.js
+javascript/environments/eldp/resources.js
+javascript/environments/eldp/sessions.js
 javascript/environments/imdi/actors.js
 javascript/environments/imdi/actor_languages.js
 javascript/environments/imdi/cmdi_generator.js

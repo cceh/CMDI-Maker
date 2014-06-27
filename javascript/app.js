@@ -537,10 +537,10 @@ var APP = (function () {
 		var view_ids = [];
 		
 		//make all views invisible
-		for (var v=0; v<views.length; v++){
-			views[v].style.display = "none";
-			view_ids.push(views[v].id);
-		}		
+		forEach(views, function(view){
+			view.style.display = "none";
+			view_ids.push(view.id);
+		});
 		
 		//check if view exists, if not, throw error
 		if (view_ids.indexOf(id) == -1){
@@ -574,15 +574,15 @@ var APP = (function () {
 		if (typeof my.active_environment != "undefined"){
 		
 			//Unhighlight all workflow icons
-			for (var w=0; w<my.active_environment.workflow.length; w++){
-				g(viewlink_id_prefix + my.active_environment.workflow[w].identity.id).style.backgroundColor = "";
-			}
+			forEach(my.active_environment.workflow, function(workflow){
+				g(viewlink_id_prefix + workflow.identity.id).style.backgroundColor = "";
+			});
 		}
 
 		//Unhighlight APP VIEWLINKS
-		for (var v=0; v<my.views.length; v++){
-			g(viewlink_id_prefix + my.views[v].id).style.backgroundColor = "";
-		}
+		forEach(my.views, function(view){
+			g(viewlink_id_prefix + view.id).style.backgroundColor = "";
+		});
 		
 		var module = my.getModuleOfViewID(id);
 		
@@ -627,14 +627,12 @@ var APP = (function () {
 		
 		g("environment_settings").innerHTML = "";
 	
-		for (var e=0; e<my.active_environment.workflow.length; e++){
+		forEach(my.active_environment.workflow, function (module){
 		
-			var module = my.active_environment.workflow[e];
-			
 			//delete module view
 			dom.remove(view_id_prefix+module.identity.id);
 			
-		}
+		});
 		
 		g("functions").innerHTML = "";
 	

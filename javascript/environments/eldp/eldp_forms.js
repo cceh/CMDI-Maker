@@ -21,7 +21,7 @@ eldp_environment.session_form = {
 	type: "form",
 	fields: [
 		{
-			title: "Session",
+			title: "Bundle",
 			name: "session",
 			type: "column",
 			fields: [
@@ -92,70 +92,6 @@ eldp_environment.session_form = {
 			]
 		},
 		{
-			title: "Project",
-			name: "project",
-			type: "column",
-			comment: "If the session was made within the context of a project, the project element contains information regarding this project. This information is typically reused for many sessions and corpus leafs when they all belong to the same project.",
-			fields: [
-				{
-					heading: "Name",
-					name: "name",
-					type: "text",
-					comment: "A short name or abbreviation of the project.",
-				},
-				{
-					heading: "Title",
-					name: "title",
-					type: "text",
-					comment: "The full title of the project.",
-				},
-				{
-					heading: "ID",
-					name: "id",
-					type: "text",
-					comment: "A unique identifier for the project.",
-				},
-				{
-					heading: "Description",
-					name: "description",
-					type: "textarea",
-					comment: "An elaborate description of the scope and goals of the project.",
-				},
-				{	
-					heading: "Contact",
-					name: "contact",
-					type: "subarea",
-					comment: "Contact information about the person or institution responsible for the project.", 		
-					fields: [
-						{
-							heading: "Name",
-							name: "name",
-							type: "text",
-							comment: "Contact information about the person or institution responsible for the project."
-						},
-						{
-							heading: "Address",
-							name: "address",
-							type: "text",
-							comment: "Contact information about the person or institution responsible for the project."
-						},						
-						{
-							heading: "Email",
-							name: "email",
-							type: "text",
-							comment: "Contact information about the person or institution responsible for the project."
-						},		
-						{
-							heading: "Organisation",
-							name: "organisation",
-							type: "text",
-							comment: "Contact information about the person or institution responsible for the project."
-						},
-					]
-				}
-			]
-		},
-		{
 			title: "Content",
 			name: "content",
 			type: "column",
@@ -189,66 +125,18 @@ eldp_environment.session_form = {
 					name: "description",
 					type: "textarea",
 					comment: "In opposition to the elements prose text can be used here to describe the content."
-				},
-				{
-					heading: "Communication Context",
-					name: "communication_context",
-					type: "subarea",
-					comment: "This group of elements is used to describe the communication context in which the recording took place.",
-					fields: [
-						{
-							heading: "Event Structure",
-							name: "eventstructure",
-							type: "select",
-							size: 1,
-							vocabulary: ["Unknown","Unspecified","Monologue","Dialogue","Conversation","Not a natural format"],
-							comment: "Indicates the structure of the communication event."
-						},
-						{
-							heading: "Planning Type",
-							name: "planningtype",
-							type: "select",
-							size: 1,
-							vocabulary: ["Unknown","Unspecified","spontaneous","semi-spontaneous","planned"],
-							comment: "Indicates in how far the consultant planned the linguistic event."
-						},					
-						{
-							heading: "Interactivity",
-							name: "interactivity",
-							type: "select",
-							size: 1,
-							vocabulary: ["Unknown","Unspecified","interactive","non-interactive","semi-interactive"],
-							comment: "Characterizes the degree of interactivity between all the Actors in the session."
-						},	
-						{
-							heading: "Social Context",
-							name: "socialcontext",
-							type: "select",
-							size: 1,
-							vocabulary: ["Unknown","Unspecified","Family","Private","Public","Controlled environment"],
-							comment: "Indicates the social context the event took place in."
-						},	
-						{
-							heading: "Involvement",
-							name: "involvement",
-							type: "select",
-							size: 1,
-							vocabulary: ["Unknown","Unspecified","elicited","non-elicited","no-observer"],
-							comment: "Indicates in how far the researcher was involved in the linguistic event."
-						}
-					]
 				}
 			]
 		},
 		{
-			title: "Actors",
+			title: "Persons",
 			type: "column",
 			name: "actors",
 			fields: [
 				{
-					heading: "Description of Actors",
+					heading: "Description of Persons",
 					type: "textarea",
-					comment: "Note that this description concerns all Actors and should be used to describe interactions and interrelations between Actors.",
+					comment: "Note that this description concerns all Persons and should be used to describe interactions and interrelations between Persons.",
 					name: "description",
 				},
 				{
@@ -294,7 +182,7 @@ eldp_environment.session_form = {
 		},
 		{
 			name: "actors",
-			label: "Actors",
+			label: "Persons",
 			fields: ["actors_description"]
 			//since type of field actors is "special", there will be other stuff going on as well here!
 		}	
