@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 
+'use strict';
+
 imdi_environment.workflow[4] = (function (){
 
 	var my = {};
@@ -153,7 +155,7 @@ imdi_environment.workflow[4] = (function (){
 		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		
 		// initiate object for imdi_structure class
-		xml_strings = new my.formats[output_format_index].generator_object();
+		var xml_strings = new my.formats[output_format_index].generator_object();
 		var output_format = my.formats[output_format_index].output_name;
 		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		var file_ending = my.formats[output_format_index].file_ending;

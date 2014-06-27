@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+
 "use strict";
 
 imdi_environment.workflow[3] = (function(resources, actor) {

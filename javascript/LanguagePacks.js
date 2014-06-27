@@ -68,6 +68,10 @@ var LP_english = {
 	this_is: {
 		before: "This is ",
 		after: "!"
+	},
+	
+	error: {
+		no_workflow: "ERROR: <br>The active profile does not have a workflow!"
 	}
 
 };
@@ -126,6 +130,10 @@ var LP_german = {
 	this_is: {
 		before: "Das ist ",
 		after: "!"
+	},
+	
+	error: {
+		no_workflow: "ERROR: <br>Das aktive Profil besitzt keinen Workflow!"
 	}
 
 };

@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 
-var elar_environment = {
-	name: "elar",
-	id: "elar",
-	title: "ELAR",
+var eldp_environment = {
+	name: "eldp",
+	id: "eldp",
+	title: "ELDP",
 	workflow: [],
 	settings: [
 		{

@@ -20,7 +20,7 @@ var APP = (function () {
 
 	var my = {};
 	
-	my.environments = [imdi_environment, elar_environment];
+	my.environments = [imdi_environment, eldp_environment];
 	my.languages = [LP_english, LP_german];
 	
 	my.getLPFromID = function(id){
@@ -52,6 +52,7 @@ var APP = (function () {
 		return undefined;
 	
 	}
+	
 	
 	my.active_view;
 	my.active_environment;
@@ -648,6 +649,18 @@ var APP = (function () {
 	
 	my.createEnvironment = function (environment){
 	
+		if (typeof my.active_environment != "undefined"){
+		
+			if (environment.id == my.active_environment.id){
+				console.log("Environment to be created is already active: " + my.active_environment.id);
+				return;
+			}
+			
+			else {
+				my.unloadActiveEnvironment();
+			}
+		}
+	
 		//Variable has to be set first, because later methods depend on it
 		my.active_environment = environment;	
 		
@@ -657,9 +670,24 @@ var APP = (function () {
 	
 		my.createWorkflow(environment.workflow);
 		
-		/*g("profile_select").selectedIndex = */ //TO DO!!
+		g("profile_select").selectedIndex = getIndexOfEnvironment(environment) + 1;
 		
 		my.view("default");
+	
+	}
+	
+	
+	var getIndexOfEnvironment = function(environment){
+		
+		for (var e=0; e<my.environments.length; e++){
+		
+			if (environment.id == my.environments[e].id){
+				return e;
+			}
+		
+		}
+		
+		return console.log("Environment " + environment.id + " not found in APP.environments");
 	
 	}
 	
@@ -847,15 +875,16 @@ var APP = (function () {
 	my.addEventListeners = function(){
 	
 		g('link_lets_go').addEventListener('click', function() {
-			if (typeof my.active_environment != "undefined"){
-		
-				my.view(corpus);
+			if (typeof my.active_environment == "undefined"){
+				my.createEnvironment(imdi_environment);	
 			}
-
-			else {
 			
-				my.createEnvironment(imdi_environment);
-				my.view(corpus);
+			if (my.active_environment.workflow[0]){
+				my.view(my.active_environment.workflow[0]);
+			}
+			
+			else {
+				alertify.alert(my.l("error","no_workflow"));
 			}
 			
 		});
