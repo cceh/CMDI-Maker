@@ -46,6 +46,18 @@ margin: 0px;
 
 }
 
+.on_off_switch{
+
+width: 100px;
+height: 30px !important;
+margin: 10px 0px !important;
+background: tomato;
+border-radius: 10px;
+color: white;
+outline: none;
+
+}
+
 .ultra_big{
 
 	font-size: 80pt;

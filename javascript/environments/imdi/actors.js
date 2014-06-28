@@ -690,7 +690,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		if (my.actors[i].age == ""){   //at first, check, if actor's age hasn't been specified yet
 		
-			if (document.getElementsByName("radio_age_calc")[0].checked == true){  //then, check if auto calculate feature in settings is activated
+			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
 				var sessionDate = get(session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(session_dom_element_prefix+session_id+"_session_date_day"); 

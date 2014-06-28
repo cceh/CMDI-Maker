@@ -763,6 +763,21 @@ var APP = (function () {
 			
 			}
 			
+			if (settings[s].type == "switch"){
+			
+				var input = dom.newElement("input",settings[s].id,"on_off_switch",parent);
+				input.type = "button";
+				input.name = settings[s].name;
+				input.value = "Off";
+				input.on = false;
+				input.addEventListener("click", function(event){dom.onOffSwitch(this);}, false);
+				
+				dom.setOnOffSwitchValue(g(settings[s].id),settings[s].default_value);
+				
+				dom.newElement("br","","",parent);
+			
+			}
+			
 			if (settings[s].type == "file"){
 		
 				var input = dom.newElement("input",settings[s].file_input_id,"",parent);

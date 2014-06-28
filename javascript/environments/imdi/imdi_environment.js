@@ -35,19 +35,10 @@ var imdi_environment = (function(){
 					"can be calculated from the actor's birth date and the session date.<br>"+
 					"When an age can be calculated, it will appear in the output file.<br>"+
 					"(Age = Session Date - Actor's Birth Date)",
-				type: "radio",
-				options: [
-					{
-						title: "On",
-						value: 1,
-					},
-					{
-						title: "Off",
-						value: 0
-					}
-				],
-				default_option: 0,
-				radio_name: "radio_age_calc"
+				type: "switch",
+				default_value: true,
+				name: "radio_age_calc",
+				id: "radio_age_calc"
 			},
 			{
 				title: "Export Actors as JSON",
@@ -72,18 +63,7 @@ var imdi_environment = (function(){
 		recall: function (settings){
 		
 			dom.setRadioIndex(document.getElementsByName("output_format"), settings.output_format);
-			
-			if (settings.calc_actors_age == true){
-			
-				document.getElementsByName("radio_age_calc")[0].checked = true;
-			
-			}
-			
-			else {
-			
-				document.getElementsByName("radio_age_calc")[1].checked = true;	
-			
-			}
+			dom.setOnOffSwitchValue(g("radio_age_calc"),settings.calc_actors_age);
 		
 		},
 		getSaveData: function(){
@@ -91,7 +71,7 @@ var imdi_environment = (function(){
 			var object = {};
 
 			object.output_format = dom.getValueOfRadios("output_format");
-			object.calc_actors_age = (document.getElementsByName("radio_age_calc")[0].checked ? true : false);
+			object.calc_actors_age = g("radio_age_calc").on;
 		
 			return object;
 		

@@ -612,6 +612,35 @@ var dom = (function() {
 	}
 	
 	
+	my.onOffSwitch = function(input){
+
+		if (input.on == false){
+			my.setOnOffSwitchValue(input, true);
+		}
+		
+		else {
+			my.setOnOffSwitchValue(input, false);
+		}		
+	};
+	
+	
+	my.setOnOffSwitchValue = function(input, value){
+	
+		if (value == true){
+			input.value = "On";
+			input.style.backgroundColor = "limegreen";
+			input.on = true;
+		}
+		
+		else {
+			input.value = "Off";
+			input.style.backgroundColor = "tomato";
+			input.on = false;
+		}		
+	
+	};
+	
+	
 	my.showSelectFrame = function(options, titles, callback, title, subtitle){
 	//options are the parameters for the callback method
 	
