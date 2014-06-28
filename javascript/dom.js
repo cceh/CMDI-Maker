@@ -627,13 +627,13 @@ var dom = (function() {
 	my.setOnOffSwitchValue = function(input, value){
 	
 		if (value == true){
-			input.value = "On";
+			input.value = APP.l("on");
 			input.style.backgroundColor = "limegreen";
 			input.on = true;
 		}
 		
 		else {
-			input.value = "Off";
+			input.value = APP.l("off");
 			input.style.backgroundColor = "tomato";
 			input.on = false;
 		}		
