@@ -201,8 +201,8 @@ var APP = (function () {
 				onclick: function() {    
 
 					alertify.set({ labels: {
-						ok     : "No",
-						cancel : "Yes, delete everything"
+						ok     : my.l("confirm","no"),
+						cancel : my.l("confirm","yes_delete_everything")
 					} });
 
 					alertify.confirm(my.l("confirm","hard_reset"), function (e) {
