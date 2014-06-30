@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Settings
+// APP Config
 var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";    
 var version = "v1.0.8";
 var LanguageCodePrefix = "ISO639-3:";

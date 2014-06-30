@@ -47,14 +47,22 @@ imdi_environment.workflow[1] = (function(){
 	
 	my.compatibility_warnings = {
 	
-		general: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
-		' This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.</div></div>',
+		general: 'This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.',
+		invalid_media_file: 'This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).',
+		invalid_written_resource: 'This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.'
+	
+	};
+	
+	
+	my.addCompatibilityWarning = function(parent, string){
+	
+		var warning_div = dom.newElement("div","","warning_div",parent);
+		var warning_img_div = dom.newElement("div","","warning_img_div",warning_div);
+		var img = dom.newElement("img","","warning_icon",warning_img_div);
+		img.src = path_to_icons + "warning.png";
 		
-		invalid_media_file: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
-		' This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).</div></div>',
-		
-		invalid_written_resource: '<div class="warning_div"><div class="warning_img_div"><img class="warning_icon" src="'+path_to_icons+'warning.png"></div><div class="compatibility_warning">'+
-		' This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.</div></div>'
+		dom.newElement("div","","compatibility_warning",warning_div, string);
+	
 	
 	};
 	
@@ -331,13 +339,11 @@ imdi_environment.workflow[1] = (function(){
 			switch (my.getValidityOfFile(my.available_resources[i][0])){
 			
 				case 0: {
-					var compatibility_warning = "";
 					var file_entry_class = "media_file_entry";
 					break;
 				}
 			
 				case 1: {
-					var compatibility_warning = "";
 					var file_entry_class = "written_resource_file_entry";
 					break;
 				}
@@ -371,7 +377,9 @@ imdi_environment.workflow[1] = (function(){
 			'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
 			my.available_resources[i][3] + '</span>');
 			
-			div.innerHTML += compatibility_warning;
+			if (compatibility_warning){
+				my.addCompatibilityWarning(div, compatibility_warning);
+			}
 
 			div.addEventListener("click", function(i){
 			
