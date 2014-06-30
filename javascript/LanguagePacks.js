@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-var LP_english = {
+APP.languages[0] = {
 
 	id: "english",
 	name: "English",
@@ -81,7 +81,7 @@ var LP_english = {
 };
 
 
-var LP_german = {
+APP.languages[1] = {
 
 	id: "german",
 	name: "Deutsch",
@@ -97,7 +97,7 @@ var LP_german = {
 		every_10_minutes: "Alle 10 Minuten",
 		global_language_of_metadata: "Globale Metadaten-Sprache",
 		cmdi_metadata_creator: "CMDI: Urheber der Metadaten",
-		cmdi_metadata_creator_description: "Das CMDI-Metadatenformat setzt die Angabe eines Urhebers voraus. Das bist wahrscheinlich du!. Gib in diesem Fall deinen Namen ein.",
+		cmdi_metadata_creator_description: "Das CMDI-Metadatenformat setzt die Angabe eines Urhebers voraus. Das bist wahrscheinlich du! Gib in diesem Fall deinen Namen ein.",
 		save_project: "Projekt in Datei speichern",
 		save_project_description: "Diese Funktion speichert alle deine Daten in einer Datei. Diese kann wieder in den CMDI Maker importiert werden.",
 		load_project: "Projekt laden",

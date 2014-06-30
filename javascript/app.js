@@ -21,7 +21,7 @@ var APP = (function () {
 	var my = {};
 	
 	my.environments = [imdi_environment, eldp_environment];
-	my.languages = [LP_english, LP_german];
+	my.languages = [];
 	
 	my.getLPFromID = function(id){
 	
