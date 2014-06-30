@@ -78,38 +78,64 @@ var APP = (function () {
 	
 	
 	my.l = function(arg1, arg2, arg3){
-	
-		//if there is no word in this language, take the word in the first one
 		
+		return my.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
+		
+	};
+	
+	
+	my.getActiveLanguageFromID = function(id, LanguagesArray){
+	
+		for (var l=0; l<LanguagesArray.length; l++){
+			if (LanguagesArray[l].id == id){
+				return LanguagesArray[l];
+			}
+		}
+	
+		return undefined;
+	
+	}
+	
+	
+	my.getTermInActiveLanguage = function(LanguagesArray, arg1, arg2, arg3){
+	
+		//Look in the LanguagesArray, that's been given by the APP or by one environment and then search for the language that has the id of the APP's active language
+		var active_language = my.getActiveLanguageFromID(my.active_language.id, LanguagesArray);
+	
+
+		//if there is no word in this language, take the word in the first one
+	
 		if (arg3){
-			if (my.active_language[arg1][arg2][arg3]){
-				return my.active_language[arg1][arg2][arg3];
+
+			if (active_language[arg1][arg2][arg3]){
+				return active_language[arg1][arg2][arg3];
 			}
 			
 			else {
-				return my.languages[0][arg1][arg2][arg3];
+				return LanguagesArray[0][arg1][arg2][arg3];
 			}
 		}
 		
 		if (arg2){
-			if (my.active_language[arg1][arg2]){
-				return my.active_language[arg1][arg2];
+
+			if (active_language[arg1][arg2]){
+				return active_language[arg1][arg2];
 			}
 			
 			else {
-				return my.languages[0][arg1][arg2];
+				return LanguagesArray[0][arg1][arg2];
 			}
 		}
 		
-		if (my.active_language[arg1]){
-			return my.active_language[arg1];
+		if (active_language[arg1]){
+			return active_language[arg1];
 		}
 		
 		else {
-			return my.languages[0][arg1];
+			return LanguagesArray[0][arg1];
 		}
 		
-		return "";
+		return "";		
 	
 	}
 	
@@ -664,7 +690,7 @@ var APP = (function () {
 		
 		console.log("Creating environment: " + environment.id);
 	
-		my.initEnvironmentSettings(environment.settings);
+		my.initEnvironmentSettings(environment.settings());
 	
 		my.createWorkflow(environment.workflow);
 		

@@ -17,126 +17,135 @@ limitations under the License.
 
 var imdi_environment = (function(){
 
-	var my = {
-		name: "imdi",
-		id: "imdi",
-		title: "IMDI",
-		workflow: [],
-		settings: [
+	var my = {};
+	
+	my.name = "imdi";
+	my.id = "imdi";
+	my.title = "IMDI";
+	my.workflow = [];
+	my.languages = [];
+	
+	my.l = function(arg1, arg2, arg3){
+		return APP.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
+	};
+	
+	my.settings = function(){
+		return [
 			{
-				title: "Output Format",
+				title: my.l("settings","output_format"),
 				id: "output_format_select",
 				type: "empty"
 			},
 			{
 				
-				title: "Calculate Actor's Age",
-				description: "When this feature is activated, CMDI Maker checks if the age of an actor (if it has not been specified already) "+
-					"can be calculated from the actor's birth date and the session date.<br>"+
-					"When an age can be calculated, it will appear in the output file.<br>"+
-					"(Age = Session Date - Actor's Birth Date)",
+				title: my.l("settings","calculate_actors_age"),
+				description: my.l("settings","calculate_actors_age_description"),
 				type: "switch",
 				default_value: true,
 				name: "radio_age_calc",
 				id: "radio_age_calc"
 			},
 			{
-				title: "Export Actors as JSON",
+				title: my.l("settings","export_actors_as_json"),
 				onclick: function (){my.workflow[2].export_actors();},
 				type: "link"
 			},
 			{
-				title: "Import Actors from JSON or IMDI",
-				description: "Please import UTF-8 encoded files only!",
+				title: my.l("settings","import_actors_from_json_or_imdi"),
+				description: my.l("import_actors_description"),
 				type: "file",
 				file_input_id: "actors_file_input",
 				file_input_name: "actors_file_input",
 				onchange: function () {my.workflow[2].import_actors();}
 			},
 			{
-				title: "Delete Actors Database",
-				description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window.",
+				title: my.l("settings","delete_actors_database"),
+				description: my.l("delete_actors_database_description"),
 				type: "link",
 				onclick: function (){my.workflow[2].erase_database();}
 			}
-		],
-		recall: function (settings){
+		];
+	};
+	
+	
+	my.recall = function (settings){
 		
-			dom.setRadioIndex(document.getElementsByName("output_format"), settings.output_format);
-			dom.setOnOffSwitchValue(g("radio_age_calc"),settings.calc_actors_age);
+		dom.setRadioIndex(document.getElementsByName("output_format"), settings.output_format);
+		dom.setOnOffSwitchValue(g("radio_age_calc"),settings.calc_actors_age);
 		
-		},
-		getSaveData: function(){
+	};
+	
+	my.getSaveData = function(){
 		
-			var object = {};
+		var object = {};
 
-			object.output_format = dom.getValueOfRadios("output_format");
-			object.calc_actors_age = g("radio_age_calc").on;
+		object.output_format = dom.getValueOfRadios("output_format");
+		object.calc_actors_age = g("radio_age_calc").on;
+	
+		return object;
 		
-			return object;
+	};
+	
+	my.specialInput = function(field, parent, element_id_prefix, element_class_prefix){
 		
-		},
-		specialInput: function(field, parent, element_id_prefix, element_class_prefix){
-		
-			if (field.name == "actors"){
+		if (field.name == "actors"){
 			
-				dom.newElement("br","","",parent);
-				
-				dom.newElement("div",element_id_prefix+"actors", "actors", parent);
-				dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
+			dom.newElement("br","","",parent);
 			
-			}
-			
-			if (field.name == "resources"){
-			
-				dom.newElement("div",element_id_prefix+"resources", "mfs", parent);
-				dom.newElement("div",element_id_prefix+"add_mf_div", "", parent);
-			
-			}
-			
-			if (field.name == "actor_languages"){
-			
-				var p = dom.newElement("p","", "", parent);
-				var input = dom.newElement("input","actor_language_select","",p);
-				input.type = "text";
-				input.size = 1;
-				input.name = "actor_language_select";
-				
-				dom.newElement("span","","",p," ");
-
-				var input = dom.newElement("input","actor_language_search_button","",p);
-				input.type = "button";
-				input.value = "Search";
-
-				dom.newElement("br","","",p);
-				dom.newElement("span","","",p,"or type in ISO code ");
-				
-				var input = dom.newElement("input","actor_language_iso_input","",p);
-				input.type = "text";
-				input.size = 1;
-				input.name = "actor_language_iso_input";
-				
-				dom.newElement("span","","",p," ");
-				
-				var input = dom.newElement("input","actor_language_iso_ok","",p);
-				input.type = "button";
-				input.value = "OK";			
-				
-				dom.newElement("div","current_actor_languages_display", "", parent);									
-				
-			}
-		
-		},
-		reset: function(){
-		
-			g("corpus_name").value = "";
-			g("corpus_title").value = "";
-			g("corpus_description").value = "";
-			
-			my.workflow[3].eraseAll();
-			my.workflow[0].content_languages.removeAll();
+			dom.newElement("div",element_id_prefix+"actors", "actors", parent);
+			dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
 		
 		}
+		
+		if (field.name == "resources"){
+		
+			dom.newElement("div",element_id_prefix+"resources", "mfs", parent);
+			dom.newElement("div",element_id_prefix+"add_mf_div", "", parent);
+		
+		}
+		
+		if (field.name == "actor_languages"){
+		
+			var p = dom.newElement("p","", "", parent);
+			var input = dom.newElement("input","actor_language_select","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = "actor_language_select";
+			
+			dom.newElement("span","","",p," ");
+			var input = dom.newElement("input","actor_language_search_button","",p);
+			input.type = "button";
+			input.value = "Search";
+
+			dom.newElement("br","","",p);
+			dom.newElement("span","","",p,"or type in ISO code ");
+			
+			var input = dom.newElement("input","actor_language_iso_input","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = "actor_language_iso_input";
+			
+			dom.newElement("span","","",p," ");
+			
+			var input = dom.newElement("input","actor_language_iso_ok","",p);
+			input.type = "button";
+			input.value = "OK";			
+			
+			dom.newElement("div","current_actor_languages_display", "", parent);									
+			
+		}
+	
+	};
+	
+	my.reset = function(){
+		
+		g("corpus_name").value = "";
+		g("corpus_title").value = "";
+		g("corpus_description").value = "";
+		
+		my.workflow[3].eraseAll();
+		my.workflow[0].content_languages.removeAll();
+		
 	};
 	
 	return my;

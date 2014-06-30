@@ -36,8 +36,7 @@ var save_and_recall = (function(){
 		
 		var form_object = JSON.parse(form);
 		
-		console.log("APP Recall object: ");
-		console.log(form_object);
+		console.log("APP Recall object found!");
 		
 		return form_object;	
 		
@@ -55,8 +54,7 @@ var save_and_recall = (function(){
 		
 		var form_object = JSON.parse(form);
 		
-		console.log("Environment Recall object: ");
-		console.log(form_object);
+		console.log("Environment Recall object found!");
 		
 		my.recallEnvironmentData(form_object);	
 		
