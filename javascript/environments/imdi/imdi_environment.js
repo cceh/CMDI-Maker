@@ -29,6 +29,7 @@ var imdi_environment = (function(){
 		return APP.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
 	};
 	
+	
 	my.settings = function(){
 		return [
 			{
@@ -75,6 +76,7 @@ var imdi_environment = (function(){
 		
 	};
 	
+	
 	my.getSaveData = function(){
 		
 		var object = {};
@@ -85,6 +87,7 @@ var imdi_environment = (function(){
 		return object;
 		
 	};
+	
 	
 	my.specialInput = function(field, parent, element_id_prefix, element_class_prefix){
 		
@@ -137,6 +140,7 @@ var imdi_environment = (function(){
 	
 	};
 	
+	
 	my.reset = function(){
 		
 		g("corpus_name").value = "";
@@ -147,6 +151,7 @@ var imdi_environment = (function(){
 		my.workflow[0].content_languages.removeAll();
 		
 	};
+	
 	
 	return my;
 	
