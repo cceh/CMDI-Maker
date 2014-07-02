@@ -15,60 +15,63 @@ limitations under the License.
 */
 
 // APP Config
-var originator = "CMDI Maker by CLASS - Cologne Language Archive Services";    
-var version = "v1.0.9";
-var LanguageCodePrefix = "ISO639-3:";
-var path_to_images = "img/";
-var path_to_icons = path_to_images + "icons/";
-var file_download_header = "text/xml;charset=utf-8";
-var highlight_color = "skyblue";
-var local_storage_key = "CMDI-Maker";
-var project_file_name = "CMDI-Maker-Project.cmp";
+var APP_CONF = {
 
-var session_dom_element_prefix = "session_";
-var copy_checkbox_element_prefix = "copy_check_";
-var viewlink_id_prefix = "VIEWLINK_";
-var view_id_prefix = "VIEW_";
-var xml_textarea_class_name = "xml_textarea";
+	originator: "CMDI Maker by CLASS - Cologne Language Archive Services",    
+	version: "v1.0.9",
+	LanguageCodePrefix: "ISO639-3:",
+	path_to_images: "img/",
+	path_to_icons: "img/icons/",
+	file_download_header: "text/xml;charset=utf-8",
+	highlight_color: "skyblue",
+	local_storage_key: "CMDI-Maker",
+	project_file_name: "CMDI-Maker-Project.cmp",
 
-var output_textarea_rows = 40;
-var output_textarea_columns = 130;
-var form_textarea_rows = 18;
-var form_textarea_columns = 5;
+	session_dom_element_prefix: "session_",
+	copy_checkbox_element_prefix: "copy_check_",
+	viewlink_id_prefix: "VIEWLINK_",
+	view_id_prefix: "VIEW_",
+	xml_textarea_class_name: "xml_textarea",
 
-var MetadataLanguageIDs = [
-	["eng","English"],
-	["ger", "German"],
-	["spa","Spanish"],
-	["fra","French"],
-	["rus","Russian"],
-	["ind","Indonesian"],
-	["por","Portuguese"],
-	["arb","Standard Arabic"]
-];
+	output_textarea_rows: 40,
+	output_textarea_columns: 130,
+	form_textarea_rows: 18,
+	form_textarea_columns: 5,
 
-var not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:";
+	MetadataLanguageIDs: [
+		["eng","English"],
+		["ger", "German"],
+		["spa","Spanish"],
+		["fra","French"],
+		["rus","Russian"],
+		["ind","Indonesian"],
+		["por","Portuguese"],
+		["arb","Standard Arabic"]
+	],
 
-var hellos = [
-	["Hello!","English"],
-	["Hallo!","German"],
-	["Aloha!","Hawaiian"],
-	["Hola!", "Spanish"],
-	["Hej!", "Danish"],
-	["Merhaba!", "Turkish"],
-	["你好", "Chinese"],
-	["こんにちは", "Japanese"],
-	["Вiтаю!","Belarusian"],
-	["Salut!","French"],
-	["Grüezi!","Swiss German"],
-	["Ciào!", "Italian"],
-	["Hæ!", "Icelandic"],
-	["Moïen!", "Luxembourgish"],
-	["Olá!", "Portuguese"],
-	["Privet!", "Russian"],
-	["Hallå!", "Scanian"],
-	["Salam!", "Urdu"]
-];
+	not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:",
+
+	hellos: [
+		["Hello!","English"],
+		["Hallo!","German"],
+		["Aloha!","Hawaiian"],
+		["Hola!", "Spanish"],
+		["Hej!", "Danish"],
+		["Merhaba!", "Turkish"],
+		["你好", "Chinese"],
+		["こんにちは", "Japanese"],
+		["Вiтаю!","Belarusian"],
+		["Salut!","French"],
+		["Grüezi!","Swiss German"],
+		["Ciào!", "Italian"],
+		["Hæ!", "Icelandic"],
+		["Moïen!", "Luxembourgish"],
+		["Olá!", "Portuguese"],
+		["Privet!", "Russian"],
+		["Hallå!", "Scanian"],
+		["Salam!", "Urdu"]
+	]
+};
 
   
 document.addEventListener('DOMContentLoaded', function() {

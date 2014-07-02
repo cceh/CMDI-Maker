@@ -132,7 +132,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		var div = dom.newElement("div","actor_language_"+my.id_counter+"_div","current_actor_language_entry",g("current_actor_languages_display"));
 		var img = dom.newElement("img","delete_lang_"+my.id_counter+"_icon","delete_lang_icon",div);
-		img.src = path_to_icons+"reset.png";
+		img.src = APP_CONF.path_to_icons+"reset.png";
 		img.addEventListener('click', function(num) { 
 			return function(){ actor.languages.remove(num);  
 			};

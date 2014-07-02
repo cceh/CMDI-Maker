@@ -41,7 +41,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		session = eldp_environment.workflow[2];
 		
-		var view = g(view_id_prefix + my.identity.id);
+		var view = g(APP_CONF.view_id_prefix + my.identity.id);
 		
 		dom.newElement("div","ac_list","",view);
 		var ac_view = dom.newElement("div","ac_view","",view);
@@ -197,7 +197,7 @@ eldp_environment.workflow[1] = (function(){
 		
 			document.getElementsByName("actor_anonymized")[0].checked = my.actors[actor_id].anonymized;
 			
-			if (APP.active_view == view_id_prefix + my.identity.id){
+			if (APP.active_view == APP_CONF.view_id_prefix + my.identity.id){
 				g("save_actor_span").innerHTML = " Save changes to this actor";
 			}
 
@@ -207,7 +207,7 @@ eldp_environment.workflow[1] = (function(){
 
 			my.blank_form();
 
-			if (APP.active_view == view_id_prefix + my.identity.id){
+			if (APP.active_view == APP_CONF.view_id_prefix + my.identity.id){
 				g("save_actor_span").innerHTML = " Save Actor";
 			}
 
@@ -234,7 +234,7 @@ eldp_environment.workflow[1] = (function(){
 		
 			var actors_json = JSON.stringify(my.actors);
 			
-			APP.save_file(actors_json, "actors.json", file_download_header);
+			APP.save_file(actors_json, "actors.json", APP_CONF.file_download_header);
 			
 		}
 		
@@ -605,7 +605,7 @@ eldp_environment.workflow[1] = (function(){
 			if (document.getElementsByName("radio_age_calc")[0].checked == true){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
-				var sessionDate = get(session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(session_dom_element_prefix+session_id+"_session_date_day"); 
+				var sessionDate = get(APP_CONF.session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(APP_CONF.session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(APP_CONF.session_dom_element_prefix+session_id+"_session_date_day"); 
 				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
 				
 				if (age_calc_result != 0){

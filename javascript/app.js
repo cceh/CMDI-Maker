@@ -260,7 +260,7 @@ var APP = (function () {
 		}
 		
 		my.checkIfFirstStart();
-		g("version_span").innerHTML = version;
+		g("version_span").innerHTML = APP_CONF.version;
 		my.sayHello();
 		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.initSettings(my.settings(), g("core_settings"));
@@ -280,9 +280,9 @@ var APP = (function () {
 	
 		var select = g("metadata_language_select");
 
-		for (var j=0;j<MetadataLanguageIDs.length;j++){
+		for (var j=0;j<APP_CONF.MetadataLanguageIDs.length;j++){
 
-			var NewOption = new Option(MetadataLanguageIDs[j][1], MetadataLanguageIDs[j][0], false, true);
+			var NewOption = new Option(APP_CONF.MetadataLanguageIDs[j][1], APP_CONF.MetadataLanguageIDs[j][0], false, true);
 			select.options[select.options.length] = NewOption;
 		}
 	  
@@ -352,12 +352,12 @@ var APP = (function () {
 	my.sayHello = function (){
 
 
-		var index = Math.floor(Math.random() * hellos.length);
+		var index = Math.floor(Math.random() * APP_CONF.hellos.length);
 
-		g("hello").innerHTML = hellos[index][0];
+		g("hello").innerHTML = APP_CONF.hellos[index][0];
 		
 		g("hello").addEventListener("click", function () {
-			alertify.log(my.l("this_is","before") + hellos[index][1] + my.l("this_is","after"));
+			alertify.log(my.l("this_is","before") + APP_CONF.hellos[index][1] + my.l("this_is","after"));
 		});
 
 		g("greeting_text").innerHTML = my.l("greeting_text");
@@ -435,7 +435,7 @@ var APP = (function () {
 	
 	my.saveAllOutputFiles = function(){
 	
-		var textareas = document.getElementsByClassName(xml_textarea_class_name);
+		var textareas = document.getElementsByClassName(APP_CONF.xml_textarea_class_name);
 		
 		for (var t=0; t<textareas.length; t++){
 		
@@ -455,7 +455,7 @@ var APP = (function () {
 			if (functions[f].type != "function_wrap"){
 				var function_div = dom.newElement("div", functions[f].id, "function_icon",functions_div);
 				var img = dom.newElement("img","","function_img", function_div);
-				img.src = path_to_icons + functions[f].icon;
+				img.src = APP_CONF.path_to_icons + functions[f].icon;
 				var label = dom.newElement("h3","","", function_div, functions[f].label);
 				
 				if (functions[f].label_span_id){
@@ -476,7 +476,7 @@ var APP = (function () {
 				
 				var function_div = dom.newElement("div", functions[f].id, "function_icon",function_wrap);
 				var img = dom.newElement("img","","function_img", function_div);
-				img.src = path_to_icons + functions[f].icon;
+				img.src = APP_CONF.path_to_icons + functions[f].icon;
 				dom.newElement("h3","","", function_div, functions[f].label);
 				
 				function_div.addEventListener('click', functions[f].onclick);
@@ -525,7 +525,7 @@ var APP = (function () {
 			//find the module for this id
 			for (var m=0; m<my.active_environment.workflow.length; m++){
 
-				if ((view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
+				if ((APP_CONF.view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
 					return my.active_environment.workflow[m];
 				}
 			
@@ -551,7 +551,7 @@ var APP = (function () {
 		else { //if argument is a module
 
 			var module = module_or_id;
-			var id = view_id_prefix + module.identity.id;
+			var id = APP_CONF.view_id_prefix + module.identity.id;
 		
 		}
 		
@@ -601,24 +601,24 @@ var APP = (function () {
 		
 			//Unhighlight all workflow icons
 			forEach(my.active_environment.workflow, function(workflow){
-				g(viewlink_id_prefix + workflow.identity.id).style.backgroundColor = "";
+				g(APP_CONF.viewlink_id_prefix + workflow.identity.id).style.backgroundColor = "";
 			});
 		}
 
 		//Unhighlight APP VIEWLINKS
 		forEach(my.views, function(view){
-			g(viewlink_id_prefix + view.id).style.backgroundColor = "";
+			g(APP_CONF.viewlink_id_prefix + view.id).style.backgroundColor = "";
 		});
 		
 		var module = my.getModuleOfViewID(id);
 		
 		if (module){
-			g(viewlink_id_prefix + module.identity.id).style.backgroundColor = highlight_color;
+			g(APP_CONF.viewlink_id_prefix + module.identity.id).style.backgroundColor = APP_CONF.highlight_color;
 		}
 		
 		else {
-			id = id.substr(view_id_prefix.length);
-			g(viewlink_id_prefix+id).style.backgroundColor = highlight_color;
+			id = id.substr(APP_CONF.view_id_prefix.length);
+			g(APP_CONF.viewlink_id_prefix+id).style.backgroundColor = APP_CONF.highlight_color;
 		}
 
 	}
@@ -636,7 +636,7 @@ var APP = (function () {
 		var clean_filename = remove_invalid_chars(filename);
 		
 		if (!mime_type){
-			var mime_type = file_download_header;
+			var mime_type = APP_CONF.file_download_header;
 		}
 
 		var blob = new Blob([text], {type: mime_type});
@@ -656,7 +656,7 @@ var APP = (function () {
 		forEach(my.active_environment.workflow, function (module){
 		
 			//delete module view
-			dom.remove(view_id_prefix+module.identity.id);
+			dom.remove(APP_CONF.view_id_prefix+module.identity.id);
 			
 		});
 		
@@ -848,7 +848,7 @@ var APP = (function () {
 			var module = workflow[e];
 			
 			//create a view for the module
-			dom.newElement("div",view_id_prefix+module.identity.id,"content",g("content_wrapper"));
+			dom.newElement("div",APP_CONF.view_id_prefix+module.identity.id,"content",g("content_wrapper"));
 			
 			//initialize functions for the interface
 			if (module.functions){
@@ -875,13 +875,13 @@ var APP = (function () {
 			
 				var arrow = dom.newElement("div","","wizard_arrow",div);
 				var image = dom.newElement("img","","wizard_icon",arrow);
-				image.src = path_to_icons + "right2.png";
+				image.src = APP_CONF.path_to_icons + "right2.png";
 			
 			}
 			
-			var icon = dom.newElement("div",viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
+			var icon = dom.newElement("div",APP_CONF.viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
 			var image = dom.newElement("img","","module_icon",icon);
-			image.src = path_to_icons + workflow[w].identity.icon;
+			image.src = APP_CONF.path_to_icons + workflow[w].identity.icon;
 
 			dom.newElement("br","","",icon);
 			dom.newElement("span","","",icon,workflow[w].identity.title);
@@ -932,9 +932,9 @@ var APP = (function () {
 		});
 		
 		for (var v=0; v<my.views.length; v++){
-			g(viewlink_id_prefix + my.views[v].id).addEventListener('click', function(num) {
+			g(APP_CONF.viewlink_id_prefix + my.views[v].id).addEventListener('click', function(num) {
 				return function(){
-					my.view(view_id_prefix + num);
+					my.view(APP_CONF.view_id_prefix + num);
 				}
 			}(my.views[v].id));
 		}
