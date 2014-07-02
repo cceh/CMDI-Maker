@@ -83,7 +83,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			var session_object = my.sessions[s];
 			
-			APP.fillObjectWithFormElement(session_object, APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
+			APP.fillObjectWithFormElement(session_object, APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
 			
 			array.push(session_object);
 		}
@@ -108,7 +108,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		for (var c=0; c<options.length; c++){
 		
-			var input = dom.newElement("input", APP_CONF.copy_checkbox_element_prefix+options[c].name, "", div);
+			var input = dom.newElement("input", APP.CONF.copy_checkbox_element_prefix+options[c].name, "", div);
 			input.type = "checkbox";
 			input.checked = true;
 			
@@ -175,7 +175,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	my.refreshResources = function(s){
 	//refresh resources for one session
 
-		g(APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";
+		g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";
 
 		var select = document.createElement("select");
 		
@@ -188,7 +188,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		if (resources.available_resources.length > 0){
 		
-			g(APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(select);
+			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(select);
 		
 			select.selectedIndex = 0;	
 		
@@ -196,9 +196,9 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			add_button.type = "button";
 			add_button.value = "Add to session";
 			
-			g(APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(document.createElement("br"));
+			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(document.createElement("br"));
 			
-			g(APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
+			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
 				return function(){ my.addResource(num, select.selectedIndex);  };
@@ -209,7 +209,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		if (resources.available_resources.length == 0){
 		
 			var p = document.createElement("h5");
-			g(APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(p);
+			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(p);
 			p.innerHTML = "No files have been added.<br>";
 		
 			var a = document.createElement("a");
@@ -282,7 +282,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.refreshSessionsDisplay = function(){
 	
-		var sessions_view = g(APP_CONF.view_id_prefix + my.identity.id);
+		var sessions_view = g(APP.CONF.view_id_prefix + my.identity.id);
 		
 		sessions_view.innerHTML = "";
 		
@@ -307,24 +307,24 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		var session_id = session_object.id;
 		var session_expanded = session_object.expanded;
 	
-		var sessions_view = g(APP_CONF.view_id_prefix + my.identity.id);
+		var sessions_view = g(APP.CONF.view_id_prefix + my.identity.id);
 	
 		//remove no sessions message before drawing new session
 		if (g("no_session_text")) {
 			sessions_view.innerHTML = "";
 		};
 		
-		var session_div = dom.newElement('div',APP_CONF.session_dom_element_prefix+session_id,'session_div',sessions_view); 
+		var session_div = dom.newElement('div',APP.CONF.session_dom_element_prefix+session_id,'session_div',sessions_view); 
 		//sessions_count is right! but it has to be clear which session in sessions has which session_id
 
-		var session_header = dom.newElement('div',APP_CONF.session_dom_element_prefix+session_id+'_header','session_header',session_div);
+		var session_header = dom.newElement('div',APP.CONF.session_dom_element_prefix+session_id+'_header','session_header',session_div);
 		session_header.addEventListener('click', function(num) { 
 			return function(){
 				my.display(num);  
 			};
 		}(session_id) );
 
-		var session_label = dom.newElement('a',APP_CONF.session_dom_element_prefix+session_id+'_label','session_label',session_header);
+		var session_label = dom.newElement('a',APP.CONF.session_dom_element_prefix+session_id+'_label','session_label',session_header);
 		
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name == "")){
 		
@@ -342,28 +342,28 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		session_label.href = "#";
 
 		//create icon for deleting the session
-		var session_delete_link = dom.newElement('a',APP_CONF.session_dom_element_prefix+session_id+'_delete_link','session_delete_link',session_header);
+		var session_delete_link = dom.newElement('a',APP.CONF.session_dom_element_prefix+session_id+'_delete_link','session_delete_link',session_header);
 		session_delete_link.addEventListener('click', function(num) {
 			return function(){
 				my.userErase(num);  
 				my.display(num);   //because otherwise session.expanded would change
 			};
 		}(session_id) );
-		session_delete_link.innerHTML = "<img id=\""+APP_CONF.session_dom_element_prefix+session_id+"_delete_img\" class=\"delete_img\" src=\""+APP_CONF.path_to_icons+"reset.png\" alt=\"Delete Session\">";
+		session_delete_link.innerHTML = "<img id=\""+APP.CONF.session_dom_element_prefix+session_id+"_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Session\">";
 		session_delete_link.href = "#";
 		
 		//create icon to expand/collapse the session
-		var session_display_link = dom.newElement('a',APP_CONF.session_dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
-		session_display_link.innerHTML = "<img id=\""+APP_CONF.session_dom_element_prefix+session_id+"_expand_img\" class=\"expand_img\" src=\""+APP_CONF.path_to_icons+"down.png\">";
+		var session_display_link = dom.newElement('a',APP.CONF.session_dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
+		session_display_link.innerHTML = "<img id=\""+APP.CONF.session_dom_element_prefix+session_id+"_expand_img\" class=\"expand_img\" src=\""+APP.CONF.path_to_icons+"down.png\">";
 		session_display_link.href = "#";
 
 
-		var session_content = dom.newElement('div',APP_CONF.session_dom_element_prefix+session_id+'_content','session_content',session_div);
+		var session_content = dom.newElement('div',APP.CONF.session_dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
-		APP.makeInput(session_content, session_form, APP_CONF.session_dom_element_prefix+session_id+"_", APP_CONF.session_dom_element_prefix, session_object);
+		APP.makeInput(session_content, session_form, APP.CONF.session_dom_element_prefix+session_id+"_", APP.CONF.session_dom_element_prefix, session_object);
 		
-		g(APP_CONF.session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
+		g(APP.CONF.session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		
 			return function(){
 			
@@ -430,7 +430,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.refreshActorName = function(session_id, actor_id){
 
-		var div = g(APP_CONF.session_dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
+		var div = g(APP.CONF.session_dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
 		div.innerHTML = "<h2 class='actor_name_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
 		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
 
@@ -471,7 +471,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.refreshActorListInSession = function(s,all_available_actor_ids){
 
-		var aad = g(APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_actors_addActors_div");
+		var aad = g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_actors_addActors_div");
 		
 		aad.innerHTML = "";
 
@@ -607,7 +607,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.erase = function (session_id){
 
-		dom.remove(APP_CONF.session_dom_element_prefix+session_id);
+		dom.remove(APP.CONF.session_dom_element_prefix+session_id);
 		
 		my.sessions.splice(my.getSessionIndexFromID(session_id),1);
 		
@@ -651,7 +651,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		console.log("Showing no session text");
 
-		var sessions_view = g(APP_CONF.view_id_prefix + my.identity.id);
+		var sessions_view = g(APP.CONF.view_id_prefix + my.identity.id);
 		
 		sessions_view.innerHTML = "";
 
@@ -736,13 +736,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.renderActor = function(session_id, actor_id){
 
-		dom.newElement("div", APP_CONF.session_dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(APP_CONF.session_dom_element_prefix+session_id+"_actors_actors"));
-		var div = dom.newElement("div", APP_CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(APP_CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
+		dom.newElement("div", APP.CONF.session_dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(APP.CONF.session_dom_element_prefix+session_id+"_actors_actors"));
+		var div = dom.newElement("div", APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
 		
 		my.refreshActorName(session_id, actor_id);
 		
-		var img = dom.newElement("img", "delete_actor_"+actor_id+"_icon", "delete_actor_icon", g(APP_CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
-		img.src = APP_CONF.path_to_icons+"reset.png";
+		var img = dom.newElement("img", "delete_actor_"+actor_id+"_icon", "delete_actor_icon", g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
+		img.src = APP.CONF.path_to_icons+"reset.png";
 
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeActor(num, num2);  
@@ -761,7 +761,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		//remove actor_id in array
 		my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.splice(position_in_array,1);
 		
-		dom.remove(APP_CONF.session_dom_element_prefix+session_id+"_actor_"+actor_id);
+		dom.remove(APP.CONF.session_dom_element_prefix+session_id+"_actor_"+actor_id);
 		
 		save_and_recall.save();
 		
@@ -847,11 +847,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		
 		//Rename the session if an EAF file is added for the first time and session has no name yet
-		if ((GetFileTypeFromFilename(filename) == "eaf") && (get(APP_CONF.session_dom_element_prefix+session_id+"_session_name") == "")){
+		if ((GetFileTypeFromFilename(filename) == "eaf") && (get(APP.CONF.session_dom_element_prefix+session_id+"_session_name") == "")){
 		
 			var name = RemoveEndingFromFilename(resources.available_resources[resource_file_index][0]);
 			
-			g(APP_CONF.session_dom_element_prefix+session_id+"_session_name").value = name;
+			g(APP.CONF.session_dom_element_prefix+session_id+"_session_name").value = name;
 			
 			my.refreshSessionHeading(session_id);
 		
@@ -862,15 +862,15 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		//Check, if there is a date string in the form of YYYY-MM-DD in the filename of an eaf file. If so, adopt it for the session date
 		//only, if session date is still YYYY
-		if ((GetFileTypeFromFilename(filename) == "eaf") && (get(APP_CONF.session_dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
+		if ((GetFileTypeFromFilename(filename) == "eaf") && (get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
 			
 			var date = parseDate(resources.available_resources[resource_file_index][0]);
 			
 			if (date != null){
 			
-				g(APP_CONF.session_dom_element_prefix+session_id+"_session_date_year").value = date.year;
-				g(APP_CONF.session_dom_element_prefix+session_id+"_session_date_month").value = date.month;
-				g(APP_CONF.session_dom_element_prefix+session_id+"_session_date_day").value = date.day;
+				g(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year").value = date.year;
+				g(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month").value = date.month;
+				g(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day").value = date.day;
 				
 				alertify.log("Session date has been extracted from EAF file name: " + date.year + "-" + date.month + "-" + date.day, "", 5000);
 			
@@ -890,7 +890,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.renderResource = function(resource_id, session_id, type, name, size){
 
-		var div = dom.newElement('div', APP_CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(APP_CONF.session_dom_element_prefix+session_id+"_resources_resources"));
+		var div = dom.newElement('div', APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(APP.CONF.session_dom_element_prefix+session_id+"_resources_resources"));
 
 		var h3 = document.createElement("h3");
 		
@@ -910,7 +910,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		div.appendChild(h3);
 		
 		var img = dom.newElement("img","delete_resource_" + resource_id +"_icon","delete_resource_icon",div);
-		img.src = APP_CONF.path_to_icons+"reset.png";
+		img.src = APP.CONF.path_to_icons+"reset.png";
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeResource(num, num2);  
 			};
@@ -919,8 +919,8 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		var span = document.createElement("span");
 		span.className = "resource_file_content_span";
 		
-		span.innerHTML = "File Name<br><input type=\"text\" name=\""+APP_CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
-		"Size<br><input type=\"text\" name=\""+APP_CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">";
+		span.innerHTML = "File Name<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
+		"Size<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">";
 		
 		div.appendChild(span);
 		
@@ -933,13 +933,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.refreshSessionHeading = function(session_id){
 
-		if (get(APP_CONF.session_dom_element_prefix+session_id+"_session_name") == ""){
-			g(APP_CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
+		if (get(APP.CONF.session_dom_element_prefix+session_id+"_session_name") == ""){
+			g(APP.CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
 		}
 		
 		else {
 		
-			g(APP_CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">Session: "+get(APP_CONF.session_dom_element_prefix+session_id+"_session_name")+"   </h1>";
+			g(APP.CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">Session: "+get(APP.CONF.session_dom_element_prefix+session_id+"_session_name")+"   </h1>";
 
 		}
 
@@ -976,9 +976,9 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		}
 		
-		var child = document.getElementById(APP_CONF.session_dom_element_prefix+session_id+"_mediafile_"+resource_id);
+		var child = document.getElementById(APP.CONF.session_dom_element_prefix+session_id+"_mediafile_"+resource_id);
 		
-		g(APP_CONF.session_dom_element_prefix+session_id+"_resources_resources").removeChild(child);
+		g(APP.CONF.session_dom_element_prefix+session_id+"_resources_resources").removeChild(child);
 
 	}
 
@@ -994,7 +994,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		for (var i=0; i<session_form.fields_to_copy.length; i++){
 		
-			if (g(APP_CONF.copy_checkbox_element_prefix+session_form.fields_to_copy[i].name).checked){  //if checkbox is checked
+			if (g(APP.CONF.copy_checkbox_element_prefix+session_form.fields_to_copy[i].name).checked){  //if checkbox is checked
 			
 				if (session_form.fields_to_copy[i].name == "actors"){  //special case: actors!
 				
@@ -1028,7 +1028,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		for (var s=1;s<my.sessions.length;s++){   //important to not include the first session in this loop
 		
 			for (var k=0;k<fields_to_copy.length;k++){
-				dom.copyField(APP_CONF.session_dom_element_prefix+my.sessions[s].id+"_"+fields_to_copy[k],APP_CONF.session_dom_element_prefix+my.sessions[0].id+"_"+fields_to_copy[k]);
+				dom.copyField(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_"+fields_to_copy[k],APP.CONF.session_dom_element_prefix+my.sessions[0].id+"_"+fields_to_copy[k]);
 			}
 		
 		}
@@ -1062,15 +1062,15 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		for (var i=0;i<my.sessions.length;i++){
 		
-			if (get(APP_CONF.session_dom_element_prefix+my.sessions[i].id+"_session_name") == ""){
+			if (get(APP.CONF.session_dom_element_prefix+my.sessions[i].id+"_session_name") == ""){
 			
 				return false;
 			
 			}
 			
-			for (var c=0; c<APP_CONF.not_allowed_chars.length; c++){
+			for (var c=0; c<APP.CONF.not_allowed_chars.length; c++){
 		
-				if (get(APP_CONF.session_dom_element_prefix+my.sessions[i].id+"_session_name").indexOf(APP_CONF.not_allowed_chars[c]) != -1){
+				if (get(APP.CONF.session_dom_element_prefix+my.sessions[i].id+"_session_name").indexOf(APP.CONF.not_allowed_chars[c]) != -1){
 			
 					return false;
 				
@@ -1089,7 +1089,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		for (var i=0;i<my.sessions.length;i++){
 		
-			if (get(APP_CONF.session_dom_element_prefix+my.sessions[i].id+"_project_name") == ""){
+			if (get(APP.CONF.session_dom_element_prefix+my.sessions[i].id+"_project_name") == ""){
 			
 				return false;
 			
@@ -1104,15 +1104,15 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.display = function(session_id){
 	
-		if (document.getElementById(APP_CONF.session_dom_element_prefix+session_id+"_content").style.display != "none"){
-			document.getElementById(APP_CONF.session_dom_element_prefix+session_id+"_content").style.display = "none";
-			document.getElementById(APP_CONF.session_dom_element_prefix+session_id+"_expand_img").src=APP_CONF.path_to_icons+"up.png";
+		if (document.getElementById(APP.CONF.session_dom_element_prefix+session_id+"_content").style.display != "none"){
+			document.getElementById(APP.CONF.session_dom_element_prefix+session_id+"_content").style.display = "none";
+			document.getElementById(APP.CONF.session_dom_element_prefix+session_id+"_expand_img").src=APP.CONF.path_to_icons+"up.png";
 			my.sessions[my.getSessionIndexFromID(session_id)].expanded = false;
 		}
 		
 		else {
-			document.getElementById(APP_CONF.session_dom_element_prefix+session_id+"_content").style.display = "block";
-			document.getElementById(APP_CONF.session_dom_element_prefix+session_id+"_expand_img").src=APP_CONF.path_to_icons+"down.png";
+			document.getElementById(APP.CONF.session_dom_element_prefix+session_id+"_content").style.display = "block";
+			document.getElementById(APP.CONF.session_dom_element_prefix+session_id+"_expand_img").src=APP.CONF.path_to_icons+"down.png";
 			my.sessions[my.getSessionIndexFromID(session_id)].expanded = true;
 		}
 	}

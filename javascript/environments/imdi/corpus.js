@@ -35,18 +35,18 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.init = function(){
 		
-		var corpus_form = dom.newElement("div","corpus_form","",g(APP_CONF.view_id_prefix + my.identity.id));
+		var corpus_form = dom.newElement("div","corpus_form","",g(APP.CONF.view_id_prefix + my.identity.id));
 		dom.newElement("h1","","",corpus_form,"Corpus");
 		var p = dom.newElement("p","","",corpus_form);
 		
 		dom.makeTextInput(p,"Name","corpus_name","corpus_name","","A short archivable name of your corpus");
 		dom.makeTextInput(p,"Title","corpus_title","corpus_title","","The complete and extensive title of your corpus");
-		dom.makeTextarea(APP_CONF.form_textarea_rows,APP_CONF.form_textarea_columns,p,"Description","corpus_description","corpus_description","","","");
+		dom.makeTextarea(APP.CONF.form_textarea_rows,APP.CONF.form_textarea_columns,p,"Description","corpus_description","corpus_description","","","");
 		
 		g("corpus_name").onkeypress = function(e) {
 			var chr = String.fromCharCode(e.which);
 			
-			if (APP_CONF.not_allowed_chars.indexOf(chr) >= 0){
+			if (APP.CONF.not_allowed_chars.indexOf(chr) >= 0){
 				alertify.log("This character is not allowed here.","error",5000);
 				return false;
 			}
@@ -120,9 +120,9 @@ imdi_environment.workflow[0] = (function(){
 			
 		}
 		
-		for (var c=0; c<APP_CONF.not_allowed_chars.length; c++){
+		for (var c=0; c<APP.CONF.not_allowed_chars.length; c++){
 		
-			if (get("corpus_name").indexOf(APP_CONF.not_allowed_chars[c]) != -1){
+			if (get("corpus_name").indexOf(APP.CONF.not_allowed_chars[c]) != -1){
 			
 				return false;
 				

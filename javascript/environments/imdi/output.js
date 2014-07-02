@@ -126,13 +126,13 @@ imdi_environment.workflow[4] = (function (){
 			//if corpus has a name, but an invalid one
 			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") != ""){   //show corpus
 				APP.view(corpus);
-				alertify.alert("The corpus must have a proper name or no name at all.<br>Not allowed chars are: " + APP_CONF.not_allowed_chars);
+				alertify.alert("The corpus must have a proper name or no name at all.<br>Not allowed chars are: " + APP.CONF.not_allowed_chars);
 			
 			}
 			
 			else {  //show sessions
 				APP.view(session);
-				alertify.alert("Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: " + APP_CONF.not_allowed_chars);
+				alertify.alert("Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: " + APP.CONF.not_allowed_chars);
 			}
 		}
 	}

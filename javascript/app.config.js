@@ -15,10 +15,10 @@ limitations under the License.
 */
 
 // APP Config
-var APP_CONF = {
+APP.CONF = {
 
 	originator: "CMDI Maker by CLASS - Cologne Language Archive Services",    
-	version: "v1.0.9",
+	version: "v1.1",
 	LanguageCodePrefix: "ISO639-3:",
 	path_to_images: "img/",
 	path_to_icons: "img/icons/",

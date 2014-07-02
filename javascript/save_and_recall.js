@@ -25,7 +25,7 @@ var save_and_recall = (function(){
 
 	my.getRecallDataForApp = function(){
 
-		var form = localStorage.getItem(APP_CONF.local_storage_key);
+		var form = localStorage.getItem(APP.CONF.local_storage_key);
 
 		if (!form){
 			console.log("No recall data found");
@@ -142,7 +142,7 @@ var save_and_recall = (function(){
 	//This saves the app data and the data of the active environment
 		
 		var form_object = my.retrieveDataToSave();
-		localStorage.setItem(APP_CONF.local_storage_key, JSON.stringify(form_object));
+		localStorage.setItem(APP.CONF.local_storage_key, JSON.stringify(form_object));
 		
 		if (APP.active_environment){
 			var environment_object = my.retrieveEnvironmentDataToSave();
@@ -166,7 +166,7 @@ var save_and_recall = (function(){
 			CMP_object.environments[APP.active_environment.id] = environment_object;
 		}
 	
-		APP.save_file(JSON.stringify(CMP_object), APP_CONF.project_file_name);
+		APP.save_file(JSON.stringify(CMP_object), APP.CONF.project_file_name);
 	
 	}
 

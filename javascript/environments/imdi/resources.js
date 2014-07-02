@@ -59,7 +59,7 @@ imdi_environment.workflow[1] = (function(){
 		var warning_div = dom.newElement("div","","warning_div",parent);
 		var warning_img_div = dom.newElement("div","","warning_img_div",warning_div);
 		var img = dom.newElement("img","","warning_icon",warning_img_div);
-		img.src = APP_CONF.path_to_icons + "warning.png";
+		img.src = APP.CONF.path_to_icons + "warning.png";
 		
 		dom.newElement("div","","compatibility_warning",warning_div, string);
 	
@@ -236,7 +236,7 @@ imdi_environment.workflow[1] = (function(){
 	
 		session = imdi_environment.workflow[3];
 	
-		var view = g(APP_CONF.view_id_prefix + my.identity.id);
+		var view = g(APP.CONF.view_id_prefix + my.identity.id);
 		var div = dom.newElement("div","files","",view);
 		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
 		

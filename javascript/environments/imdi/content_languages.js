@@ -187,7 +187,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		dom.newElement("span","","",div,"ISO639-3 Code: " + LanguageObject[0]);
 		
 		var img = dom.newElement("img","delete_lang_"+my.id_counter+"_icon","delete_lang_icon",div);
-		img.src = APP_CONF.path_to_icons+"reset.png";
+		img.src = APP.CONF.path_to_icons+"reset.png";
 		img.addEventListener('click', function(num) { 
 			return function(){
 				corpus.content_languages.remove(num);  

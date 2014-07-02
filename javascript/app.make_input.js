@@ -48,8 +48,8 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		case "textarea": {
 		
 			var input = dom.makeTextarea(
-				APP_CONF.form_textarea_rows,
-				APP_CONF.form_textarea_columns,
+				APP.CONF.form_textarea_rows,
+				APP.CONF.form_textarea_columns,
 				parent,
 				field.heading,
 				element_id_prefix+field.name,

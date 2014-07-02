@@ -229,7 +229,7 @@ var dom = (function() {
 		}
 		
 		var img = dom.newElement("img","","edit_img",parent);
-		img.src = APP_CONF.path_to_icons + "textedit.png";
+		img.src = APP.CONF.path_to_icons + "textedit.png";
 		img.alt = "Custom Property";
 		img.title = "Custom Property";
 
@@ -657,7 +657,7 @@ var dom = (function() {
 		dom.newElement("h1","","",frame,title); 
 		
 		var img = dom.newElement("img","","close_select_frame_icon",frame);
-		img.src = APP_CONF.path_to_icons + "reset.png";
+		img.src = APP.CONF.path_to_icons + "reset.png";
 		img.addEventListener('click', function() { 
 			my.closeSelectFrame(); 
 		} );
@@ -696,17 +696,17 @@ var dom = (function() {
 		var div = my.newElement("div", "", "output_div", parent);
 		
 		var img = my.newElement("img","","download_icon",div);
-		img.src = APP_CONF.path_to_icons + "save.png";
+		img.src = APP.CONF.path_to_icons + "save.png";
 		
 		var h1 = my.newElement("h1", "", "", div, title);
 		
-		var textarea = my.newElement("textarea", textarea_id, APP_CONF.xml_textarea_class_name, div, value);
-		textarea.cols = APP_CONF.output_textarea_columns;
-		textarea.rows = APP_CONF.output_textarea_rows;
+		var textarea = my.newElement("textarea", textarea_id, APP.CONF.xml_textarea_class_name, div, value);
+		textarea.cols = APP.CONF.output_textarea_columns;
+		textarea.rows = APP.CONF.output_textarea_rows;
 		textarea.filename = filename;
 		
 		img.addEventListener("click", function(){
-			APP.save_file(textarea.value, filename, APP_CONF.file_download_header);
+			APP.save_file(textarea.value, filename, APP.CONF.file_download_header);
 		});
 
 	}
