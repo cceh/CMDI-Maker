@@ -377,12 +377,25 @@ eldp_environment.workflow[0] = (function(){
 			'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
 			my.available_resources[i][3] + '</span>');
 			
+			var cb1 = dom.newElement("input","","",div);
+			cb1.type = "checkbox";
+			cb1.addEventListener("click",function(event){ event.stopPropagation(); return;});
+			var span1 = dom.newElement("span","","",div, " Stable");
+			//span1.addEventListener("click",function(event){ event.stopPropagation(); return;});
+			dom.br(div);
+			var cb2 = dom.newElement("input","","",div);
+			cb2.type = "checkbox";
+			cb2.addEventListener("click",function(event){ event.stopPropagation(); return;});
+			var span2 = dom.newElement("span","","",div, " In Progress");	
+			//span2.addEventListener("click",function(event){ event.stopPropagation(); return;});			
+			
+			/*
 			if (compatibility_warning){
 				my.addCompatibilityWarning(div, compatibility_warning);
-			}
+			}*/
 
 			div.addEventListener("click", function(i){
-			
+				
 				return function(){
 					
 					my.clickedOnFile(i);

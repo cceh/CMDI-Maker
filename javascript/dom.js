@@ -253,6 +253,14 @@ var dom = (function() {
 		parent.appendChild(document.createElement("br"));	
 
 	}
+	
+	
+	my.br = function(parent){
+	
+		var br = my.newElement("br","","",parent);
+		return br;
+	
+	}
 
 
 	my.copyField = function (target_element_name,source_element_name){

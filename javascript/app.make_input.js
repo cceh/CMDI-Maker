@@ -183,3 +183,118 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 	}
 
 };
+
+
+APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
+
+	switch (field.type){
+	
+		case "form": {
+		
+			var object = {};
+			
+			for (var f=0; f<field.fields.length; f++){
+				
+				APP.createEmptyObjectFromFormTemplate(field.fields[f], object);
+			
+			}
+			
+			return object;
+
+		}
+		
+		case "column": {
+		
+			//create sub object
+			resulting_object[field.name] = {};
+		
+			if (field.fields){
+			
+				for (var f=0; f<field.fields.length; f++){
+				
+					APP.createEmptyObjectFromFormTemplate(field.fields[f], resulting_object[field.name]);
+			
+				}
+			
+			}
+			
+			break;
+		}
+		
+		case "subarea": {
+		
+			//create sub object
+			resulting_object[field.name] = {};
+		
+			if (field.fields){
+			
+				for (var f=0; f<field.fields.length; f++){
+				
+					APP.createEmptyObjectFromFormTemplate(field.fields[f], resulting_object[field.name]);
+			
+				}
+			
+			}
+			
+			break;
+		}
+		
+		
+		case "text": {
+		
+			resulting_object[field.name] = "";
+			return;
+			
+		}
+		
+		case "date": {
+		
+			var date_object = {
+				year: "",
+				month: "",
+				day: ""
+			};
+		
+			resulting_object[field.name] = date_object;
+			
+			return;
+		}
+		
+		case "textarea": {
+		
+			resulting_object[field.name] = "";
+			return;
+			
+		}			
+		
+		case "special": {
+			if (field.object_structure == "array"){
+				resulting_object[field.name] = [];
+			}
+			
+			else {
+				resulting_object[field.name] = null;
+			}
+			
+			return;
+		
+		}
+		
+		case "select": {
+			resulting_object[field.name] = "";
+			return;
+		}
+
+		case "open_vocabulary": {
+			resulting_object[field.name] = "";
+			return;
+		}
+		
+		case "check": {
+			resulting_object[field.name] = false;
+			return;
+		}
+		
+	}
+
+};

@@ -55,39 +55,39 @@ eldp_environment.session_form = {
 					name: "description",
 					type: "textarea",
 					comment: "Here a relevant description referring to the session as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.", 
+				}
+			]
+		},
+		{
+			title: "Location",
+			name: "location",
+			type: "column",
+			fields: [
+				{
+					heading: "Continent",
+					name: "continent",
+					type: "select",
+					size: 1,
+					vocabulary: ["Unknown","Unspecified","Africa","Asia","Europe","Australia","Oceania","North-America","Middle-America","South-America"],
+					comment: "If the document is about \"the languages of South-America\", only Continent is supposed to be specified.",
+				},					
+				{
+					heading: "Country",
+					name: "country",
+					type: "text",
+					comment: "",
 				},
 				{
-					heading: "Location",
-					name: "location",
-					type: "subarea",
-					fields: [
-						{
-							heading: "Continent",
-							name: "continent",
-							type: "select",
-							size: 1,
-							vocabulary: ["Unknown","Unspecified","Africa","Asia","Europe","Australia","Oceania","North-America","Middle-America","South-America"],
-							comment: "If the document is about \"the languages of South-America\", only Continent is supposed to be specified.",
-						},					
-						{
-							heading: "Country",
-							name: "country",
-							type: "text",
-							comment: "",
-						},
-						{
-							heading: "Region",
-							name: "region",
-							type: "text",
-							comment: "This element can also be used to describe sub-regions. Examples: europe, the netherlands, gelderland, achterhoek.",
-						},
-						{
-							heading: "Address",
-							name: "address",
-							type: "text",
-							comment: "For instance if recording sessions took place at an institution, the address of the institute is meant.",
-						}
-					]
+					heading: "Region",
+					name: "region",
+					type: "text",
+					comment: "This element can also be used to describe sub-regions. Examples: europe, the netherlands, gelderland, achterhoek.",
+				},
+				{
+					heading: "Address",
+					name: "address",
+					type: "text",
+					comment: "For instance if recording sessions took place at an institution, the address of the institute is meant.",
 				}
 			]
 		},
@@ -107,24 +107,9 @@ eldp_environment.session_form = {
 					comment: "The conventionalized discourse types of the content of the session."
 				},
 				{
-					heading: "Sub Genre",
-					type: "text",
-					name: "subgenre",
-					comment: "The conventionalized discourse sub-types of the content of the session."
-				},
-				{
-					heading: "Task",
-					name: "task",
-					type: "open_vocabulary",
-					size: 1,
-					vocabulary: ["Unknown","Unspecified","info-kiosk","travel-planning","room reservation","frog story","pear story"],
-					comment: "In areas such as language engineering often typical tasks are carried out or typical situations are dealt with such as \"info kiosk task\" or \"frog story\"."
-				},
-				{
-					heading: "Description",
-					name: "description",
+					heading: "Keywords",
 					type: "textarea",
-					comment: "In opposition to the elements prose text can be used here to describe the content."
+					name: "keywords"
 				}
 			]
 		},
@@ -141,7 +126,8 @@ eldp_environment.session_form = {
 				},
 				{
 					type: "special",
-					name: "actors"
+					name: "actors",
+					object_structure: "array"
 				}
 			]
 		},
@@ -152,7 +138,8 @@ eldp_environment.session_form = {
 			fields: [
 				{
 					type: "special",
-					name: "resources"
+					name: "resources",
+					object_structure: "array"
 				}
 			]
 		}
@@ -303,63 +290,3 @@ eldp_environment.actor_form = {
 		}
 	]
 };
-
-
-imdi_environment.make_new_session_object = function(){
-
-	var session_object = {
-	
-		session: {
-		
-			name: "",
-
-			date: {
-				year: "",
-				month: "",
-				day: ""
-			},	
-
-			location: {
-				continent: ""
-			},			
-		
-		},
-	
-		id: null,
-
-		project: {
-		
-			contact: {},
-		
-		},
-		
-		content: {
-		
-			communication_context: {}
-		
-		},
-		
-		actors: {
-			description: "",
-			actors: []
-			//which actors are in this session?
-			//Ex.: [21, 36];  //I. e. Session contains actor_ids 21 and 36
-		},
-	
-		resources: {
-		
-			writtenResources: [],
-			//values represent resource ids in respective session	
-		
-			mediaFiles: []
-			//values represent resource ids in respective session
-			
-		},
-		
-		expanded: false
-
-	};
-	
-	return session_object;
-
-}

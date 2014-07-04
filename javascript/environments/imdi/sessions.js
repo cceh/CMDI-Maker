@@ -344,10 +344,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//create icon for deleting the session
 		var session_delete_link = dom.newElement('a',APP.CONF.session_dom_element_prefix+session_id+'_delete_link','session_delete_link',session_header);
 		session_delete_link.addEventListener('click', function(num) {
-			return function(){
+
+			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
+				event.stopPropagation();
 				my.userErase(num);  
-				my.display(num);   //because otherwise session.expanded would change
 			};
+			
 		}(session_id) );
 		session_delete_link.innerHTML = "<img id=\""+APP.CONF.session_dom_element_prefix+session_id+"_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Session\">";
 		session_delete_link.href = "#";
