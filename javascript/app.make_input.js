@@ -272,6 +272,18 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 				resulting_object[field.name] = [];
 			}
 			
+			else if (field.object_structure == "object"){
+				resulting_object[field.name] = {};
+				
+				if (field.object_arrays){
+				
+					for (var a=0; a<field.object_arrays.length; a++){
+						resulting_object[field.name][field.object_arrays[a]] = [];
+					}
+				
+				}
+			}
+			
 			else {
 				resulting_object[field.name] = null;
 			}

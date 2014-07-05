@@ -17,8 +17,9 @@ limitations under the License.
 
 "use strict";
 
-eldp_environment.workflow[2] = (function(resources, actor) {
 
+eldp_environment.workflow[2] = (function(resources, actor) {
+	
 	var my = {};
 
 	var session_form = eldp_environment.session_form;
@@ -173,6 +174,9 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.refreshResources = function(s){
 	//refresh resources for one session
+	
+		console.log("refreshing resources of session " + s);
+		console.log("resources.available_resources.length is " + resources.available_resources.length);
 
 		g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";
 
@@ -329,13 +333,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name == "")){
 		
-			session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Bundle   </h1>";
+			session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Bundle</h1>";
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = "";
 			
 		}
 		
 		else {
-			session_label.innerHTML = "<h1 class=\"session_heading\">Bundle: " + session_object.session.name + "   </h1>";
+			session_label.innerHTML = "<h1 class=\"session_heading\">Bundle: " + session_object.session.name + "</h1>";
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = session_object.session.name;
 		
 		}
@@ -788,7 +792,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			var resource_type = "mf";
 		
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -802,7 +806,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			var resource_type = "wr";
 		
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -826,7 +830,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			
 			var resource_type = "wr";
 			
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -1123,4 +1127,4 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	return my;
 
-})(imdi_environment.workflow[1],imdi_environment.workflow[2]);
+})(eldp_environment.workflow[0],eldp_environment.workflow[1]);

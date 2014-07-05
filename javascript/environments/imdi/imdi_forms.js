@@ -253,7 +253,8 @@ imdi_environment.session_form = {
 				},
 				{
 					type: "special",
-					name: "actors"
+					name: "actors",
+					object_structure: "array"
 				}
 			]
 		},
@@ -264,7 +265,9 @@ imdi_environment.session_form = {
 			fields: [
 				{
 					type: "special",
-					name: "resources"
+					name: "resources",
+					object_structure: "object",
+					object_arrays: ["writtenResources", "mediaFiles"]
 				}
 			]
 		}
@@ -427,63 +430,3 @@ imdi_environment.actor_form = {
 		}
 	]
 };
-
-
-imdi_environment.make_new_session_object = function(){
-
-	var session_object = {
-	
-		session: {
-		
-			name: "",
-
-			date: {
-				year: "",
-				month: "",
-				day: ""
-			},	
-
-			location: {
-				continent: ""
-			},			
-		
-		},
-	
-		id: null,
-
-		project: {
-		
-			contact: {},
-		
-		},
-		
-		content: {
-		
-			communication_context: {}
-		
-		},
-		
-		actors: {
-			description: "",
-			actors: []
-			//which actors are in this session?
-			//Ex.: [21, 36];  //I. e. Session contains actor_ids 21 and 36
-		},
-	
-		resources: {
-		
-			writtenResources: [],
-			//values represent resource ids in respective session	
-		
-			mediaFiles: []
-			//values represent resource ids in respective session
-			
-		},
-		
-		expanded: false
-
-	};
-	
-	return session_object;
-
-}

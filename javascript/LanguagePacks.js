@@ -42,7 +42,8 @@ APP.languages[0] = {
 			"This function only deletes the data from the active profile!",
 		hard_reset: "Hard Reset",
 		hard_reset_description: "Deletes all data that CMDI Maker has ever stored on your PC.",
-		program_language: "Program Language"
+		program_language: "Program Language",
+		no_project_data_found_in_file: "No CMDI Maker data found in file!"
 	},
 	
 	save_and_recall: {
@@ -108,7 +109,8 @@ APP.languages[1] = {
 			"Diese Funktion löscht nur die Daten des zur Zeit ausgewählten Profils!",
 		hard_reset: "Hard Reset",
 		hard_reset_description: "Diese Funktion löscht alle Daten, die der CMDI Maker jemals auf deinem PC gespeichert hat.",
-		program_language: "Anzeigesprache"
+		program_language: "Anzeigesprache",
+		no_project_data_found_in_file: "In der Datei wurden keine Daten für den CMDI Maker gefunden!"
 	},
 	
 	save_and_recall: {

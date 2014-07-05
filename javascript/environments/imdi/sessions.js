@@ -20,7 +20,6 @@ limitations under the License.
 imdi_environment.workflow[3] = (function(resources, actor) {
 
 	var my = {};
-	my.makeNewSessionObject = imdi_environment.make_new_session_object;
 	
 	var session_form = imdi_environment.session_form;
 	
@@ -230,7 +229,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.newSession = function(){
 
-		var session_object = my.makeNewSessionObject();
+		var session_object = APP.createEmptyObjectFromFormTemplate(imdi_environment.session_form);
 		session_object.id = my.getNewSessionID();
 		
 		//new sessions are always expanded
@@ -259,7 +258,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
-		var session_object = my.makeNewSessionObject();
+		var session_object = APP.createEmptyObjectFromFormTemplate(imdi_environment.session_form);
 		session_object.session.name = name;
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
@@ -787,7 +786,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			var resource_type = "mf";
 		
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -801,7 +800,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			var resource_type = "wr";
 		
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -825,7 +824,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			var resource_type = "wr";
 			
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.push({
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,

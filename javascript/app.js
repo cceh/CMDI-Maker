@@ -213,7 +213,7 @@ var APP = (function () {
 				type: "file",
 				file_input_id: "project_file_input",
 				file_input_name: "project_file_input",
-				onchange: function () {return;}  //TO DO!!!
+				onchange: save_and_recall.handleProjectFileInputChange
 			},
 			{
 				title: my.l("settings","delete_recall_data"),

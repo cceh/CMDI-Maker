@@ -169,7 +169,51 @@ var save_and_recall = (function(){
 		APP.save_file(JSON.stringify(CMP_object), APP.CONF.project_file_name);
 	
 	}
+	
+	
+	my.handleProjectFileInputChange = function(event){
 
+		my.loadFromFile(event.target.files[0]);
+	
+	}
+	
+	
+	my.loadFromFile = function(file){  //TO DO!!!
+		
+		var reader = new FileReader();
+		
+		reader.onload = function(e){
+		
+			var result = e.target.result;
+		
+			try {
+				var project_data = JSON.parse(result);
+			}
+			
+			catch (e) {
+				alertify.log(APP.l("settings","no_project_data_found_in_file"),"error",5000);
+			}
+			
+			if (!project_data){
+				return;
+			}
+			
+			
+			my.importProjectData(project_data);
+		
+		}
+		
+		reader.readAsText(file);
+		
+	}
+
+	
+	my.importProjectData = function(data){  //TO DO!!!
+	
+		return;
+	
+	}
+	
 	
 	my.retrieveDataToSave = function(){
 
