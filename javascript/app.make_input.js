@@ -169,8 +169,6 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 				value = field.default_value;
 			}
 			
-			console.log("making OV. value is: " + value + " /// typeof value = " + typeof value);
-			
 			input = dom.openVocabulary(
 				parent, field.heading,
 				element_id_prefix+field.name,
