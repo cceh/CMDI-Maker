@@ -168,7 +168,8 @@ imdi_environment.session_form = {
 					size: 1,
 					vocabulary: ["Unknown","Unspecified","Discourse","Ritual/religious texts","Fiction","Newspaper article",
 					"Radio/TV feature","Drama","Singing","Instrumental music","Poetry","Literature","Secondary document","Personal notes","Stimuli"],
-					comment: "The conventionalized discourse types of the content of the session."
+					comment: "The conventionalized discourse types of the content of the session.",
+					default_value: "Unspecified"
 				},
 				{
 					heading: "Sub Genre",
@@ -182,7 +183,8 @@ imdi_environment.session_form = {
 					type: "open_vocabulary",
 					size: 1,
 					vocabulary: ["Unknown","Unspecified","info-kiosk","travel-planning","room reservation","frog story","pear story"],
-					comment: "In areas such as language engineering often typical tasks are carried out or typical situations are dealt with such as \"info kiosk task\" or \"frog story\"."
+					comment: "In areas such as language engineering often typical tasks are carried out or typical situations are dealt with such as \"info kiosk task\" or \"frog story\".",
+					default_value: "Unspecified"
 				},
 				{
 					heading: "Description",
@@ -202,7 +204,8 @@ imdi_environment.session_form = {
 							type: "select",
 							size: 1,
 							vocabulary: ["Unknown","Unspecified","Monologue","Dialogue","Conversation","Not a natural format"],
-							comment: "Indicates the structure of the communication event."
+							comment: "Indicates the structure of the communication event.",
+							default_value: "Unspecified"
 						},
 						{
 							heading: "Planning Type",
@@ -210,7 +213,8 @@ imdi_environment.session_form = {
 							type: "select",
 							size: 1,
 							vocabulary: ["Unknown","Unspecified","spontaneous","semi-spontaneous","planned"],
-							comment: "Indicates in how far the consultant planned the linguistic event."
+							comment: "Indicates in how far the consultant planned the linguistic event.",
+							default_value: "Unspecified"
 						},					
 						{
 							heading: "Interactivity",
@@ -218,7 +222,8 @@ imdi_environment.session_form = {
 							type: "select",
 							size: 1,
 							vocabulary: ["Unknown","Unspecified","interactive","non-interactive","semi-interactive"],
-							comment: "Characterizes the degree of interactivity between all the Actors in the session."
+							comment: "Characterizes the degree of interactivity between all the Actors in the session.",
+							default_value: "Unspecified"
 						},	
 						{
 							heading: "Social Context",
@@ -226,7 +231,8 @@ imdi_environment.session_form = {
 							type: "select",
 							size: 1,
 							vocabulary: ["Unknown","Unspecified","Family","Private","Public","Controlled environment"],
-							comment: "Indicates the social context the event took place in."
+							comment: "Indicates the social context the event took place in.",
+							default_value: "Unspecified"
 						},	
 						{
 							heading: "Involvement",
@@ -234,7 +240,8 @@ imdi_environment.session_form = {
 							type: "select",
 							size: 1,
 							vocabulary: ["Unknown","Unspecified","elicited","non-elicited","no-observer"],
-							comment: "Indicates in how far the researcher was involved in the linguistic event."
+							comment: "Indicates in how far the researcher was involved in the linguistic event.",
+							default_value: "Unspecified"
 						}
 					]
 				}
@@ -343,7 +350,8 @@ imdi_environment.actor_form = {
 					heading: "Sex",
 					name: "sex",
 					type: "select",
-					vocabulary: ["Unknown","Unspecified","NAP","Female","Male"]
+					vocabulary: ["Unknown","Unspecified","NAP","Female","Male"],
+					default_value: "Unspecified"
 				},
    				{
 					heading: "Education",
@@ -364,7 +372,8 @@ imdi_environment.actor_form = {
 					vocabulary: [
 						"Unknown","Unspecified","Annotator","Author","Collector","Consultant","Computer","Depositor","Editor","Filmer",	
 						"Illustrator","Interviewer","Musician","Photographer","Publisher","Recorder","Referent","Researcher","Singer","Speaker/Signer","Translator"
-					]
+					],
+					default_value: "Unspecified"
 				},    
 				{
 					heading: "Ethnic Group",
@@ -375,7 +384,8 @@ imdi_environment.actor_form = {
 					heading: "Family Social Role",
 					name: "family_social_role",
 					type: "open_vocabulary",
-					vocabulary: ["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"]
+					vocabulary: ["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"],
+					default_value: "Unspecified"
 				},
    				{
 					heading: "Description of the actor",
