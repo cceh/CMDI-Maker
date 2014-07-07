@@ -66,7 +66,7 @@ function g_value(id){
 }
 
 
-function g(id){
+var g = function (id){
 
 	return document.getElementById(id);
 

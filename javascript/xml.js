@@ -31,7 +31,7 @@ var xml = (function () {
 		//mode 2 = self-closing tag
 		
 		if (!keys){
-			var keys = [];
+			keys = [];
 		}
     
 		var return_string = "";
@@ -40,7 +40,7 @@ var xml = (function () {
 			my.tab-=1;
 		}
 		
-		if ((mode!=1) || (my.last_mode!=0)){  
+		if ((mode != 1) || (my.last_mode !== 0)){  
 			return_string+="\n";
 
 			for (var x=0;x<my.tab;x++){
@@ -56,11 +56,11 @@ var xml = (function () {
 		
 		return_string+=name;
 		
-		if ((mode==0) || (mode==2)){  //insert keys/arguments
+		if ((mode === 0) || (mode == 2)){  //insert keys/arguments
 			
 			for (var i=0;i<keys.length;i++){
 				
-				if (i!=0){
+				if (i !== 0){
 					return_string+="\n";
 					
 					for (var y=0;y<my.tab;y++){
@@ -75,7 +75,7 @@ var xml = (function () {
 					
 				}
 		
-				if (i==0){
+				if (i === 0){
 					return_string+=" ";
 				}
 		
@@ -93,7 +93,7 @@ var xml = (function () {
 	
 		return_string+=">";
 		
-		if (mode==0){
+		if (mode === 0){
 			my.tab+=1;
 		}
 	
@@ -101,13 +101,13 @@ var xml = (function () {
 		
 		return return_string;
 		
-	}
+	};
 
 	my.element = function (name,value,keys){
 		
 		var return_string="";
 	
-		if (value != ""){
+		if (value !== ""){
 		
 			return_string+=my.tag(name,0,keys);
 			return_string+=value;
@@ -121,7 +121,7 @@ var xml = (function () {
 		
 		return return_string;
 		
-	}
+	};
 	
 	return my;
 	

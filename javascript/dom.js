@@ -24,7 +24,7 @@ var dom = (function() {
 
 		for (var r=0; r< radios.length; r++){
 		
-			if (radios[r].checked == true){
+			if (radios[r].checked === true){
 			
 				return r;
 			
@@ -34,7 +34,7 @@ var dom = (function() {
 		
 		return 0;
 
-	}
+	};
 	
 	
 	my.removeOptions = function(selectbox){
@@ -45,7 +45,7 @@ var dom = (function() {
 			selectbox.remove(i);
 		}
 		
-	}
+	};
 	
 
 	my.getValueOfRadios = function (radios_name){
@@ -54,17 +54,17 @@ var dom = (function() {
 		var index = my.getSelectedRadioIndex(radios);
 		return radios[index].value;
 
-	}
+	};
 
 	my.setRadioIndex = function (radios, index){
 
 		if ((!index) || (typeof index == "undefined")){
-			var index = 0;
+			index = 0;
 		}
 
 		radios[index].checked = true;
 
-	}
+	};
 	
 	
 	my.getOptionValuesOfSelect = function(select){
@@ -79,12 +79,13 @@ var dom = (function() {
 
 		return option_values;
 
-	}
+	};
 
 
 	my.setFormValue = function (element_id, value, open_vocabulary){
 
 		var element = g(element_id);
+		var new_element;
 
 		if (element.nodeName == "SELECT"){
 		
@@ -100,8 +101,7 @@ var dom = (function() {
 			//if options of select contain do not contain the value, we have to change the input type to text
 			if (options.indexOf(value) == -1){
 		
-				var new_element = my.changeOVInput(element_id, options);
-				
+				new_element = my.changeOVInput(element_id, options);
 				new_element.value = value;
 			
 			}
@@ -120,8 +120,7 @@ var dom = (function() {
 			//that's great, because we can then go back to a select
 			if ((element.type == "text") && (open_vocabulary) && (open_vocabulary.indexOf(value) != -1)){
 			
-				var new_element = my.changeOVInput(element_id, open_vocabulary);
-				
+				new_element = my.changeOVInput(element_id, open_vocabulary);
 				new_element.value = value;
 			
 			}
@@ -134,13 +133,13 @@ var dom = (function() {
 		
 		}
 
-	}
+	};
 
 
 	my.makeTextInput = function (parent,title,name,id,value,hover){
 
 		if (!hover){
-			var hover = "";
+			hover = "";
 		}
 		
 		var span = document.createElement("span");
@@ -163,13 +162,13 @@ var dom = (function() {
 
 		return input;	
 		
-	}
+	};
 
 
 	my.makeCheckbox = function (parent,title,name,id,checked,hover){
 
 		if (!hover){
-			var hover = "";
+			hover = "";
 		}
 		
 		var input = document.createElement("input");
@@ -188,13 +187,13 @@ var dom = (function() {
 
 		return input;	
 		
-	}
+	};
 
 
 	my.openVocabulary = function (parent, title, name, id, size, options, value, hover){
 
 		if (!hover){
-			var hover = "";
+			hover = "";
 		}
 
 		var span = dom.newElement("span","","",parent,title);
@@ -231,7 +230,7 @@ var dom = (function() {
 		input.title = hover;
 		
 
-		if ((value == "") || (options.indexOf(value) !=-1)) {	
+		if ((value === "") || (options.indexOf(value) != -1)) {	
 			parent.appendChild(select);
 		}
 		
@@ -264,7 +263,7 @@ var dom = (function() {
 
 		parent.appendChild(document.createElement("br"));	
 
-	}
+	};
 	
 	
 	my.br = function(parent){
@@ -272,7 +271,7 @@ var dom = (function() {
 		var br = my.newElement("br","","",parent);
 		return br;
 	
-	}
+	};
 
 
 	my.copyField = function (target_element_name,source_element_name){
@@ -284,10 +283,12 @@ var dom = (function() {
 		
 		
 		if (source_element.nodeName != target_element.nodeName){
+			var options;
 		
 			if (source_element.nodeName == "SELECT"){
 		
-				var options = my.getOptionValuesOfSelect(source_element);
+				options = my.getOptionValuesOfSelect(source_element);
+				
 			}
 
 			var new_e = document.createElement(source_element.nodeName);
@@ -324,26 +325,26 @@ var dom = (function() {
 		
 		}
 		
-	}
+	};
 
 
 	my.changeOVInput = function (id, options){
 	//change input form of open vocabulary (=make select to text input and vice versa)
 
 		var object = g(id);
+		var new_object;
 		
 		
 		if (object.nodeName == "SELECT"){
 
-			var new_object = document.createElement("input");
+			new_object = document.createElement("input");
 			new_object.type = "text";
 		
 		}
 
 		else {
 		
-			var new_object = document.createElement("select");
-			
+			new_object = document.createElement("select");
 			
 			for (var o=0; o<options.length;o++){
 			
@@ -367,14 +368,14 @@ var dom = (function() {
 		
 		return new_object;
 		
-	}
+	};
 
 
 	my.makeSelect = function (parent, title, name, id, size, options, value, hover){
 		//parameters: parent to append to, title, name of element, id of element, size, array of options
 		
 		if (!hover){
-			var hover = "";
+			hover = "";
 		}
 
 		var span = document.createElement("span");
@@ -400,7 +401,7 @@ var dom = (function() {
 			select.options[select.options.length] = NewOption;
 		}
 
-		if (value !=0){
+		if (value !== 0){
 			select.selectedIndex = options.indexOf(value);
 		}
 		
@@ -413,13 +414,13 @@ var dom = (function() {
 
 		return select;	
 
-	}
+	};
 
 
 	my.makeDateInput = function (parent, title, name_prefix, id_prefix, y_value, m_value, d_value, hover){
 
 		if (!hover){
-			var hover = "";
+			hover = "";
 		}
 
 		var span = document.createElement("span");
@@ -434,11 +435,11 @@ var dom = (function() {
 		y_input.name = name_prefix+"_year";
 		y_input.id = id_prefix+"_year";
 		y_input.className = "YearInput";
-		y_input.value = (y_value != "") ? y_value : "YYYY";
+		y_input.value = (y_value !== "") ? y_value : "YYYY";
 		y_input.title = hover;
 		parent.appendChild(y_input);
 		
-		var span2 = document.createElement("span")
+		var span2 = document.createElement("span");
 		parent.appendChild(span2);
 		span2.innerHTML = " ";
 		
@@ -446,12 +447,12 @@ var dom = (function() {
 		m_input.name = name_prefix+"_month";
 		m_input.id = id_prefix+"_month";
 		m_input.className = "MonthInput";
-		m_input.value = (m_value != "") ? m_value : "MM";
+		m_input.value = (m_value !== "") ? m_value : "MM";
 		m_input.title = hover;
 		parent.appendChild(m_input);
 		
 		
-		var span2 = document.createElement("span")
+		span2 = document.createElement("span");
 		parent.appendChild(span2);
 		span2.innerHTML = " ";
 		span2.title = hover;
@@ -460,19 +461,19 @@ var dom = (function() {
 		d_input.name = name_prefix+"_day";
 		d_input.id = id_prefix+"_day";
 		d_input.className = "DayInput";
-		d_input.value = (d_value != "") ? d_value : "DD";
+		d_input.value = (d_value !== "") ? d_value : "DD";
 		d_input.title = hover;
 		parent.appendChild(d_input);
 		
 		parent.appendChild(document.createElement("br"));
 		
-	}
+	};
 
 
 	my.makeTextarea = function (t_cols,t_rows,parent,title,t_name,t_id,t_class,t_value, hover){
 
 		if (!hover){
-			var hover = "";
+			hover = "";
 		}
 		
 		var span = document.createElement("span");
@@ -497,7 +498,7 @@ var dom = (function() {
 		
 		return textarea;
 		
-	}
+	};
 
 
 	my.createTextarea = function (id, className, rows, cols, containing_string){
@@ -505,18 +506,18 @@ var dom = (function() {
 		var return_string = "<textarea id=\""+id+"\" class=\""+className+"\" rows=\""+rows+"\" cols=\""+cols+"\">"+containing_string+"\n</textarea>";
 		return return_string;
 
-	}
+	};
 
 
 	my.newElement = function (element_tag,element_id,element_class,parent_to_append_to,innerHTML){
 
 		var element = document.createElement(element_tag);
 		
-		if (element_id != ""){
+		if (element_id !== ""){
 			element.id = element_id;
 		}
 		
-		if (element_class != ""){
+		if (element_class !== ""){
 			element.className = element_class;
 		}
 		
@@ -529,7 +530,7 @@ var dom = (function() {
 		}
 		
 		return element;
-	}
+	};
 
 
 	my.remove = function (id){
@@ -538,7 +539,7 @@ var dom = (function() {
 		
 		return my.removeElement(elem);
 		
-	}
+	};
 
 
 	my.removeElement = function (elem){
@@ -547,7 +548,7 @@ var dom = (function() {
 		
 		return elem.parentNode.removeChild(elem);
 		
-	}
+	};
 	
 	
 	my.hideAllChildren = function(elem){
@@ -560,7 +561,7 @@ var dom = (function() {
 	
 		}
 		
-	}
+	};
 	
 	
 	my.showAllChildren = function(elem){
@@ -573,7 +574,7 @@ var dom = (function() {
 	
 		}
 		
-	}
+	};
 	
 	
 	my.makeAllFunctionsInvisible = function(){
@@ -584,7 +585,7 @@ var dom = (function() {
 			functions[f].style.display = "none";
 		}		
 	
-	}
+	};
 	
 	
 	my.showFunctionsForView = function (module){
@@ -612,7 +613,7 @@ var dom = (function() {
 			}	
 		}
 
-	}
+	};
 	
 	
 	my.closeSelectFrame = function(){
@@ -629,12 +630,12 @@ var dom = (function() {
 			
 		}
 	
-	}
+	};
 	
 	
 	my.onOffSwitch = function(input){
 
-		if (input.on == false){
+		if (input.on === false){
 			my.setOnOffSwitchValue(input, true);
 		}
 		
@@ -646,7 +647,7 @@ var dom = (function() {
 	
 	my.setOnOffSwitchValue = function(input, value){
 	
-		if (value == true){
+		if (value === true){
 			input.value = APP.l("on");
 			input.style.backgroundColor = "limegreen";
 			input.on = true;
@@ -701,14 +702,14 @@ var dom = (function() {
 	
 		my.makeAllFunctionsInvisible();
 	
-	}
+	};
 	
 	
 	my.scrollTop = function(){
 	
 		g("content_wrapper").scrollTop = 0;
 	
-	}
+	};
 	
 
 	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename){
@@ -718,7 +719,7 @@ var dom = (function() {
 		var img = my.newElement("img","","download_icon",div);
 		img.src = APP.CONF.path_to_icons + "save.png";
 		
-		var h1 = my.newElement("h1", "", "", div, title);
+		my.newElement("h1", "", "", div, title);
 		
 		var textarea = my.newElement("textarea", textarea_id, APP.CONF.xml_textarea_class_name, div, value);
 		textarea.cols = APP.CONF.output_textarea_columns;
@@ -729,7 +730,7 @@ var dom = (function() {
 			APP.save_file(textarea.value, filename, APP.CONF.file_download_header);
 		});
 
-	}
+	};
 	
 	return my;
 	

@@ -15,13 +15,12 @@ limitations under the License.
 */
 
 
-"use strict";
-
-var save_and_recall = (function(){
+var save_and_recall = (function () {
+	'use strict';
 
 	var my = {};
-	
-	my.interval;
+
+	my.interval = undefined;
 	my.interval_time = 60;
 
 	my.getRecallDataForApp = function(){
@@ -41,7 +40,7 @@ var save_and_recall = (function(){
 		
 		return form_object;	
 		
-	}
+	};
 	
 	
 	my.getRecallDataForEnvironment = function(environment){
@@ -59,7 +58,7 @@ var save_and_recall = (function(){
 		
 		return form_object;	
 		
-	}
+	};
 	
 
 	my.set_autosave_interval = function(time){
@@ -88,7 +87,7 @@ var save_and_recall = (function(){
 			my.save();
 		}, my.interval_time*1000);
 
-	}
+	};
 	
 	
 	my.recallEnvironmentData = function (recall_object){
@@ -107,14 +106,14 @@ var save_and_recall = (function(){
 			
 		}
 	
-	}
+	};
 
 
 	my.deleteAllData = function(){
 	
 		localStorage.clear();
 		
-	}
+	};
 
 
 	my.deleteEnvironmentData = function(){
@@ -130,13 +129,13 @@ var save_and_recall = (function(){
 		
 		alertify.log(APP.l("save_and_recall","active_profile_data_deleted"),"",5000);
 
-	}
+	};
 	
 	
 	my.userSave = function(){
 		my.save();
 		alertify.log(APP.l("save_and_recall","form_saved"),"",5000);
-	}
+	};
 
 	
 	my.save = function(){
@@ -152,7 +151,7 @@ var save_and_recall = (function(){
 		
 		console.log("Form saved");
 
-	}
+	};
 	
 	
 	my.saveAllToFile = function(){
@@ -169,17 +168,18 @@ var save_and_recall = (function(){
 	
 		APP.save_file(JSON.stringify(CMP_object), APP.CONF.project_file_name);
 	
-	}
+	};
 	
 	
 	my.handleProjectFileInputChange = function(event){
 
 		my.loadFromFile(event.target.files[0]);
 	
-	}
+	};
 	
 	
 	my.loadFromFile = function(file){
+		var project_data;
 		
 		var reader = new FileReader();
 		
@@ -188,30 +188,31 @@ var save_and_recall = (function(){
 			var result = e.target.result;
 		
 			try {
-				var project_data = JSON.parse(result);
+				project_data = JSON.parse(result);
 			}
 			
 			catch (e) {
 				alertify.log(APP.l("settings","no_project_data_found_in_file"),"error",5000);
 			}
 			
-			if (!project_data){
+			if (typeof project_data == "undefined"){
 				return;
 			}
 			
 			
 			my.importProjectData(project_data);
 		
-		}
+		};
 		
 		reader.readAsText(file);
 		
-	}
+	};
 
 	
 	my.importProjectData = function(data){
 		
 		if (data.app){
+			var environment_data;
 			
 			alertify.set({ labels: {
 				ok     : APP.l("confirm","no"),
@@ -240,14 +241,14 @@ var save_and_recall = (function(){
 			console.log("Active Environment: " + environment_id);
 			
 			if (data.environments && data.environments[environment_id]){
-				var environment_data = data.environments[environment_id];
+				environment_data = data.environments[environment_id];
 			}
 		
 			APP.recall(data.app, environment_data);
 		
 		}
 
-	}
+	};
 	
 	
 	my.retrieveDataToSave = function(){
@@ -271,7 +272,7 @@ var save_and_recall = (function(){
 		
 		return object;
 
-	}
+	};
 	
 	
 	my.retrieveEnvironmentDataToSave = function(){
@@ -293,7 +294,7 @@ var save_and_recall = (function(){
 		
 		return object;
 
-	}
+	};
 
 	
 	return my;

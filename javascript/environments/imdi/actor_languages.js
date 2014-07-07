@@ -17,6 +17,7 @@ limitations under the License.
 
 imdi_environment.workflow[2].languages = (function (){
 //Sub-object of actor
+	'use strict';
 
 	var my = {};
 	var actor = imdi_environment.workflow[2];
@@ -36,7 +37,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		g("current_actor_languages_display").removeChild(child);
 
-	}
+	};
 
 
 	my.clearActiveActorLanguages = function(){
@@ -49,7 +50,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		my.id_counter = 0;
 
-	}
+	};
 	
 
 	my.getActorLanguageObjectIndexFromID = function (al_id){
@@ -62,10 +63,11 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		}
 
-	}
+	};
 
 
 	my.search = function(){
+		var j;
 
 		var input = g("actor_language_select").value;
 		
@@ -94,7 +96,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
 		
-		for (var j=0;j<LanguageIndex.length;j++){
+		for (j=0;j<LanguageIndex.length;j++){
 		
 			if ( (name_hits.indexOf(LanguageIndex[j][0]) != -1)  &&  (LanguageIndex[j][2] == "L" )){		//look for their l-name entry
 			
@@ -106,7 +108,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		var titles = [];
 		
-		for (var j=0;j<results.length;j++){
+		for (j=0;j<results.length;j++){
 
 			titles.push(results[j][0] + ", "+results[j][1]+", " + results[j][3]);
 
@@ -115,7 +117,7 @@ imdi_environment.workflow[2].languages = (function (){
 		dom.showSelectFrame(results, titles, actor.languages.addFromForm, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
 		"(ISO639-3 Code, Country ID, Language Name)"); 
 
-	}
+	};
 
 
 	my.set = function(ActorLanguageObject){
@@ -148,15 +150,15 @@ imdi_environment.workflow[2].languages = (function (){
 		var input = dom.newElement("input", "mothertongue_" + my.id_counter, "", div);
 		input.type = "checkbox";
 		
-		if (ActorLanguageObject.MotherTongue == true){
+		if (ActorLanguageObject.MotherTongue === true){
 			input.checked = true;
 		}
 
 		dom.newElement("span","","",div, "Mother Tongue  ");
-		var input = dom.newElement("input", "primarylanguage_" + my.id_counter, "", div);
+		input = dom.newElement("input", "primarylanguage_" + my.id_counter, "", div);
 		input.type = "checkbox";
 		
-		if (ActorLanguageObject.PrimaryLanguage == true){
+		if (ActorLanguageObject.PrimaryLanguage === true){
 			input.checked = true;
 		}
 		
@@ -164,18 +166,19 @@ imdi_environment.workflow[2].languages = (function (){
 
 		my.id_counter += 1;
 
-	}
+	};
 
 
 	my.addFromForm = function(LanguageObject){
 	//if actor language is added by user
+		var first_added_language;
 
-		if (my.languages_of_active_actor.length == 0){
-			var first_added_language = true;
+		if (my.languages_of_active_actor.length === 0){
+			first_added_language = true;
 		}
 		
 		else {
-			var first_added_language = false;	
+			first_added_language = false;	
 		}			
 		
 		//Let's create a new ActorLanguageObject
@@ -189,7 +192,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 		my.set(ActorLanguageObject);  
 
-	}
+	};
 
 
 	my.addByISO = function(){
@@ -216,7 +219,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		alertify.alert("ISO code " + input + " not found in database.");
 
-	}
+	};
 
 
 
@@ -225,7 +228,7 @@ imdi_environment.workflow[2].languages = (function (){
 		g("actor_language_results_div").style.display = "none";
 		g("ac_view").style.display = "inline";
 
-	}
+	};
 	
 	
 	return my;

@@ -206,16 +206,16 @@ imdi_environment.cmdi_generator = function(){
 		
 		return_string += xml.tag("Resources",0);
 		
-		for (var r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.mediaFiles.length;r++){  
+		for (var r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.length;r++){  
 		
-			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.mediaFiles[r].id;
+			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles[r].id;
 		
 			return_string += insert_cmdi_mediafile(get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}
 		
-		for (var r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.writtenResources.length;r++){  
+		for (var r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources.length;r++){  
 
-			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.writtenResources[r].id;	
+			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources[r].id;	
 
 			return_string += insert_cmdi_written_resource(get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}

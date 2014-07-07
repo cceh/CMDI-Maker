@@ -116,21 +116,21 @@ var imdi_environment = (function(){
 			input.name = "actor_language_select";
 			
 			dom.newElement("span","","",p," ");
-			var input = dom.newElement("input","actor_language_search_button","",p);
+			input = dom.newElement("input","actor_language_search_button","",p);
 			input.type = "button";
 			input.value = "Search";
 
 			dom.newElement("br","","",p);
 			dom.newElement("span","","",p,"or type in ISO code ");
 			
-			var input = dom.newElement("input","actor_language_iso_input","",p);
+			input = dom.newElement("input","actor_language_iso_input","",p);
 			input.type = "text";
 			input.size = 1;
 			input.name = "actor_language_iso_input";
 			
 			dom.newElement("span","","",p," ");
 			
-			var input = dom.newElement("input","actor_language_iso_ok","",p);
+			input = dom.newElement("input","actor_language_iso_ok","",p);
 			input.type = "button";
 			input.value = "OK";			
 			

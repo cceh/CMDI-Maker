@@ -16,12 +16,14 @@ limitations under the License.
 
 
 APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix, session_object){
+	var input;
+	var f;
 
 	switch (field.type){
 		
 		case "text": {
 		
-			var input = dom.makeTextInput(parent, field.heading,
+			input = dom.makeTextInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				(session_object && session_object[field.name] ? session_object[field.name] : ""),
@@ -33,12 +35,12 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		
 		case "date": {
 		
-			var input = dom.makeDateInput(parent, field.heading,
+			input = dom.makeDateInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name]["year"] : ""),
-				(session_object && session_object[field.name] ? session_object[field.name]["month"] : ""),				
-				(session_object && session_object[field.name] ? session_object[field.name]["day"] : ""),					
+				(session_object && session_object[field.name] ? session_object[field.name].year : ""),
+				(session_object && session_object[field.name] ? session_object[field.name].month : ""),				
+				(session_object && session_object[field.name] ? session_object[field.name].day : ""),					
 				field.comment
 			);
 			
@@ -47,7 +49,7 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		
 		case "textarea": {
 		
-			var input = dom.makeTextarea(
+			input = dom.makeTextarea(
 				APP.CONF.form_textarea_rows,
 				APP.CONF.form_textarea_columns,
 				parent,
@@ -72,7 +74,7 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 			
 				element_id_prefix += field.name + "_";
 		
-				for (var f=0; f<field.fields.length; f++){
+				for (f=0; f<field.fields.length; f++){
 				
 					APP.makeInput(parent, field.fields[f], element_id_prefix, element_class_prefix, session_object[field.name]);
 			
@@ -84,31 +86,32 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		}
 		
 		case "column": {
+			var td_name;		
 		
-			if (field.name != ""){
+			if (field.name !== ""){
 			
-				var td_name = field.name+"_td";
+				td_name = field.name+"_td";
 			
 			}
 			
 			else {
 			
-				var td_name = "td";
+				td_name = "td";
 			
 			}
 		
 			var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
-			var h2 = dom.newElement("h2","","",td,field.title);
+			dom.newElement("h2","","",td,field.title);
 			
 			if (field.fields){
 			
-				if (field.name != ""){
+				if (field.name !== ""){
 			
 					element_id_prefix += field.name + "_";
 					
 				}
 			
-				for (var f=0; f<field.fields.length; f++){
+				for (f=0; f<field.fields.length; f++){
 				
 					APP.makeInput(td, field.fields[f], element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
 			
@@ -124,7 +127,7 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 			var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
 			var tr = dom.newElement("tr","","",table);
 			
-			for (var f=0; f<field.fields.length; f++){
+			for (f=0; f<field.fields.length; f++){
 				
 				APP.makeInput(tr, field.fields[f], element_id_prefix, element_class_prefix, session_object);
 			
@@ -140,7 +143,7 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		}
 		
 		case "select": {
-			var input = dom.makeSelect(
+			input = dom.makeSelect(
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
@@ -153,7 +156,7 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		}
 
 		case "open_vocabulary": {
-			var input = dom.openVocabulary(
+			input = dom.openVocabulary(
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
@@ -166,7 +169,7 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		}
 		
 		case "check": {
-			var input = dom.makeCheckbox(
+			input = dom.makeCheckbox(
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
@@ -193,7 +196,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 		
 			var object = {};
 			
-			for (var f=0; f<field.fields.length; f++){
+			for (f=0; f<field.fields.length; f++){
 				
 				APP.createEmptyObjectFromFormTemplate(field.fields[f], object);
 			
@@ -210,7 +213,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 		
 			if (field.fields){
 			
-				for (var f=0; f<field.fields.length; f++){
+				for (f=0; f<field.fields.length; f++){
 				
 					APP.createEmptyObjectFromFormTemplate(field.fields[f], resulting_object[field.name]);
 			
@@ -228,7 +231,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 		
 			if (field.fields){
 			
-				for (var f=0; f<field.fields.length; f++){
+				for (f=0; f<field.fields.length; f++){
 				
 					APP.createEmptyObjectFromFormTemplate(field.fields[f], resulting_object[field.name]);
 			

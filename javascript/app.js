@@ -15,9 +15,8 @@ limitations under the License.
 */
 
 
-"use strict";
-
 var APP = (function () {
+	'use strict';
 
 	var my = {};
 	
@@ -37,7 +36,7 @@ var APP = (function () {
 		console.log("ERROR: No language object with id " + id + " found!");
 		return undefined;
 	
-	}
+	};
 	
 	my.getIndexFromLPID = function(id){
 	
@@ -52,12 +51,12 @@ var APP = (function () {
 		console.log("ERROR: No language object with id " + id + " found!");
 		return undefined;
 	
-	}
+	};
 	
 	
-	my.active_view;
-	my.active_environment;
-	my.active_language;
+	my.active_view = undefined;
+	my.active_environment = undefined;
+	my.active_language = undefined;
 
 	
 	my.views = [
@@ -95,7 +94,7 @@ var APP = (function () {
 	
 		return undefined;
 	
-	}
+	};
 	
 	
 	my.getTermInActiveLanguage = function(LanguagesArray, arg1, arg2, arg3){
@@ -138,7 +137,7 @@ var APP = (function () {
 		
 		return "";		
 	
-	}
+	};
 	
 	
 	my.settings = function(){
@@ -247,15 +246,16 @@ var APP = (function () {
 				}
 			}
 		];
-	}
+	};
 	
 	
-	my.init = function (no_recall){
+	my.init = function (no_recall) {
+		var recall_object;
 		
 		my.active_language = my.languages[0];
 		
 		if (!no_recall){
-			var recall_object = save_and_recall.getRecallDataForApp();
+			recall_object = save_and_recall.getRecallDataForApp();
 			
 			if (recall_object && recall_object.settings.active_language_id){
 				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
@@ -272,7 +272,7 @@ var APP = (function () {
 		my.displayEnvironments();
 		my.addEventListeners();
 		
-		if ((!no_recall) && (recall_object)){
+		if ((!no_recall) && (typeof recall_object != "undefined")){
 			my.recall(recall_object);
 		}
 		
@@ -293,7 +293,7 @@ var APP = (function () {
 	  
 		select.selectedIndex = 0;
 
-	}
+	};
 	
 	
 	my.displayLanguages = function (){
@@ -310,7 +310,7 @@ var APP = (function () {
 	  
 		select.selectedIndex = 0;
 
-	}
+	};
 	
 	
 	my.displayEnvironments = function (){
@@ -330,19 +330,19 @@ var APP = (function () {
 	  
 		select.selectedIndex = 0;
 
-	}
+	};
 
 
 	my.checkIfFirstStart = function (){
 
 		var first_start = localStorage.getItem("first_start");
 		
-		if (first_start == null){  //if there's no data, assume it's the first start
+		if (first_start === null){  //if there's no data, assume it's the first start
 			first_start = true;
 		}
 		
 		
-		if (first_start == true){
+		if (first_start === true){
 
 			localStorage.setItem("first_start", false);
 			console.log("First start! Hey there and welcome to CMDI Maker!");
@@ -355,7 +355,7 @@ var APP = (function () {
 		
 		}
 
-	}
+	};
 
 
 	my.sayHello = function (){
@@ -374,7 +374,7 @@ var APP = (function () {
 		g("supported_by_label").innerHTML = my.l("is_supported_by");
 		g("need_help_label").innerHTML = my.l("need_help");
 		g("help_pages_description").innerHTML = my.l("help_pages_description");
-	}
+	};
 	
 	
 	my.hard_reset = function(){
@@ -382,12 +382,14 @@ var APP = (function () {
 		save_and_recall.deleteAllData();
 		location.reload();
 
-	}
+	};
 
 
 	my.fillObjectWithFormElement = function(object, element_id_prefix, form_element){
 	//object = the object to be filled with form data
 	//form_element = element of the form as specified in session_form
+	
+		var f;
 
 		if ((form_element.type == "text") || (form_element.type == "textarea") || (form_element.type == "select") || (form_element.type == "open_vocabulary")){
 
@@ -397,16 +399,16 @@ var APP = (function () {
 		
 		if (form_element.type == "date"){
 		
-			object[form_element.name]["year"] = get(element_id_prefix+form_element.name+"_year");
-			object[form_element.name]["month"] = get(element_id_prefix+form_element.name+"_month");
-			object[form_element.name]["day"] = get(element_id_prefix+form_element.name+"_day");
+			object[form_element.name].year = get(element_id_prefix+form_element.name+"_year");
+			object[form_element.name].month = get(element_id_prefix+form_element.name+"_month");
+			object[form_element.name].day = get(element_id_prefix+form_element.name+"_day");
 		}
 		
 		if (form_element.type == "column"){
 		
 			element_id_prefix += form_element.name + "_";
 			
-			for (var f=0; f<form_element.fields.length; f++){
+			for (f=0; f<form_element.fields.length; f++){
 				
 				my.fillObjectWithFormElement(object, element_id_prefix, form_element.fields[f]);
 			
@@ -417,7 +419,7 @@ var APP = (function () {
 		
 			element_id_prefix += form_element.name + "_";
 			
-			for (var f=0; f<form_element.fields.length; f++){
+			for (f=0; f<form_element.fields.length; f++){
 				
 				my.fillObjectWithFormElement(object[form_element.name], element_id_prefix, form_element.fields[f]);
 			
@@ -426,7 +428,7 @@ var APP = (function () {
 		
 		if (form_element.type == "form"){
 		
-			for (var f=0; f<form_element.fields.length; f++){
+			for (f=0; f<form_element.fields.length; f++){
 				
 				my.fillObjectWithFormElement(object[form_element.fields[f].name], element_id_prefix, form_element.fields[f]);
 			
@@ -439,7 +441,7 @@ var APP = (function () {
 		
 		}
 
-	}
+	};
 	
 	
 	my.saveAllOutputFiles = function(){
@@ -452,18 +454,20 @@ var APP = (function () {
 			
 		}
 	
-	}
+	};
 	
 	
 	my.init_functions = function(functions){
 	
 		var functions_div = g("functions");
+		var function_div;
+		var img;
 	
 		for (var f=0; f<functions.length; f++){
 		
 			if (functions[f].type != "function_wrap"){
-				var function_div = dom.newElement("div", functions[f].id, "function_icon",functions_div);
-				var img = dom.newElement("img","","function_img", function_div);
+				function_div = dom.newElement("div", functions[f].id, "function_icon",functions_div);
+				img = dom.newElement("img","","function_img", function_div);
 				img.src = APP.CONF.path_to_icons + functions[f].icon;
 				var label = dom.newElement("h3","","", function_div, functions[f].label);
 				
@@ -483,8 +487,8 @@ var APP = (function () {
 			
 				var function_wrap = dom.newElement("div",functions[f].wrapper_id,"function_wrap",functions_div);
 				
-				var function_div = dom.newElement("div", functions[f].id, "function_icon",function_wrap);
-				var img = dom.newElement("img","","function_img", function_div);
+				function_div = dom.newElement("div", functions[f].id, "function_icon",function_wrap);
+				img = dom.newElement("img","","function_img", function_div);
 				img.src = APP.CONF.path_to_icons + functions[f].icon;
 				dom.newElement("h3","","", function_div, functions[f].label);
 				
@@ -501,13 +505,13 @@ var APP = (function () {
 				function_div.addEventListener('mousedown', function(elem) {
 					return function(){
 						elem.style.backgroundColor = "black";
-					}
+					};
 				}(function_div));
 				
 				function_div.addEventListener('mouseup', function(elem) {
 					return function(){
 						elem.style.backgroundColor = "";
-					}
+					};
 				}(function_div));
 			
 			}
@@ -517,14 +521,14 @@ var APP = (function () {
 			}
 		
 		}
-	}
+	};
 
 	
 	my.reset_form = function (){
 		
 		my.active_environment.reset();
 
-	}
+	};
 	
 	
 	my.getModuleOfViewID = function(id){
@@ -543,24 +547,26 @@ var APP = (function () {
 		
 		return undefined;
 	
-	}
+	};
 
 
 	my.view = function (module_or_id){
+		var module;
+		var id;
 	
 		dom.closeSelectFrame();
 	
 		if (typeof module_or_id === 'string') {
 			
-			var id = module_or_id;
-			var module = my.getModuleOfViewID(id);
+			id = module_or_id;
+			module = my.getModuleOfViewID(id);
 			
 		}
 		
 		else { //if argument is a module
 
-			var module = module_or_id;
-			var id = APP.CONF.view_id_prefix + module.identity.id;
+			module = module_or_id;
+			id = APP.CONF.view_id_prefix + module.identity.id;
 		
 		}
 		
@@ -601,7 +607,7 @@ var APP = (function () {
 			module.view();
 		}
 	
-	}
+	};
 	
 	
 	my.highlightViewIcon = function (id) {
@@ -630,14 +636,14 @@ var APP = (function () {
 			g(APP.CONF.viewlink_id_prefix+id).style.backgroundColor = APP.CONF.highlight_color;
 		}
 
-	}
+	};
 	
 	
 	my.save = function(){
 	
 		save_and_recall.save();
 	
-	}
+	};
 	
 	
 	my.save_file = function (text, filename, mime_type){
@@ -645,13 +651,13 @@ var APP = (function () {
 		var clean_filename = remove_invalid_chars(filename);
 		
 		if (!mime_type){
-			var mime_type = APP.CONF.file_download_header;
+			mime_type = APP.CONF.file_download_header;
 		}
 
 		var blob = new Blob([text], {type: mime_type});
 		saveAs(blob, clean_filename);
 
-	}
+	};
 	
 	
 	my.unloadActiveEnvironment = function (){
@@ -684,7 +690,7 @@ var APP = (function () {
 		
 		my.view("VIEW_start");
 	
-	}
+	};
 	
 	
 	my.createEnvironment = function (environment){
@@ -714,7 +720,7 @@ var APP = (function () {
 		
 		my.view("default");
 	
-	}
+	};
 	
 	
 	var getIndexOfEnvironment = function(environment){
@@ -729,17 +735,18 @@ var APP = (function () {
 		
 		return console.log("Environment " + environment.id + " not found in APP.environments");
 	
-	}
+	};
 	
 	
 	my.initEnvironmentSettings = function (settings){
 	
 		my.initSettings(settings, g("environment_settings"));
 	
-	}
+	};
 	
 	
 	my.initSettings = function (settings, parent){
+		var input;
 		
 		parent.innerHTML = "";
 		
@@ -770,17 +777,17 @@ var APP = (function () {
 			}
 			
 			if (settings[s].description){
-				var description = dom.newElement("p","","",parent,settings[s].description);
+				dom.newElement("p","","",parent,settings[s].description);
 			}
 
 			if (settings[s].type == "radio"){
 			
 				for (var r=0; r<settings[s].options.length; r++){
 				
-					var input = dom.newElement("input","","",parent);
+					input = dom.newElement("input","","",parent);
 					input.type = "radio";
 					input.name = settings[s].radio_name;
-					input.value = settings[s].options[r].value
+					input.value = settings[s].options[r].value;
 					
 					dom.newElement("span","","",parent,settings[s].options[r].title);
 					
@@ -788,7 +795,7 @@ var APP = (function () {
 					
 					if (r == settings[s].default_option) {
 						input.checked = true;
-					};
+					}
 				}	
 			
 			}
@@ -809,12 +816,12 @@ var APP = (function () {
 			
 			if (settings[s].type == "switch"){
 			
-				var input = dom.newElement("input",settings[s].id,"on_off_switch",parent);
+				input = dom.newElement("input",settings[s].id,"on_off_switch",parent);
 				input.type = "button";
 				input.name = settings[s].name;
 				input.value = "Off";
 				input.on = false;
-				input.addEventListener("click", function(event){dom.onOffSwitch(this);}, false);
+				input.addEventListener("click", function(){dom.onOffSwitch(this);}, false);
 				
 				dom.setOnOffSwitchValue(g(settings[s].id),settings[s].default_value);
 				
@@ -824,7 +831,7 @@ var APP = (function () {
 			
 			if (settings[s].type == "file"){
 		
-				var input = dom.newElement("input",settings[s].file_input_id,"",parent);
+				input = dom.newElement("input",settings[s].file_input_id,"",parent);
 				input.type = "file";
 				input.name = settings[s].file_input_name;
 				dom.newElement("br","","",parent);
@@ -835,7 +842,7 @@ var APP = (function () {
 			
 			if (settings[s].type == "text"){
 		
-				var input = dom.newElement("input",settings[s].id,"",parent);
+				input = dom.newElement("input",settings[s].id,"",parent);
 				input.type = "text";
 				input.name = settings[s].name;
 				input.value = settings[s].value;				
@@ -847,7 +854,7 @@ var APP = (function () {
 			
 			if (settings[s].type == "empty"){
 				
-				var div = dom.newElement("div",settings[s].id,"",parent);
+				dom.newElement("div",settings[s].id,"",parent);
 		
 			}
 			
@@ -855,8 +862,7 @@ var APP = (function () {
 			
 		}
 	
-	
-	}
+	};
 	
 	
 	my.createWorkflow = function(workflow){
@@ -880,25 +886,26 @@ var APP = (function () {
 	
 		my.createWorkflowDisplay(workflow);
 	
-	}
+	};
 	
 	
 	my.createWorkflowDisplay = function (workflow){
+		var image;
 	
 		var div = g("module_icons");
 	
 		for (var w=0; w<workflow.length; w++){
 		
-			if (w!=0){
+			if (w !== 0){
 			
 				var arrow = dom.newElement("div","","wizard_arrow",div);
-				var image = dom.newElement("img","","wizard_icon",arrow);
+				image = dom.newElement("img","","wizard_icon",arrow);
 				image.src = APP.CONF.path_to_icons + "right2.png";
 			
 			}
 			
 			var icon = dom.newElement("div",APP.CONF.viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
-			var image = dom.newElement("img","","module_icon",icon);
+			image = dom.newElement("img","","module_icon",icon);
 			image.src = APP.CONF.path_to_icons + workflow[w].identity.icon;
 
 			dom.newElement("br","","",icon);
@@ -907,11 +914,11 @@ var APP = (function () {
 			icon.addEventListener('click', function(num) {
 				return function(){
 					my.view(num);
-				}
+				};
 			}(workflow[w]));
 		}
 	
-	}
+	};
 	
 	
 	my.getEnvironmentFromID = function(id){
@@ -926,7 +933,7 @@ var APP = (function () {
 		
 		return undefined;
 	
-	}
+	};
 
 	
 	my.addEventListeners = function(){
@@ -953,7 +960,7 @@ var APP = (function () {
 			g(APP.CONF.viewlink_id_prefix + my.views[v].id).addEventListener('click', function(num) {
 				return function(){
 					my.view(APP.CONF.view_id_prefix + num);
-				}
+				};
 			}(my.views[v].id));
 		}
 		
@@ -968,7 +975,7 @@ var APP = (function () {
 			radio.addEventListener( "click", function(num) {
 				return function(){
 					save_and_recall.set_autosave_interval(num);
-				}
+				};
 			}(radio.value));
 		}
 		
@@ -991,7 +998,7 @@ var APP = (function () {
 		
 		my.createEnvironment(my.environments[index]);
 	
-	}
+	};
 	
 	
 	my.recall = function(recall_object, environment_data){
@@ -1020,7 +1027,7 @@ var APP = (function () {
 			my.createEnvironment(environment);
 			
 			if (typeof environment_data == "undefined"){
-				var environment_data = save_and_recall.getRecallDataForEnvironment(environment);
+				environment_data = save_and_recall.getRecallDataForEnvironment(environment);
 			}
 			
 			if (typeof environment_data != "undefined"){
@@ -1032,7 +1039,7 @@ var APP = (function () {
 		}
 		
 		my.view(recall_object.active_view);
-	}
+	};
 	
 	
 	my.getEnvironmentIndexFromID = function(id){
@@ -1048,7 +1055,7 @@ var APP = (function () {
 		console.log("ERROR: Unknown environment id: " + id);
 		return undefined;
 	
-	}
+	};
 	
 	
 	my.changeLanguage = function(index){
@@ -1057,7 +1064,7 @@ var APP = (function () {
 		save_and_recall.save();
 		location.reload();
 	
-	}
+	};
 	
 	
 	return my;
