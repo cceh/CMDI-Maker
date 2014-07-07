@@ -196,28 +196,28 @@ eldp_environment.actor_form = {
 					name: "full_name",
 					type: "text",
 				},
-   				{
+				{
 					heading: "Code",
 					name: "code",
 					type: "text",
 				},
-   				{
+				{
 					heading: "Birth Date",
 					name: "birth_date",
 					type: "date",
 				},
-   				{
+				{
 					heading: "Age",
 					name: "age",
 					type: "text",
 				},
-   				{
+				{
 					heading: "Sex",
 					name: "sex",
 					type: "select",
 					vocabulary: ["Unknown","Unspecified","NAP","Female","Male"]
 				},
-   				{
+				{
 					heading: "Education",
 					name: "education",
 					type: "text",
@@ -243,18 +243,18 @@ eldp_environment.actor_form = {
 					name: "ethnic_group",
 					type: "text",
 				},
-   				{
+				{
 					heading: "Family Social Role",
 					name: "family_social_role",
 					type: "open_vocabulary",
 					vocabulary: ["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"]
 				},
-   				{
+				{
 					heading: "Description of the actor",
 					name: "description",
 					type: "textarea",
 				},
-   				{
+				{
 					heading: "Anonymized",
 					name: "anonymized",
 					type: "check",
@@ -276,12 +276,12 @@ eldp_environment.actor_form = {
 					name: "address",
 					type: "text"
 				},
-   				{
+				{
 					heading: "Email",
 					name: "email",
 					type: "text"
 				},
-   				{
+				{
 					heading: "Organisation",
 					name: "organisation",
 					type: "text"

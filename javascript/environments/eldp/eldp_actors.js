@@ -16,6 +16,7 @@ limitations under the License.
 
 
 eldp_environment.workflow[1] = (function(){
+	'use strict';
 
 	var my = {};
 	var session;
@@ -52,7 +53,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.refreshListDisplay(true);
 		
-	}
+	};
 	
 	
 	my.getSaveData = function(){
@@ -65,7 +66,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		return object;
 	
-	}
+	};
 	
 	
 	my.recall = function(data){
@@ -76,14 +77,14 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.refreshListDisplay();
 	
-	}
+	};
 	
 	
 	my.view = function(){
 	
 		my.show(my.active_actor);
 	
-	}
+	};
 	
 	
 	my.functions = [
@@ -136,16 +137,16 @@ eldp_environment.workflow[1] = (function(){
 
 				alertify.log("All actors deleted", "", "5000");
 				save_and_recall.save();
-	  
+
 				for (var s=0;s<session.sessions.length;s++){
 					session.removeAllActors(session.sessions[s].id);
 				}
 				
 				
-	  
+
 			}
 		});
-	}
+	};
 
 
 	my.show = function(actor_id){
@@ -214,7 +215,7 @@ eldp_environment.workflow[1] = (function(){
 		}
 
 
-	}
+	};
 	
 	
 	my.getActorsIndexFromID = function(actor_id) {
@@ -225,12 +226,12 @@ eldp_environment.workflow[1] = (function(){
 		
 		return alert("An error has occured.\nCould not find actors cache index from actor id!\n\nactor_id = " + actor_id);
 		
-	}
+	};
 	
 	
 	my.export_actors = function(){
 		
-		if (my.actors.length != 0){
+		if (my.actors.length !== 0){
 		
 			var actors_json = JSON.stringify(my.actors);
 			
@@ -240,12 +241,12 @@ eldp_environment.workflow[1] = (function(){
 		
 		else {
 		
-			alertify.alert("There are no actors!")
+			alertify.alert("There are no actors!");
 		
 		}
 
 
-	}
+	};
 
 
 	my.import_actors = function(evt){
@@ -261,11 +262,12 @@ eldp_environment.workflow[1] = (function(){
 		var reader = new FileReader();
 		
 		reader.onload = function(e){
+			var imported_actors;
 		
 			var result = e.target.result;
 		
 			try {
-				var imported_actors = JSON.parse(result);
+				imported_actors = JSON.parse(result);
 			}
 			
 			catch (e) {
@@ -276,7 +278,7 @@ eldp_environment.workflow[1] = (function(){
 					
 					var xml = parser.parseFromString(result,"text/xml");
 					
-					var imported_actors = parse_imdi_for_actors(xml);
+					imported_actors = parse_imdi_for_actors(xml);
 					
 				}
 				
@@ -296,11 +298,11 @@ eldp_environment.workflow[1] = (function(){
 			
 			alertify.log(imported_actors.length + " actors imported");
 		
-		}
+		};
 		
 		reader.readAsText(file);
 		
-	}
+	};
 
 
 	my.parse_imdi_for_actors = function(xml){
@@ -340,7 +342,7 @@ eldp_environment.workflow[1] = (function(){
 				
 				anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
 			
-			}
+			};
 			
 			actors_in_json.push(actor);
 
@@ -350,7 +352,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		return actors_in_json;
 
-	}
+	};
 
 
 	my.blank_form = function(){
@@ -379,7 +381,7 @@ eldp_environment.workflow[1] = (function(){
 
 		document.getElementsByName("actor_anonymized")[0].checked = false;
 
-	}
+	};
 
 
 	my.make_actor_object_out_of_form = function(){
@@ -451,14 +453,14 @@ eldp_environment.workflow[1] = (function(){
 
 		return object;
 	 
-	}
+	};
 	
 	
 	my.createForm = function(){
 
 		APP.makeInput(g("actor_content_div"), actor_form, "actor_", "actor_", undefined);
 
-	}
+	};
 
 
 	my.duplicate_active_actor = function(){
@@ -467,21 +469,21 @@ eldp_environment.workflow[1] = (function(){
 		var save = my.save_active_actor();
 		
 		//then create a duplicate
-		if (save == true){
+		if (save === true){
 			my.save_active_actor(true);
 			alertify.log("Actor saved and duplicated.","success",5000);
 		}
 
-	}
+	};
 
 
 	my.save_active_actor = function(do_not_overwrite){
 	//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
 
-		if (get("actor_name") != ""){
+		if (get("actor_name") !== ""){
 
 			if (!do_not_overwrite){
-				var do_not_overwrite = false;
+				do_not_overwrite = false;
 			}
 			
 			var actor_to_put = my.make_actor_object_out_of_form();
@@ -501,7 +503,7 @@ eldp_environment.workflow[1] = (function(){
 			
 		}
 
-	}
+	};
 
 
 	my.save = function(actor_to_put, do_not_overwrite){
@@ -514,7 +516,7 @@ eldp_environment.workflow[1] = (function(){
 		}
 
 		//if this actor does already exist and is to be overwritten, overwrite the object in the array
-		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite == false)) {
+		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite === false)) {
 			my.actors.splice(my.getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
 			
 			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
@@ -550,7 +552,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		return true;
 
-	}
+	};
 
 
 	my.highlight_active_actor_div = function(actor_id){
@@ -564,7 +566,7 @@ eldp_environment.workflow[1] = (function(){
 
 		g("ac_list_entry_"+actor_id).style.background = "lightskyblue";
 
-	}
+	};
 	
 
 	my.delete_active_actor = function(){
@@ -593,22 +595,22 @@ eldp_environment.workflow[1] = (function(){
 
 			}
 		});
-	}
+	};
 	
 	
 	my.getAge = function (session_id, actor_id){
 
 		var i = my.getActorsIndexFromID(actor_id);
 		
-		if (my.actors[i].age == ""){   //at first, check, if actor's age hasn't been specified yet
+		if (my.actors[i].age === ""){   //at first, check, if actor's age hasn't been specified yet
 		
-			if (document.getElementsByName("radio_age_calc")[0].checked == true){  //then, check if auto calculate feature in settings is activated
+			if (document.getElementsByName("radio_age_calc")[0].checked === true){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
 				var sessionDate = get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day"); 
 				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
 				
-				if (age_calc_result != 0){
+				if (age_calc_result !== 0){
 				
 					console.log("Actor's age successfully calculated");			
 					return age_calc_result;
@@ -636,7 +638,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		}
 
-	}
+	};
 	
 
 	my.sortAlphabetically = function(){
@@ -648,16 +650,17 @@ eldp_environment.workflow[1] = (function(){
 		
 		alertify.log("Actors sorted.","",5000);
 
-	}
+	};
 
 
 	my.refreshListDisplay = function(not_in_sessions){
-	
+		var div;
+		
 		g('ac_list').innerHTML = "";
 
 		for (var i=0;i<my.actors.length;i++){
 
-			var div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + my.actors[i].name + "</h2>" + "<p>"+my.actors[i].role+"</p>");
+			div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + my.actors[i].name + "</h2>" + "<p>"+my.actors[i].role+"</p>");
 			//display name of actor
 		
 			div.addEventListener('click', function(num) { 
@@ -667,16 +670,8 @@ eldp_environment.workflow[1] = (function(){
 		}
 
 		//create field for new actor
-		var div = document.createElement('div');
-		div.id = "ac_list_entry_-1";
-		div.className = "ac_list_entry";
-
+		div = dom.newElement('div',"ac_list_entry_-1","ac_list_entry",g('ac_list'),"<h2>New Actor</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
-
-
-		div.innerHTML = "<h2>New Actor</h2>";
-
-		g('ac_list').appendChild(div);	
 
 		if ((session) && (!not_in_sessions)){
 			session.refreshActorLists(my.actors);
@@ -707,7 +702,7 @@ eldp_environment.workflow[1] = (function(){
 				break;
 			}
 		}
-	}
+	};
 
 
 	return my;

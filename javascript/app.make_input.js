@@ -16,6 +16,8 @@ limitations under the License.
 
 
 APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix, session_object){
+	'use strict';
+	
 	var input;
 	var f;
 
@@ -189,6 +191,9 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 
 
 APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
+	'use_strict';
+	
+	var f;
 
 	switch (field.type){
 	

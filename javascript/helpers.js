@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-function GetFileTypeFromFilename(filename){
+function getFileTypeFromFilename(filename){
 
 	var pos_of_dot = filename.lastIndexOf(".");
 	
@@ -136,7 +136,7 @@ function isSubstringAStartOfAWordInString(string, substring){
 }
 
 
-function RemoveEndingFromFilename(filename){
+function removeEndingFromFilename(filename){
 
 	var pos_of_dot = filename.lastIndexOf(".");
 	
