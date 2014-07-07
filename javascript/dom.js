@@ -56,6 +56,7 @@ var dom = (function() {
 
 	};
 
+	
 	my.setRadioIndex = function (radios, index){
 
 		if ((!index) || (typeof index == "undefined")){
@@ -214,7 +215,7 @@ var dom = (function() {
 			select.options[select.options.length] = NewOption;
 		}
 		
-		if (options.indexOf(value) != -1) {
+		if (typeof value != "undefined" && options.indexOf(value) != -1) {
 			select.selectedIndex = options.indexOf(value);
 		}
 		
@@ -230,7 +231,7 @@ var dom = (function() {
 		input.title = hover;
 		
 
-		if ((value === "") || (options.indexOf(value) != -1)) {	
+		if ((typeof value == "undefined") || (options.indexOf(value) != -1)) {	
 			parent.appendChild(select);
 		}
 		
@@ -261,7 +262,7 @@ var dom = (function() {
 		} );
 
 
-		parent.appendChild(document.createElement("br"));	
+		my.br(parent);	
 
 	};
 	
@@ -401,16 +402,13 @@ var dom = (function() {
 			select.options[select.options.length] = NewOption;
 		}
 
-		if (value !== 0){
+		if (typeof value != "undefined" && options.indexOf(value) != -1){
 			select.selectedIndex = options.indexOf(value);
 		}
 		
 		else {
 			select.selectedIndex = 0;
-		
 		}
-
-		
 
 		return select;	
 

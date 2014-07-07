@@ -15,9 +15,8 @@ limitations under the License.
 */
 
 
-'use strict';
-
 imdi_environment.workflow[4] = (function (){
+	'use strict';
 
 	var my = {};
 	var corpus;
@@ -27,7 +26,7 @@ imdi_environment.workflow[4] = (function (){
 		id: "xml_output",
 		title: "XML Output",
 		icon: "data.png"
-	}
+	};
 	
 	
 	my.init = function(){
@@ -36,7 +35,7 @@ imdi_environment.workflow[4] = (function (){
 		session = imdi_environment.workflow[3];
 		my.createOutputFormatSelect(my.formats);
 	
-	}
+	};
 	
 	
 	my.formats = [
@@ -70,7 +69,7 @@ imdi_environment.workflow[4] = (function (){
 			
 			dom.newElement("span", "","",parent, " " + formats[f].title);
 			
-			if (f == 0){
+			if (f === 0){
 				input.checked = true;
 			}
 			
@@ -78,13 +77,13 @@ imdi_environment.workflow[4] = (function (){
 			
 		}
 
-	}
+	};
 	
 	
 	my.view = function(){
 	
 		//if there is nothing to be done, return
-		if ((get("corpus_name") == "") && (session.sessions.length == 0)){
+		if ((get("corpus_name") === "") && (session.sessions.length === 0)){
 		
 			alertify.set({ labels: {
 				ok     : "OK"
@@ -95,7 +94,7 @@ imdi_environment.workflow[4] = (function (){
 		}
 		
 		//corpus must have a proper name or no name at all
-		if ((corpus.isCorpusProperlyNamed() || get("corpus_name") == "") && (session.areAllSessionsProperlyNamed())){
+		if ((corpus.isCorpusProperlyNamed() || get("corpus_name") === "") && (session.areAllSessionsProperlyNamed())){
 			
 			if (session.doesEverySessionHaveAProjectName()){
 
@@ -124,7 +123,7 @@ imdi_environment.workflow[4] = (function (){
 			} });
 			
 			//if corpus has a name, but an invalid one
-			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") != ""){   //show corpus
+			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") !== ""){   //show corpus
 				APP.view(corpus);
 				alertify.alert("The corpus must have a proper name or no name at all.<br>Not allowed chars are: " + APP.CONF.not_allowed_chars);
 			
@@ -135,7 +134,7 @@ imdi_environment.workflow[4] = (function (){
 				alertify.alert("Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: " + APP.CONF.not_allowed_chars);
 			}
 		}
-	}
+	};
 	
 
 	my.functions = [
@@ -149,7 +148,8 @@ imdi_environment.workflow[4] = (function (){
 	];
 	
 
-	my.generate = function (){	
+	my.generate = function (){
+		var filename;
 		
 		var xml_window = g('VIEW_xml_output');
 		
@@ -161,26 +161,25 @@ imdi_environment.workflow[4] = (function (){
 		// initiate object for imdi_structure class
 		var xml_strings = new my.formats[output_format_index].generator_object();
 		var output_format = my.formats[output_format_index].output_name;
-		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		var file_ending = my.formats[output_format_index].file_ending;
 		
 		//if corpus is to be created
-		if (get("corpus_name") != ""){
+		if (get("corpus_name") !== ""){
 
-			var filename = get("corpus_name")+"."+file_ending;
+			filename = get("corpus_name")+"."+file_ending;
 			dom.createXMLOutputDIV(xml_window, output_format + " Corpus", "textarea_corpus",
 			xml_strings.corpus, filename);
 		}
 		
 		for (var s=0;s<session.sessions.length;s++){
 
-			var filename = get("session_"+session.sessions[s].id+"_session_name")+"."+file_ending;
+			filename = get("session_"+session.sessions[s].id+"_session_name")+"."+file_ending;
 			dom.createXMLOutputDIV(xml_window, output_format + " Session " + (s+1), "textarea_session_"+s,
 			xml_strings.sessions[s],filename);
 			
 		}
 		
-	}
+	};
 
 
 	return my;

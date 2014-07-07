@@ -151,20 +151,33 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 				element_id_prefix+field.name,
 				field.size,
 				field.vocabulary,
-				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				(session_object && session_object[field.name] ? session_object[field.name] : field.default_value),
 				field.comment
 			);
 			break;
 		}
 
 		case "open_vocabulary": {
+		
+			var value;
+		
+			if (session_object && session_object[field.name]){
+				value = session_object[field.name];
+			}
+			
+			else if (field.default_value){
+				value = field.default_value;
+			}
+			
+			console.log("making OV. value is: " + value + " /// typeof value = " + typeof value);
+			
 			input = dom.openVocabulary(
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				field.size,
 				field.vocabulary,
-				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				value,
 				field.comment
 			);
 			break;

@@ -16,6 +16,7 @@ limitations under the License.
 
 
 imdi_environment.workflow[1] = (function(){
+	'use strict';
 
 	var my = {};
 	var session;
