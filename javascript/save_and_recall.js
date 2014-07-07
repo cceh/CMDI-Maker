@@ -49,14 +49,14 @@ var save_and_recall = (function(){
 
 		if (!form){
 			console.log("No recall data for environment found");
-			return;
+			return undefined;
 		}
 		
 		var form_object = JSON.parse(form);
 		
 		console.log("Environment Recall object found!");
 		
-		my.recallEnvironmentData(form_object);	
+		return form_object;	
 		
 	}
 	
@@ -178,7 +178,7 @@ var save_and_recall = (function(){
 	}
 	
 	
-	my.loadFromFile = function(file){  //TO DO!!!
+	my.loadFromFile = function(file){
 		
 		var reader = new FileReader();
 		
@@ -208,10 +208,44 @@ var save_and_recall = (function(){
 	}
 
 	
-	my.importProjectData = function(data){  //TO DO!!!
-	
-		return;
-	
+	my.importProjectData = function(data){
+		
+		if (data.app){
+			
+			alertify.set({ labels: {
+				ok     : APP.l("confirm","no"),
+				cancel : APP.l("confirm","yes_overwrite_data")
+			} });
+
+			alertify.confirm(APP.l("confirm","overwrite_data"), function (e) {
+
+				if (e) {
+					// user clicked "ok"
+					return;
+				}
+				
+				else {
+					// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button
+					console.log("Importing CMDI Maker Project from file!");
+				}
+			});
+			
+			//CLEAR EVERYTHING
+			APP.unloadActiveEnvironment();
+			APP.init(true);
+		
+			var environment_id = data.app.active_environment_id;
+			
+			console.log("Active Environment: " + environment_id);
+			
+			if (data.environments && data.environments[environment_id]){
+				var environment_data = data.environments[environment_id];
+			}
+		
+			APP.recall(data.app, environment_data);
+		
+		}
+
 	}
 	
 	

@@ -250,14 +250,16 @@ var APP = (function () {
 	}
 	
 	
-	my.init = function (){
+	my.init = function (no_recall){
 		
 		my.active_language = my.languages[0];
 		
-		var recall_object = save_and_recall.getRecallDataForApp();
-		
-		if (recall_object && recall_object.settings.active_language_id){
-			my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
+		if (!no_recall){
+			var recall_object = save_and_recall.getRecallDataForApp();
+			
+			if (recall_object && recall_object.settings.active_language_id){
+				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
+			}
 		}
 		
 		my.checkIfFirstStart();
@@ -270,7 +272,7 @@ var APP = (function () {
 		my.displayEnvironments();
 		my.addEventListeners();
 		
-		if (recall_object){
+		if ((!no_recall) && (recall_object)){
 			my.recall(recall_object);
 		}
 		
@@ -280,6 +282,8 @@ var APP = (function () {
 	my.displayMetadataLanguages = function (){
 	
 		var select = g("metadata_language_select");
+		
+		dom.removeOptions(select);
 
 		for (var j=0;j<APP.CONF.MetadataLanguageIDs.length;j++){
 
@@ -295,6 +299,8 @@ var APP = (function () {
 	my.displayLanguages = function (){
 		
 		var select = g("language_select");
+		
+		dom.removeOptions(select);
 	
 		for (var j=0;j<my.languages.length;j++){
 
@@ -310,6 +316,8 @@ var APP = (function () {
 	my.displayEnvironments = function (){
 		
 		var select = g("profile_select");
+		
+		dom.removeOptions(select);
 		
 		var NewOption = new Option("", 0, false, true);
 		select.options[select.options.length] = NewOption;
@@ -648,6 +656,11 @@ var APP = (function () {
 	
 	my.unloadActiveEnvironment = function (){
 	
+		if (!APP.active_environment){
+			console.log("WARNING: APP.unloadActiveEnvironment called although there is no environment loaded!");
+			return;
+		}
+	
 		console.log("Unloading active environment: " + my.active_environment.id);
 	
 		save_and_recall.save();
@@ -666,6 +679,8 @@ var APP = (function () {
 		g("module_icons").innerHTML = "";
 		
 		my.active_environment = undefined;
+		
+		g("profile_select").selectedIndex = 0;
 		
 		my.view("VIEW_start");
 	
@@ -725,7 +740,9 @@ var APP = (function () {
 	
 	
 	my.initSettings = function (settings, parent){
-	
+		
+		parent.innerHTML = "";
+		
 		for (var s=0; s<settings.length; s++){
 		
 			var h2 = dom.newElement("h2","","",parent);	
@@ -977,7 +994,9 @@ var APP = (function () {
 	}
 	
 	
-	my.recall = function(recall_object){
+	my.recall = function(recall_object, environment_data){
+	//environment_data is an optional parameter, if it is not specified, the function tries to get the
+	//environment_data from local storage
 
 		console.log("Filling the form with recalled data");
 		
@@ -999,7 +1018,14 @@ var APP = (function () {
 		
 			var environment = my.getEnvironmentFromID(recall_object.active_environment_id);
 			my.createEnvironment(environment);
-			save_and_recall.getRecallDataForEnvironment(environment);
+			
+			if (typeof environment_data == "undefined"){
+				var environment_data = save_and_recall.getRecallDataForEnvironment(environment);
+			}
+			
+			if (typeof environment_data != "undefined"){
+				save_and_recall.recallEnvironmentData(environment_data);
+			}
 			
 			g("profile_select").selectedIndex = my.getEnvironmentIndexFromID(recall_object.active_environment_id) + 1;
 		

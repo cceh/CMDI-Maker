@@ -35,6 +35,18 @@ var dom = (function() {
 		return 0;
 
 	}
+	
+	
+	my.removeOptions = function(selectbox){
+		
+		var i;
+		
+		for (i=selectbox.options.length-1; i>=0; i--){
+			selectbox.remove(i);
+		}
+		
+	}
+	
 
 	my.getValueOfRadios = function (radios_name){
 		

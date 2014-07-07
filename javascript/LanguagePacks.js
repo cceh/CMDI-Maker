@@ -55,6 +55,8 @@ APP.languages[0] = {
 	confirm: {
 		no: "No",
 		yes_delete_everything: "Yes, delete everything",
+		yes_overwrite_data: "Yes, overwrite data",
+		overwrite_data: "Really?<br>You want to overwrite all data?",
 		hard_reset: "Really?<br>You want to hard reset CMDI Maker? All your actors and stuff will be deleted!",
 	},
 	
@@ -122,6 +124,8 @@ APP.languages[1] = {
 	confirm: {
 		no: "Nein",
 		yes_delete_everything: "Ja, alles löschen",
+		yes_overwrite_data: "Ja, Daten überschreiben",
+		overwrite_data: "Willst du das wirklich?<br>Alle deine Daten werden überschrieben!",
 		hard_reset: "Willst du das wirklich?<br>Alle deine Daten werden gelöscht!",
 	},
 	
