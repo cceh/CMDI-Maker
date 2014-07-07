@@ -42,7 +42,7 @@ imdi_environment.workflow[1] = (function(){
 	
 		dom.scrollTop();
 	
-	}
+	};
 	
 	
 	my.compatibility_warnings = {
@@ -125,7 +125,7 @@ imdi_environment.workflow[1] = (function(){
 		}
 
 		return fileinfo;
-	}
+	};
 	
 	
 	my.file_types = {
@@ -182,14 +182,14 @@ imdi_environment.workflow[1] = (function(){
 		my.available_resources = data;
 		my.refreshFileListDisplay();
 	
-	}
+	};
 	
 	
 	my.getSaveData = function(){
 	
 		return my.available_resources;
 	
-	}
+	};
 	
 	
 	my.functions = [
@@ -201,7 +201,7 @@ imdi_environment.workflow[1] = (function(){
 			type: "function_wrap",
 			sub_div: "crps_filetype_select",
 			onclick: function() { my.createSessionPerResource();  APP.view(session); },
-			sub_div_innerHTML: 	'<h3 class="inner_function_h3">Files</h3>'+
+			sub_div_innerHTML: '<h3 class="inner_function_h3">Files</h3>'+
 						'<input type="radio" name="radio_file_type" value="selected" checked> Selected Files<br>'+
 						'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
 						'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
@@ -257,7 +257,7 @@ imdi_environment.workflow[1] = (function(){
 		var dropZone = g('drop_zone');
 		dropZone.addEventListener('dragover', my.handleDragOver, false);
 		dropZone.addEventListener('drop', my.handleFileDrop, false);
-	  
+
 		g('files_input').addEventListener('change', my.handleFileInputChange, false);
 		
 		my.refreshFileListDisplay(true);
@@ -265,7 +265,7 @@ imdi_environment.workflow[1] = (function(){
 		document.onkeydown = function(event) {
 		
 			if (event.keyCode == 16) {  //if shift is pressed
-				if (my.shift == false){
+				if (my.shift === false){
 					my.shift = true;
 					console.log("shift on");
 				}
@@ -288,33 +288,34 @@ imdi_environment.workflow[1] = (function(){
 			
 		};
 		
-	}
+	};
 
 	
 	my.getValidityOfFile = function(filename){
 	// returns 0=valid media file, 1=valid written resource, 2=invalid media file, 3=invalid written resource, -1=unknown file
-
-		var file_type = GetFileTypeFromFilename(filename);
+		var j;
 		
-		for (var j=0;j<my.file_types.valid_lamus_media_file_types.length; j++){
+		var file_type = getFileTypeFromFilename(filename);
+		
+		for (j=0;j<my.file_types.valid_lamus_media_file_types.length; j++){
 			if (file_type == my.file_types.valid_lamus_media_file_types[j][0]) {
 				return 0;
 			}
 		}
 		
-		for (var j=0;j<my.file_types.valid_lamus_written_resource_file_types.length; j++){
+		for (j=0;j<my.file_types.valid_lamus_written_resource_file_types.length; j++){
 			if (file_type == my.file_types.valid_lamus_written_resource_file_types[j][0]){
 				return 1;
 			}
 		}
 
-		for (var j=0;j<my.file_types.invalid_lamus_media_file_types.length; j++){
+		for (j=0;j<my.file_types.invalid_lamus_media_file_types.length; j++){
 			if (file_type == my.file_types.invalid_lamus_media_file_types[j][0]){
 				return 2;
 			}
 		}	
 
-		for (var j=0;j<my.file_types.invalid_lamus_written_resource_file_types.length; j++){
+		for (j=0;j<my.file_types.invalid_lamus_written_resource_file_types.length; j++){
 			if (file_type == my.file_types.invalid_lamus_written_resource_file_types[j][0]){
 				return 3;
 			}
@@ -322,10 +323,12 @@ imdi_environment.workflow[1] = (function(){
 
 		return -1;
 
-	}
+	};
 
 	
 	my.refreshFileListDisplay = function(not_in_sessions) {
+		var file_entry_class;
+		var compatibility_warning;
 
 		// files is a FileList of File objects. List some properties.
 		var output = [];
@@ -339,35 +342,35 @@ imdi_environment.workflow[1] = (function(){
 			switch (my.getValidityOfFile(my.available_resources[i][0])){
 			
 				case 0: {
-					var file_entry_class = "media_file_entry";
+					file_entry_class = "media_file_entry";
 					break;
 				}
 			
 				case 1: {
-					var file_entry_class = "written_resource_file_entry";
+					file_entry_class = "written_resource_file_entry";
 					break;
 				}
 			
 				case 2: {
-					var compatibility_warning = my.compatibility_warnings.invalid_media_file;
-					var file_entry_class = "media_file_entry";
+					compatibility_warning = my.compatibility_warnings.invalid_media_file;
+					file_entry_class = "media_file_entry";
 					break;
 				}
 				
 				case 3: {
-					var compatibility_warning = my.compatibility_warnings.invalid_written_resource;
-					var file_entry_class = "written_resource_file_entry";
+					compatibility_warning = my.compatibility_warnings.invalid_written_resource;
+					file_entry_class = "written_resource_file_entry";
 					break;
 				}
 				
 				default: {
-					var compatibility_warning = my.compatibility_warnings.general;
-					var file_entry_class = "invalid_file_entry";
+					compatibility_warning = my.compatibility_warnings.general;
+					file_entry_class = "invalid_file_entry";
 					break;
 				}
 			
 			}
-		  
+		
 			
 			var file_size = my.available_resources[i][2];
 		
@@ -393,7 +396,7 @@ imdi_environment.workflow[1] = (function(){
 
 		}
 		
-		if (my.available_resources.length == 0){
+		if (my.available_resources.length === 0){
 			list.innerHTML = "<h2>No resource files imported.</h2>";
 		}
 
@@ -403,19 +406,19 @@ imdi_environment.workflow[1] = (function(){
 		
 		my.selected_files = [];
 		
-	}
+	};
   
   
 	my.pushFileMetadata = function(FileList) {
 
 		// files is a FileList of File objects. List some properties.
 		var output = [];
-		for (var i = 0, f; f = FileList[i]; i++) {
-			my.available_resources.push([/*escape(*/f.name/*)*/, f.type || 'n/a',bytesToSize(f.size,1), f.lastModifiedDate.toLocaleDateString()  ]);  //push an array with 4 values
+		for (var i = 0, f; !!(f = FileList[i]); i++) {
+			my.available_resources.push([f.name, f.type || 'n/a',bytesToSize(f.size,1), f.lastModifiedDate.toLocaleDateString()  ]);  //push an array with 4 values
 		}
 		
 		my.refreshFileListDisplay();
-	}
+	};
   
 
 	my.handleDragOver = function(evt) {
@@ -424,7 +427,7 @@ imdi_environment.workflow[1] = (function(){
 		evt.preventDefault();
 		evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 		
-	}
+	};
 
 
 	my.sortAlphabetically = function(){
@@ -432,17 +435,20 @@ imdi_environment.workflow[1] = (function(){
 		my.available_resources = sortByKey(my.available_resources,0);
 
 		my.refreshFileListDisplay();
-	}
+	};
   
 
 	my.createSessionPerResource = function(){
+	
+		var chosen_file_type;
+		var f;
 
 		var radio_buttons = document.getElementsByName("radio_file_type");
 		
 		//get file type
 		for (var i = 0; i < radio_buttons.length; i++) {
 			if (radio_buttons[i].checked) {
-				var chosen_file_type = radio_buttons[i].value;
+				chosen_file_type = radio_buttons[i].value;
 				break;
 			}
 		}
@@ -453,7 +459,7 @@ imdi_environment.workflow[1] = (function(){
 		
 			console.log("Searching for selected files");
 			
-			for (var f=0; f<my.selected_files.length; f++){
+			for (f=0; f<my.selected_files.length; f++){
 		
 				my.createSessionForResource(my.selected_files[f]);
 			
@@ -465,7 +471,7 @@ imdi_environment.workflow[1] = (function(){
 		
 		else {    //for all media files of filetype
 		
-			for (var f=0; f<my.available_resources.length; f++){
+			for (f=0; f<my.available_resources.length; f++){
 			
 				if (GetFileTypeFromFilename(my.available_resources[f][0]) == chosen_file_type){
 				
@@ -480,23 +486,24 @@ imdi_environment.workflow[1] = (function(){
 		}
 
 
-	}
+	};
 	
 	
 	my.removeSelectedFiles = function(){
+		var f;
 		
-		for (var f = 0; f<my.selected_files.length; f++){
+		for (f = 0; f<my.selected_files.length; f++){
 		
 			my.available_resources[my.selected_files[f]] = null;
 		
 		
 		}
 		
-		var f = 0;
+		f = 0;
 		
 		while (f < my.available_resources.length){
 		
-			if (my.available_resources[f] == null){
+			if (my.available_resources[f] === null){
 				my.available_resources.splice(f,1);
 			}
 			
@@ -507,7 +514,7 @@ imdi_environment.workflow[1] = (function(){
 		}
 		
 		my.refreshFileListDisplay();
-	}
+	};
 	
 	
 	my.removeFile = function(index){
@@ -515,7 +522,7 @@ imdi_environment.workflow[1] = (function(){
 		my.available_resources.splice(index,1);
 		my.refreshFileListDisplay();
 	
-	}
+	};
 
 
 	my.createSessionForResource = function(resource_index){
@@ -543,7 +550,7 @@ imdi_environment.workflow[1] = (function(){
 		
 		session.createNewSessionWithResources(name, expanded, resources);
 
-	}
+	};
 
 
 	my.clearFileList = function(){
@@ -552,7 +559,7 @@ imdi_environment.workflow[1] = (function(){
 
 		my.refreshFileListDisplay();
 
-	}
+	};
 
 	
 	my.handleFileDrop = function(evt){
@@ -562,26 +569,27 @@ imdi_environment.workflow[1] = (function(){
 	 
 		my.pushFileMetadata(evt.dataTransfer.files);
 		
-	}
+	};
 
 
 	my.handleFileInputChange = function(evt){
 	 
 		my.pushFileMetadata(evt.target.files);
 	 
-	}
+	};
 
 
 	/* File selection */
 
 
 	my.clickedOnFile = function(i){
+		var f;
 		
-		if (my.shift == true){
+		if (my.shift === true){
 			
 			if (i < my.last_selected_file){
 			
-				for (var f=my.last_selected_file-1; f>=i; f--){
+				for (f = my.last_selected_file-1; f>=i; f--){
 			
 					my.selectFile(f);
 			
@@ -591,7 +599,7 @@ imdi_environment.workflow[1] = (function(){
 			
 			if (i > my.last_selected_file){
 			
-				for (var f=my.last_selected_file+1; f<=i; f++){
+				for (f = my.last_selected_file+1; f<=i; f++){
 			
 					my.selectFile(f);
 			
@@ -608,7 +616,7 @@ imdi_environment.workflow[1] = (function(){
 		console.log(my.selected_files);
 
 
-	}
+	};
 
 
 	my.selectFile = function(i){
@@ -628,7 +636,7 @@ imdi_environment.workflow[1] = (function(){
 
 		my.markFileEntry(i);
 
-	}
+	};
 	
 
 	my.markFileEntry = function(i){
@@ -649,7 +657,7 @@ imdi_environment.workflow[1] = (function(){
 			
 		}
 
-	}
+	};
 
 	
 	my.deselectAllFiles = function(){
@@ -660,7 +668,7 @@ imdi_environment.workflow[1] = (function(){
 		
 		}
 
-	}
+	};
 
 
 	my.clearFileList = function(){
@@ -669,7 +677,7 @@ imdi_environment.workflow[1] = (function(){
 
 		my.refreshFileListDisplay();
 
-	}
+	};
 	
 	return my;
 
