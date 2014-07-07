@@ -430,14 +430,14 @@ imdi_environment.workflow[2] = (function(){
 		dom.setFormValue("actor_name","");
 		dom.setFormValue("actor_full_name","");
 		dom.setFormValue("actor_code","");
-		dom.setFormValue("actor_role","Unknown", actor_form.fields[1].fields[0].vocabulary);
+		dom.setFormValue("actor_role",actor_form.fields[1].fields[0].default_value, actor_form.fields[1].fields[0].vocabulary);
 		dom.setFormValue("actor_ethnic_group","");
-		dom.setFormValue("actor_family_social_role","Unknown", actor_form.fields[1].fields[2].vocabulary);
+		dom.setFormValue("actor_family_social_role",actor_form.fields[1].fields[2].default_value, actor_form.fields[1].fields[2].vocabulary);
 		dom.setFormValue("actor_age","");
 		dom.setFormValue("actor_birth_date_year","YYYY");
 		dom.setFormValue("actor_birth_date_month","MM");
 		dom.setFormValue("actor_birth_date_day","DD");
-		dom.setFormValue("actor_sex","Unknown");
+		dom.setFormValue("actor_sex",actor_form.fields[0].fields[5].default_value);
 		dom.setFormValue("actor_education","");
 
 		dom.setFormValue("actor_contact_name","");
