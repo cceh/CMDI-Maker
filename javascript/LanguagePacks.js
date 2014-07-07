@@ -104,7 +104,7 @@ APP.languages[1] = {
 		save_project: "Projekt in Datei speichern",
 		save_project_description: "Diese Funktion speichert alle deine Daten in einer Datei. Diese kann wieder in den CMDI Maker importiert werden.",
 		load_project: "Projekt laden",
-		load_project_description: "Lädt eine CMP-Datei und importiert dessen Projektdaten.",
+		load_project_description: "Lädt eine CMP-Datei und importiert ihre Projektdaten.",
 		delete_recall_data: "Daten für den Rückruf löschen",
 		delete_recall_data_description: "CMDI Maker speichert alle Daten, die du eingibst, in einer Browserdatenbank. Deine Daten bleiben also erhalten, auch wenn Du das Browserfenster schließt.<br>"+
 			"Wenn die automatische Speicherung jedoch aktiviert ist, werden automatisch neue Daten gespeichert.<br>"+
