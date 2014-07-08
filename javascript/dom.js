@@ -273,7 +273,79 @@ var dom = (function() {
 		return br;
 	
 	};
+	
+	
+	my.img = function(parent,id,className,src){
+	
+		var img = my.newElement("img",id,className,parent);
+		img.src = src;
+		
+		return img;	
+	
+	};
+	
+	
+	my.span = function(parent,id,className,innerHTML){
+	
+		var span = my.newElement("span",id,className,parent,innerHTML);
+		
+		return span;	
+	
+	};
+	
+	
+	my.a = function(parent, id, className, href, innerHTML, onclick){
+	
+		var a = dom.newElement("a","","",parent,innerHTML);
+		a.href = href;
+		
+		if (typeof onclick != "undefined"){
+			a.addEventListener("click", onclick);
+		}
+		
+		return a;
+	
+	};
 
+	
+	my.h2 = function(parent, innerHTML){
+	
+		var h2 = my.newElement("h2","","",parent, innerHTML);
+		return h2;
+	
+	};
+	
+	
+	my.h3 = function(parent, innerHTML){
+	
+		var h3 = my.newElement("h3","","",parent, innerHTML);
+		return h3;
+	
+	};
+	
+	
+	my.h5 = function(parent, innerHTML){
+	
+		var h5 = my.newElement("h5","","",parent, innerHTML);
+		return h5;
+	
+	};
+	
+	
+	my.input = function(parent, id, className, name, type, value){
+	
+		var input = dom.newElement("input",id,className,parent);
+		input.type = type;
+		input.name = name;
+		
+		if (typeof value != "undefined"){
+			input.value = value;
+		}
+		
+		return input;
+	
+	};
+	
 
 	my.copyField = function (target_element_name,source_element_name){
 

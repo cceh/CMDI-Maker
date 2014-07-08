@@ -106,12 +106,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		for (var c=0; c<options.length; c++){
 		
-			var input = dom.newElement("input", APP.CONF.copy_checkbox_element_prefix+options[c].name, "", div);
-			input.type = "checkbox";
+			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+options[c].name, "", "", "checkbox");
 			input.checked = true;
 			
-			dom.newElement("span", "", "", div, " "+options[c].label);
-			dom.newElement("br", "", "", div);
+			dom.span(div, "", "", " "+options[c].label);
+			dom.br(div);
 		
 		}
 
@@ -493,15 +492,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			aad.appendChild(select);
 		
 			select.selectedIndex = 0;	
-		
-			var add_button = document.createElement("input");
-			add_button.type = "button";
-			add_button.value = "Add to session";
 			
-			aad.appendChild(document.createElement("br"));
+			dom.br(aad);	
 			
-			aad.appendChild(add_button);		
-			
+			var add_button = dom.input(aad,"","","","button", "Add to session");
 			add_button.addEventListener('click', function(num) { 
 				return function(){ my.addActor(num, actor.actors[select.selectedIndex].id);  };
 			}(my.sessions[s].id) );
@@ -510,19 +504,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (actor.actors.length === 0){
 		
-			var link = document.createElement("a");
-			link.href="#";
-			link.innerHTML = "Create some actors.";
+			var h5 = dom.h5(aad, "There are no actors in the database yet.<br>");	
 			
-			var h5 = document.createElement("h5");
-			h5.innerHTML = "There are no actors in the database yet.<br>";
-		
-			aad.appendChild(h5);
-			h5.appendChild(link);
-			
-			link.addEventListener('click', function() { 
+			dom.a(h5,"","","#","Create some actors.", function() { 
 				APP.view(actor);  
 			} );
+			
 		}
 		
 		
@@ -744,9 +731,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		my.refreshActorName(session_id, actor_id);
 		
-		var img = dom.newElement("img", "delete_actor_"+actor_id+"_icon", "delete_actor_icon", g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
-		img.src = APP.CONF.path_to_icons+"reset.png";
-
+		var img = dom.img(g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id),
+		"delete_actor_"+actor_id+"_icon", "delete_actor_icon", APP.CONF.path_to_icons+"reset.png");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeActor(num, num2);  
 			};
@@ -899,7 +885,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var div = dom.newElement('div', APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(APP.CONF.session_dom_element_prefix+session_id+"_resources_resources"));
 
-		var h3 = document.createElement("h3");
+		var h3 = dom.h3(div);
 		
 		if (type == "wr"){
 			h3.innerHTML = "Written Resource";
@@ -914,22 +900,15 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			return;
 		}
 		
-		div.appendChild(h3);
-		
-		var img = dom.newElement("img","delete_resource_" + resource_id +"_icon","delete_resource_icon",div);
-		img.src = APP.CONF.path_to_icons+"reset.png";
+		var img = dom.img(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon",APP.CONF.path_to_icons+"reset.png");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeResource(num, num2);  
 			};
 		}(session_id,resource_id) );
 		
-		var span = document.createElement("span");
-		span.className = "resource_file_content_span";
-		
-		span.innerHTML = "File Name<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
-		"Size<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">";
-		
-		div.appendChild(span);
+		dom.span(div, "", "resource_file_content_span",
+		"File Name<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
+		"Size<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">");
 		
 		div.getElementsByTagName("input")[0].value = name;
 		div.getElementsByTagName("input")[1].value = size;

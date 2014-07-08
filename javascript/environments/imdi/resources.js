@@ -528,7 +528,7 @@ imdi_environment.workflow[1] = (function(){
 
 	my.createSessionForResource = function(resource_index){
 
-		var name = remove_invalid_chars(RemoveEndingFromFilename(my.available_resources[resource_index][0]));
+		var name = remove_invalid_chars(removeEndingFromFilename(my.available_resources[resource_index][0]));
 		var expanded = false; //collapse automatically generated session
 		
 		var resources = [];
@@ -541,7 +541,7 @@ imdi_environment.workflow[1] = (function(){
 				continue;
 			}
 		
-			if (isSubstringAStartOfAWordInString(RemoveEndingFromFilename(my.available_resources[f2][0]), RemoveEndingFromFilename(my.available_resources[resource_index][0]))) {
+			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[f2][0]), removeEndingFromFilename(my.available_resources[resource_index][0]))) {
 			
 				resources.push(f2);
 			

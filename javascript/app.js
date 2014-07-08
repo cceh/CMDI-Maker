@@ -461,20 +461,18 @@ var APP = (function () {
 	
 		var functions_div = g("functions");
 		var function_div;
-		var img;
 	
 		for (var f=0; f<functions.length; f++){
 		
 			if (functions[f].type != "function_wrap"){
 				function_div = dom.newElement("div", functions[f].id, "function_icon",functions_div);
-				img = dom.newElement("img","","function_img", function_div);
-				img.src = APP.CONF.path_to_icons + functions[f].icon;
+				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + functions[f].icon);
 				var label = dom.newElement("h3","","", function_div, functions[f].label);
 				
 				if (functions[f].label_span_id){
 					dom.newElement("span", functions[f].label_span_id, "", label);
 				}
-					
+				
 				else if (functions[f].label) {  //if label is there
 					label.innerHTML = functions[f].label;
 				}
@@ -488,8 +486,7 @@ var APP = (function () {
 				var function_wrap = dom.newElement("div",functions[f].wrapper_id,"function_wrap",functions_div);
 				
 				function_div = dom.newElement("div", functions[f].id, "function_icon",function_wrap);
-				img = dom.newElement("img","","function_img", function_div);
-				img.src = APP.CONF.path_to_icons + functions[f].icon;
+				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + functions[f].icon);
 				dom.newElement("h3","","", function_div, functions[f].label);
 				
 				function_div.addEventListener('click', functions[f].onclick);
@@ -747,12 +744,13 @@ var APP = (function () {
 	
 	my.initSettings = function (settings, parent){
 		var input;
+		var h2;
 		
 		parent.innerHTML = "";
 		
 		for (var s=0; s<settings.length; s++){
 		
-			var h2 = dom.newElement("h2","","",parent);	
+			h2 = dom.h2(parent);	
 			
 			if ((settings[s].importance) && (settings[s].importance == "high")){
 				h2.style.color = "red";
@@ -760,9 +758,7 @@ var APP = (function () {
 			
 			if (settings[s].onclick){
 	
-				var a = dom.newElement("a","","",h2,settings[s].title);
-				a.href = "#";
-				a.addEventListener("click", settings[s].onclick);
+				var a = dom.a(h2,"","","#",settings[s].title, settings[s].onclick);
 				
 				if ((settings[s].importance) && (settings[s].importance == "high")){
 					a.style.color = "red";
@@ -784,14 +780,10 @@ var APP = (function () {
 			
 				for (var r=0; r<settings[s].options.length; r++){
 				
-					input = dom.newElement("input","","",parent);
-					input.type = "radio";
-					input.name = settings[s].radio_name;
-					input.value = settings[s].options[r].value;
+					input = dom.input(parent,"","",settings[s].radio_name, "radio", settings[s].options[r].value);
 					
-					dom.newElement("span","","",parent,settings[s].options[r].title);
-					
-					dom.newElement("br","","",parent);	
+					dom.span(parent,"","",settings[s].options[r].title);
+					dom.br(parent);	
 					
 					if (r == settings[s].default_option) {
 						input.checked = true;
@@ -810,46 +802,34 @@ var APP = (function () {
 					select.addEventListener("change", settings[s].onchange, false);
 				}
 				
-				dom.newElement("br","","",parent);
+				dom.br(parent);
 			
 			}
 			
 			if (settings[s].type == "switch"){
 			
-				input = dom.newElement("input",settings[s].id,"on_off_switch",parent);
-				input.type = "button";
-				input.name = settings[s].name;
-				input.value = "Off";
+				input = dom.input(parent,settings[s].id,"on_off_switch",settings[s].name, "button", "Off");
 				input.on = false;
 				input.addEventListener("click", function(){dom.onOffSwitch(this);}, false);
 				
 				dom.setOnOffSwitchValue(g(settings[s].id),settings[s].default_value);
 				
-				dom.newElement("br","","",parent);
+				dom.br(parent);
 			
 			}
 			
 			if (settings[s].type == "file"){
 		
-				input = dom.newElement("input",settings[s].file_input_id,"",parent);
-				input.type = "file";
-				input.name = settings[s].file_input_name;
-				dom.newElement("br","","",parent);
-				
+				input = dom.input(parent,settings[s].file_input_id,"",settings[s].file_input_name,"file");
 				input.addEventListener('change', settings[s].onchange, false);
-		
+				dom.br(parent);
 			}
 			
 			if (settings[s].type == "text"){
 		
-				input = dom.newElement("input",settings[s].id,"",parent);
-				input.type = "text";
-				input.name = settings[s].name;
-				input.value = settings[s].value;				
-				dom.newElement("br","","",parent);
-				
+				input = dom.input(parent,settings[s].id,"",settings[s].name, "text", settings[s].value);
 				input.addEventListener('change', settings[s].onchange, false);
-		
+				dom.br(parent);
 			}
 			
 			if (settings[s].type == "empty"){
@@ -858,7 +838,7 @@ var APP = (function () {
 		
 			}
 			
-			dom.newElement("br","","",parent);
+			dom.br(parent);
 			
 		}
 	
@@ -890,7 +870,6 @@ var APP = (function () {
 	
 	
 	my.createWorkflowDisplay = function (workflow){
-		var image;
 	
 		var div = g("module_icons");
 	
@@ -899,17 +878,14 @@ var APP = (function () {
 			if (w !== 0){
 			
 				var arrow = dom.newElement("div","","wizard_arrow",div);
-				image = dom.newElement("img","","wizard_icon",arrow);
-				image.src = APP.CONF.path_to_icons + "right2.png";
+				dom.img(arrow,"","wizard_icon", APP.CONF.path_to_icons + "right2.png");
 			
 			}
 			
 			var icon = dom.newElement("div",APP.CONF.viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
-			image = dom.newElement("img","","module_icon",icon);
-			image.src = APP.CONF.path_to_icons + workflow[w].identity.icon;
-
-			dom.newElement("br","","",icon);
-			dom.newElement("span","","",icon,workflow[w].identity.title);
+			dom.img(icon, "", "module_icon", APP.CONF.path_to_icons + workflow[w].identity.icon);
+			dom.br(icon);
+			dom.span(icon,"","",workflow[w].identity.title);
 			
 			icon.addEventListener('click', function(num) {
 				return function(){
