@@ -285,6 +285,15 @@ var dom = (function() {
 	};
 	
 	
+	my.div = function(parent,id,className,innerHTML){
+	
+		var div = my.newElement("div",id,className,parent,innerHTML);
+		
+		return div;	
+	
+	};
+	
+	
 	my.span = function(parent,id,className,innerHTML){
 	
 		var span = my.newElement("span",id,className,parent,innerHTML);
@@ -304,6 +313,14 @@ var dom = (function() {
 		}
 		
 		return a;
+	
+	};
+	
+	
+	my.h1 = function(parent, innerHTML){
+	
+		var h1 = my.newElement("h1","","",parent, innerHTML);
+		return h1;
 	
 	};
 
@@ -786,10 +803,9 @@ var dom = (function() {
 
 		var div = my.newElement("div", "", "output_div", parent);
 		
-		var img = my.newElement("img","","download_icon",div);
-		img.src = APP.CONF.path_to_icons + "save.png";
+		var img = my.img(div,"","download_icon", APP.CONF.path_to_icons + "save.png");
 		
-		my.newElement("h1", "", "", div, title);
+		my.h1(div, title);
 		
 		var textarea = my.newElement("textarea", textarea_id, APP.CONF.xml_textarea_class_name, div, value);
 		textarea.cols = APP.CONF.output_textarea_columns;

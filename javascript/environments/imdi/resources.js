@@ -241,9 +241,7 @@ imdi_environment.workflow[1] = (function(){
 		var div = dom.newElement("div","files","",view);
 		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
 		
-		var input = dom.newElement("input","files_input","",div);
-		input.name = "files_input";
-		input.type = "file";
+		var input = dom.input(div,"files_input","","files_input", "file");
 		input.multiple = true;
 
 		var usage_table = dom.newElement("div","","workspace-usageTable",div,

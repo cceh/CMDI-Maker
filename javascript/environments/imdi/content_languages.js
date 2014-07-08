@@ -16,7 +16,8 @@ limitations under the License.
 
 
 imdi_environment.workflow[0].content_languages = (function() {
-
+	var corpus;
+	
 	var my = {};
 	
 	my.content_languages = [];
@@ -25,6 +26,8 @@ imdi_environment.workflow[0].content_languages = (function() {
 	
 
 	my.init = function(){
+	
+		corpus = imdi_environment.workflow[0];
 	
 		var div = dom.newElement("div","content_languages","",g("VIEW_corpus"),
 			'<div id="lang_search_div">'+
@@ -182,27 +185,33 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		my.content_languages.push(LanguageObject);
 		
-		var div = dom.newElement("div","content_language_"+my.id_counter+"_div","current_content_language_entry",g("current_content_languages_display"));
+		my.render(LanguageObject, my.id_counter);
 		
-		dom.newElement("span","","",div,"ISO639-3 Code: " + LanguageObject[0]);
-		
-		var img = dom.newElement("img","delete_lang_"+my.id_counter+"_icon","delete_lang_icon",div);
-		img.src = APP.CONF.path_to_icons+"reset.png";
-		img.addEventListener('click', function(num) { 
-			return function(){
-				corpus.content_languages.remove(num);  
-			};
-		}(my.id_counter) );
-		
-		dom.newElement("br","","",div);
-		dom.newElement("span","","",div,"Name: " + LanguageObject[3]);
-		dom.newElement("br","","",div);
-		dom.newElement("span","","",div,"Country ID: " + LanguageObject[1]);
-
 		my.id_counter+=1;
 		
 		return true;
 		
+	}
+	
+	
+	my.render = function(LanguageObject, id){
+
+		var div = dom.newElement("div","content_language_"+id+"_div","current_content_language_entry",g("current_content_languages_display"));
+		
+		dom.span(div,"","","ISO639-3 Code: " + LanguageObject[0]);
+		
+		var img = dom.img(div,"delete_lang_"+id+"_icon","delete_lang_icon",APP.CONF.path_to_icons+"reset.png");
+		img.addEventListener('click', function(num) { 
+			return function(){
+				corpus.content_languages.remove(num);  
+			};
+		}(id) );
+		
+		dom.br(div);
+		dom.span(div,"","","Name: " + LanguageObject[3]);
+		dom.br(div);
+		dom.span(div,"","","Country ID: " + LanguageObject[1]);
+
 	}
 
 	

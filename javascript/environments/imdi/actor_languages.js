@@ -133,36 +133,33 @@ imdi_environment.workflow[2].languages = (function (){
 		my.languages_of_active_actor.push(ActorLanguageObject);
 		
 		var div = dom.newElement("div","actor_language_"+my.id_counter+"_div","current_actor_language_entry",g("current_actor_languages_display"));
-		var img = dom.newElement("img","delete_lang_"+my.id_counter+"_icon","delete_lang_icon",div);
-		img.src = APP.CONF.path_to_icons+"reset.png";
-		img.addEventListener('click', function(num) { 
+		var img = dom.img(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", APP.CONF.path_to_icons+"reset.png");
+		img.addEventListener('click', function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
 		}(my.id_counter) );
 		
-		dom.newElement("span","","",div, "ISO639-3 Code: " + LanguageObject[0]);
-		dom.newElement("br","","",div);
-		dom.newElement("span","","",div, "Name: " + LanguageObject[3]);
-		dom.newElement("br","","",div);
-		dom.newElement("span","","",div, "Country ID: " + LanguageObject[1]);
-		dom.newElement("br","","",div);
+		dom.span(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
+		dom.br(div);
+		dom.span(div,"","", "Name: " + LanguageObject[3]);
+		dom.br(div);
+		dom.span(div,"","", "Country ID: " + LanguageObject[1]);
+		dom.br(div);
 		
-		var input = dom.newElement("input", "mothertongue_" + my.id_counter, "", div);
-		input.type = "checkbox";
+		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
 		
 		if (ActorLanguageObject.MotherTongue === true){
 			input.checked = true;
 		}
 
-		dom.newElement("span","","",div, "Mother Tongue  ");
-		input = dom.newElement("input", "primarylanguage_" + my.id_counter, "", div);
-		input.type = "checkbox";
+		dom.span(div,"","", "Mother Tongue  ");
+		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
 		
 		if (ActorLanguageObject.PrimaryLanguage === true){
 			input.checked = true;
 		}
 		
-		dom.newElement("span","","",div, "Primary Language");
+		dom.span(div,"","","Primary Language");
 
 		my.id_counter += 1;
 
