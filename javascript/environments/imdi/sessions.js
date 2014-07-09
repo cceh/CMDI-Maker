@@ -19,8 +19,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	'use strict';
 
 	var my = {};
+	my.parent = imdi_environment;
 	
-	var session_form = imdi_environment.session_form;
+	var session_form = my.parent.session_form;
 	
 	my.identity = {
 		id: "session",
@@ -81,7 +82,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			var session_object = my.sessions[s];
 			
-			APP.fillObjectWithFormElement(session_object, APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
+			APP.forms.fillObjectWithFormData(session_object, APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
 			
 			array.push(session_object);
 		}
@@ -227,7 +228,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.newSession = function(){
 
-		var session_object = APP.createEmptyObjectFromFormTemplate(imdi_environment.session_form);
+		var session_object = APP.forms.createEmptyObjectFromTemplate(my.parent.session_form);
 		session_object.id = my.getNewSessionID();
 		
 		//new sessions are always expanded
@@ -256,7 +257,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
-		var session_object = APP.createEmptyObjectFromFormTemplate(imdi_environment.session_form);
+		var session_object = APP.createEmptyObjectFromFormTemplate(my.parent.session_form);
 		session_object.session.name = name;
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
@@ -362,7 +363,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		var session_content = dom.newElement('div',APP.CONF.session_dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
-		APP.makeInput(session_content, session_form, APP.CONF.session_dom_element_prefix+session_id+"_", APP.CONF.session_dom_element_prefix, session_object);
+		APP.forms.make(session_content, session_form, APP.CONF.session_dom_element_prefix+session_id+"_", APP.CONF.session_dom_element_prefix, session_object);
 		
 		g(APP.CONF.session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		

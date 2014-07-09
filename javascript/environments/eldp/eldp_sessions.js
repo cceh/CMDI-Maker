@@ -17,14 +17,15 @@ limitations under the License.
 
 eldp_environment.workflow[2] = (function(resources, actor) {
 	'use strict';
-	
-	var my = {};
 
-	var session_form = eldp_environment.session_form;
+	var my = {};
+	my.parent = eldp_environment;
+	
+	var session_form = my.parent.session_form;
 	
 	my.identity = {
 		id: "session",
-		title: "Bundles",
+		title: "Sessions",
 		icon: "edit.png",
 	};
 	
@@ -81,7 +82,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			var session_object = my.sessions[s];
 			
-			APP.fillObjectWithFormElement(session_object, APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
+			APP.forms.fillObjectWithFormData(session_object, APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_", session_form);		
 			
 			array.push(session_object);
 		}
@@ -106,12 +107,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		for (var c=0; c<options.length; c++){
 		
-			var input = dom.newElement("input", APP.CONF.copy_checkbox_element_prefix+options[c].name, "", div);
-			input.type = "checkbox";
+			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+options[c].name, "", "", "checkbox");
 			input.checked = true;
 			
-			dom.newElement("span", "", "", div, " "+options[c].label);
-			dom.newElement("br", "", "", div);
+			dom.span(div, "", "", " "+options[c].label);
+			dom.br(div);
 		
 		}
 
@@ -121,13 +121,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.functions = [
 		{
-			label: "New Bundle",
+			label: "New Session",
 			icon: "plus.png",
 			id: "link_newSession",
 			onclick: function() {my.newSession(); }
 		},
 		{
-			label: "Copy Bundle 1 metadata to all bundles",
+			label: "Copy Session 1 metadata to all sessions",
 			icon: "copy.png",
 			id: "link_copy_sessions",
 			wrapper_id: "copy_sessions_div",
@@ -172,9 +172,6 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.refreshResources = function(s){
 	//refresh resources for one session
-	
-		console.log("refreshing resources of session " + s);
-		console.log("resources.available_resources.length is " + resources.available_resources.length);
 
 		g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";
 
@@ -231,9 +228,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.newSession = function(){
 
-		var session_object = APP.createEmptyObjectFromFormTemplate(session_form);
-		console.log("NEWLY CREATED OBJECT:");
-		console.log(session_object);
+		var session_object = APP.forms.createEmptyObjectFromTemplate(my.parent.session_form);
 		session_object.id = my.getNewSessionID();
 		
 		//new sessions are always expanded
@@ -262,7 +257,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
-		var session_object = APP.createEmptyObjectFromFormTemplate(session_form);
+		var session_object = APP.createEmptyObjectFromFormTemplate(my.parent.session_form);
 		session_object.session.name = name;
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
@@ -276,7 +271,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			
 		}
 		
-		alertify.log("A new bundle has been created.<br>Name: " + name, "", "5000");
+		alertify.log("A new session has been created.<br>Name: " + name, "", "5000");
 		
 		return session_object.id;
 		
@@ -306,7 +301,6 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	
 	my.drawNewSession = function(session_object){
-
 		var r;
 		var file;
 	
@@ -334,13 +328,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name === "")){
 		
-			session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Bundle</h1>";
+			session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = "";
 			
 		}
 		
 		else {
-			session_label.innerHTML = "<h1 class=\"session_heading\">Bundle: " + session_object.session.name + "</h1>";
+			session_label.innerHTML = "<h1 class=\"session_heading\">Session: " + session_object.session.name + "   </h1>";
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = session_object.session.name;
 		
 		}
@@ -369,7 +363,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		var session_content = dom.newElement('div',APP.CONF.session_dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
-		APP.makeInput(session_content, session_form, APP.CONF.session_dom_element_prefix+session_id+"_", APP.CONF.session_dom_element_prefix, session_object);
+		APP.forms.make(session_content, session_form, APP.CONF.session_dom_element_prefix+session_id+"_", APP.CONF.session_dom_element_prefix, session_object);
 		
 		g(APP.CONF.session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		
@@ -380,7 +374,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}(session_id) );
 		
 		
-		if ((session_object.actors) && (session_object.actors.actors)){
+		if (typeof(session_object.actors.actors) != "undefined"){
 		
 			for (var a=0; a<session_object.actors.actors.length; a++){
 		
@@ -390,11 +384,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}
 		
 		
-		if (typeof(session_object.resources.resources.writtenResources) != "undefined"){
+		if (typeof(session_object.resources.writtenResources) != "undefined"){
 			
-			for (r=0; r<session_object.resources.resources.writtenResources.length; r++){
+			for (r=0; r<session_object.resources.writtenResources.length; r++){
 			
-				file = session_object.resources.resources.writtenResources[r];	
+				file = session_object.resources.writtenResources[r];	
 				file.id = my.resource_id_counter;
 				my.renderResource(my.resource_id_counter, session_id, "wr", file.name, file.size);
 				
@@ -405,11 +399,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}
 		
 		
-		if (typeof(session_object.resources.resources.mediaFiles) != "undefined"){
+		if (typeof(session_object.resources.mediaFiles) != "undefined"){
 			
-			for (r=0; r<session_object.resources.resources.mediaFiles.length; r++){
+			for (r=0; r<session_object.resources.mediaFiles.length; r++){
 			
-				file = session_object.resources.resources.mediaFiles[r];
+				file = session_object.resources.mediaFiles[r];
 				file.id = my.resource_id_counter;
 				my.renderResource(file.id, session_id, "mf", file.name, file.size);
 
@@ -499,15 +493,10 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			aad.appendChild(select);
 		
 			select.selectedIndex = 0;	
-		
-			var add_button = document.createElement("input");
-			add_button.type = "button";
-			add_button.value = "Add to session";
 			
-			aad.appendChild(document.createElement("br"));
+			dom.br(aad);	
 			
-			aad.appendChild(add_button);		
-			
+			var add_button = dom.input(aad,"","","","button", "Add to session");
 			add_button.addEventListener('click', function(num) { 
 				return function(){ my.addActor(num, actor.actors[select.selectedIndex].id);  };
 			}(my.sessions[s].id) );
@@ -516,19 +505,12 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		if (actor.actors.length === 0){
 		
-			var link = document.createElement("a");
-			link.href="#";
-			link.innerHTML = "Create some actors.";
+			var h5 = dom.h5(aad, "There are no actors in the database yet.<br>");	
 			
-			var h5 = document.createElement("h5");
-			h5.innerHTML = "There are no actors in the database yet.<br>";
-		
-			aad.appendChild(h5);
-			h5.appendChild(link);
-			
-			link.addEventListener('click', function() { 
+			dom.a(h5,"","","#","Create some actors.", function() { 
 				APP.view(actor);  
 			} );
+			
 		}
 		
 		
@@ -746,12 +728,12 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	my.renderActor = function(session_id, actor_id){
 
 		dom.newElement("div", APP.CONF.session_dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(APP.CONF.session_dom_element_prefix+session_id+"_actors_actors"));
-		dom.newElement("div", APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
+		var div = dom.newElement("div", APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
 		
 		my.refreshActorName(session_id, actor_id);
 		
-		var img = dom.newElement("img", "delete_actor_"+actor_id+"_icon", "delete_actor_icon", g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id));
-		img.src = APP.CONF.path_to_icons+"reset.png";
+		var img = dom.img(g(APP.CONF.session_dom_element_prefix+session_id+"_actor_" + actor_id),
+		"delete_actor_"+actor_id+"_icon", "delete_actor_icon", APP.CONF.path_to_icons+"reset.png");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeActor(num, num2);  
 			};
@@ -904,7 +886,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		var div = dom.newElement('div', APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(APP.CONF.session_dom_element_prefix+session_id+"_resources_resources"));
 
-		var h3 = document.createElement("h3");
+		var h3 = dom.h3(div);
 		
 		if (type == "wr"){
 			h3.innerHTML = "Written Resource";
@@ -919,22 +901,15 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			return;
 		}
 		
-		div.appendChild(h3);
-		
-		var img = dom.newElement("img","delete_resource_" + resource_id +"_icon","delete_resource_icon",div);
-		img.src = APP.CONF.path_to_icons+"reset.png";
+		var img = dom.img(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon",APP.CONF.path_to_icons+"reset.png");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeResource(num, num2);  
 			};
 		}(session_id,resource_id) );
 		
-		var span = document.createElement("span");
-		span.className = "resource_file_content_span";
-		
-		span.innerHTML = "File Name<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
-		"Size<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">";
-		
-		div.appendChild(span);
+		dom.span(div, "", "resource_file_content_span",
+		"File Name<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
+		"Size<br><input type=\"text\" name=\""+APP.CONF.session_dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">");
 		
 		div.getElementsByTagName("input")[0].value = name;
 		div.getElementsByTagName("input")[1].value = size;
@@ -1094,7 +1069,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}
 		
 		return true;
-
+		
 	};
 
 
@@ -1133,4 +1108,4 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	return my;
 
-})(eldp_environment.workflow[0],eldp_environment.workflow[1]);
+})(imdi_environment.workflow[1],imdi_environment.workflow[2]);

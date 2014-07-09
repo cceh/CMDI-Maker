@@ -19,15 +19,16 @@ eldp_environment.workflow[1] = (function(){
 	'use strict';
 
 	var my = {};
+	my.parent = eldp_environment;
 	var session;
 	
-	var actor_form = eldp_environment.actor_form;
+	var actor_form = my.parent.actor_form;
 	
 	my.actors = [];
 	
 	my.identity = {
 		id: "actor",
-		title: "Persons",
+		title: "Actors",
 		icon: "user.png"
 	};
 	
@@ -40,7 +41,7 @@ eldp_environment.workflow[1] = (function(){
 		my.id_counter = 0;
 		my.active_actor = -1;
 		
-		session = eldp_environment.workflow[2];
+		session = my.parent.workflow[3];
 		
 		var view = g(APP.CONF.view_id_prefix + my.identity.id);
 		
@@ -48,8 +49,26 @@ eldp_environment.workflow[1] = (function(){
 		var ac_view = dom.newElement("div","ac_view","",view);
 		dom.newElement("div","actor_title_div","",ac_view,'<h1 id="actor_form_title">New Actor</h1>');
 		dom.newElement("div","actor_content_div","",ac_view);
+		dom.newElement("div","actor_language_results_div","",view);
 		
 		my.createForm();
+		
+		g('actor_language_search_button').addEventListener('click', function() {  my.languages.search();   });
+		g('actor_language_iso_ok').addEventListener('click', function() {  my.languages.addByISO();    });
+
+		g("actor_language_select").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				my.languages.search();
+			}
+		};
+		
+		g("actor_language_iso_input").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				my.languages.addByISO();
+			}
+		};
 		
 		my.refreshListDisplay(true);
 		
@@ -137,12 +156,8 @@ eldp_environment.workflow[1] = (function(){
 
 				alertify.log("All actors deleted", "", "5000");
 				save_and_recall.save();
-
-				for (var s=0;s<session.sessions.length;s++){
-					session.removeAllActors(session.sessions[s].id);
-				}
 				
-				
+				my.refreshListDisplay();
 
 			}
 		});
@@ -168,7 +183,9 @@ eldp_environment.workflow[1] = (function(){
 			g("save_actor_span").innerHTML = "Save changes to this actor";
 		}
 		
+		my.languages.closeLanguageSelect();	
 		my.highlight_active_actor_div(actor_id);
+		my.languages.clearActiveActorLanguages();
 
 		my.active_actor = actor_id;
 
@@ -198,8 +215,10 @@ eldp_environment.workflow[1] = (function(){
 		
 			document.getElementsByName("actor_anonymized")[0].checked = my.actors[actor_id].anonymized;
 			
+			my.showLanguagesOfActiveActor();
+			
 			if (APP.active_view == APP.CONF.view_id_prefix + my.identity.id){
-				g("save_actor_span").innerHTML = " Save changes to this actor";
+			g("save_actor_span").innerHTML = " Save changes to this actor";
 			}
 
 		}
@@ -229,6 +248,17 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
+	my.showLanguagesOfActiveActor = function(){
+
+		for (var l=0; l < my.actors[my.active_actor].languages.length; l++){
+		
+			my.languages.set(my.actors[my.active_actor].languages[l] );
+		
+		}
+
+	};
+	
+
 	my.export_actors = function(){
 		
 		if (my.actors.length !== 0){
@@ -341,8 +371,43 @@ eldp_environment.workflow[1] = (function(){
 				},
 				
 				anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
+				
+				languages: []
 			
 			};
+			
+			var actor_languages = actors_in_xml[a].querySelector("Languages");
+			
+			console.log(actor_languages.children);
+			
+			for (var l=0; l<actor_languages.children.length; l++){
+			
+				if (actor_languages.children[l].nodeName != "Language"){
+					continue;
+				}
+			
+				var Actor_Language = {
+				
+					LanguageObject: [
+					
+					actor_languages.children[l].querySelector("Id").textContent.trim().slice(9),
+					"?",
+					"?",
+					actor_languages.children[l].querySelector("Name").textContent.trim(),
+					
+					
+					],
+					
+					MotherTongue: (actor_languages.children[l].querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
+					PrimaryLanguage: (actor_languages.children[l].querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
+				
+				
+				};
+				
+				
+				my.languages.push(Actor_Language);
+			
+			}
 			
 			actors_in_json.push(actor);
 
@@ -362,14 +427,14 @@ eldp_environment.workflow[1] = (function(){
 		dom.setFormValue("actor_name","");
 		dom.setFormValue("actor_full_name","");
 		dom.setFormValue("actor_code","");
-		dom.setFormValue("actor_role","Unknown", actor_form.fields[1].fields[0].vocabulary);
+		dom.setFormValue("actor_role",actor_form.fields[1].fields[0].default_value, actor_form.fields[1].fields[0].vocabulary);
 		dom.setFormValue("actor_ethnic_group","");
-		dom.setFormValue("actor_family_social_role","Unknown", actor_form.fields[1].fields[2].vocabulary);
+		dom.setFormValue("actor_family_social_role",actor_form.fields[1].fields[2].default_value, actor_form.fields[1].fields[2].vocabulary);
 		dom.setFormValue("actor_age","");
 		dom.setFormValue("actor_birth_date_year","YYYY");
 		dom.setFormValue("actor_birth_date_month","MM");
 		dom.setFormValue("actor_birth_date_day","DD");
-		dom.setFormValue("actor_sex","Unknown");
+		dom.setFormValue("actor_sex",actor_form.fields[0].fields[5].default_value);
 		dom.setFormValue("actor_education","");
 
 		dom.setFormValue("actor_contact_name","");
@@ -381,60 +446,36 @@ eldp_environment.workflow[1] = (function(){
 
 		document.getElementsByName("actor_anonymized")[0].checked = false;
 
+		my.languages.clearActiveActorLanguages();
+		
 	};
 
 
 	my.make_actor_object_out_of_form = function(){
 
-		var object = {
-			role: "",
-			name: '',
-			full_name: '',
-			code: '',
-			ethnic_group: '',
-			family_social_role: '',
-			age: 0,
-			birth_date: {
-				year: '',
-				month: '',
-				day: ''
-			},
-			sex: '',
-			education: '',
-			contact: {
-				name: '',
-				address: '',
-				email: '',
-				organisation: ''
-			},
-			description: '',
-			anonymized: false,
-			id: 0,
+		var object = APP.forms.createEmptyObjectFromTemplate(actor_form);
+
+		APP.forms.fillObjectWithFormData(object, "actor_", actor_form);
+		
+		object.languages = [];  //PRELIMINARY OVERWRITE!
+		
+		for (var l=0; l<my.languages.languages_of_active_actor.length; l++){
+		
+			var id = my.languages.languages_of_active_actor[l].id;
+		
+			var ActorLanguageObject = {
+				
+				LanguageObject: my.languages.languages_of_active_actor[l].LanguageObject,
+				MotherTongue: g("mothertongue_" + id).checked,
+				PrimaryLanguage: g("primarylanguage_" + id).checked
+				
+			};
 			
-		};
-
-		object.role = get("actor_role");
-		object.name = get("actor_name");
-		object.full_name = get("actor_full_name");
-		object.code = get("actor_code");
-		object.ethnic_group = get("actor_ethnic_group");
-		object.family_social_role = get("actor_family_social_role");
-		object.age = get("actor_age");
-		object.birth_date.year = get("actor_birth_date_year");
-		object.birth_date.month = get("actor_birth_date_month");
-		object.birth_date.day = get("actor_birth_date_day");
-		object.sex = get("actor_sex");
-		object.education = get("actor_education");
-
-		object.contact.name = get("actor_contact_name");
-		object.contact.address = get("actor_contact_address");
-		object.contact.email = get("actor_contact_email");
-		object.contact.organisation = get("actor_contact_organisation");
+			object.languages.push(ActorLanguageObject);
+			
+		}
 		
-		object.description = get("actor_description");
 
-		object.anonymized = document.getElementsByName("actor_anonymized")[0].checked;
-		
 		//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
 		if (my.active_actor != -1) {
 			object.id = my.actors[my.active_actor].id;
@@ -447,8 +488,6 @@ eldp_environment.workflow[1] = (function(){
 			console.log("Saving actor with id "+object.id);
 			my.id_counter++;
 			
-			localStorage.setItem("actor_id_counter",my.id_counter);
-		
 		}
 
 		return object;
@@ -458,7 +497,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	my.createForm = function(){
 
-		APP.makeInput(g("actor_content_div"), actor_form, "actor_", "actor_", undefined);
+		APP.forms.make(g("actor_content_div"), actor_form, "actor_", "actor_", undefined);
 
 	};
 
@@ -540,8 +579,6 @@ eldp_environment.workflow[1] = (function(){
 			console.log("Saving actor with id "+actor_to_put.id);
 			my.id_counter++;
 			
-			localStorage.setItem("actor_id_counter",my.id_counter);
-			
 			my.actors.push(actor_to_put);
 		}
 	 
@@ -604,7 +641,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		if (my.actors[i].age === ""){   //at first, check, if actor's age hasn't been specified yet
 		
-			if (document.getElementsByName("radio_age_calc")[0].checked === true){  //then, check if auto calculate feature in settings is activated
+			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
 				var sessionDate = get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day"); 
@@ -655,7 +692,7 @@ eldp_environment.workflow[1] = (function(){
 
 	my.refreshListDisplay = function(not_in_sessions){
 		var div;
-		
+	
 		g('ac_list').innerHTML = "";
 
 		for (var i=0;i<my.actors.length;i++){
@@ -670,7 +707,7 @@ eldp_environment.workflow[1] = (function(){
 		}
 
 		//create field for new actor
-		div = dom.newElement('div',"ac_list_entry_-1","ac_list_entry",g('ac_list'),"<h2>New Actor</h2>");
+		div = dom.newElement('div', "ac_list_entry_-1", "ac_list_entry", g('ac_list'), "<h2>New Actor</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
 		if ((session) && (!not_in_sessions)){

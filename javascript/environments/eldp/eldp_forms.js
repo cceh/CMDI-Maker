@@ -176,14 +176,13 @@ eldp_environment.session_form = {
 	]
 };
 
+
 eldp_environment.actor_form = {
 
 	title: "imdi-actors",
 	type: "form",
 	fields: [
 		{
-			title: "",
-			name: "",
 			type: "column",
 			fields: [
 				{
@@ -196,28 +195,29 @@ eldp_environment.actor_form = {
 					name: "full_name",
 					type: "text",
 				},
-				{
+   				{
 					heading: "Code",
 					name: "code",
 					type: "text",
 				},
-				{
+   				{
 					heading: "Birth Date",
 					name: "birth_date",
 					type: "date",
 				},
-				{
+   				{
 					heading: "Age",
 					name: "age",
 					type: "text",
 				},
-				{
+   				{
 					heading: "Sex",
 					name: "sex",
 					type: "select",
-					vocabulary: ["Unknown","Unspecified","NAP","Female","Male"]
+					vocabulary: ["Unknown","Unspecified","NAP","Female","Male"],
+					default_value: "Unspecified"
 				},
-				{
+   				{
 					heading: "Education",
 					name: "education",
 					type: "text",
@@ -236,25 +236,27 @@ eldp_environment.actor_form = {
 					vocabulary: [
 						"Unknown","Unspecified","Annotator","Author","Collector","Consultant","Computer","Depositor","Editor","Filmer",	
 						"Illustrator","Interviewer","Musician","Photographer","Publisher","Recorder","Referent","Researcher","Singer","Speaker/Signer","Translator"
-					]
+					],
+					default_value: "Unspecified"
 				},    
 				{
 					heading: "Ethnic Group",
 					name: "ethnic_group",
 					type: "text",
 				},
-				{
+   				{
 					heading: "Family Social Role",
 					name: "family_social_role",
 					type: "open_vocabulary",
-					vocabulary: ["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"]
+					vocabulary: ["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"],
+					default_value: "Unspecified"
 				},
-				{
+   				{
 					heading: "Description of the actor",
 					name: "description",
 					type: "textarea",
 				},
-				{
+   				{
 					heading: "Anonymized",
 					name: "anonymized",
 					type: "check",
@@ -276,15 +278,27 @@ eldp_environment.actor_form = {
 					name: "address",
 					type: "text"
 				},
-				{
+   				{
 					heading: "Email",
 					name: "email",
 					type: "text"
 				},
-				{
+   				{
 					heading: "Organisation",
 					name: "organisation",
 					type: "text"
+				}
+			]
+		},	
+		{
+			title: "Languages",
+			name: "languages",
+			type: "column",
+			fields: [
+				{
+					heading: "Actor Languages",
+					name: "actor_languages",
+					type: "special"
 				}
 			]
 		}

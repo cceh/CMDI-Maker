@@ -19,9 +19,10 @@ imdi_environment.workflow[2] = (function(){
 	'use strict';
 
 	var my = {};
+	my.parent = imdi_environment;
 	var session;
 	
-	var actor_form = imdi_environment.actor_form;
+	var actor_form = my.parent.actor_form;
 	
 	my.actors = [];
 	
@@ -40,7 +41,7 @@ imdi_environment.workflow[2] = (function(){
 		my.id_counter = 0;
 		my.active_actor = -1;
 		
-		session = imdi_environment.workflow[3];
+		session = my.parent.workflow[3];
 		
 		var view = g(APP.CONF.view_id_prefix + my.identity.id);
 		
@@ -155,12 +156,8 @@ imdi_environment.workflow[2] = (function(){
 
 				alertify.log("All actors deleted", "", "5000");
 				save_and_recall.save();
-  
-				for (var s=0;s<session.sessions.length;s++){
-					session.removeAllActors(session.sessions[s].id);
-				}
 				
-				
+				my.refreshListDisplay();
 
 			}
 		});
@@ -456,9 +453,9 @@ imdi_environment.workflow[2] = (function(){
 
 	my.make_actor_object_out_of_form = function(){
 
-		var object = APP.createEmptyObjectFromFormTemplate(imdi_environment.actor_form);
+		var object = APP.forms.createEmptyObjectFromTemplate(actor_form);
 
-		APP.fillObjectWithFormElement(object, "actor_", imdi_environment.actor_form);
+		APP.forms.fillObjectWithFormData(object, "actor_", actor_form);
 		
 		object.languages = [];  //PRELIMINARY OVERWRITE!
 		
@@ -491,8 +488,6 @@ imdi_environment.workflow[2] = (function(){
 			console.log("Saving actor with id "+object.id);
 			my.id_counter++;
 			
-			localStorage.setItem("actor_id_counter",my.id_counter);
-		
 		}
 
 		return object;
@@ -502,7 +497,7 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.createForm = function(){
 
-		APP.makeInput(g("actor_content_div"), actor_form, "actor_", "actor_", undefined);
+		APP.forms.make(g("actor_content_div"), actor_form, "actor_", "actor_", undefined);
 
 	};
 
@@ -583,8 +578,6 @@ imdi_environment.workflow[2] = (function(){
 			actor_to_put.id = my.id_counter;
 			console.log("Saving actor with id "+actor_to_put.id);
 			my.id_counter++;
-			
-			localStorage.setItem("actor_id_counter",my.id_counter);
 			
 			my.actors.push(actor_to_put);
 		}

@@ -14,337 +14,340 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+APP.forms = (function () {
 
-APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix, session_object){
-	'use strict';
+	var my = {};
 	
-	var input;
-	var f;
+	my.make = function (parent, field, element_id_prefix, element_class_prefix, session_object){
+		'use strict';
+		
+		var input;
+		var f;
 
-	switch (field.type){
-		
-		case "text": {
-		
-			input = dom.makeTextInput(parent, field.heading,
-				element_id_prefix+field.name,
-				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name] : ""),
-				field.comment
-			);
+		switch (field.type){
 			
-			break;
-		}
-		
-		case "date": {
-		
-			input = dom.makeDateInput(parent, field.heading,
-				element_id_prefix+field.name,
-				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name].year : ""),
-				(session_object && session_object[field.name] ? session_object[field.name].month : ""),				
-				(session_object && session_object[field.name] ? session_object[field.name].day : ""),					
-				field.comment
-			);
+			case "text": {
 			
-			break;
-		}
-		
-		case "textarea": {
-		
-			input = dom.makeTextarea(
-				APP.CONF.form_textarea_rows,
-				APP.CONF.form_textarea_columns,
-				parent,
-				field.heading,
-				element_id_prefix+field.name,
-				element_id_prefix+field.name,
-				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name] : ""),
-				field.comment
-			);
-			break;
-		}			
-		
-		case "subarea": {
-		
-			var h3 = dom.h3(parent, field.heading);
-			
-			if (field.comment){
-				h3.title = field.comment;
-			}
-			
-			if (field.fields){
-			
-				element_id_prefix += field.name + "_";
-		
-				for (f=0; f<field.fields.length; f++){
+				input = dom.makeTextInput(parent, field.heading,
+					element_id_prefix+field.name,
+					element_id_prefix+field.name,
+					(session_object && session_object[field.name] ? session_object[field.name] : ""),
+					field.comment
+				);
 				
-					APP.makeInput(parent, field.fields[f], element_id_prefix, element_class_prefix, session_object[field.name]);
+				break;
+			}
 			
+			case "date": {
+			
+				input = dom.makeDateInput(parent, field.heading,
+					element_id_prefix+field.name,
+					element_id_prefix+field.name,
+					(session_object && session_object[field.name] ? session_object[field.name].year : ""),
+					(session_object && session_object[field.name] ? session_object[field.name].month : ""),				
+					(session_object && session_object[field.name] ? session_object[field.name].day : ""),					
+					field.comment
+				);
+				
+				break;
+			}
+			
+			case "textarea": {
+			
+				input = dom.makeTextarea(
+					APP.CONF.form_textarea_rows,
+					APP.CONF.form_textarea_columns,
+					parent,
+					field.heading,
+					element_id_prefix+field.name,
+					element_id_prefix+field.name,
+					element_id_prefix+field.name,
+					(session_object && session_object[field.name] ? session_object[field.name] : ""),
+					field.comment
+				);
+				break;
+			}			
+			
+			case "subarea": {
+			
+				var h3 = dom.h3(parent, field.heading);
+				
+				if (field.comment){
+					h3.title = field.comment;
 				}
-			
-			}
-			
-			break;
-		}
-		
-		case "column": {
-			var td_name;		
-		
-			if (field.name && field.name !== ""){
-			
-				td_name = field.name+"_td";
-			
-			}
-			
-			else {
-			
-				td_name = "td";
-			
-			}
-		
-			var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
-			
-			if (field.title && field.title !== ""){
-				dom.newElement("h2","","",td,field.title);
-			}
-			
-			if (field.fields){
-			
-				if (field.name && field.name !== ""){
-			
+				
+				if (field.fields){
+				
 					element_id_prefix += field.name + "_";
+			
+					for (f=0; f<field.fields.length; f++){
 					
-				}
-			
-				for (f=0; f<field.fields.length; f++){
+						my.make(parent, field.fields[f], element_id_prefix, element_class_prefix, session_object[field.name]);
 				
-					APP.makeInput(td, field.fields[f], element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
-			
-				}
-			
-			}
-			
-			break;
-		}
-		
-		case "form": {
-		
-			var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
-			var tr = dom.newElement("tr","","",table);
-			
-			for (f=0; f<field.fields.length; f++){
-				
-				APP.makeInput(tr, field.fields[f], element_id_prefix, element_class_prefix, session_object);
-			
-			}
-			
-			break;
-		}
-		
-		case "special": {
-			APP.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
-			break;
-		
-		}
-		
-		case "select": {
-			input = dom.makeSelect(
-				parent, field.heading,
-				element_id_prefix+field.name,
-				element_id_prefix+field.name,
-				field.size,
-				field.vocabulary,
-				(session_object && session_object[field.name] ? session_object[field.name] : field.default_value),
-				field.comment
-			);
-			break;
-		}
-
-		case "open_vocabulary": {
-		
-			var value;
-		
-			if (session_object && session_object[field.name]){
-				value = session_object[field.name];
-			}
-			
-			else if (field.default_value){
-				value = field.default_value;
-			}
-			
-			input = dom.openVocabulary(
-				parent, field.heading,
-				element_id_prefix+field.name,
-				element_id_prefix+field.name,
-				field.size,
-				field.vocabulary,
-				value,
-				field.comment
-			);
-			break;
-		}
-		
-		case "check": {
-			input = dom.makeCheckbox(
-				parent, field.heading,
-				element_id_prefix+field.name,
-				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name] : false),
-				field.comment
-			);
-			break;
-		}
-		
-	}
-
-	if (field.onkeypress){
-		input.onkeypress = field.onkeypress;
-	}
-
-};
-
-
-APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
-	'use_strict';
-	
-	var f;
-	var sub_object;
-
-	switch (field.type){
-	
-		case "form": {
-		
-			var object = {};
-			
-			for (f=0; f<field.fields.length; f++){
-				
-				APP.createEmptyObjectFromFormTemplate(field.fields[f], object);
-			
-			}
-			
-			return object;
-
-		}
-		
-		case "column": {
-			
-			if (field.name && field.name != ""){
-				//create sub object
-				sub_object = {};
-				resulting_object[field.name] = sub_object;
-			}
-			
-			else {  //if field has no name, do not create a sub object
-				sub_object = resulting_object;
-			}
-		
-			if (field.fields){
-			
-				for (f=0; f<field.fields.length; f++){
-				
-					APP.createEmptyObjectFromFormTemplate(field.fields[f], sub_object);
-			
-				}
-			
-			}
-			
-			break;
-			
-		}
-		
-		case "subarea": {
-		
-			//create sub object
-			resulting_object[field.name] = {};
-		
-			if (field.fields){
-			
-				for (f=0; f<field.fields.length; f++){
-				
-					APP.createEmptyObjectFromFormTemplate(field.fields[f], resulting_object[field.name]);
-			
-				}
-			
-			}
-			
-			break;
-		}
-		
-		
-		case "text": {
-		
-			resulting_object[field.name] = "";
-			return;
-			
-		}
-		
-		case "date": {
-		
-			var date_object = {
-				year: "",
-				month: "",
-				day: ""
-			};
-		
-			resulting_object[field.name] = date_object;
-			
-			return;
-		}
-		
-		case "textarea": {
-		
-			resulting_object[field.name] = "";
-			return;
-			
-		}			
-		
-		case "special": {
-			if (field.object_structure == "array"){
-				resulting_object[field.name] = [];
-			}
-			
-			else if (field.object_structure == "object"){
-				resulting_object[field.name] = {};
-				
-				if (field.object_arrays){
-				
-					for (var a=0; a<field.object_arrays.length; a++){
-						resulting_object[field.name][field.object_arrays[a]] = [];
 					}
 				
 				}
+				
+				break;
 			}
 			
-			else {
-				resulting_object[field.name] = null;
+			case "column": {
+				var td_name;		
+			
+				if (field.name && field.name !== ""){
+				
+					td_name = field.name+"_td";
+				
+				}
+				
+				else {
+				
+					td_name = "td";
+				
+				}
+			
+				var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
+				
+				if (field.title && field.title !== ""){
+					dom.newElement("h2","","",td,field.title);
+				}
+				
+				if (field.fields){
+				
+					if (field.name && field.name !== ""){
+				
+						element_id_prefix += field.name + "_";
+						
+					}
+				
+					for (f=0; f<field.fields.length; f++){
+					
+						my.make(td, field.fields[f], element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
+				
+					}
+				
+				}
+				
+				break;
 			}
 			
-			return;
-		
-		}
-		
-		case "select": {
-			resulting_object[field.name] = "";
-			return;
+			case "form": {
+			
+				var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
+				var tr = dom.newElement("tr","","",table);
+				
+				for (f=0; f<field.fields.length; f++){
+					
+					my.make(tr, field.fields[f], element_id_prefix, element_class_prefix, session_object);
+				
+				}
+				
+				break;
+			}
+			
+			case "special": {
+				APP.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
+				break;
+			
+			}
+			
+			case "select": {
+				input = dom.makeSelect(
+					parent, field.heading,
+					element_id_prefix+field.name,
+					element_id_prefix+field.name,
+					field.size,
+					field.vocabulary,
+					(session_object && session_object[field.name] ? session_object[field.name] : field.default_value),
+					field.comment
+				);
+				break;
+			}
+
+			case "open_vocabulary": {
+			
+				var value;
+			
+				if (session_object && session_object[field.name]){
+					value = session_object[field.name];
+				}
+				
+				else if (field.default_value){
+					value = field.default_value;
+				}
+				
+				input = dom.openVocabulary(
+					parent, field.heading,
+					element_id_prefix+field.name,
+					element_id_prefix+field.name,
+					field.size,
+					field.vocabulary,
+					value,
+					field.comment
+				);
+				break;
+			}
+			
+			case "check": {
+				input = dom.makeCheckbox(
+					parent, field.heading,
+					element_id_prefix+field.name,
+					element_id_prefix+field.name,
+					(session_object && session_object[field.name] ? session_object[field.name] : false),
+					field.comment
+				);
+				break;
+			}
+			
 		}
 
-		case "open_vocabulary": {
-			resulting_object[field.name] = "";
-			return;
+		if (field.onkeypress){
+			input.onkeypress = field.onkeypress;
 		}
+
+	};
+
+
+	my.createEmptyObjectFromTemplate = function (field, resulting_object){
+		'use_strict';
 		
-		case "check": {
-			resulting_object[field.name] = false;
-			return;
+		var f;
+		var sub_object;
+
+		switch (field.type){
+		
+			case "form": {
+			
+				var object = {};
+				
+				for (f=0; f<field.fields.length; f++){
+					
+					my.createEmptyObjectFromTemplate(field.fields[f], object);
+				
+				}
+				
+				return object;
+
+			}
+			
+			case "column": {
+				
+				if (field.name && field.name != ""){
+					//create sub object
+					sub_object = {};
+					resulting_object[field.name] = sub_object;
+				}
+				
+				else {  //if field has no name, do not create a sub object
+					sub_object = resulting_object;
+				}
+			
+				if (field.fields){
+				
+					for (f=0; f<field.fields.length; f++){
+					
+						my.createEmptyObjectFromTemplate(field.fields[f], sub_object);
+				
+					}
+				
+				}
+				
+				break;
+				
+			}
+			
+			case "subarea": {
+			
+				//create sub object
+				resulting_object[field.name] = {};
+			
+				if (field.fields){
+				
+					for (f=0; f<field.fields.length; f++){
+					
+						my.createEmptyObjectFromTemplate(field.fields[f], resulting_object[field.name]);
+				
+					}
+				
+				}
+				
+				break;
+			}
+			
+			
+			case "text": {
+			
+				resulting_object[field.name] = "";
+				return;
+				
+			}
+			
+			case "date": {
+			
+				var date_object = {
+					year: "",
+					month: "",
+					day: ""
+				};
+			
+				resulting_object[field.name] = date_object;
+				
+				return;
+			}
+			
+			case "textarea": {
+			
+				resulting_object[field.name] = "";
+				return;
+				
+			}			
+			
+			case "special": {
+				if (field.object_structure == "array"){
+					resulting_object[field.name] = [];
+				}
+				
+				else if (field.object_structure == "object"){
+					resulting_object[field.name] = {};
+					
+					if (field.object_arrays){
+					
+						for (var a=0; a<field.object_arrays.length; a++){
+							resulting_object[field.name][field.object_arrays[a]] = [];
+						}
+					
+					}
+				}
+				
+				else {
+					resulting_object[field.name] = null;
+				}
+				
+				return;
+			
+			}
+			
+			case "select": {
+				resulting_object[field.name] = "";
+				return;
+			}
+
+			case "open_vocabulary": {
+				resulting_object[field.name] = "";
+				return;
+			}
+			
+			case "check": {
+				resulting_object[field.name] = false;
+				return;
+			}
+			
 		}
-		
-	}
 
-};
+	};
 
 
-	APP.fillObjectWithFormElement = function(object, element_id_prefix, form_element){
+	my.fillObjectWithFormData = function(object, element_id_prefix, form_element){
 	//object = the object to be filled with form data
 	//form_element = element of the form as specified in session_form
 	
@@ -378,7 +381,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 			
 			for (f=0; f<form_element.fields.length; f++){
 
-				APP.fillObjectWithFormElement(object, element_id_prefix, form_element.fields[f]);
+				my.fillObjectWithFormData(object, element_id_prefix, form_element.fields[f]);
 			
 			}
 		}
@@ -391,7 +394,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 			
 			for (f=0; f<form_element.fields.length; f++){
 				
-				APP.fillObjectWithFormElement(object[form_element.name], element_id_prefix, form_element.fields[f]);
+				my.fillObjectWithFormData(object[form_element.name], element_id_prefix, form_element.fields[f]);
 			
 			}
 		}
@@ -410,7 +413,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 				}
 				
 				
-				APP.fillObjectWithFormElement(sub_object, element_id_prefix, form_element.fields[f]);
+				my.fillObjectWithFormData(sub_object, element_id_prefix, form_element.fields[f]);
 			
 			}
 		}
@@ -422,3 +425,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 		}
 
 	};
+	
+	return my;
+	
+})();
