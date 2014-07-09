@@ -93,7 +93,7 @@ var imdi_environment = (function(){
 		
 		if (field.name == "actors"){
 			
-			dom.newElement("br","","",parent);
+			dom.br(parent);
 			
 			dom.newElement("div",element_id_prefix+"actors", "actors", parent);
 			dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
@@ -120,7 +120,7 @@ var imdi_environment = (function(){
 			input.type = "button";
 			input.value = "Search";
 
-			dom.newElement("br","","",p);
+			dom.br(p);
 			dom.newElement("span","","",p,"or type in ISO code ");
 			
 			input = dom.newElement("input","actor_language_iso_input","",p);
@@ -137,6 +137,36 @@ var imdi_environment = (function(){
 			dom.newElement("div","current_actor_languages_display", "", parent);									
 			
 		}
+	
+	};
+	
+	
+	my.getSpecialFormData = function(field, parent, element_id_prefix, element_class_prefix){
+	
+		if (field.name == "actors"){
+			
+			//return actors in session?
+			console.log(field);
+			console.log(parent);
+			console.log(element_id_prefix);
+			console.log(element_class_prefix);
+		
+		}
+		
+		if (field.name == "resources"){
+		
+			//return resources in session??
+		
+		}
+		
+		if (field.name == "actor_languages"){
+		
+			//return current actor languages
+			
+		}	
+	
+	
+	
 	
 	};
 	

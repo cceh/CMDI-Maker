@@ -15,11 +15,12 @@ limitations under the License.
 */
 
 APP.forms = (function () {
+	'use strict';
 
 	var my = {};
 	
 	my.make = function (parent, field, element_id_prefix, element_class_prefix, session_object){
-		'use strict';
+		
 		
 		var input;
 		var f;
@@ -209,7 +210,6 @@ APP.forms = (function () {
 
 
 	my.createEmptyObjectFromTemplate = function (field, resulting_object){
-		'use_strict';
 		
 		var f;
 		var sub_object;
@@ -416,13 +416,15 @@ APP.forms = (function () {
 				my.fillObjectWithFormData(sub_object, element_id_prefix, form_element.fields[f]);
 			
 			}
+			
 		}
 		
 		if (form_element.type == "special"){
-		
+			// TO DO!!!
+			//object[form_element.name] = APP.active_environment.getSpecialFormData(field, parent, element_id_prefix, element_class_prefix);
 			return;
-		
 		}
+		
 
 	};
 	

@@ -257,7 +257,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
-		var session_object = APP.createEmptyObjectFromFormTemplate(my.parent.session_form);
+		var session_object = APP.forms.createEmptyObjectFromTemplate(my.parent.session_form);
 		session_object.session.name = name;
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
@@ -384,11 +384,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}
 		
 		
-		if (typeof(session_object.resources.writtenResources) != "undefined"){
+		if (typeof(session_object.resources.resources.writtenResources) != "undefined"){
 			
-			for (r=0; r<session_object.resources.writtenResources.length; r++){
+			for (r=0; r<session_object.resources.resources.writtenResources.length; r++){
 			
-				file = session_object.resources.writtenResources[r];	
+				file = session_object.resources.resources.writtenResources[r];	
 				file.id = my.resource_id_counter;
 				my.renderResource(my.resource_id_counter, session_id, "wr", file.name, file.size);
 				
@@ -399,11 +399,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}
 		
 		
-		if (typeof(session_object.resources.mediaFiles) != "undefined"){
+		if (typeof(session_object.resources.resources.mediaFiles) != "undefined"){
 			
-			for (r=0; r<session_object.resources.mediaFiles.length; r++){
+			for (r=0; r<session_object.resources.resources.mediaFiles.length; r++){
 			
-				file = session_object.resources.mediaFiles[r];
+				file = session_object.resources.resources.mediaFiles[r];
 				file.id = my.resource_id_counter;
 				my.renderResource(file.id, session_id, "mf", file.name, file.size);
 
