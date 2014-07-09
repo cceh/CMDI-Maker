@@ -91,7 +91,7 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		case "column": {
 			var td_name;		
 		
-			if (field.name !== ""){
+			if (field.name && field.name !== ""){
 			
 				td_name = field.name+"_td";
 			
@@ -104,11 +104,14 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 			}
 		
 			var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
-			dom.newElement("h2","","",td,field.title);
+			
+			if (field.title && field.title !== ""){
+				dom.newElement("h2","","",td,field.title);
+			}
 			
 			if (field.fields){
 			
-				if (field.name !== ""){
+				if (field.name && field.name !== ""){
 			
 					element_id_prefix += field.name + "_";
 					
@@ -206,6 +209,7 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 	'use_strict';
 	
 	var f;
+	var sub_object;
 
 	switch (field.type){
 	
@@ -224,21 +228,29 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 		}
 		
 		case "column": {
-		
-			//create sub object
-			resulting_object[field.name] = {};
+			
+			if (field.name && field.name != ""){
+				//create sub object
+				sub_object = {};
+				resulting_object[field.name] = sub_object;
+			}
+			
+			else {  //if field has no name, do not create a sub object
+				sub_object = resulting_object;
+			}
 		
 			if (field.fields){
 			
 				for (f=0; f<field.fields.length; f++){
 				
-					APP.createEmptyObjectFromFormTemplate(field.fields[f], resulting_object[field.name]);
+					APP.createEmptyObjectFromFormTemplate(field.fields[f], sub_object);
 			
 				}
 			
 			}
 			
 			break;
+			
 		}
 		
 		case "subarea": {
@@ -330,3 +342,83 @@ APP.createEmptyObjectFromFormTemplate = function (field, resulting_object){
 	}
 
 };
+
+
+	APP.fillObjectWithFormElement = function(object, element_id_prefix, form_element){
+	//object = the object to be filled with form data
+	//form_element = element of the form as specified in session_form
+	
+		var f;
+		var sub_object;
+
+		if ((form_element.type == "text") || (form_element.type == "textarea") || (form_element.type == "select") || (form_element.type == "open_vocabulary")){
+
+			object[form_element.name] = get(element_id_prefix+form_element.name);
+			
+		}
+		
+		if (form_element.type == "check"){
+
+			object[form_element.name] = g(element_id_prefix+form_element.name).checked;
+			
+		}
+		
+		if (form_element.type == "date"){
+		
+			object[form_element.name].year = get(element_id_prefix+form_element.name+"_year");
+			object[form_element.name].month = get(element_id_prefix+form_element.name+"_month");
+			object[form_element.name].day = get(element_id_prefix+form_element.name+"_day");
+		}
+		
+		if (form_element.type == "column"){
+			
+			if (form_element.name && form_element.name != ""){
+				element_id_prefix += form_element.name + "_";
+			}
+			
+			for (f=0; f<form_element.fields.length; f++){
+
+				APP.fillObjectWithFormElement(object, element_id_prefix, form_element.fields[f]);
+			
+			}
+		}
+		
+		if (form_element.type == "subarea"){
+		
+			if (form_element.name && form_element.name != ""){
+				element_id_prefix += form_element.name + "_";
+			}
+			
+			for (f=0; f<form_element.fields.length; f++){
+				
+				APP.fillObjectWithFormElement(object[form_element.name], element_id_prefix, form_element.fields[f]);
+			
+			}
+		}
+		
+		if (form_element.type == "form"){
+		
+			for (f=0; f<form_element.fields.length; f++){
+				
+				//check if a sub object has to be created
+				if (form_element.fields[f].name && form_element.fields[f].name != ""){
+					sub_object = object[form_element.fields[f].name];
+				}
+				
+				else {
+					sub_object = object;
+				}
+				
+				
+				APP.fillObjectWithFormElement(sub_object, element_id_prefix, form_element.fields[f]);
+			
+			}
+		}
+		
+		if (form_element.type == "special"){
+		
+			return;
+		
+		}
+
+	};

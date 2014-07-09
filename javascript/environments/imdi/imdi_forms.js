@@ -317,8 +317,6 @@ imdi_environment.actor_form = {
 	type: "form",
 	fields: [
 		{
-			title: "",
-			name: "",
 			type: "column",
 			fields: [
 				{

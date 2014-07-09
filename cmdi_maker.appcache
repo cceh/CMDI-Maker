@@ -75,7 +75,7 @@ javascript/environments/imdi/sessions.js
 javascript/alertify.min.js
 javascript/app.js
 javascript/app.config.js
-javascript/app.make_input.js
+javascript/app.forms.js
 javascript/dom.js
 javascript/FileSaver.js
 javascript/helpers.js

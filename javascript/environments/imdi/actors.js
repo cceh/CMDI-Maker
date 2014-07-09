@@ -456,55 +456,11 @@ imdi_environment.workflow[2] = (function(){
 
 	my.make_actor_object_out_of_form = function(){
 
-		var object = {
-			role: "",
-			name: '',
-			full_name: '',
-			code: '',
-			ethnic_group: '',
-			family_social_role: '',
-			age: 0,
-			birth_date: {
-				year: '',
-				month: '',
-				day: ''
-			},
-			sex: '',
-			education: '',
-			contact: {
-				name: '',
-				address: '',
-				email: '',
-				organisation: ''
-			},
-			description: '',
-			anonymized: false,
-			id: 0,
-			
-			languages: []
-		};
+		var object = APP.createEmptyObjectFromFormTemplate(imdi_environment.actor_form);
 
-		object.role = get("actor_role");
-		object.name = get("actor_name");
-		object.full_name = get("actor_full_name");
-		object.code = get("actor_code");
-		object.ethnic_group = get("actor_ethnic_group");
-		object.family_social_role = get("actor_family_social_role");
-		object.age = get("actor_age");
-		object.birth_date.year = get("actor_birth_date_year");
-		object.birth_date.month = get("actor_birth_date_month");
-		object.birth_date.day = get("actor_birth_date_day");
-		object.sex = get("actor_sex");
-		object.education = get("actor_education");
-
-		object.contact.name = get("actor_contact_name");
-		object.contact.address = get("actor_contact_address");
-		object.contact.email = get("actor_contact_email");
-		object.contact.organisation = get("actor_contact_organisation");
+		APP.fillObjectWithFormElement(object, "actor_", imdi_environment.actor_form);
 		
-		object.description = get("actor_description");
-
-		object.anonymized = document.getElementsByName("actor_anonymized")[0].checked;
+		object.languages = [];  //PRELIMINARY OVERWRITE!
 		
 		for (var l=0; l<my.languages.languages_of_active_actor.length; l++){
 		

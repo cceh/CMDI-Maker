@@ -385,65 +385,6 @@ var APP = (function () {
 	};
 
 
-	my.fillObjectWithFormElement = function(object, element_id_prefix, form_element){
-	//object = the object to be filled with form data
-	//form_element = element of the form as specified in session_form
-	
-		var f;
-
-		if ((form_element.type == "text") || (form_element.type == "textarea") || (form_element.type == "select") || (form_element.type == "open_vocabulary")){
-
-			object[form_element.name] = get(element_id_prefix+form_element.name);
-			
-		}
-		
-		if (form_element.type == "date"){
-		
-			object[form_element.name].year = get(element_id_prefix+form_element.name+"_year");
-			object[form_element.name].month = get(element_id_prefix+form_element.name+"_month");
-			object[form_element.name].day = get(element_id_prefix+form_element.name+"_day");
-		}
-		
-		if (form_element.type == "column"){
-		
-			element_id_prefix += form_element.name + "_";
-			
-			for (f=0; f<form_element.fields.length; f++){
-				
-				my.fillObjectWithFormElement(object, element_id_prefix, form_element.fields[f]);
-			
-			}
-		}
-		
-		if (form_element.type == "subarea"){
-		
-			element_id_prefix += form_element.name + "_";
-			
-			for (f=0; f<form_element.fields.length; f++){
-				
-				my.fillObjectWithFormElement(object[form_element.name], element_id_prefix, form_element.fields[f]);
-			
-			}
-		}
-		
-		if (form_element.type == "form"){
-		
-			for (f=0; f<form_element.fields.length; f++){
-				
-				my.fillObjectWithFormElement(object[form_element.fields[f].name], element_id_prefix, form_element.fields[f]);
-			
-			}
-		}
-		
-		if (form_element.type == "special"){
-		
-			return;
-		
-		}
-
-	};
-	
-	
 	my.saveAllOutputFiles = function(){
 	
 		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
