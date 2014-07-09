@@ -505,54 +505,33 @@ var dom = (function() {
 
 
 	my.makeDateInput = function (parent, title, name_prefix, id_prefix, y_value, m_value, d_value, hover){
-
+		var span;
+		
 		if (!hover){
 			hover = "";
 		}
 
-		var span = document.createElement("span");
-		span.innerHTML = title;
+		span = my.span(parent,"","",title);
 		span.title = hover;
 		
-		parent.appendChild(span);
+		my.br(span);
 		
-		span.appendChild(document.createElement("br"));
-		
-		var y_input = document.createElement("input");
-		y_input.name = name_prefix+"_year";
-		y_input.id = id_prefix+"_year";
-		y_input.className = "YearInput";
-		y_input.value = (y_value !== "") ? y_value : "YYYY";
+		var y_input = my.input(parent, id_prefix+"_year", "YearInput", name_prefix+"_year", "text", (y_value !== "") ? y_value : "YYYY");
 		y_input.title = hover;
-		parent.appendChild(y_input);
 		
-		var span2 = document.createElement("span");
-		parent.appendChild(span2);
-		span2.innerHTML = " ";
+		span = my.span(parent, "", "", " ");
+		span.title = hover;
 		
-		var m_input = document.createElement("input");
-		m_input.name = name_prefix+"_month";
-		m_input.id = id_prefix+"_month";
-		m_input.className = "MonthInput";
-		m_input.value = (m_value !== "") ? m_value : "MM";
+		var m_input = my.input(parent, id_prefix+"_month", "MonthInput", name_prefix+"_month", "text", (m_value !== "") ? m_value : "MM");
 		m_input.title = hover;
-		parent.appendChild(m_input);
 		
+		span = my.span(parent, "", "", " ");
+		span.title = hover;
 		
-		span2 = document.createElement("span");
-		parent.appendChild(span2);
-		span2.innerHTML = " ";
-		span2.title = hover;
-		
-		var d_input = document.createElement("input");
-		d_input.name = name_prefix+"_day";
-		d_input.id = id_prefix+"_day";
-		d_input.className = "DayInput";
-		d_input.value = (d_value !== "") ? d_value : "DD";
+		var d_input = my.input(parent, id_prefix+"_day", "DayInput", name_prefix+"_day", "text", (d_value !== "") ? d_value : "DD");
 		d_input.title = hover;
-		parent.appendChild(d_input);
 		
-		parent.appendChild(document.createElement("br"));
+		my.br(parent);
 		
 	};
 
@@ -570,18 +549,14 @@ var dom = (function() {
 		parent.appendChild(span);
 		parent.appendChild(document.createElement("br"));
 		
-		var textarea = document.createElement("textarea");
+		var textarea = my.newElement("textarea", t_id, t_class, parent);
 		textarea.name = t_name;
-		textarea.id = t_id;
 		textarea.value = t_value;
 		textarea.cols = t_cols;
 		textarea.rows = t_rows;
-		textarea.className = t_class;
 		textarea.title = hover;
 		
-		parent.appendChild(textarea);
-		
-		parent.appendChild(document.createElement("br"));	
+		my.br(parent);
 		
 		return textarea;
 		
@@ -770,21 +745,19 @@ var dom = (function() {
 			my.closeSelectFrame(); 
 		} );
 		
-		dom.newElement("h3","","",frame,subtitle);
-
+		my.h3(frame,subtitle);
 		
 		for (var j=0;j<options.length;j++){
 		
-			var a = dom.newElement("a",'cl_results_link_'+j,'cl_results_link',frame);
-			dom.newElement("div","",'SF_search_entry',a,titles[j]);
-			a.href = '#';
-		
-			a.addEventListener('click', function(num) {
+			var a = dom.a(frame,'cl_results_link_'+j,'cl_results_link',"#","",function(num) {
 				return function(){
 					my.closeSelectFrame();
 					callback(num);
 				};
-			}(options[j]) );
+			}(options[j]));
+			
+			dom.newElement("div","",'SF_search_entry',a,titles[j]);
+
 		}
 	
 		my.makeAllFunctionsInvisible();
@@ -794,7 +767,7 @@ var dom = (function() {
 	
 	my.scrollTop = function(){
 	
-		g("content_wrapper").scrollTop = 0;
+		g(APP.CONF.content_wrapper_id).scrollTop = 0;
 	
 	};
 	

@@ -327,7 +327,7 @@ var APP = (function () {
 			NewOption = new Option(my.environments[j].title, my.environments[j].id, false, true);
 			select.options[select.options.length] = NewOption;
 		}
-	  
+	
 		select.selectedIndex = 0;
 
 	};
@@ -467,7 +467,7 @@ var APP = (function () {
 			if (functions[f].type != "function_wrap"){
 				function_div = dom.newElement("div", functions[f].id, "function_icon",functions_div);
 				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + functions[f].icon);
-				var label = dom.newElement("h3","","", function_div, functions[f].label);
+				var label = dom.h3(function_div, functions[f].label);
 				
 				if (functions[f].label_span_id){
 					dom.newElement("span", functions[f].label_span_id, "", label);
@@ -483,11 +483,11 @@ var APP = (function () {
 
 			else {
 			
-				var function_wrap = dom.newElement("div",functions[f].wrapper_id,"function_wrap",functions_div);
+				var function_wrap = dom.div(functions_div,functions[f].wrapper_id,"function_wrap");
 				
-				function_div = dom.newElement("div", functions[f].id, "function_icon",function_wrap);
+				function_div = dom.div(function_wrap, functions[f].id, "function_icon");
 				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + functions[f].icon);
-				dom.newElement("h3","","", function_div, functions[f].label);
+				dom.h3(function_div, functions[f].label);
 				
 				function_div.addEventListener('click', functions[f].onclick);
 
@@ -571,7 +571,7 @@ var APP = (function () {
 			id = "VIEW_start";
 		}
 		
-		var views = g("content_wrapper").children;
+		var views = g(APP.CONF.content_wrapper_id).children;
 		var view_ids = [];
 		
 		//make all views invisible
@@ -852,7 +852,7 @@ var APP = (function () {
 			var module = workflow[e];
 			
 			//create a view for the module
-			dom.newElement("div",APP.CONF.view_id_prefix+module.identity.id,"content",g("content_wrapper"));
+			dom.newElement("div",APP.CONF.view_id_prefix+module.identity.id,"content",g(APP.CONF.content_wrapper_id));
 			
 			//initialize functions for the interface
 			if (module.functions){
@@ -1015,6 +1015,7 @@ var APP = (function () {
 		}
 		
 		my.view(recall_object.active_view);
+		g(APP.CONF.content_wrapper_id).scrollTop = recall_object.scroll_top;
 	};
 	
 	

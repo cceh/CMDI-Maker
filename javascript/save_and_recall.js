@@ -265,6 +265,7 @@ var save_and_recall = (function () {
 		};
 		
 		object.active_view = APP.active_view;
+		object.scroll_top = g(APP.CONF.content_wrapper_id).scrollTop;
 		
 		if (APP.active_environment){
 			object.active_environment_id = APP.active_environment.id;

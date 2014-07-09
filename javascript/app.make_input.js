@@ -67,10 +67,11 @@ APP.makeInput = function (parent, field, element_id_prefix, element_class_prefix
 		
 		case "subarea": {
 		
-			var h3 = document.createElement("h3");
-			h3.innerHTML = field.heading;
-			parent.title = field.comment;
-			parent.appendChild(h3);
+			var h3 = dom.h3(parent, field.heading);
+			
+			if (field.comment){
+				h3.title = field.comment;
+			}
 			
 			if (field.fields){
 			

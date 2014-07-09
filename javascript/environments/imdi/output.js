@@ -62,18 +62,15 @@ imdi_environment.workflow[4] = (function (){
 
 		for (var f=0; f<formats.length; f++){
 		
-			var input = dom.newElement("input","output_format_radio_"+f, "", parent);
-			input.type = "radio";
-			input.name = "output_format";
-			input.value = f;
+			var input = dom.input(parent,"output_format_radio_"+f, "", "output_format", "radio", f);
 			
-			dom.newElement("span", "","",parent, " " + formats[f].title);
+			dom.span(parent, "","", " " + formats[f].title);
 			
 			if (f === 0){
 				input.checked = true;
 			}
 			
-			dom.newElement("br","","",parent);
+			dom.br(parent);
 			
 		}
 
