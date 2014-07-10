@@ -57,7 +57,7 @@ APP.forms = (function () {
 	var getValueFromDataObject = function(data_object, field){
 		var value;
 	
-		if (field.name && field.name != ""){  //sub object
+		if (field.name && field.name !== ""){  //sub object
 			
 			if (typeof data_object != "undefined" && data_object[field.name]){
 				value = data_object[field.name];
@@ -284,7 +284,7 @@ APP.forms = (function () {
 		
 		if (field.type == "column"){
 		
-			if (field.name && field.name != ""){
+			if (field.name && field.name !== ""){
 				element_id_prefix += field.name + "_";
 			}
 		
@@ -350,7 +350,7 @@ APP.forms = (function () {
 		
 		if (field.type == "column") {
 			
-			if (field.name && field.name != ""){
+			if (field.name && field.name !== ""){
 				//create sub object
 				sub_object = {};
 				resulting_object[field.name] = sub_object;
@@ -468,7 +468,7 @@ APP.forms = (function () {
 		
 		if (form_element.type == "column"){
 			
-			if (form_element.name && form_element.name != ""){
+			if (form_element.name && form_element.name !== ""){
 				element_id_prefix += form_element.name + "_";
 			}
 			
@@ -481,7 +481,7 @@ APP.forms = (function () {
 		
 		if (form_element.type == "subarea"){
 		
-			if (form_element.name && form_element.name != ""){
+			if (form_element.name && form_element.name !== ""){
 				element_id_prefix += form_element.name + "_";
 			}
 			
@@ -497,7 +497,7 @@ APP.forms = (function () {
 			for (f=0; f<form_element.fields.length; f++){
 				
 				//check if a sub object has to be created
-				if (form_element.fields[f].name && form_element.fields[f].name != ""){
+				if (form_element.fields[f].name && form_element.fields[f].name !== ""){
 					sub_object = object[form_element.fields[f].name];
 				}
 				
