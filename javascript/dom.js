@@ -126,6 +126,12 @@ var dom = (function() {
 			
 			}
 			
+			else if (element.type == "checkbox"){
+			
+				element.checked = value;
+			
+			}
+			
 			else {
 		
 				element.value = value;
@@ -139,27 +145,18 @@ var dom = (function() {
 
 	my.makeTextInput = function (parent,title,name,id,value,hover){
 
-		if (!hover){
-			hover = "";
+		var span = my.span(parent, "", "", title);
+		
+		if (!hover){		
+			span.title = hover;
 		}
+
+		my.br(parent);
 		
-		var span = document.createElement("span");
-		span.title = hover;
-		span.innerHTML = title;
-		
-		parent.appendChild(span);
-		parent.appendChild(document.createElement("br"));
-		
-		var input = document.createElement("input");
-		input.type = "text";
-		input.name = name;
-		input.id = id;
-		input.value = value;
+		var input = my.input(parent, id, "", name, "text", value);
 		input.title = hover;
 		
-		parent.appendChild(input);
-		
-		parent.appendChild(document.createElement("br"));
+		my.br(parent);
 
 		return input;	
 		
