@@ -21,7 +21,6 @@ APP.forms = (function () {
 	
 	my.make = function (parent, field, element_id_prefix, element_class_prefix, session_object){
 		
-		
 		var input;
 		var f;
 
@@ -204,6 +203,265 @@ APP.forms = (function () {
 
 		if (field.onkeypress){
 			input.onkeypress = field.onkeypress;
+		}
+
+	};
+	
+	
+	my.fill = function (field, element_id_prefix, data_object){
+		
+		var target;
+		var f;
+
+		switch (field.type){
+		
+			case "form": {
+			
+				for (f=0; f<field.fields.length; f++){
+				
+					if (field.fields[f].name && field.fields[f].name != ""){  //sub object
+					
+						if (data_object && data_object[field.fields[f].name]){
+							target = data_object[field.fields[f].name];
+						}
+					
+						else {
+							target = undefined;
+						}
+					
+						
+					}
+					
+					else {
+					
+						if (data_object){
+							target = data_object;
+						}
+						
+						else {
+							target = undefined;
+						}
+					
+					}
+					
+					my.fill(field.fields[f], element_id_prefix, target);
+				
+				}
+				
+				break;
+			}
+		
+			case "column": {
+
+				if (field.fields){
+				
+					if (field.name && field.name != ""){
+						element_id_prefix += field.name + "_";
+					}
+				
+					for (f=0; f<field.fields.length; f++){
+					
+						var subfield = field.fields[f];
+					
+						if (subfield.name && subfield.name != ""){  //sub object
+							
+							if (data_object && data_object[subfield.name]){
+								target = data_object[subfield.name];
+							}
+						
+							else {
+								target = undefined;
+							}
+						
+							
+						}
+						
+						else {
+						
+							if (data_object){
+								target = data_object;
+							}
+							
+							else {
+								target = undefined;
+							}
+						
+						}
+
+						my.fill(subfield, element_id_prefix, target);
+				
+					}
+				
+				}
+				
+				break;
+			}
+			
+			case "text": {
+			
+				if (data_object){
+					target = data_object;
+				}
+				
+				else if (field.default_value) {
+					target = field.default_value;
+				}
+				
+				else {
+					target = "";
+				}
+			
+				g(element_id_prefix+field.name).value = target;
+				
+				break;
+			}
+			
+			case "date": {
+			
+				if (data_object){
+					target = data_object;
+				}
+				
+				else {
+					target = {
+						year: "YYYY",
+						month: "MM",
+						day: "DD"
+					};
+				}
+			
+				g(element_id_prefix+field.name+"_year").value = target.year;
+				g(element_id_prefix+field.name+"_month").value = target.month;
+				g(element_id_prefix+field.name+"_day").value = target.day;
+				
+				break;
+			}
+			
+			case "textarea": {
+			
+				if (data_object){
+					target = data_object;
+				}
+				
+				else if (field.default_value) {
+					target = field.default_value;
+				}
+				
+				else {
+					target = "";
+				}
+				
+				g(element_id_prefix+field.name).value = target;
+				
+				break;
+			}			
+			
+			case "subarea": {
+			
+				if (field.fields){
+					
+					if (field.name && field.name != ""){  //sub object
+					
+						element_id_prefix += field.name + "_";
+						
+						if (data_object && data_object[field.fields[f].name]){
+							target = data_object[field.fields[f].name];
+						}
+					
+						else {
+							target = undefined;
+						}
+					
+						
+					}
+					
+					else {
+					
+						if (data_object){
+							target = data_object;
+						}
+						
+						else {
+							target = undefined;
+						}
+					
+					}
+			
+					for (f=0; f<field.fields.length; f++){
+					
+						if (data_object && data_object[field.fields[f].name]){
+							target = data_object[field.fields[f].name];
+						}
+						
+						else {
+							target = undefined;
+						}
+
+						my.fill(field.fields[f], element_id_prefix, target);
+				
+					}
+				
+				}
+				
+				break;
+			}
+			
+			case "special": {
+				//????
+				break;
+			
+			}
+			
+			case "select": {
+			
+				if (data_object){
+					target = data_object;
+				}
+				
+				else if (field.default_value) {
+					target = field.default_value;
+				}
+				
+				else {
+					target = "";
+				}
+			
+				dom.setFormValue(element_id_prefix+field.name, target, field.vocabulary);
+				break;
+			}
+
+			case "open_vocabulary": {
+			
+				if (data_object){
+					target = data_object;
+				}
+				
+				else if (field.default_value) {
+					target = field.default_value;
+				}
+				
+				else {
+					target = "";
+				}
+			
+				dom.setFormValue(element_id_prefix+field.name, target, field.vocabulary);
+				break;
+			}
+			
+			case "check": {
+			
+				if (data_object){
+					target = data_object;
+				}
+				
+				else {
+					target = false;
+				}
+			
+				g(element_id_prefix+field.name).checked = target;
+				break;
+			}
+			
 		}
 
 	};
