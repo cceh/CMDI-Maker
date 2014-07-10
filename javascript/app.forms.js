@@ -334,136 +334,109 @@ APP.forms = (function () {
 		var f;
 		var sub_object;
 
-		switch (field.type){
+		if (field.type == "form") {
+
+			var object = {};
 		
-			case "form": {
+			forEach(field.fields, function(field){
 			
-				var object = {};
+				my.createEmptyObjectFromTemplate(field, object);
 				
-				for (f=0; f<field.fields.length; f++){
-					
-					my.createEmptyObjectFromTemplate(field.fields[f], object);
-				
-				}
-				
-				return object;
+			});
+			
+			return object;
 
-			}
+		}
+		
+		if (field.type == "column") {
 			
-			case "column": {
-				
-				if (field.name && field.name != ""){
-					//create sub object
-					sub_object = {};
-					resulting_object[field.name] = sub_object;
-				}
-				
-				else {  //if field has no name, do not create a sub object
-					sub_object = resulting_object;
-				}
-			
-				if (field.fields){
-				
-					for (f=0; f<field.fields.length; f++){
-					
-						my.createEmptyObjectFromTemplate(field.fields[f], sub_object);
-				
-					}
-				
-				}
-				
-				break;
-				
-			}
-			
-			case "subarea": {
-			
+			if (field.name && field.name != ""){
 				//create sub object
-				resulting_object[field.name] = {};
-			
-				if (field.fields){
-				
-					for (f=0; f<field.fields.length; f++){
-					
-						my.createEmptyObjectFromTemplate(field.fields[f], resulting_object[field.name]);
-				
-					}
-				
-				}
-				
-				break;
+				sub_object = {};
+				resulting_object[field.name] = sub_object;
 			}
 			
-			
-			case "text": {
-			
-				resulting_object[field.name] = "";
-				return;
-				
+			else {  //if field has no name, do not create a sub object
+				sub_object = resulting_object;
 			}
+		
+			if (field.fields){
 			
-			case "date": {
+				forEach(field.fields, function(field){
 			
-				var date_object = {
-					year: "",
-					month: "",
-					day: ""
-				};
-			
-				resulting_object[field.name] = date_object;
+					my.createEmptyObjectFromTemplate(field, sub_object);
 				
-				return;
-			}
+				});
 			
-			case "textarea": {
-			
-				resulting_object[field.name] = "";
-				return;
-				
-			}			
-			
-			case "special": {
-				if (field.object_structure == "array"){
-					resulting_object[field.name] = [];
-				}
-				
-				else if (field.object_structure == "object"){
-					resulting_object[field.name] = {};
-					
-					if (field.object_arrays){
-					
-						for (var a=0; a<field.object_arrays.length; a++){
-							resulting_object[field.name][field.object_arrays[a]] = [];
-						}
-					
-					}
-				}
-				
-				else {
-					resulting_object[field.name] = null;
-				}
-				
-				return;
-			
-			}
-			
-			case "select": {
-				resulting_object[field.name] = "";
-				return;
-			}
-
-			case "open_vocabulary": {
-				resulting_object[field.name] = "";
-				return;
-			}
-			
-			case "check": {
-				resulting_object[field.name] = false;
-				return;
 			}
 			
 		}
-
+		
+		if (field.type == "subarea") {
+			var parent_field_name = field.name;
+			
+			//create sub object
+			resulting_object[parent_field_name] = {};
+		
+			if (field.fields){
+			
+				forEach(field.fields, function(field){
+				
+					my.createEmptyObjectFromTemplate(field, resulting_object[parent_field_name]);
+			
+				});
+			
+			}
+			
+		}
+		
+		if (field.type == "date") {
+		
+			var date_object = {
+				year: "",
+				month: "",
+				day: ""
+			};
+		
+			resulting_object[field.name] = date_object;
+			
+			return;
+		}
+		
+		if (field.type == "special") {
+			if (field.object_structure == "array"){
+				resulting_object[field.name] = [];
+			}
+			
+			else if (field.object_structure == "object"){
+				resulting_object[field.name] = {};
+				
+				if (field.object_arrays){
+				
+					for (var a=0; a<field.object_arrays.length; a++){
+						resulting_object[field.name][field.object_arrays[a]] = [];
+					}
+				
+				}
+			}
+			
+			else {
+				resulting_object[field.name] = null;
+			}
+			
+			return;
+		}
+		
+		if (field.type == "select" || field.type == "open_vocabulary" || field.type == "textarea" || field.type == "text") {
+			resulting_object[field.name] = "";
+			return;
+		}
+		
+		if (field.type == "check") {
+			resulting_object[field.name] = false;
+			return;
+		}
+		
 	};
 
 
