@@ -30,13 +30,7 @@ imdi_environment.session_form = {
 					name: "name",
 					type: "text",
 					comment: "A short name or abbreviation of one or two words. This identifier distinguishes the session from others in the same (sub-) corpus and is used for quick browsing.",
-					onkeypress: function(e) {
-						var chr = String.fromCharCode(e.which);
-						if (APP.CONF.not_allowed_chars.indexOf(chr) >= 0){
-							alertify.log("This character is not allowed here.","error",5000);
-							return false;
-						}
-					}
+					not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:"
 				},    
 				{
 					heading: "Title",

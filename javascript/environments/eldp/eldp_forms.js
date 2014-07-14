@@ -30,13 +30,7 @@ eldp_environment.session_form = {
 					name: "name",
 					type: "text",
 					comment: "A short name or abbreviation of one or two words. This identifier distinguishes the session from others in the same (sub-) corpus and is used for quick browsing.",
-					onkeypress: function(e) {
-						var chr = String.fromCharCode(e.which);
-						if (APP.CONF.not_allowed_chars.indexOf(chr) >= 0){
-							alertify.log("This character is not allowed here.","error",5000);
-							return false;
-						}
-					}
+					not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:"
 				},    
 				{
 					heading: "Title",
@@ -179,31 +173,36 @@ eldp_environment.session_form = {
 
 eldp_environment.actor_form = {
 
-	title: "imdi-actors",
+	title: "eldp-actors",
 	type: "form",
 	fields: [
 		{
 			type: "column",
 			fields: [
 				{
-					heading: "Name",
-					name: "name",
+					heading: "Title",
+					name: "title",
 					type: "text",
 				},    
 				{
-					heading: "Full Name",
-					name: "full_name",
+					heading: "Forenames",
+					name: "forenames",
 					type: "text",
 				},
    				{
-					heading: "Code",
-					name: "code",
+					heading: "Surname",
+					name: "surname",
 					type: "text",
 				},
    				{
 					heading: "Birth Date",
 					name: "birth_date",
 					type: "date",
+				},
+   				{
+					heading: "Death Year",
+					name: "death_year",
+					type: "text",
 				},
    				{
 					heading: "Age",
@@ -218,9 +217,9 @@ eldp_environment.actor_form = {
 					default_value: "Unspecified"
 				},
    				{
-					heading: "Education",
-					name: "education",
-					type: "text",
+					heading: "Biographical Note",
+					name: "biographical_note",
+					type: "textarea",
 				}
 			]
 		},
@@ -230,63 +229,34 @@ eldp_environment.actor_form = {
 			type: "column",
 			fields: [
 				{
-					heading: "Role",
-					name: "role",
-					type: "open_vocabulary",
-					vocabulary: [
-						"Unknown","Unspecified","Annotator","Author","Collector","Consultant","Computer","Depositor","Editor","Filmer",	
-						"Illustrator","Interviewer","Musician","Photographer","Publisher","Recorder","Referent","Researcher","Singer","Speaker/Signer","Translator"
-					],
-					default_value: "Unspecified"
-				},    
-				{
-					heading: "Ethnic Group",
-					name: "ethnic_group",
-					type: "text",
+					heading: "Ethnicities",
+					name: "ethnicity",
+					type: "textarea",  //multiple values
 				},
    				{
-					heading: "Family Social Role",
-					name: "family_social_role",
-					type: "open_vocabulary",
-					vocabulary: ["Unknown","Unspecified","Father","Mother","Sibling","Boss","Partner","Student","Teacher","Shaman/Priest","Mayor","Doctor"],
-					default_value: "Unspecified"
+					heading: "Additional Information (Ethnicity)",
+					name: "ethnicity_additional_info",
+					type: "textarea"
 				},
    				{
-					heading: "Description of the actor",
-					name: "description",
-					type: "textarea",
+					heading: "Nationalities",
+					name: "nationality",
+					type: "textarea",  //multiple values
 				},
    				{
-					heading: "Anonymized",
-					name: "anonymized",
-					type: "check",
+					heading: "Additional Information (Nationality)",
+					name: "nationality_additional_info",
+					type: "textarea"
 				}
 			]
 		},	
 		{
-			title: "Contact",
-			name: "contact",
 			type: "column",
 			fields: [
 				{
-					heading: "Name",
-					name: "name",
-					type: "text"
-				},    
-				{
-					heading: "Address",
-					name: "address",
-					type: "text"
-				},
-   				{
-					heading: "Email",
-					name: "email",
-					type: "text"
-				},
-   				{
-					heading: "Organisation",
-					name: "organisation",
-					type: "text"
+					heading: "Additional Information (Person)",
+					name: "person_additional_information",
+					type: "textarea"
 				}
 			]
 		},	

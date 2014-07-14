@@ -28,7 +28,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	my.identity = {
 		id: "actor",
-		title: "Actors",
+		title: "Persons",
 		icon: "user.png"
 	};
 	
@@ -192,28 +192,11 @@ eldp_environment.workflow[1] = (function(){
 		if (actor_id != -1){
 			//show data of selected actor in form
 
-			g("actor_form_title").innerHTML = my.actors[actor_id].name;
+			g("actor_form_title").innerHTML = my.actors[actor_id].title;
 
-			dom.setFormValue("actor_name",my.actors[actor_id].name);
-			dom.setFormValue("actor_full_name",my.actors[actor_id].full_name);
-			dom.setFormValue("actor_code",my.actors[actor_id].code);
-			dom.setFormValue("actor_role",my.actors[actor_id].role, actor_form.fields[1].fields[0].vocabulary);
-			dom.setFormValue("actor_ethnic_group",my.actors[actor_id].ethnic_group);
-			dom.setFormValue("actor_family_social_role",my.actors[actor_id].family_social_role, actor_form.fields[1].fields[2].vocabulary);
-			dom.setFormValue("actor_age",my.actors[actor_id].age);
-			dom.setFormValue("actor_birth_date_year",my.actors[actor_id].birth_date.year);
-			dom.setFormValue("actor_birth_date_month",my.actors[actor_id].birth_date.month);
-			dom.setFormValue("actor_birth_date_day",my.actors[actor_id].birth_date.day);
-			dom.setFormValue("actor_sex",my.actors[actor_id].sex);
-			dom.setFormValue("actor_education",my.actors[actor_id].education);
+			var actor_to_display = my.actors[actor_id];
 			
-			dom.setFormValue("actor_contact_name",my.actors[actor_id].contact.name);
-			dom.setFormValue("actor_contact_address",my.actors[actor_id].contact.address);
-			dom.setFormValue("actor_contact_email",my.actors[actor_id].contact.email);
-			dom.setFormValue("actor_contact_organisation",my.actors[actor_id].contact.organisation);
-			dom.setFormValue("actor_description",my.actors[actor_id].description);
-		
-			document.getElementsByName("actor_anonymized")[0].checked = my.actors[actor_id].anonymized;
+			APP.forms.fill(actor_form, "actor_", actor_to_display);
 			
 			my.showLanguagesOfActiveActor();
 			
@@ -424,27 +407,7 @@ eldp_environment.workflow[1] = (function(){
 
 		g("actor_form_title").innerHTML = "New Actor";
 
-		dom.setFormValue("actor_name","");
-		dom.setFormValue("actor_full_name","");
-		dom.setFormValue("actor_code","");
-		dom.setFormValue("actor_role",actor_form.fields[1].fields[0].default_value, actor_form.fields[1].fields[0].vocabulary);
-		dom.setFormValue("actor_ethnic_group","");
-		dom.setFormValue("actor_family_social_role",actor_form.fields[1].fields[2].default_value, actor_form.fields[1].fields[2].vocabulary);
-		dom.setFormValue("actor_age","");
-		dom.setFormValue("actor_birth_date_year","YYYY");
-		dom.setFormValue("actor_birth_date_month","MM");
-		dom.setFormValue("actor_birth_date_day","DD");
-		dom.setFormValue("actor_sex",actor_form.fields[0].fields[5].default_value);
-		dom.setFormValue("actor_education","");
-
-		dom.setFormValue("actor_contact_name","");
-		dom.setFormValue("actor_contact_address","");
-		dom.setFormValue("actor_contact_email","");
-		dom.setFormValue("actor_contact_organisation","");
-		
-		dom.setFormValue("actor_description","");
-
-		document.getElementsByName("actor_anonymized")[0].checked = false;
+		APP.forms.fill(actor_form, "actor_");
 
 		my.languages.clearActiveActorLanguages();
 		
@@ -519,7 +482,7 @@ eldp_environment.workflow[1] = (function(){
 	my.save_active_actor = function(do_not_overwrite){
 	//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
 
-		if (get("actor_name") !== ""){
+		if (get("actor_title") !== ""){
 
 			if (!do_not_overwrite){
 				do_not_overwrite = false;

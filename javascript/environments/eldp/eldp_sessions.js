@@ -25,7 +25,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.identity = {
 		id: "session",
-		title: "Sessions",
+		title: "Bundles",
 		icon: "edit.png",
 	};
 	

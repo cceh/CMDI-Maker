@@ -270,8 +270,17 @@ APP.forms = (function () {
 			
 		}
 
-		if (field.onkeypress){
-			input.onkeypress = field.onkeypress;
+		if (field.not_allowed_chars){
+		
+			input.onkeypress = function(e) {
+				var chr = String.fromCharCode(e.which);
+				
+				if (field.not_allowed_chars.indexOf(chr) >= 0){
+					alertify.log("This character is not allowed here.","error",5000);
+					return false;
+				}
+			};
+
 		}
 
 	};
