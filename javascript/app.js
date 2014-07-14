@@ -464,7 +464,17 @@ var APP = (function () {
 	
 	my.reset_form = function (){
 		
-		my.active_environment.reset();
+		if (my.active_environment.reset){
+			my.active_environment.reset();
+		}
+		
+		forEach(my.active_environment.workflow, function(module){
+		
+			if (typeof module.reset != "undefined"){
+				module.reset();
+			}
+		
+		});
 
 	};
 	

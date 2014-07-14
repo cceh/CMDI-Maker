@@ -173,12 +173,7 @@ var imdi_environment = (function(){
 	
 	my.reset = function(){
 		
-		g("corpus_name").value = "";
-		g("corpus_title").value = "";
-		g("corpus_description").value = "";
-		
-		my.workflow[3].eraseAll();
-		my.workflow[0].content_languages.removeAll();
+		return;
 		
 	};
 	

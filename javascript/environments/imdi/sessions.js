@@ -33,6 +33,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.id_counter = 0;
 	my.resource_id_counter = 0;
 
+	my.reset = function(){ my.eraseAll(); };
 	
 	my.init = function(){
 	

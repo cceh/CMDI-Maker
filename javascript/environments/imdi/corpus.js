@@ -27,11 +27,23 @@ imdi_environment.workflow[0] = (function(){
 	
 	};
 	
+	my.reset = function(){
+	
+		g("corpus_name").value = "";
+		g("corpus_title").value = "";
+		g("corpus_description").value = "";
+		
+		my.content_languages.removeAll();
+	
+	};
+	
+	
 	my.identity = {
 		id: "corpus",
 		title: "Corpus",
 		icon: "box.png"
 	};
+	
 	
 	my.init = function(){
 		

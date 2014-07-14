@@ -32,6 +32,8 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	my.sessions = [];
 	my.id_counter = 0;
 	my.resource_id_counter = 0;
+	
+	my.reset = function(){ my.eraseAll(); };
 
 	
 	my.init = function(){
