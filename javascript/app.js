@@ -458,42 +458,6 @@ var APP = (function () {
 	};
 
 	
-	my.reset_form = function (){
-		
-		if (my.active_environment.reset){
-			my.active_environment.reset();
-		}
-		
-		forEach(my.active_environment.workflow, function(module){
-		
-			if (typeof module.reset != "undefined"){
-				module.reset();
-			}
-		
-		});
-
-	};
-	
-	
-	my.getModuleOfViewID = function(id){
-		
-		if (typeof my.active_environment != "undefined"){
-		
-			//find the module for this id
-			for (var m=0; m<my.active_environment.workflow.length; m++){
-
-				if ((APP.CONF.view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
-					return my.active_environment.workflow[m];
-				}
-			
-			}
-		}
-		
-		return undefined;
-	
-	};
-
-
 	my.view = function (module_or_id){
 		var module;
 		var id;
@@ -503,7 +467,7 @@ var APP = (function () {
 		if (typeof module_or_id === 'string') {
 			
 			id = module_or_id;
-			module = my.getModuleOfViewID(id);
+			module = my.environments.getModuleByViewID(id);
 			
 		}
 		
@@ -569,7 +533,7 @@ var APP = (function () {
 			g(APP.CONF.viewlink_id_prefix + view.id).style.backgroundColor = "";
 		});
 		
-		var module = my.getModuleOfViewID(id);
+		var module = my.environments.getModuleByViewID(id);
 		
 		if (module){
 			g(APP.CONF.viewlink_id_prefix + module.identity.id).style.backgroundColor = APP.CONF.highlight_color;

@@ -56,6 +56,42 @@ APP.environments = (function () {
 	};
 
 	
+	my.getModuleByViewID = function(id){
+		
+		if (typeof my.active_environment != "undefined"){
+		
+			//find the module for this id
+			for (var m=0; m<my.active_environment.workflow.length; m++){
+
+				if ((APP.CONF.view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
+					return my.active_environment.workflow[m];
+				}
+			
+			}
+		}
+		
+		return undefined;
+	
+	};
+	
+	
+	my.resetActive = function(){
+	
+		if (my.active_environment && my.active_environment.reset){
+			my.active_environment.reset();
+		}
+		
+		forEach(my.active_environment.workflow, function(module){
+		
+			if (typeof module.reset != "undefined"){
+				module.reset();
+			}
+		
+		});
+	
+	}
+	
+	
 	my.unloadActive = function (){
 	
 		if (!my.active_environment){

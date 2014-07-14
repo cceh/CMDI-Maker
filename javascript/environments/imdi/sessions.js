@@ -155,7 +155,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 					else {
 						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-						APP.reset_form();
+						APP.environments.resetActive();
 						alertify.log("Form reset","",5000);
 						
 					}
