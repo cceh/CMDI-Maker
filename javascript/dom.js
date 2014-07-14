@@ -768,6 +768,30 @@ var dom = (function() {
 	
 	};
 	
+	
+	my.setSelectOptions = function(select, options, first_option_empty){
+	
+		my.removeOptions(select);
+		
+		if (first_option_empty == true){
+		
+			var NewOption = new Option("", 0, false, true);
+			select.options[select.options.length] = NewOption;
+		
+		}
+		
+		
+		forEach(options, function(option){
+
+			NewOption = new Option(option.title, option.id, false, true);
+			select.options[select.options.length] = NewOption;
+			
+		});
+	
+		select.selectedIndex = 0;
+	
+	};
+	
 
 	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename){
 

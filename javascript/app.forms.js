@@ -215,7 +215,7 @@ APP.forms = (function () {
 			}
 			
 			case "special": {
-				APP.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
+				APP.environments.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
 				break;
 			
 			}

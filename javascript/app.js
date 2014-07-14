@@ -20,7 +20,6 @@ var APP = (function () {
 
 	var my = {};
 	
-	my.environments = [imdi_environment, eldp_environment];
 	my.languages = [];
 	
 	my.getLPFromID = function(id){
@@ -55,7 +54,6 @@ var APP = (function () {
 	
 	
 	my.active_view = undefined;
-	my.active_environment = undefined;
 	my.active_language = undefined;
 
 	
@@ -155,7 +153,7 @@ var APP = (function () {
 				type: "select",
 				name: "profile_select",
 				id: "profile_select",
-				onchange: function(){my.changeEnvironment(g("profile_select").selectedIndex-1);}
+				onchange: function(){my.environments.change(g("profile_select").selectedIndex-1);}
 			},
 			{
 				title: my.l("settings","auto_save"),
@@ -269,7 +267,7 @@ var APP = (function () {
 		my.initSettings(my.settings(), g("core_settings"));
 		my.displayMetadataLanguages();
 		my.displayLanguages();
-		my.displayEnvironments();
+		my.environments.display();
 		my.addEventListeners();
 		
 		if ((!no_recall) && (typeof recall_object != "undefined")){
@@ -316,20 +314,13 @@ var APP = (function () {
 	my.displayEnvironments = function (){
 		
 		var select = g("profile_select");
+		var start_select = g("start_profile_select");
 		
-		dom.removeOptions(select);
+		dom.setSelectOptions(select, my.environments, true);
+		dom.setSelectOptions(start_select, my.environments, false);
 		
-		var NewOption = new Option("", 0, false, true);
-		select.options[select.options.length] = NewOption;
-	
-		for (var j=0;j<my.environments.length;j++){
-
-			NewOption = new Option(my.environments[j].title, my.environments[j].id, false, true);
-			select.options[select.options.length] = NewOption;
-		}
-	
-		select.selectedIndex = 0;
-
+		start_select.addEventListener("change", function(){my.changeEnvironment(start_select.selectedIndex);});
+		
 	};
 
 
@@ -369,11 +360,15 @@ var APP = (function () {
 			alertify.log(my.l("this_is","before") + APP.CONF.hellos[index][1] + my.l("this_is","after"));
 		});
 
-		g("greeting_text").innerHTML = my.l("greeting_text");
-		g("link_lets_go").innerHTML = my.l("lets_go");
-		g("supported_by_label").innerHTML = my.l("is_supported_by");
-		g("need_help_label").innerHTML = my.l("need_help");
-		g("help_pages_description").innerHTML = my.l("help_pages_description");
+		g("greeting_text").innerHTML = my.l("start","greeting_text");
+		
+		g("start_select_profile_span").innerHTML = my.l("start","select_your_profile");
+		
+		
+		g("link_lets_go").innerHTML = my.l("start","lets_go");
+		g("supported_by_label").innerHTML = my.l("start","is_supported_by");
+		g("need_help_label").innerHTML = my.l("start","need_help");
+		g("help_pages_description").innerHTML = my.l("start","help_pages_description");
 	};
 	
 	
@@ -608,91 +603,6 @@ var APP = (function () {
 	};
 	
 	
-	my.unloadActiveEnvironment = function (){
-	
-		if (!APP.active_environment){
-			console.log("WARNING: APP.unloadActiveEnvironment called although there is no environment loaded!");
-			return;
-		}
-	
-		console.log("Unloading active environment: " + my.active_environment.id);
-	
-		save_and_recall.save();
-		
-		g("environment_settings").innerHTML = "";
-	
-		forEach(my.active_environment.workflow, function (module){
-		
-			//delete module view
-			dom.remove(APP.CONF.view_id_prefix+module.identity.id);
-			
-		});
-		
-		g("functions").innerHTML = "";
-	
-		g("module_icons").innerHTML = "";
-		
-		my.active_environment = undefined;
-		
-		g("profile_select").selectedIndex = 0;
-		
-		my.view("VIEW_start");
-	
-	};
-	
-	
-	my.createEnvironment = function (environment){
-	
-		if (typeof my.active_environment != "undefined"){
-		
-			if (environment.id == my.active_environment.id){
-				console.log("Environment to be created is already active: " + my.active_environment.id);
-				return;
-			}
-			
-			else {
-				my.unloadActiveEnvironment();
-			}
-		}
-	
-		//Variable has to be set first, because later methods depend on it
-		my.active_environment = environment;	
-		
-		console.log("Creating environment: " + environment.id);
-	
-		my.initEnvironmentSettings(environment.settings());
-	
-		my.createWorkflow(environment.workflow);
-		
-		g("profile_select").selectedIndex = getIndexOfEnvironment(environment) + 1;
-		
-		my.view("default");
-	
-	};
-	
-	
-	var getIndexOfEnvironment = function(environment){
-		
-		for (var e=0; e<my.environments.length; e++){
-		
-			if (environment.id == my.environments[e].id){
-				return e;
-			}
-		
-		}
-		
-		return console.log("Environment " + environment.id + " not found in APP.environments");
-	
-	};
-	
-	
-	my.initEnvironmentSettings = function (settings){
-	
-		my.initSettings(settings, g("environment_settings"));
-	
-	};
-	
-	
 	my.initSettings = function (settings, parent){
 		var input;
 		var h2;
@@ -796,88 +706,24 @@ var APP = (function () {
 	};
 	
 	
-	my.createWorkflow = function(workflow){
-	
-		for (var e=0; e<workflow.length; e++){
-		
-			var module = workflow[e];
-			
-			//create a view for the module
-			dom.newElement("div",APP.CONF.view_id_prefix+module.identity.id,"content",g(APP.CONF.content_wrapper_id));
-			
-			//initialize functions for the interface
-			if (module.functions){
-				my.init_functions(module.functions);
-			}
-
-			if (module.init){
-				module.init();
-			}
-		}
-	
-		my.createWorkflowDisplay(workflow);
-	
-	};
-	
-	
-	my.createWorkflowDisplay = function (workflow){
-	
-		var div = g("module_icons");
-	
-		for (var w=0; w<workflow.length; w++){
-		
-			if (w !== 0){
-			
-				var arrow = dom.newElement("div","","wizard_arrow",div);
-				dom.img(arrow,"","wizard_icon", APP.CONF.path_to_icons + "right2.png");
-			
-			}
-			
-			var icon = dom.newElement("div",APP.CONF.viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
-			dom.img(icon, "", "module_icon", APP.CONF.path_to_icons + workflow[w].identity.icon);
-			dom.br(icon);
-			dom.span(icon,"","",workflow[w].identity.title);
-			
-			icon.addEventListener('click', function(num) {
-				return function(){
-					my.view(num);
-				};
-			}(workflow[w]));
-		}
-	
-	};
-	
-	
-	my.getEnvironmentFromID = function(id){
-	
-		for (var e=0; e<my.environments.length; e++){
-			
-			if (my.environments[e].id == id){
-				return my.environments[e];
-			}
-			
-		}
-		
-		return undefined;
-	
-	};
-
-	
 	my.addEventListeners = function(){
 	
 		g('link_lets_go').addEventListener('click', function() {
-			if (typeof my.active_environment == "undefined"){
-				my.createEnvironment(imdi_environment);	
+		
+			if (typeof my.environments.active_environment == "undefined"){
+				my.environments.create(my.environments.get(0));	
 			}
 			
-			if (my.active_environment.workflow[0]){
-				my.view(my.active_environment.workflow[0]);
+			if (my.environments.active_environment.workflow[0]){
+				my.view(my.environments.active_environment.workflow[0]);
 			}
 			
 			else {
+			
 				alertify.set({ labels: {
 					ok     : my.l("ok")
 				} });
+				
 				alertify.alert(my.l("error","no_workflow"));
 			}
 			
@@ -909,25 +755,6 @@ var APP = (function () {
 	};
 	
 	
-	my.changeEnvironment = function(index){
-
-		save_and_recall.save();
-		
-		if (typeof my.active_environment != "undefined"){
-			my.unloadActiveEnvironment();
-		}
-		
-		dom.scrollTop();
-		
-		if (index == -1){
-			return;
-		}
-		
-		my.createEnvironment(my.environments[index]);
-	
-	};
-	
-	
 	my.recall = function(recall_object, environment_data){
 	//environment_data is an optional parameter, if it is not specified, the function tries to get the
 	//environment_data from local storage
@@ -950,8 +777,8 @@ var APP = (function () {
 		
 		if (recall_object.active_environment_id){
 		
-			var environment = my.getEnvironmentFromID(recall_object.active_environment_id);
-			my.createEnvironment(environment);
+			var environment = my.environments.getByID(recall_object.active_environment_id);
+			my.environments.create(environment);
 			
 			if (typeof environment_data == "undefined"){
 				environment_data = save_and_recall.getRecallDataForEnvironment(environment);
@@ -961,28 +788,12 @@ var APP = (function () {
 				save_and_recall.recallEnvironmentData(environment_data);
 			}
 			
-			g("profile_select").selectedIndex = my.getEnvironmentIndexFromID(recall_object.active_environment_id) + 1;
+			g("profile_select").selectedIndex = my.environments.getByID(recall_object.active_environment_id) + 1;
 		
 		}
 		
 		my.view(recall_object.active_view);
 		g(APP.CONF.content_wrapper_id).scrollTop = recall_object.scroll_top;
-	};
-	
-	
-	my.getEnvironmentIndexFromID = function(id){
-	
-		for (var e=0; e<my.environments.length; e++){
-		
-			if (my.environments[e].id == id){
-				return e;
-			}
-		
-		}
-	
-		console.log("ERROR: Unknown environment id: " + id);
-		return undefined;
-	
 	};
 	
 	
