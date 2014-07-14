@@ -25,6 +25,12 @@ var eldp_environment = (function(){
 	
 	my.workflow = [];
 	
+	
+	my.l = function(arg1, arg2, arg3){
+		return APP.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
+	};
+	
+	
 	my.settings = function(){
 		return [
 			{

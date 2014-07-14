@@ -59,6 +59,7 @@ javascript/environments/eldp/eldp_actors.js
 javascript/environments/eldp/eldp_actor_languages.js
 javascript/environments/eldp/eldp_environment.js
 javascript/environments/eldp/eldp_forms.js
+javascript/environments/eldp/eldp_LanguagePacks.js
 javascript/environments/eldp/eldp_resources.js
 javascript/environments/eldp/eldp_sessions.js
 javascript/environments/imdi/actors.js

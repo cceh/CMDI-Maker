@@ -37,6 +37,7 @@ var APP = (function () {
 	
 	};
 	
+	
 	my.getIndexFromLPID = function(id){
 	
 		for (var l=0; l<my.languages.length; l++){
@@ -555,10 +556,10 @@ var APP = (function () {
 	
 	my.highlightViewIcon = function (id) {
 		
-		if (typeof my.active_environment != "undefined"){
+		if (typeof my.environments.active_environment != "undefined"){
 		
 			//Unhighlight all workflow icons
-			forEach(my.active_environment.workflow, function(workflow){
+			forEach(my.environments.active_environment.workflow, function(workflow){
 				g(APP.CONF.viewlink_id_prefix + workflow.identity.id).style.backgroundColor = "";
 			});
 		}
@@ -794,6 +795,7 @@ var APP = (function () {
 		
 		my.view(recall_object.active_view);
 		g(APP.CONF.content_wrapper_id).scrollTop = recall_object.scroll_top;
+		
 	};
 	
 	

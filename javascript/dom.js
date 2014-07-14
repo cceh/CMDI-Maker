@@ -677,12 +677,12 @@ var dom = (function() {
 	
 	my.closeSelectFrame = function(){
 		
-		if (g("SF")){	
+		if (g(APP.CONF.select_frame_id)){	
 		
-			var view = g("SF").parentNode;
+			var view = g(APP.CONF.select_frame_id).parentNode;
 		
 			my.showAllChildren(view);
-			my.remove("SF");
+			my.remove(APP.CONF.select_frame_id);
 
 			var module = APP.getModuleOfViewID(view.id);
 			my.showFunctionsForView(module);
@@ -731,7 +731,7 @@ var dom = (function() {
 		
 		my.hideAllChildren(active_view);
 		
-		var frame = my.newElement("div","SF","SF",active_view,"");	
+		var frame = my.newElement("div",APP.CONF.select_frame_id,APP.CONF.select_frame_id,active_view,"");	
 		frame.style.display = "block";
 		
 		dom.newElement("h1","","",frame,title); 

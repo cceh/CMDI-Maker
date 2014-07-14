@@ -33,6 +33,7 @@ APP.CONF = {
 	viewlink_id_prefix: "VIEWLINK_",
 	view_id_prefix: "VIEW_",
 	xml_textarea_class_name: "xml_textarea",
+	select_frame_id: "SF",
 
 	output_textarea_rows: 40,
 	output_textarea_columns: 130,

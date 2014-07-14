@@ -17,6 +17,24 @@ limitations under the License.
 
 APP.environments = (function () {
 	'use strict';
+	
+	//PRIVATE
+	
+	var getIndex = function(environment){
+		
+		for (var e=0; e<my.environments.length; e++){
+		
+			if (environment.id == my.environments[e].id){
+				return e;
+			}
+		
+		}
+		
+		return console.log("Environment " + environment.id + " not found in APP.environments");
+	
+	};
+	
+	//PUBLIC
 
 	var my = {};
 	
@@ -97,21 +115,6 @@ APP.environments = (function () {
 		g("profile_select").selectedIndex = getIndex(environment) + 1;
 		
 		APP.view("default");
-	
-	};
-	
-	
-	var getIndex = function(environment){
-		
-		for (var e=0; e<my.environments.length; e++){
-		
-			if (environment.id == my.environments[e].id){
-				return e;
-			}
-		
-		}
-		
-		return console.log("Environment " + environment.id + " not found in APP.environments");
 	
 	};
 	
@@ -201,6 +204,11 @@ APP.environments = (function () {
 
 		save_and_recall.save();
 		
+		if (index == -1){
+			my.unloadActive();
+			return;
+		}
+		
 		if (typeof my.active_environment != "undefined"){
 		
 			if (my.environments[index].id == my.active_environment.id){
@@ -209,13 +217,10 @@ APP.environments = (function () {
 			}
 			
 			my.unloadActive();
+			
 		}
 		
 		dom.scrollTop();
-		
-		if (index == -1){
-			return;
-		}
 		
 		my.create(my.environments[index]);
 	
