@@ -120,55 +120,57 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 	
 	
-	my.functions = [
-		{
-			label: "New Session",
-			icon: "plus.png",
-			id: "link_newSession",
-			onclick: function() {my.newSession(); }
-		},
-		{
-			label: "Copy Session 1 metadata to all sessions",
-			icon: "copy.png",
-			id: "link_copy_sessions",
-			wrapper_id: "copy_sessions_div",
-			type: "function_wrap",
-			sub_div: "copy_sessions_select",
-			onclick: function() { my.assignSession1Metadata(); },
-			after_that: my.createCopySessionOptions
-		},
-		{
-			label: "Reset Form",
-			icon: "reset.png",
-			id: "session_link_reset_form",
-			onclick: function() {       
+	my.functions = function(){
+		return [
+			{
+				label: "New Session",
+				icon: "plus.png",
+				id: "link_newSession",
+				onclick: function() {my.newSession(); }
+			},
+			{
+				label: "Copy Session 1 metadata to all sessions",
+				icon: "copy.png",
+				id: "link_copy_sessions",
+				wrapper_id: "copy_sessions_div",
+				type: "function_wrap",
+				sub_div: "copy_sessions_select",
+				onclick: function() { my.assignSession1Metadata(); },
+				after_that: my.createCopySessionOptions
+			},
+			{
+				label: "Reset Form",
+				icon: "reset.png",
+				id: "session_link_reset_form",
+				onclick: function() {       
 
-				alertify.set({ labels: {
-					ok     : "No",
-					cancel : "Yes, delete form"
-				} });
+					alertify.set({ labels: {
+						ok     : "No",
+						cancel : "Yes, delete form"
+					} });
+					
+					alertify.confirm("Really?<br>You want to reset the form and delete corpus and all sessions?", function (e) {
+						if (e) {
+							// user clicked "ok"
+						}
 				
-				alertify.confirm("Really?<br>You want to reset the form and delete corpus and all sessions?", function (e) {
-					if (e) {
-						// user clicked "ok"
-					}
-			
-					else {
-						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-						APP.environments.resetActive();
-						alertify.log("Form reset","",5000);
-						
-					}
-				});
+						else {
+							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+							APP.environments.resetActive();
+							alertify.log("Form reset","",5000);
+							
+						}
+					});
+				}
+			},
+			{
+				label: "Sort by Name",
+				icon: "az.png",
+				id: "session_link_sort_by_name",
+				onclick: function() { my.sortAlphabetically(); }
 			}
-		},
-		{
-			label: "Sort by Name",
-			icon: "az.png",
-			id: "session_link_sort_by_name",
-			onclick: function() { my.sortAlphabetically(); }
-		}
-	];
+		];
+	};
 	
 
 	my.refreshResources = function(s){
@@ -211,17 +213,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(p);
 			p.innerHTML = "No files have been added.<br>";
 		
-			var a = document.createElement("a");
-			a.href="#";
-			a.innerHTML = "Add some files.";
-		
-			p.appendChild(a);
-
-			a.addEventListener('click', function() { 
-				APP.view(resources);
-			} );
+			dom.a(p,"","","#","Add some files.", function(){APP.view(resources);});
 			
-		
 		}
 		
 	};
