@@ -432,3 +432,29 @@ imdi_environment.actor_form = {
 		}
 	]
 };
+
+
+imdi_environment.corpus_form = {
+
+	type: "form",
+	fields: [
+		{
+			heading: "Name",
+			name: "name",
+			comment: "A short archivable name of your corpus",
+			type: "text",
+			not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:"
+		},
+		{
+			heading: "Title",
+			name: "title",
+			comment: "The complete and extensive title of your corpus",
+			type: "text"
+		},	
+		{
+			heading: "Description",
+			name: "description",
+			type: "textarea"
+		}
+	]
+};

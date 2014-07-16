@@ -684,7 +684,7 @@ var dom = (function() {
 			my.showAllChildren(view);
 			my.remove(APP.CONF.select_frame_id);
 
-			var module = APP.getModuleOfViewID(view.id);
+			var module = APP.environments.getModuleByViewID(view.id);
 			my.showFunctionsForView(module);
 			
 		}

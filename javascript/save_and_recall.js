@@ -93,9 +93,9 @@ var save_and_recall = (function () {
 	my.recallEnvironmentData = function (recall_object){
 
 		//recall environment settigns
-		APP.active_environment.recall(recall_object.settings);
+		APP.environments.active_environment.recall(recall_object.settings);
 		
-		var workflow = APP.active_environment.workflow;
+		var workflow = APP.environments.active_environment.workflow;
 		
 		//for every workflow module, recall its save data
 		for (var m=0; m<workflow.length; m++){
@@ -119,7 +119,7 @@ var save_and_recall = (function () {
 	my.deleteEnvironmentData = function(){
 
 		try {
-			localStorage.removeItem(APP.active_environment.id);
+			localStorage.removeItem(APP.environments.active_environment.id);
 		}
 		
 		catch (e){
@@ -144,9 +144,9 @@ var save_and_recall = (function () {
 		var form_object = my.retrieveDataToSave();
 		localStorage.setItem(APP.CONF.local_storage_key, JSON.stringify(form_object));
 		
-		if (APP.active_environment){
+		if (APP.environments.active_environment){
 			var environment_object = my.retrieveEnvironmentDataToSave();
-			localStorage.setItem(APP.active_environment.id, JSON.stringify(environment_object));
+			localStorage.setItem(APP.environments.active_environment.id, JSON.stringify(environment_object));
 		}
 		
 		console.log("Form saved");
@@ -160,10 +160,10 @@ var save_and_recall = (function () {
 		
 		CMP_object.app = my.retrieveDataToSave();
 		
-		if (APP.active_environment){
+		if (APP.environments.active_environment){
 			var environment_object = my.retrieveEnvironmentDataToSave();
 			CMP_object.environments = {};
-			CMP_object.environments[APP.active_environment.id] = environment_object;
+			CMP_object.environments[APP.environments.active_environment.id] = environment_object;
 		}
 	
 		APP.save_file(JSON.stringify(CMP_object), APP.CONF.project_file_name);
@@ -236,7 +236,7 @@ var save_and_recall = (function () {
 			APP.unloadActiveEnvironment();
 			APP.init(true);
 		
-			var environment_id = data.app.active_environment_id;
+			var environment_id = data.APP.environments.active_environment_id;
 			
 			console.log("Active Environment: " + environment_id);
 			
@@ -267,8 +267,8 @@ var save_and_recall = (function () {
 		object.active_view = APP.active_view;
 		object.scroll_top = g(APP.CONF.content_wrapper_id).scrollTop;
 		
-		if (APP.active_environment){
-			object.active_environment_id = APP.active_environment.id;
+		if (APP.environments.active_environment){
+			object.active_environment_id = APP.environments.active_environment.id;
 		}
 		
 		return object;
@@ -281,9 +281,9 @@ var save_and_recall = (function () {
 		var object = {};
 		
 		//get environment settings
-		object.settings = APP.active_environment.getSaveData();
+		object.settings = APP.environments.active_environment.getSaveData();
 		
-		var workflow = APP.active_environment.workflow;
+		var workflow = APP.environments.active_environment.workflow;
 		
 		for (var m=0; m<workflow.length; m++){
 			

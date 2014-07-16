@@ -29,10 +29,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.reset = function(){
 	
-		g("corpus_name").value = "";
-		g("corpus_title").value = "";
-		g("corpus_description").value = "";
-		
+		APP.forms.fill(my.parent.corpus_form, "corpus_");
 		my.content_languages.removeAll();
 	
 	};
@@ -44,25 +41,16 @@ imdi_environment.workflow[0] = (function(){
 		icon: "box.png"
 	};
 	
+	my.parent = imdi_environment;
+	
+	my.l = my.parent.l;
 	
 	my.init = function(){
 		
 		var corpus_form = dom.newElement("div","corpus_form","",g(APP.CONF.view_id_prefix + my.identity.id));
 		dom.newElement("h1","","",corpus_form,"Corpus");
-		var p = dom.newElement("p","","",corpus_form);
 		
-		dom.makeTextInput(p,"Name","corpus_name","corpus_name","","A short archivable name of your corpus");
-		dom.makeTextInput(p,"Title","corpus_title","corpus_title","","The complete and extensive title of your corpus");
-		dom.makeTextarea(APP.CONF.form_textarea_rows,APP.CONF.form_textarea_columns,p,"Description","corpus_description","corpus_description","","","");
-		
-		g("corpus_name").onkeypress = function(e) {
-			var chr = String.fromCharCode(e.which);
-			
-			if (APP.CONF.not_allowed_chars.indexOf(chr) >= 0){
-				alertify.log("This character is not allowed here.","error",5000);
-				return false;
-			}
-		};
+		APP.forms.make(corpus_form, my.parent.corpus_form, "corpus_", "corpus_");
 
 		my.content_languages.init();
 		
@@ -71,9 +59,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.recall = function(corpus){
 	
-		g("corpus_name").value = corpus.name;
-		g("corpus_title").value = corpus.title;
-		g("corpus_description").value = corpus.description;
+		APP.forms.fill(my.parent.corpus_form, "corpus_", corpus);
 		
 		my.content_languages.recall(corpus.content_languages);
 	
@@ -82,11 +68,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.getSaveData = function(){
 	
-		var object = {};
-	
-		object.name = g("corpus_name").value;
-		object.title = g("corpus_title").value;
-		object.description = g("corpus_description").value;
+		var object = APP.forms.makeObjectWithFormData(my.parent.corpus_form, "corpus_");
 	
 		object.content_languages = my.content_languages.getSaveData();
 		

@@ -201,13 +201,20 @@ APP.forms = (function () {
 			}
 			
 			case "form": {
-			
-				var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
-				var tr = dom.newElement("tr","","",table);
+				
+				if ((field.fields) && (field.fields[0].type == "column")){
+					var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
+					var tr = dom.newElement("tr","","",table);
+					var form_parent = tr;
+				}
+				
+				else {
+					form_parent = parent;
+				}
 				
 				for (f=0; f<field.fields.length; f++){
 					
-					my.make(tr, field.fields[f], element_id_prefix, element_class_prefix, session_object);
+					my.make(form_parent, field.fields[f], element_id_prefix, element_class_prefix, session_object);
 				
 				}
 				
@@ -447,6 +454,18 @@ APP.forms = (function () {
 		}
 		
 	};
+	
+	
+	my.makeObjectWithFormData = function(field, element_id_prefix){
+	
+		var object = my.createEmptyObjectFromTemplate(field);
+		
+		my.fillObjectWithFormData(object, element_id_prefix, field);
+		
+		return object;
+	
+	
+	};
 
 
 	my.fillObjectWithFormData = function (object, element_id_prefix, form_element){
@@ -504,10 +523,11 @@ APP.forms = (function () {
 		if (form_element.type == "form"){
 		
 			for (f=0; f<form_element.fields.length; f++){
+				var subfield = form_element.fields[f];
 				
 				//check if a sub object has to be created
-				if (form_element.fields[f].name && form_element.fields[f].name !== ""){
-					sub_object = object[form_element.fields[f].name];
+				if (subfield.name && subfield.name !== "" && (subfield.type == "column" || subfield.type == "subarea")){
+					sub_object = object[subfield.name];
 				}
 				
 				else {
@@ -515,7 +535,7 @@ APP.forms = (function () {
 				}
 				
 				
-				my.fillObjectWithFormData(sub_object, element_id_prefix, form_element.fields[f]);
+				my.fillObjectWithFormData(sub_object, element_id_prefix, subfield);
 			
 			}
 			

@@ -42,9 +42,13 @@ imdi_environment.languages[0] = {
 		import_actors_from_json_or_imdi: "Import Actors from JSON or IMDI",
 		import_actors_description: "Please import UTF-8 encoded files only!",
 		delete_actors_database: "Delete Actors Database",
-		delete_actors_database_description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window.",
+		delete_actors_database_description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window."
 		
-	}
+	},
+	
+	character_not_allowed: "This character is not allowed here." ,
+	
+	
 	
 };
 
@@ -76,6 +80,8 @@ imdi_environment.languages[1] = {
 		import_actors_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
 		delete_actors_database: "Actors-Datenbank löschen",
 		delete_actors_database_description: "CMDI Maker speichert all deine Actors in einer Browserdatenbank. Sie bleiben also erhalten, auch nachdem du den Browser geschlossen hast.",
-	}
+	},
+	
+	character_not_allowed: "Dieses Zeichen ist hier nicht erlaubt."
 	
 };

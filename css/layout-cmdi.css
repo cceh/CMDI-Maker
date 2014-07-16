@@ -140,7 +140,7 @@ width: 30px;
 #lang_search_div{
 
 background: darkturquoise;
-padding: 10px;
+padding: 15px;
 border-radius: 15px;
 width: 530px;
 margin-bottom: 20px;
@@ -354,10 +354,9 @@ background-color: #CCEEDD;
 
 #corpus_form{
 
-padding: 10px;
+padding: 17px;
 background-color: #AABFFF;
 border-radius: 15px;
-width: 172px;
 float: left;
 margin-right: 20px;
 
@@ -380,13 +379,6 @@ margin-right: 10px;
 #VIEW_corpus h1, #lang_search_div h1, #VIEW_elar_project h1{
 
 margin: 0px;
-padding: 5px;
-
-}
-
-#VIEW_corpus p, #lang_search_div p, #VIEW_elar_project p{
-
-padding-left: 10px;
 
 }
 

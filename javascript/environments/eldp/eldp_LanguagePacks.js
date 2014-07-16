@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-imdi_environment.languages[0] = {
+eldp_environment.languages[0] = {
 
 	id: "english",
 	name: "English",
@@ -49,7 +49,7 @@ imdi_environment.languages[0] = {
 };
 
 
-imdi_environment.languages[1] = {
+eldp_environment.languages[1] = {
 
 	id: "german",
 	name: "Deutsch",

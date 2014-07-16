@@ -24,6 +24,7 @@ var eldp_environment = (function(){
 	my.title = "ELDP";
 	
 	my.workflow = [];
+	my.languages = [];
 	
 	
 	my.l = function(arg1, arg2, arg3){
