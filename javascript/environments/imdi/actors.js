@@ -22,6 +22,10 @@ imdi_environment.workflow[2] = (function(){
 	my.parent = imdi_environment;
 	var session;
 	
+	var l = function(arg1, arg2){
+		return my.parent.l("actors", arg1, arg2);
+	}
+	
 	var actor_form = my.parent.actor_form;
 	
 	my.actors = [];
@@ -47,7 +51,8 @@ imdi_environment.workflow[2] = (function(){
 		
 		dom.newElement("div","ac_list","",view);
 		var ac_view = dom.newElement("div","ac_view","",view);
-		dom.newElement("div","actor_title_div","",ac_view,'<h1 id="actor_form_title">New Actor</h1>');
+		dom.newElement("div","actor_title_div","",ac_view,
+		'<h1 id="actor_form_title">' + l("new_actor") + '</h1>');
 		dom.newElement("div","actor_content_div","",ac_view);
 		dom.newElement("div","actor_language_results_div","",view);
 		
@@ -106,42 +111,44 @@ imdi_environment.workflow[2] = (function(){
 	};
 	
 	
-	my.functions = [
-		{
-			id: "link_save_active_actor",
-			icon: "save.png",
-			label_span_id: "save_actor_span",
-			onclick: function() { my.save_active_actor(); }
-		},
-		{
-			id: "link_delete_active_actor",
-			icon: "reset.png",
-			label: "Delete this actor",
-			onclick: function() { my.delete_active_actor(); }
-		},
-		{
-			id: "link_sort_actors_alphabetically",
-			icon: "az.png",
-			label: "Sort Actors alphabetically",
-			onclick: function() { my.sortAlphabetically(); }
-		},
-		{
-			id: "link_duplicate_active_actor",
-			icon: "duplicate_user.png",
-			label: "Save and duplicate this actor",
-			onclick: function() { my.duplicate_active_actor(); }
-		}	
-	];
+	my.functions = function(){
+		return [
+			{
+				id: "link_save_active_actor",
+				icon: "save.png",
+				label_span_id: "save_actor_span",
+				onclick: function() { my.save_active_actor(); }
+			},
+			{
+				id: "link_delete_active_actor",
+				icon: "reset.png",
+				label: l("delete_this_actor"),
+				onclick: function() { my.delete_active_actor(); }
+			},
+			{
+				id: "link_sort_actors_alphabetically",
+				icon: "az.png",
+				label: l("sort_actors_alphabetically"),
+				onclick: function() { my.sortAlphabetically(); }
+			},
+			{
+				id: "link_duplicate_active_actor",
+				icon: "duplicate_user.png",
+				label: l("save_and_duplicate_this_actor"),
+				onclick: function() { my.duplicate_active_actor(); }
+			}
+		];
+	};
 	
 
 	my.erase_database = function(){
 
 		alertify.set({ labels: {
-			ok     : "No",
-			cancel : "Yes, delete all actors"
+			ok     : l("no"),
+			cancel : l("yes_delete_all_actors")
 		} });
 
-		alertify.confirm("Really?<br>You want to erase the whole actors database?", function (e) {
+		alertify.confirm(l("confirm_erasing_actors_db"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -154,7 +161,7 @@ imdi_environment.workflow[2] = (function(){
 				my.id_counter = 0;
 				my.actors = [];
 
-				alertify.log("All actors deleted", "", "5000");
+				alertify.log(l("all_actors_deleted"), "", "5000");
 				save_and_recall.save();
 				
 				my.refreshListDisplay();
@@ -173,14 +180,14 @@ imdi_environment.workflow[2] = (function(){
 			g('link_delete_active_actor').style.display = "none";
 			g('link_duplicate_active_actor').style.display = "none";
 			
-			g("save_actor_span").innerHTML = "Save actor";
+			g("save_actor_span").innerHTML = l("save_actor");
 		}
 		
 		else {
 			g('link_delete_active_actor').style.display = "inline";
 			g('link_duplicate_active_actor').style.display = "inline";
 			
-			g("save_actor_span").innerHTML = "Save changes to this actor";
+			g("save_actor_span").innerHTML = l("save_changes_to_this_actor");
 		}
 		
 		my.languages.closeLanguageSelect();	
@@ -201,7 +208,7 @@ imdi_environment.workflow[2] = (function(){
 			my.showLanguagesOfActiveActor();
 			
 			if (APP.active_view == APP.CONF.view_id_prefix + my.identity.id){
-			g("save_actor_span").innerHTML = " Save changes to this actor";
+			g("save_actor_span").innerHTML = l("save_changes_to_this_actor");
 			}
 
 		}
@@ -211,7 +218,7 @@ imdi_environment.workflow[2] = (function(){
 			my.blank_form();
 
 			if (APP.active_view == APP.CONF.view_id_prefix + my.identity.id){
-				g("save_actor_span").innerHTML = " Save Actor";
+				g("save_actor_span").innerHTML = l("save_actor");
 			}
 
 		}
@@ -254,7 +261,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		else {
 		
-			alertify.alert("There are no actors!");
+			alertify.alert(l("there_are_no_actors"));
 		
 		}
 
@@ -309,7 +316,7 @@ imdi_environment.workflow[2] = (function(){
 			save_and_recall.save();
 			my.refreshListDisplay();
 			
-			alertify.log(imported_actors.length + " actors imported");
+			alertify.log(imported_actors.length + " " + l("actors_imported"));
 		
 		};
 		
@@ -405,7 +412,7 @@ imdi_environment.workflow[2] = (function(){
 
 	my.blank_form = function(){
 
-		g("actor_form_title").innerHTML = "New Actor";
+		g("actor_form_title").innerHTML = l("new_actor");
 
 		APP.forms.fill(actor_form, "actor_");
 
@@ -473,7 +480,7 @@ imdi_environment.workflow[2] = (function(){
 		//then create a duplicate
 		if (save === true){
 			my.save_active_actor(true);
-			alertify.log("Actor saved and duplicated.","success",5000);
+			alertify.log(l("actor_saved_and_duplicated"),"success",5000);
 		}
 
 	};
@@ -497,10 +504,10 @@ imdi_environment.workflow[2] = (function(){
 		else {
 		
 			alertify.set({ labels: {
-				ok     : "OK"
+				ok     : l("ok")
 			} });
 
-			alertify.alert("Please give your actor a name first.");
+			alertify.alert(l("give_your_actor_a_name_first"));
 			return false;
 			
 		}
@@ -574,11 +581,11 @@ imdi_environment.workflow[2] = (function(){
 		var name_of_actor = my.actors[my.active_actor].name;
 
 		alertify.set({ labels: {
-			ok     : "No",
-			cancel : "Yes, delete actor"
+			ok     : l("no"),
+			cancel : l("yes_delete_actor")
 		} });
 
-		alertify.confirm("Really?<br>You want to erase "+name_of_actor+"?", function (e) {
+		alertify.confirm(l("really_erase_before_name") + name_of_actor + l("really_erase_after_name"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -591,7 +598,8 @@ imdi_environment.workflow[2] = (function(){
 				my.refreshListDisplay();
 				save_and_recall.save();
 				
-				alertify.log("Actor "+name_of_actor+" deleted", "", "5000");
+				alertify.log(l("actor_deleted_before_name") + name_of_actor + 
+				l("actor_deleted_after_name"), "", "5000");
 
 			}
 		});
@@ -607,7 +615,8 @@ imdi_environment.workflow[2] = (function(){
 			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
-				var sessionDate = get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day"); 
+				var sessionDate = get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") + "-" +
+				get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day"); 
 				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
 				
 				if (age_calc_result !== 0){
@@ -648,7 +657,7 @@ imdi_environment.workflow[2] = (function(){
 		save_and_recall.save();
 		my.refreshListDisplay();
 		
-		alertify.log("Actors sorted.","",5000);
+		alertify.log(l("actors_alphabetically_sorted"),"",5000);
 
 	};
 
@@ -670,7 +679,7 @@ imdi_environment.workflow[2] = (function(){
 		}
 
 		//create field for new actor
-		div = dom.newElement('div', "ac_list_entry_-1", "ac_list_entry", g('ac_list'), "<h2>New Actor</h2>");
+		div = dom.newElement('div', "ac_list_entry_-1", "ac_list_entry", g('ac_list'), "<h2>" + l("new_actor") + "</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
 		if ((session) && (!not_in_sessions)){

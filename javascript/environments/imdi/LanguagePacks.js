@@ -91,6 +91,33 @@ imdi_environment.languages[0] = {
 		size: "Size",
 		last_modified: "Last modified",
 		no_resource_files_imported: "No resource files imported."
+	},
+	
+	actors: {
+		new_actor: "New Actor",
+		delete_this_actor: "Delete this actor",
+		sort_actors_alphabetically: "Sort Actors alphabetically",
+		actors_alphabetically_sorted: "Actors sorted.",
+		save_and_duplicate_this_actor: "Save and duplicate this actor",
+		yes_delete_all_actors: "Yes, delete all actors",
+		no: "No",
+		ok: "OK",
+		confirm_erasing_actors_db: "Really?<br>You want to erase the whole actors database?",
+		all_actors_deleted: "All actors deleted",
+		save_actor: "Save actor",
+		save_changes_to_this_actor: "Save changes to this actor",
+		there_are_no_actors: "There are no actors!",
+		actors_imported: "actors imported",
+		actor_saved_and_duplicated: "Actor saved and duplicated.",
+		give_your_actor_a_name_first: "Please give your actor a name first.",
+		yes_delete_actor: "Yes, delete actor",
+		really_erase_before_name: "Really?<br>You want to erase ",
+		really_erase_after_name: "?",
+		actor_deleted_before_name: "Actor ",
+		actor_deleted_after_name: " deleted",
+
+	
+	
 	}
 	
 };
@@ -172,6 +199,31 @@ imdi_environment.languages[1] = {
 		size: "Größe",
 		last_modified: "Letzte Änderung",
 		no_resource_files_imported: "Keine Dateien importiert."
+	},
+	
+	actors: {
+		new_actor: "Neuer Actor",
+		delete_this_actor: "Diesen Actor löschen",
+		sort_actors_alphabetically: "Alphabetisch sortieren",
+		actors_alphabetically_sorted: "Actors sortiert.",
+		save_and_duplicate_this_actor: "Actor speichern und duplizieren",
+		yes_delete_all_actors: "Ja, alle Actors löschen",
+		no: "Nein",
+		ok: "OK",
+		confirm_erasing_actors_db: "Willst du das wirklich?<br>Die komplette Actors-Datenbank wird gelöscht.",
+		all_actors_deleted: "Alle Actors wurden gelöscht.",
+		save_actor: "Actor speichern",
+		save_changes_to_this_actor: "Änderungen am Actor speichern",
+		there_are_no_actors: "Es gibt keine Actors!",
+		actors_imported: "Actors importiert",
+		actor_saved_and_duplicated: "Actor gespeichert und dupliziert.",
+		give_your_actor_a_name_first: "Bitte gib deinem Actor zuerst einen Namen!",
+		yes_delete_actor: "Ja, Actor löschen",
+		really_erase_before_name: "Willst Du wirklich ",
+		really_erase_after_name: " löschen?",
+		actor_deleted_before_name: "Actor ",
+		actor_deleted_after_name: " gelöscht",
+	
 	}
 	
 	
