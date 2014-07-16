@@ -45,15 +45,8 @@ imdi_environment.workflow[1] = (function(){
 	
 	};
 	
-	
-	my.compatibility_warnings = {
-	
-		general: 'This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.',
-		invalid_media_file: 'This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).',
-		invalid_written_resource: 'This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.'
-	
-	};
-	
+	my.parent = imdi_environment;
+	var l = my.parent.l;
 	
 	my.addCompatibilityWarning = function(parent, string){
 	
@@ -77,8 +70,8 @@ imdi_environment.workflow[1] = (function(){
 		var fileending = filename.slice(index_of_dot+1);
 		
 		var fileinfo = {
-			type: "Unknown",
-			mimetype: "Unknown"
+			type: l("unknown"),
+			mimetype: l("unknown")
 		};
 		
 		var list = a(file_types.valid_lamus_written_resource_file_types,0);
@@ -193,44 +186,43 @@ imdi_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.functions = [
-		{
-			label: "Create one session per file",
-			icon: "plus.png",
-			id: "crps_icon",
-			wrapper_id: "crps_div",
-			type: "function_wrap",
-			sub_div: "crps_filetype_select",
-			onclick: function() { my.createSessionPerResource();  APP.view(session); },
-			sub_div_innerHTML: '<h3 class="inner_function_h3">Files</h3>'+
-						'<input type="radio" name="radio_file_type" value="selected" checked> Selected Files<br>'+
-						'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
-						'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
-						'<input type="radio" name="radio_file_type" value="mpg"> MPG<br>'+
-						'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>'
-		},
-		{
-			id: "link_sort_alphabetically",
-			icon: "az.png",
-			label: "Sort Files alphabetically",
-			onclick: function() { my.sortAlphabetically(); }
-		},
-		{
-			id: "link_remove_files",
-			icon: "reset.png",
-			label: "Remove",
-			onclick: function() { my.removeSelectedFiles(); }
-		},
-		{
-			id: "link_clear_file_list",
-			icon: "reset.png",
-			label: "Clear File List",
-			onclick: function() { my.clearFileList(); }
-		},
-	
-	
-	
-	];
+	my.functions = function(){
+		return [
+			{
+				label: l("resources", "create_one_session_per_file"),
+				icon: "plus.png",
+				id: "crps_icon",
+				wrapper_id: "crps_div",
+				type: "function_wrap",
+				sub_div: "crps_filetype_select",
+				onclick: function() { my.createSessionPerResource();  APP.view(session); },
+				sub_div_innerHTML: '<h3 class="inner_function_h3">' + l("resources", "files") + '</h3>'+
+							'<input type="radio" name="radio_file_type" value="selected" checked> ' + l("resources", "selected_files") + '<br>'+
+							'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
+							'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
+							'<input type="radio" name="radio_file_type" value="mpg"> MPG<br>'+
+							'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>'
+			},
+			{
+				id: "link_sort_alphabetically",
+				icon: "az.png",
+				label: l("resources", "sort_alphabetically"),
+				onclick: function() { my.sortAlphabetically(); }
+			},
+			{
+				id: "link_remove_files",
+				icon: "reset.png",
+				label: l("resources", "remove"),
+				onclick: function() { my.removeSelectedFiles(); }
+			},
+			{
+				id: "link_clear_file_list",
+				icon: "reset.png",
+				label: l("resources", "clear_file_list"),
+				onclick: function() { my.clearFileList(); }
+			}
+		];
+	};
 	
 	
 	my.init = function(){
@@ -239,15 +231,19 @@ imdi_environment.workflow[1] = (function(){
 	
 		var view = g(APP.CONF.view_id_prefix + my.identity.id);
 		var div = dom.newElement("div","files","",view);
-		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
+		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>" + l("resources", "drag_and_drop_files_here") + "</h2>");
 		
 		var input = dom.input(div,"files_input","","files_input", "file");
 		input.multiple = true;
 
 		var usage_table = dom.newElement("div","","workspace-usageTable",div,
-		'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
-		'<h4>Shift</h4><p>Hold shift to select multiple resources</p>'+
-		'<h4>Escape</h4><p>Press escape to deselect all resources</p>');
+		'<h3>' + l("resources", "usage") + '</h3>' +
+		'<h4>' + l("resources", "click") + '</h4>'+
+		'<p>' + l("resources", "escape_to_deselect") + '</p>'+
+		'<h4>' + l("resources", "shift") + '</h4>'+
+		'<p>' + l("resources", "shift_to_select_multiple") + '</p>'+
+		'<h4>' + l("resources", "escape") + '</h4>'+
+		'<p>' + l("resources", "escape_to_deselect") + '</p>');
 		
 		var file_list_div = dom.newElement("div","file_list_div","",view);
 		var list = dom.newElement("div","list","",file_list_div);
@@ -351,19 +347,19 @@ imdi_environment.workflow[1] = (function(){
 				}
 			
 				case 2: {
-					compatibility_warning = my.compatibility_warnings.invalid_media_file;
+					compatibility_warning = l("resources", "compatibility_warnings", "invalid_media_file");
 					file_entry_class = "media_file_entry";
 					break;
 				}
 				
 				case 3: {
-					compatibility_warning = my.compatibility_warnings.invalid_written_resource;
+					compatibility_warning = l("resources", "compatibility_warnings", "invalid_written_resource");
 					file_entry_class = "written_resource_file_entry";
 					break;
 				}
 				
 				default: {
-					compatibility_warning = my.compatibility_warnings.general;
+					compatibility_warning = l("resources", "compatibility_warnings", "general");
 					file_entry_class = "invalid_file_entry";
 					break;
 				}
@@ -376,7 +372,8 @@ imdi_environment.workflow[1] = (function(){
 			var div = dom.newElement("div", "file_entry_"+i, "file_entry " + file_entry_class, list);
 			var title = dom.newElement("h2", "", "file_entry_title", div, my.available_resources[i][0]);
 			var p = dom.newElement("p", "", "", div, my.available_resources[i][1] +
-			'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
+			'<br><span class="size_span">' + l("resources", "size") + ': ' + file_size + '</span><br>'+
+			'<span name="date_span" class="date_span">' + l("resources", "last_modified") + ': ' +
 			my.available_resources[i][3] + '</span>');
 			
 			if (compatibility_warning){
@@ -396,7 +393,7 @@ imdi_environment.workflow[1] = (function(){
 		}
 		
 		if (my.available_resources.length === 0){
-			list.innerHTML = "<h2>No resource files imported.</h2>";
+			dom.h2(list, l("resources", "no_resource_files_imported"));
 		}
 
 		if ((session) && (!not_in_sessions)){

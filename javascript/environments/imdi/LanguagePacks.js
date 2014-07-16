@@ -67,7 +67,31 @@ imdi_environment.languages[0] = {
 		specify_search_request_at_least_3_chars: "Please specify your search request.\nType in at least 3 characters.",
 	},
 	
-	
+	resources: {
+		compatibility_warnings: {
+			general: 'This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.',
+			invalid_media_file: 'This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).',
+			invalid_written_resource: 'This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.'
+		},
+		unkown: "Unknown",
+		create_one_session_per_file: "Create one session per file",
+		files: "Files",
+		selected_files: "Selected Files",
+		sort_alphabetically: "Sort Files alphabetically",
+		remove: "Remove",
+		clear_file_list: "Clear File List",
+		drag_and_drop_files_here: "Drag and drop files here",
+		usage: "Usage",
+		click: "Click",
+		click_to_select: "Select resource, click again to deselect a single resource",
+		shift: "Shift",
+		shift_to_select_multiple: "Hold shift to select multiple resources",
+		escape: "Escape",
+		escape_to_deselect: "Press escape to deselect all resources",
+		size: "Size",
+		last_modified: "Last modified",
+		no_resource_files_imported: "No resource files imported."
+	}
 	
 };
 
@@ -123,6 +147,32 @@ imdi_environment.languages[1] = {
 		specify_search_request_at_least_3_chars: "Bitte sei etwas genauer.\nGib mindestens 3 Zeichen ins Suchfeld ein.",
 		current_content_languages: "Derzeitige Content Languages"
 	},
+	
+	resources: {
+		compatibility_warnings: {
+			general: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie transkodiert werden.',
+			invalid_media_file: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie in WAV (audio) oder MP4 (video) umgewandelt werden.',
+			invalid_written_resource: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie in PDF oder TXT umgewandelt werden.'
+		},
+		unkown: "Unbekannt",
+		create_one_session_per_file: "Eine Session pro Datei erstellen",
+		files: "Dateien",
+		selected_files: "Ausgewählte Dateien",
+		sort_alphabetically: "Alphabetisch sortieren",
+		remove: "Entfernen",
+		clear_file_list: "Dateiliste löschen",
+		drag_and_drop_files_here: "Ziehe Dateien in dieses Feld",
+		usage: "Benutzung",
+		click: "Klick",
+		click_to_select: "Datei wird ausgewählt, noch ein Klick macht die Auswahl rückgängig",
+		shift: "Shift",
+		shift_to_select_multiple: "Halte Shift, um mehrere Dateien auf einmal auszuwählen",
+		escape: "Escape",
+		escape_to_deselect: "Alle Dateien werden deselektiert",
+		size: "Größe",
+		last_modified: "Letzte Änderung",
+		no_resource_files_imported: "Keine Dateien importiert."
+	}
 	
 	
 };
