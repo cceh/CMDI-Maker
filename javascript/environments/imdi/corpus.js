@@ -27,9 +27,11 @@ imdi_environment.workflow[0] = (function(){
 	
 	};
 	
+	my.form_id_prefix = "corpus_";
+	
 	my.reset = function(){
 	
-		APP.forms.fill(my.parent.corpus_form, "corpus_");
+		APP.forms.fill(my.parent.corpus_form, my.form_id_prefix);
 		my.content_languages.removeAll();
 	
 	};
@@ -42,7 +44,6 @@ imdi_environment.workflow[0] = (function(){
 	};
 	
 	my.parent = imdi_environment;
-	
 	my.l = my.parent.l;
 	
 	my.init = function(){
@@ -50,7 +51,7 @@ imdi_environment.workflow[0] = (function(){
 		var corpus_form = dom.newElement("div","corpus_form","",g(APP.CONF.view_id_prefix + my.identity.id));
 		dom.newElement("h1","","",corpus_form,"Corpus");
 		
-		APP.forms.make(corpus_form, my.parent.corpus_form, "corpus_", "corpus_");
+		APP.forms.make(corpus_form, my.parent.corpus_form, my.form_id_prefix, my.form_id_prefix);
 
 		my.content_languages.init();
 		
@@ -59,7 +60,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.recall = function(corpus){
 	
-		APP.forms.fill(my.parent.corpus_form, "corpus_", corpus);
+		APP.forms.fill(my.parent.corpus_form, my.form_id_prefix, corpus);
 		
 		my.content_languages.recall(corpus.content_languages);
 	
@@ -68,7 +69,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.getSaveData = function(){
 	
-		var object = APP.forms.makeObjectWithFormData(my.parent.corpus_form, "corpus_");
+		var object = APP.forms.makeObjectWithFormData(my.parent.corpus_form, my.form_id_prefix);
 	
 		object.content_languages = my.content_languages.getSaveData();
 		
@@ -77,38 +78,40 @@ imdi_environment.workflow[0] = (function(){
 	}
 	
 	
-	my.functions = [
-		{
-			label: "Reset Form",
-			icon: "reset.png",
-			id: "link_reset_form",
-			onclick: function() {       
+	my.functions = function(){
+		return [
+			{
+				label: my.l("reset_form"),
+				icon: "reset.png",
+				id: "link_reset_form",
+				onclick: function() {     
 
-				alertify.set({ labels: {
-					ok     : "No",
-					cancel : "Yes, delete form"
-				} });
+					alertify.set({ labels: {
+						ok     : my.l("no"),
+						cancel : my.l("yes_delete_form")
+					} });
+					
+					alertify.confirm(my.l("really_reset_form"), function (e) {
+						if (e) {
+							// user clicked "ok"
+						}
 				
-				alertify.confirm("Really?<br>You want to reset the form and delete corpus and all sessions?", function (e) {
-					if (e) {
-						// user clicked "ok"
-					}
-			
-					else {
-						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-						APP.environments.resetActive();
-						alertify.log("Form reset","",5000);
-						
-					}
-				});
+						else {
+							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+							APP.environments.resetActive();
+							alertify.log(my.l("form_reset"),"",5000);
+							
+						}
+					});
+				}
 			}
-		}
-	];
+		];
+	};
 	
 	
 	my.isCorpusProperlyNamed = function (){
 
-		if (get("corpus_name") == ""){
+		if (get(my.form_id_prefix + "name") == ""){
 			
 			return false;
 			
@@ -116,7 +119,7 @@ imdi_environment.workflow[0] = (function(){
 		
 		for (var c=0; c<APP.CONF.not_allowed_chars.length; c++){
 		
-			if (get("corpus_name").indexOf(APP.CONF.not_allowed_chars[c]) != -1){
+			if (get(my.form_id_prefix + "name").indexOf(APP.CONF.not_allowed_chars[c]) != -1){
 			
 				return false;
 				

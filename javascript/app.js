@@ -472,7 +472,6 @@ var APP = (function () {
 		}
 		
 		else { //if argument is a module
-
 			module = module_or_id;
 			id = APP.CONF.view_id_prefix + module.identity.id;
 		

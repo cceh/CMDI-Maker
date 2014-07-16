@@ -658,18 +658,23 @@ var dom = (function() {
 
 		//if this module has functions, make them visible
 		if (module.functions){
-			//make functions visible
-			for (var f=0; f < module.functions.length; f++){
-				var func = module.functions[f];
 			
+			var functions = module.functions;
+			
+			if (typeof functions == "function"){
+				functions = functions();
+			}
+			
+			//make functions visible
+			forEach(functions, function(func){
 				if (func.type == "function_wrap"){
-					g(module.functions[f].wrapper_id).style.display = "inline";
+					g(func.wrapper_id).style.display = "inline";
 				}
 				
 				else {
-					g(module.functions[f].id).style.display = "inline";
+					g(func.id).style.display = "inline";
 				}
-			}	
+			});
 		}
 
 	};

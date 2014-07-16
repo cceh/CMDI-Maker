@@ -24,28 +24,34 @@ imdi_environment.workflow[0].content_languages = (function() {
 	
 	my.id_counter = 0;
 	
+	my.parent = imdi_environment;
+	
+	my.l = my.parent.l;
+	
 
 	my.init = function(){
 	
 		corpus = imdi_environment.workflow[0];
 	
-		var div = dom.newElement("div","content_languages","",g("VIEW_corpus"),
-			'<div id="lang_search_div">'+
-			'<h1>Set Global Languages of Content</h1>'+
-			'<p><input type="text" name="content_language_select" id="content_language_select" size="1"> '+
-			'<input type="button" id="content_language_search_button" value="Search"> or type in ISO code '+
-			'<input type="text" name="content_language_iso_input" id="content_language_iso_input" size="1"> '+
-			'<input type="button" id="content_language_iso_ok" value="OK">'+
-			'</p>'+
-			'</div>'+
+		var cl = dom.newElement("div","content_languages","",g("VIEW_corpus"));
+		
+		var lsd = dom.div(cl, "lang_search_div", "");
+		dom.h1(lsd, my.l("languages", "set_global_languages_of_content"));
+		
+		var span = dom.span(lsd);
+		dom.input(span, "content_language_select", "", "content_language_select", "text", "");
+		span.innerHTML += " ";
+		dom.input(span, "content_language_search_button", "", "content_language_search_button", "button", my.l("search"));
+		span.innerHTML += ' ' + my.l("languages", "or_type_in_iso_code") + ' ';
+		dom.input(span, "content_language_iso_input", "", "content_language_iso_input", "text", "");
+		span.innerHTML += " ";		
+		dom.input(span, "content_language_iso_ok", "", "content_language_iso_ok", "button", my.l("ok"));
 
-			'<div id="current_content_languages_display">'+
-			'<h1>Current Content Languages</h1>	'+			
-			'</div>'+
-					
-			'<div id="content_language_results_div">'+
-			'</div>'
-		);
+		var ccld = dom.div(cl, "current_content_languages_display", "");
+		dom.h1(ccld, my.l("languages", "current_content_languages"));
+
+		dom.div(cl, "content_language_results_div", "");
+		
 		
 		g('content_language_search_button').addEventListener('click', function() {  corpus.content_languages.search();     });
 		g('content_language_iso_ok').addEventListener('click', function() {  corpus.content_languages.addByISO();     });
@@ -93,7 +99,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		if (input.length < 3){
 	
-			alertify.alert("Please specify your search request.\nType in at least 3 characters.");
+			alertify.alert(my.l("languages", "specify_search_request_at_least_3_chars"));
 			
 			return;
 		}
@@ -132,8 +138,12 @@ imdi_environment.workflow[0].content_languages = (function() {
 
 		}
 		
-		dom.showSelectFrame(results, titles, corpus.content_languages.choose, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
-		"(ISO639-3 Code, Country ID, Language Name)"); 
+		var heading = my.l("languages", "language_search") + ": " + results.length + " " +
+		((results.length == 1) ? my.l("languages", "result") : my.l("languages", "results"));
+		
+		var subheading = "(ISO639-3 Code, Country ID, " + my.l("languages", "language_name") + ")";
+		
+		dom.showSelectFrame(results, titles, corpus.content_languages.choose, heading, subheading);
 		
 	}
 	
@@ -141,7 +151,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 	my.choose = function(LanguageObject){
 	
 		if (my.set(LanguageObject)){
-			alertify.log("\"" + LanguageObject[3]+"\" is a new Global Content Language", "", "5000");	
+			alertify.log("\"" + LanguageObject[3]+"\" " + my.l("languages", "is_new_global"), "", "5000");	
 		}
 	
 	}
@@ -174,7 +184,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 			
 			default: {
 			
-				console.log("Error: LanguageObject.length = "+LanguageObject.length);
+				console.log("Error: LanguageObject.length = " + LanguageObject.length);
 				break;
 			
 			}
@@ -259,10 +269,10 @@ imdi_environment.workflow[0].content_languages = (function() {
 		}
 		
 		alertify.set({ labels: {
-			ok     : "OK"
+			ok     : my.l("ok")
 		} });
 		
-		alertify.alert("ISO code " + input + " not found in database.");
+		alertify.alert(my.l("langauges", "iso_code") + " " + input + " " + my.l("languages", "not_found_in_db") + ".");
 		
 
 	}

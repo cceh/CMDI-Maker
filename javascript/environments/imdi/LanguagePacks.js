@@ -46,7 +46,26 @@ imdi_environment.languages[0] = {
 		
 	},
 	
-	character_not_allowed: "This character is not allowed here." ,
+	reset_form: "Reset Form",
+	yes_delete_form: "Yes, delete form",
+	no: "No",
+	really_reset_form: "Really?<br>You want to reset the form and delete corpus and all sessions?",
+	form_reset: "Form reset",
+	search: "Search",
+	ok: "OK",
+	
+	languages: {
+		set_global_languages_of_content: "Set Global Languages of Content",
+		or_type_in_iso_code: "or type in ISO code",
+		language_search: "Language Search",
+		result: "result",
+		results: "results",
+		language_name: "Language Name",
+		is_new_global: "is a new Global Content Language",
+		iso_code: "ISO code",
+		not_found_in_db: "not found in database",
+		specify_search_request_at_least_3_chars: "Please specify your search request.\nType in at least 3 characters.",
+	},
 	
 	
 	
@@ -80,8 +99,30 @@ imdi_environment.languages[1] = {
 		import_actors_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
 		delete_actors_database: "Actors-Datenbank löschen",
 		delete_actors_database_description: "CMDI Maker speichert all deine Actors in einer Browserdatenbank. Sie bleiben also erhalten, auch nachdem du den Browser geschlossen hast.",
+		current_content_languages: "Current Content Languages"
 	},
 	
-	character_not_allowed: "Dieses Zeichen ist hier nicht erlaubt."
+	reset_form: "Formular zurücksetzen",
+	yes_delete_form: "Ja, Daten löschen",
+	no: "Nein",
+	really_reset_form: "Willst Du das wirklich?<br>Das Corpus und alle Sessions werden dabei gelöscht.",
+	form_reset: "Formular zurückgesetzt",
+	search: "Suchen",
+	ok: "OK",
+	
+	languages: {
+		set_global_languages_of_content: "Globale Content Language hinzufügen",
+		or_type_in_iso_code: "oder gib den ISO-Code ein",
+		language_search: "Sprachsuche",
+		result: "Ergebnis",
+		results: "Ergebnisse",
+		language_name: "Sprachname",
+		is_new_global: "ist neue globale Content Language",
+		iso_code: "ISO-Code",
+		not_found_in_db: "wurde nicht gefunden",
+		specify_search_request_at_least_3_chars: "Bitte sei etwas genauer.\nGib mindestens 3 Zeichen ins Suchfeld ein.",
+		current_content_languages: "Derzeitige Content Languages"
+	},
+	
 	
 };
