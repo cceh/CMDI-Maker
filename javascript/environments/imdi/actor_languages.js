@@ -24,10 +24,12 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.languages_of_active_actor = [];
 	
+	my.parent = imdi_environment;
+	var l = my.parent.l;
+	
 	my.id_counter = 0;
 
 	my.remove = function (al_id){
-
 
 		var index = my.getActorLanguageObjectIndexFromID(al_id);
 
@@ -75,7 +77,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 			g("actor_language_results_div").innerHTML = "";
 			
-			alertify.alert("Please specify your search request.\nType in at least 3 characters.");
+			alertify.alert(l("languages", "specify_search_request_at_least_3_chars"));
 			
 			return;
 		}
@@ -108,14 +110,16 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		var titles = [];
 		
-		for (j=0;j<results.length;j++){
+		forEach(results, function(result){
 
-			titles.push(results[j][0] + ", "+results[j][1]+", " + results[j][3]);
+			titles.push(result[0] + ", "+result[1]+", " + result[3]);
 
-		}		
+		});
 		
-		dom.showSelectFrame(results, titles, actor.languages.addFromForm, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
-		"(ISO639-3 Code, Country ID, Language Name)"); 
+		var heading = l("languages", "language_search") + ": " + results.length + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
+		
+		dom.showSelectFrame(results, titles, actor.languages.addFromForm, heading,
+		"(ISO639-3 Code, Country ID, " + l("languages", "language_name") + ")"); 
 
 	};
 
@@ -152,14 +156,14 @@ imdi_environment.workflow[2].languages = (function (){
 			input.checked = true;
 		}
 
-		dom.span(div,"","", "Mother Tongue  ");
+		dom.span(div,"","", l("languages", "mother_tongue") + "  ");
 		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
 		
 		if (ActorLanguageObject.PrimaryLanguage === true){
 			input.checked = true;
 		}
 		
-		dom.span(div,"","","Primary Language");
+		dom.span(div,"","",l("languages", "primary_language"));
 
 		my.id_counter += 1;
 
@@ -211,10 +215,10 @@ imdi_environment.workflow[2].languages = (function (){
 		}
 		
 		alertify.set({ labels: {
-			ok: "OK"
-		}});	
+			ok: l("ok")
+		}});
 		
-		alertify.alert("ISO code " + input + " not found in database.");
+		alertify.alert(l("iso_code") + " " + input + " " + l("not_found_in_db") + ".");
 
 	};
 

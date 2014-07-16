@@ -165,9 +165,6 @@ var imdi_environment = (function(){
 			
 		}	
 	
-	
-	
-	
 	};
 	
 	

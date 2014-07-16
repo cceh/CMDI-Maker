@@ -65,6 +65,9 @@ imdi_environment.languages[0] = {
 		iso_code: "ISO code",
 		not_found_in_db: "not found in database",
 		specify_search_request_at_least_3_chars: "Please specify your search request.\nType in at least 3 characters.",
+		primary_language: "Primary Language",
+		mother_tongue: "Mother Tongue"
+		
 	},
 	
 	resources: {
@@ -97,7 +100,7 @@ imdi_environment.languages[0] = {
 		new_actor: "New Actor",
 		delete_this_actor: "Delete this actor",
 		sort_actors_alphabetically: "Sort Actors alphabetically",
-		actors_alphabetically_sorted: "Actors sorted.",
+		actors_alphabetically_sorted: "Actors sorted",
 		save_and_duplicate_this_actor: "Save and duplicate this actor",
 		yes_delete_all_actors: "Yes, delete all actors",
 		no: "No",
@@ -116,8 +119,6 @@ imdi_environment.languages[0] = {
 		actor_deleted_before_name: "Actor ",
 		actor_deleted_after_name: " deleted",
 
-	
-	
 	}
 	
 };
@@ -172,7 +173,9 @@ imdi_environment.languages[1] = {
 		iso_code: "ISO-Code",
 		not_found_in_db: "wurde nicht gefunden",
 		specify_search_request_at_least_3_chars: "Bitte sei etwas genauer.\nGib mindestens 3 Zeichen ins Suchfeld ein.",
-		current_content_languages: "Derzeitige Content Languages"
+		current_content_languages: "Derzeitige Content Languages",
+		primary_language: "Primärsprache",
+		mother_tongue: "Muttersprache"
 	},
 	
 	resources: {
@@ -205,7 +208,7 @@ imdi_environment.languages[1] = {
 		new_actor: "Neuer Actor",
 		delete_this_actor: "Diesen Actor löschen",
 		sort_actors_alphabetically: "Alphabetisch sortieren",
-		actors_alphabetically_sorted: "Actors sortiert.",
+		actors_alphabetically_sorted: "Actors sortiert",
 		save_and_duplicate_this_actor: "Actor speichern und duplizieren",
 		yes_delete_all_actors: "Ja, alle Actors löschen",
 		no: "Nein",
