@@ -272,7 +272,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 			ok     : my.l("ok")
 		} });
 		
-		alertify.alert(my.l("langauges", "iso_code") + " " + input + " " + my.l("languages", "not_found_in_db") + ".");
+		alertify.alert(my.l("languages", "iso_code") + " " + input + " " + my.l("languages", "not_found_in_db") + ".");
 		
 
 	}

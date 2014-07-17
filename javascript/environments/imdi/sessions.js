@@ -733,7 +733,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeActor(num, num2);  
 			};
-		}(session_id, actor_id) );
+		}(session_id, actor_id));
 
 	};
 

@@ -53,7 +53,7 @@ var imdi_environment = (function(){
 			},
 			{
 				title: my.l("settings","import_actors_from_json_or_imdi"),
-				description: my.l("import_actors_description"),
+				description: my.l("settings","import_actors_description"),
 				type: "file",
 				file_input_id: "actors_file_input",
 				file_input_name: "actors_file_input",
@@ -61,7 +61,7 @@ var imdi_environment = (function(){
 			},
 			{
 				title: my.l("settings","delete_actors_database"),
-				description: my.l("delete_actors_database_description"),
+				description: my.l("settings","delete_actors_database_description"),
 				type: "link",
 				onclick: function (){my.workflow[2].erase_database();}
 			}
