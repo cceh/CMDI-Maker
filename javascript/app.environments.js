@@ -101,7 +101,7 @@ APP.environments = (function () {
 	
 		console.log("Unloading active environment: " + my.active_environment.id);
 	
-		save_and_recall.save();
+		APP.save();
 		
 		g("environment_settings").innerHTML = "";
 	
@@ -244,7 +244,7 @@ APP.environments = (function () {
 	
 	my.change = function(index){
 
-		save_and_recall.save();
+		APP.save();
 		
 		if (index == -1){
 			my.unloadActive();

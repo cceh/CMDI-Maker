@@ -79,10 +79,10 @@ javascript/app.js
 javascript/app.config.js
 javascript/app.environments.js
 javascript/app.forms.js
+javascript/app.save_and_recall.js
 javascript/dom.js
 javascript/FileSaver.js
 javascript/helpers.js
 javascript/LanguageIndex.js
 javascript/LanguagePacks.js
-javascript/save_and_recall.js
 javascript/xml.js

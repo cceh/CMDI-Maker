@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-var save_and_recall = (function () {
+APP.save_and_recall = (function () {
 	'use strict';
 
 	var my = {};

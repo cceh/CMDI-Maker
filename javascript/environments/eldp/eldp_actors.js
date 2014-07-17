@@ -155,7 +155,7 @@ eldp_environment.workflow[1] = (function(){
 				my.actors = [];
 
 				alertify.log("All actors deleted", "", "5000");
-				save_and_recall.save();
+				APP.save();
 				
 				my.refreshListDisplay();
 
@@ -306,7 +306,7 @@ eldp_environment.workflow[1] = (function(){
 				my.save(imported_actors[a], true);
 			}
 			
-			save_and_recall.save();
+			APP.save();
 			my.refreshListDisplay();
 			
 			alertify.log(imported_actors.length + " actors imported");
@@ -547,7 +547,7 @@ eldp_environment.workflow[1] = (function(){
 	 
 		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
 
-		save_and_recall.save();
+		APP.save();
 		my.refreshListDisplay();
 		
 		return true;
@@ -589,7 +589,7 @@ eldp_environment.workflow[1] = (function(){
 				
 				my.actors.splice(my.active_actor,1);
 				my.refreshListDisplay();
-				save_and_recall.save();
+				APP.save();
 				
 				alertify.log("Actor "+name_of_actor+" deleted", "", "5000");
 
@@ -645,7 +645,7 @@ eldp_environment.workflow[1] = (function(){
 
 		my.actors = sortByKey(my.actors,"name");
 
-		save_and_recall.save();
+		APP.save();
 		my.refreshListDisplay();
 		
 		alertify.log("Actors sorted.","",5000);

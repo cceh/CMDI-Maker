@@ -203,7 +203,7 @@ var APP = (function () {
 				title: my.l("settings","save_project"),
 				description: my.l("save_project_description"),
 				type: "link",
-				onclick: function () { save_and_recall.saveAllToFile(); }
+				onclick: function () { my.save_and_recall.saveAllToFile(); }
 			},
 			{
 				title: my.l("settings","load_project"),
@@ -211,13 +211,13 @@ var APP = (function () {
 				type: "file",
 				file_input_id: "project_file_input",
 				file_input_name: "project_file_input",
-				onchange: save_and_recall.handleProjectFileInputChange
+				onchange: my.save_and_recall.handleProjectFileInputChange
 			},
 			{
 				title: my.l("settings","delete_recall_data"),
 				type: "link",
 				description: my.l("settings","delete_recall_data_description"),
-				onclick: function() {save_and_recall.deleteEnvironmentData();}
+				onclick: function() {my.save_and_recall.deleteEnvironmentData();}
 			},
 			{
 				title: my.l("settings","hard_reset"),
@@ -254,7 +254,7 @@ var APP = (function () {
 		my.active_language = my.languages[0];
 		
 		if (!no_recall){
-			recall_object = save_and_recall.getRecallDataForApp();
+			recall_object = my.save_and_recall.getRecallDataForApp();
 			
 			if (recall_object && recall_object.settings.active_language_id){
 				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
@@ -375,7 +375,7 @@ var APP = (function () {
 	
 	my.hard_reset = function(){
 
-		save_and_recall.deleteAllData();
+		my.save_and_recall.deleteAllData();
 		location.reload();
 
 	};
@@ -548,7 +548,7 @@ var APP = (function () {
 	
 	my.save = function(){
 	
-		save_and_recall.save();
+		my.save_and_recall.save();
 	
 	};
 	
@@ -701,7 +701,7 @@ var APP = (function () {
 			}(my.views[v].id));
 		}
 		
-		g("LINK_save_form").addEventListener("click", function(){ save_and_recall.userSave(); });
+		g("LINK_save_form").addEventListener("click", function(){ my.save_and_recall.userSave(); });
 		
 		document.getElementsByName("radio_auto_save").selectedIndex = 3;
 		
@@ -737,7 +737,7 @@ var APP = (function () {
 			
 		}		
 
-		save_and_recall.set_autosave_interval(recall_object.settings.save_interval_time);
+		my.save_and_recall.set_autosave_interval(recall_object.settings.save_interval_time);
 		
 		if (recall_object.active_environment_id){
 		
@@ -745,11 +745,11 @@ var APP = (function () {
 			my.environments.create(environment);
 			
 			if (typeof environment_data == "undefined"){
-				environment_data = save_and_recall.getRecallDataForEnvironment(environment);
+				environment_data = my.save_and_recall.getRecallDataForEnvironment(environment);
 			}
 			
 			if (typeof environment_data != "undefined"){
-				save_and_recall.recallEnvironmentData(environment_data);
+				my.save_and_recall.recallEnvironmentData(environment_data);
 			}
 			
 			g("profile_select").selectedIndex = my.environments.getByID(recall_object.active_environment_id) + 1;
@@ -765,7 +765,7 @@ var APP = (function () {
 	my.changeLanguage = function(index){
 		
 		my.active_language = my.languages[index];
-		save_and_recall.save();
+		my.save();
 		location.reload();
 	
 	};
