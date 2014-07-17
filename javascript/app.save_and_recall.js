@@ -29,7 +29,7 @@ APP.save_and_recall = (function () {
 
 		if (!form){
 			console.log("No recall data found");
-			my.set_autosave_interval(my.interval_time);
+			my.setAutosaveInterval(my.interval_time);
 			APP.view("default");
 			return;
 		}
@@ -61,12 +61,12 @@ APP.save_and_recall = (function () {
 	};
 	
 
-	my.set_autosave_interval = function(time){
+	my.setAutosaveInterval = function(time){
 	
 		window.clearInterval(my.interval);	
 		
 		if (!time){
-			console.log("ERROR: set_autosave_interval called without time parameter!");
+			console.log("ERROR: setAutosaveInterval called without time parameter!");
 			return;
 		}
 		

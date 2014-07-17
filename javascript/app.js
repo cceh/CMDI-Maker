@@ -394,7 +394,7 @@ var APP = (function () {
 	};
 	
 	
-	my.init_functions = function(functions){
+	my.initFunctions = function(functions){
 	
 		var functions_div = g("functions");
 		var function_div;
@@ -711,7 +711,7 @@ var APP = (function () {
 		
 			radio.addEventListener( "click", function(num) {
 				return function(){
-					save_and_recall.set_autosave_interval(num);
+					save_and_recall.setAutosaveInterval(num);
 				};
 			}(radio.value));
 		}
@@ -737,7 +737,7 @@ var APP = (function () {
 			
 		}		
 
-		my.save_and_recall.set_autosave_interval(recall_object.settings.save_interval_time);
+		my.save_and_recall.setAutosaveInterval(recall_object.settings.save_interval_time);
 		
 		if (recall_object.active_environment_id){
 		

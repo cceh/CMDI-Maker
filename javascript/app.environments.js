@@ -174,11 +174,11 @@ APP.environments = (function () {
 			//initialize functions for the interface
 			if (module.functions){
 				if (typeof module.functions == "function"){
-					APP.init_functions(module.functions());
+					APP.initFunctions(module.functions());
 				}
 				
 				else {
-					APP.init_functions(module.functions);
+					APP.initFunctions(module.functions);
 				}
 			}
 
