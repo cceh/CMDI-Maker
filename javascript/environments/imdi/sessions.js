@@ -20,6 +20,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	var my = {};
 	my.parent = imdi_environment;
+	var l = my.parent.l;
 	
 	var session_form = my.parent.session_form;
 	
@@ -99,7 +100,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (!session_form.fields_to_copy){
 		
-			dom.newElement("span", "", "", div, "This function is currently unavailable!");
+			dom.newElement("span", "", "", div, l("function_currently_unavailable"));
 			return;
 			
 		}
@@ -123,13 +124,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.functions = function(){
 		return [
 			{
-				label: "New Session",
+				label: l("session", "new_session"),
 				icon: "plus.png",
 				id: "link_newSession",
 				onclick: function() {my.newSession(); }
 			},
 			{
-				label: "Copy Session 1 metadata to all sessions",
+				label: l("session", "copy_session_1_metadata"),
 				icon: "copy.png",
 				id: "link_copy_sessions",
 				wrapper_id: "copy_sessions_div",
@@ -139,17 +140,17 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				after_that: my.createCopySessionOptions
 			},
 			{
-				label: "Reset Form",
+				label: l("session", "reset_form"),
 				icon: "reset.png",
 				id: "session_link_reset_form",
 				onclick: function() {       
 
 					alertify.set({ labels: {
-						ok     : "No",
-						cancel : "Yes, delete form"
+						ok     : l("no"),
+						cancel : l("yes_delete_form")
 					} });
 					
-					alertify.confirm("Really?<br>You want to reset the form and delete corpus and all sessions?", function (e) {
+					alertify.confirm(l("really_reset_form"), function (e) {
 						if (e) {
 							// user clicked "ok"
 						}
@@ -157,14 +158,14 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 						else {
 							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
 							APP.environments.resetActive();
-							alertify.log("Form reset","",5000);
+							alertify.log(l("form_reset"),"",5000);
 							
 						}
 					});
 				}
 			},
 			{
-				label: "Sort by Name",
+				label: l("session", "sort_by_name"),
 				icon: "az.png",
 				id: "session_link_sort_by_name",
 				onclick: function() { my.sortAlphabetically(); }
@@ -195,10 +196,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			var add_button = document.createElement("input");
 			add_button.type = "button";
-			add_button.value = "Add to session";
+			add_button.value = l("session", "add_to_session");
 			
-			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(document.createElement("br"));
-			
+			dom.br(g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div"));
 			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
@@ -211,9 +211,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			var p = document.createElement("h5");
 			g(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(p);
-			p.innerHTML = "No files have been added.<br>";
+			p.innerHTML = l("session", "no_files_have_been_added") + "<br>";
 		
-			dom.a(p,"","","#","Add some files.", function(){APP.view(resources);});
+			dom.a(p,"","","#",l("session", "add_some_files"), function(){APP.view(resources);});
 			
 		}
 		
@@ -265,7 +265,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 		}
 		
-		alertify.log("A new session has been created.<br>Name: " + name, "", "5000");
+		alertify.log(l("session", "new_session_has_been_created") + "<br>" +
+		l("session", "name") + ": " + name, "", "5000");
 		
 		return session_object.id;
 		
@@ -322,13 +323,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name === "")){
 		
-			session_label.innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
+			session_label.innerHTML = "<h1 class=\"session_heading\">" + l("session", "unnamed_session") + "</h1>";
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = "";
 			
 		}
 		
 		else {
-			session_label.innerHTML = "<h1 class=\"session_heading\">Session: " + session_object.session.name + "   </h1>";
+			session_label.innerHTML = "<h1 class=\"session_heading\">" + l("session", "session") + ": " + session_object.session.name + "</h1>";
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = session_object.session.name;
 		
 		}
@@ -345,7 +346,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			};
 			
 		}(session_id) );
-		session_delete_link.innerHTML = "<img id=\""+APP.CONF.session_dom_element_prefix+session_id+"_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Session\">";
+		session_delete_link.innerHTML = "<img id=\""+APP.CONF.session_dom_element_prefix+session_id+"_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"" + l("session", "delete_session") + "\">";
 		session_delete_link.href = "#";
 		
 		//create icon to expand/collapse the session
@@ -438,12 +439,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		if (my.sessions[session_index].name === ""){
 		
-			return "Unnamed Session";
+			return l("session", "unnamed_session");
 			
 		}
 		
 		else {
-			return "Session: " + my.sessions[session_index].name;
+			return l("session", "session") + ": " + my.sessions[session_index].name;
 		
 		}
 		
@@ -490,7 +491,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			dom.br(aad);	
 			
-			var add_button = dom.input(aad,"","","","button", "Add to session");
+			var add_button = dom.input(aad,"","","","button", l("session", "add_to_session"));
 			add_button.addEventListener('click', function(num) { 
 				return function(){ my.addActor(num, actor.actors[select.selectedIndex].id);  };
 			}(my.sessions[s].id) );
@@ -499,9 +500,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (actor.actors.length === 0){
 		
-			var h5 = dom.h5(aad, "There are no actors in the database yet.<br>");	
+			var h5 = dom.h5(aad, l("session", "no_actors_in_db_yet") + "<br>");	
 			
-			dom.a(h5,"","","#","Create some actors.", function() { 
+			dom.a(h5,"","","#",l("session", "create_some_actors"), function() { 
 				APP.view(actor);  
 			} );
 			
@@ -566,11 +567,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.userErase = function(session_id){
 
 		alertify.set({ labels: {
-			ok     : "No",
-			cancel : "Yes, delete session"
+			ok     : l("no"),
+			cancel : l("session", "yes_delete_session")
 		} });
 
-		alertify.confirm("Really?<br>You want to erase a whole session? Are you sure about that?", function (e) {
+		alertify.confirm(l("session", "really_erase_session"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -581,7 +582,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				// user clicked "cancel"
 				my.erase(session_id);
 
-				alertify.log("Session deleted", "", "5000");
+				alertify.log(l("session", "session_deleted"), "", "5000");
 			}
 		});
 
@@ -641,14 +642,15 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		sessions_view.innerHTML = "";
 
 		var no_sessions_message = dom.newElement("h2","no_session_text","no_session_text",sessions_view);
-		no_sessions_message.innerHTML = "This corpus contains no sessions yet. Why not ";
+		no_sessions_message.innerHTML = l("session", "this_corpus_contains_no_sessions_yet") + " " + 
+		l("session", "why_not_create_one__before_link");
 
 		var new_session_link = dom.newElement("a","new_session_link","new_session_link",no_sessions_message);
 
-		new_session_link.innerHTML = "create one";
+		new_session_link.innerHTML = l("session", "why_not_create_one__link");
 		new_session_link.href = "#";
 
-		no_sessions_message.innerHTML += "?";
+		no_sessions_message.innerHTML += l("session", "why_not_create_one__after_link");
 
 		g("new_session_link").addEventListener('click', function() {my.newSession(); });
 		//we have to use g here instead of no_sessions_link, because letter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
@@ -713,7 +715,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		else {
 		
-			alertify.log("This actor is already in the session.","error",5000);
+			alertify.log(l("session", "this_actor_is_already_in_the_session"),"error",5000);
 		
 		}
 	};
@@ -802,8 +804,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 					ok     : "OK",
 				} });
 		
-				alertify.alert("We have a problem.<br>I don't know if this file is a Media File or a Written Resource:<br>" + resources.available_resources[resource_file_index][0] + 
-				"<br>As for now, I will handle it as a written resource. But you really shouldn't do that");
+				alertify.alert(l("session", "unknown_file_problem__before_filename") + "<br>" +
+				resources.available_resources[resource_file_index][0] + 
+				"<br>" + l("session", "unknown_file_problem__after_filename"));
 			
 			}
 			
@@ -843,7 +846,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			my.refreshSessionHeading(session_id);
 		
-			alertify.log("Session name has been taken from EAF file name, since session has not been manually named yet.","",8000);
+			alertify.log(l("session", "session_name_taken_from_eaf"),"",8000);
 		
 		}
 		
@@ -860,7 +863,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				g(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month").value = date.month;
 				g(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day").value = date.day;
 				
-				alertify.log("Session date has been extracted from EAF file name: " + date.year + "-" + date.month + "-" + date.day, "", 5000);
+				alertify.log(l("session", "session_date_extracted_from_eaf_file_name") +
+				": " + date.year + "-" + date.month + "-" + date.day, "", 5000);
 			
 			}
 		
@@ -915,12 +919,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.refreshSessionHeading = function(session_id){
 
 		if (get(APP.CONF.session_dom_element_prefix+session_id+"_session_name") === ""){
-			g(APP.CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">Unnamed Session   </h1>";
+			g(APP.CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">" + l("session", "unnamed_session") + "</h1>";
 		}
 		
 		else {
 		
-			g(APP.CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">Session: "+get(APP.CONF.session_dom_element_prefix+session_id+"_session_name")+"   </h1>";
+			g(APP.CONF.session_dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">" + l("session", "session") + ": "+get(APP.CONF.session_dom_element_prefix+session_id+"_session_name")+"   </h1>";
 
 		}
 
@@ -969,7 +973,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		if (my.sessions.length < 2){
 		
-			alertify.log("There have to be at least 2 sessions to assign metadata from one to another.", "error", "5000");
+			alertify.log(l("session", "at_least_2_sessions_to_assign_metadata"), "error", "5000");
 			return;
 			
 		}
@@ -998,7 +1002,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		}
 
-		alertify.log("Session 1 metadata assigned to all sessions.", "", "5000");
+		alertify.log(l("session", "session_1_metadata_assigned_to_all_sessions"), "", "5000");
 
 	};
 

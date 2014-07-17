@@ -53,6 +53,7 @@ imdi_environment.languages[0] = {
 	form_reset: "Form reset",
 	search: "Search",
 	ok: "OK",
+	function_currently_unavailable: "This function is currently unavailable!",
 	
 	languages: {
 		set_global_languages_of_content: "Set Global Languages of Content",
@@ -119,6 +120,38 @@ imdi_environment.languages[0] = {
 		actor_deleted_before_name: "Actor ",
 		actor_deleted_after_name: " deleted",
 
+	},
+	
+	session: {
+		new_session: "New Session",
+		copy_session_1_metadata: "Copy Session 1 metadata to all sessions",
+		reset_form: "Reset Form",
+		sort_by_name: "Sort by name",
+		add_to_session: "Add to session",
+		no_files_have_been_added: "No files have been added.",
+		add_some_files: "Add some files.",
+		new_session_has_been_created: "A new session has been created.",
+		name: "Name",
+		unnamed_session: "Unnamed Session",
+		session: "Session",
+		delete_session: "Delete Session",
+		no_actors_in_db_yet: "There are no actors in the database yet.",
+		create_some_actors: "Create some actors.",
+		really_erase_session: "Really?<br>You want to erase a whole session? Are you sure about that?",
+		yes_delete_session: "Yes, delete session",
+		session_deleted: "Session deleted",
+		this_corpus_contains_no_sessions_yet: "This corpus contains no sessions yet.",
+		why_not_create_one__before_link: "Why not ",
+		why_not_create_one__link: "create one",
+		why_not_create_one__after_link: "?",
+		this_actor_is_already_in_the_session: "This actor is already in the session.",
+		unknown_file_problem__before_filename: "We have a problem.<br>I don't know if this file is a Media File or a Written Resource:",
+		unknown_file_problem__after_filename: "As for now, I will handle it as a written resource. But you really shouldn't do that.",
+		session_name_taken_from_eaf: "Session name has been taken from EAF file name, since session has not been manually named yet.",
+		session_date_extracted_from_eaf_file_name: "Session date has been extracted from EAF file name",
+		at_least_2_sessions_to_assign_metadata: "There have to be at least 2 sessions to assign metadata from one to another.",
+		session_1_metadata_assigned_to_all_sessions: "Session 1 metadata assigned to all sessions.",
+		
 	}
 	
 };
@@ -181,7 +214,7 @@ imdi_environment.languages[1] = {
 	resources: {
 		compatibility_warnings: {
 			general: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie transkodiert werden.',
-			invalid_media_file: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie in WAV (audio) oder MP4 (video) umgewandelt werden.',
+			invalid_media_file: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie in WAV oder MP4 umgewandelt werden.',
 			invalid_written_resource: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie in PDF oder TXT umgewandelt werden.'
 		},
 		unkown: "Unbekannt",
@@ -227,6 +260,40 @@ imdi_environment.languages[1] = {
 		actor_deleted_before_name: "Actor ",
 		actor_deleted_after_name: " gelöscht",
 	
+	},
+	
+	
+	session: {
+		new_session: "Neue Session",
+		copy_session_1_metadata: "Dupliziere Session-1-Metadaten in allen Sessions",
+		reset_form: "Formular zurücksetzen",
+		sort_by_name: "Nach Namen sortieren",
+		add_to_session: "Hinzufügen",
+		no_files_have_been_added: "Es wurden noch keine Dateien importiert.",
+		add_some_files: "Importiere welche.",
+		new_session_has_been_created: "Eine neue Session wurde erstellt.",
+		name: "Name",
+		unnamed_session: "Unbenannte Session",
+		session: "Session",
+		delete_session: "Session löschen",
+		no_actors_in_db_yet: "Es gibt noch keine Actors in der Datenbank.",
+		create_some_actors: "Erstelle welche.",
+		really_erase_session: "Willst du das wirklich?<br>" +
+		"Die komplette Session wird gelöscht!",
+		yes_delete_session: "Ja, Session löschen",
+		session_deleted: "Session gelöscht",
+		this_corpus_contains_no_sessions_yet: "Dieses Korpus enthält noch keine Sessions.",
+		why_not_create_one__before_link: "Warum ",
+		why_not_create_one__link: "erstellst",
+		why_not_create_one__after_link: " du nicht eine?",
+		this_actor_is_already_in_the_session: "Dieser Actor wurde schon hinzugefügt.",
+		unknown_file_problem__before_filename: "Es gibt ein Problem.<br>Ich weiß nicht, ob diese Datei ein Media File oder eine Written Resource ist:",
+		unknown_file_problem__after_filename: "Ich werde sie erstmal als Written Resource behandeln. Aber sowas solltest du nicht tun.",
+		session_name_taken_from_eaf: "Der Session-Name wurde vom Dateinamen der EAF-Datei übernommen, da die Session noch keinen Namen hatte.",
+		session_date_extracted_from_eaf_file_name: "Das Datum der Session wurde aus dem Dateinamen der EAF-Datei extrahiert.",
+		at_least_2_sessions_to_assign_metadata: "Es muss mindestens 2 Sessions geben, damit von einer Session in die andere kopiert werden können.",
+		session_1_metadata_assigned_to_all_sessions: "Die Metadaten von Session 1 wurden in allen Sessions dupliziert.",
+		
 	}
 	
 	
