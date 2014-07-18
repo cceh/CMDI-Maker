@@ -229,8 +229,10 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.getActorsIndexFromID = function(actor_id) {
 
-		for(var i = 0, len = my.actors.length; i < len; i++) {
-			if (my.actors[i].id == actor_id) return i;
+		for (var i = 0, len = my.actors.length; i < len; i++) {
+			if (my.actors[i].id == actor_id){
+				return i;
+			}
 		}
 		
 		return alert("An error has occured.\nCould not find actors cache index from actor id!\n\nactor_id = " + actor_id);

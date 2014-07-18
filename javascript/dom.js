@@ -72,11 +72,11 @@ var dom = (function() {
 
 		var option_values = [];
 
-		for (var o=0; o<select.options.length; o++){
+		forEach(select.options, function(option){
 			
-			option_values.push(select.options[o].value);
+			option_values.push(option.value);
 		
-		}
+		});
 
 		return option_values;
 
@@ -92,12 +92,11 @@ var dom = (function() {
 		
 			var options = [];
 			
-			for (var o=0;o<element.options.length;o++){
+			forEach(element.options, function(option){
 			
-				options.push(element.options[o].value);
+				options.push(option.value);
 			
-			
-			}
+			});
 			
 			//if options of select contain do not contain the value, we have to change the input type to text
 			if (options.indexOf(value) == -1){
@@ -613,12 +612,7 @@ var dom = (function() {
 	my.hideAllChildren = function(elem){
 		
 		var children = elem.children;
-	
-		for (var c=0; c<children.length; c++){
-	
-			children[c].style.display = "none";
-	
-		}
+		forEach(children, my.hideElement);
 		
 	};
 	
@@ -640,10 +634,13 @@ var dom = (function() {
 	
 		//make all functions invisible
 		var functions = g("functions").children;
-		for (var f=0; f<functions.length; f++){
-			functions[f].style.display = "none";
-		}		
+		forEach(functions, my.hideElement);
 	
+	};
+	
+	
+	my.hideElement = function(elem){
+		elem.style.display = "none";
 	};
 	
 	

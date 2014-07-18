@@ -429,9 +429,9 @@ APP.forms = (function () {
 				
 				if (field.object_arrays){
 				
-					for (var a=0; a<field.object_arrays.length; a++){
-						resulting_object[field.name][field.object_arrays[a]] = [];
-					}
+					forEach(field.object_arrays, function (object_array){
+						resulting_object[field.name][object_array] = [];
+					});
 				
 				}
 			}

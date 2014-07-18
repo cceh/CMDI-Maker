@@ -98,13 +98,13 @@ APP.save_and_recall = (function () {
 		var workflow = APP.environments.active_environment.workflow;
 		
 		//for every workflow module, recall its save data
-		for (var m=0; m<workflow.length; m++){
+		forEach(workflow, function(module){
 		
-			if (workflow[m].recall){
-				workflow[m].recall(recall_object[workflow[m].identity.id]);
+			if (module.recall){
+				module.recall(recall_object[module.identity.id]);
 			}
 			
-		}
+		});
 	
 	};
 
@@ -285,13 +285,13 @@ APP.save_and_recall = (function () {
 		
 		var workflow = APP.environments.active_environment.workflow;
 		
-		for (var m=0; m<workflow.length; m++){
+		forEach(workflow, function (module){
 			
-			if (workflow[m].getSaveData){
-				object[workflow[m].identity.id] = workflow[m].getSaveData();
+			if (module.getSaveData){
+				object[module.identity.id] = module.getSaveData();
 			}
 			
-		}
+		});
 		
 		return object;
 

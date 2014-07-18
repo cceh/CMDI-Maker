@@ -545,9 +545,9 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		var all_available_actor_ids = [];
 		
-		for (var n=0; n<actors.length; n++){
-			all_available_actor_ids.push(actors[n].id);
-		}
+		forEach(actors, function(actor){
+			all_available_actor_ids.push(actor.id);
+		});
 		
 		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
 		

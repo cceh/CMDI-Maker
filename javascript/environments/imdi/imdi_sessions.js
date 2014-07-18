@@ -412,9 +412,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		var all_available_actor_ids = [];
 		
-		for (var n=0; n<actor.actors.length; n++){
-			all_available_actor_ids.push(actor.actors[n].id);
-		}   // find a better place for that
+		forEach(actor.actors, function(actor){
+			all_available_actor_ids.push(actor.id);
+		});   // find a better place for that
 
 		my.refreshActorListInSession(my.getSessionIndexFromID(session_id),all_available_actor_ids);
 		
@@ -454,7 +454,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.getSessionIndexFromID = function(session_id){
 
-		for(var i = 0; i < my.sessions.length; i++) {
+		for (var i = 0; i < my.sessions.length; i++) {
 			if (my.sessions[i].id == session_id) {
 				return i;
 			}

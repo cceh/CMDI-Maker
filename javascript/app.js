@@ -319,11 +319,12 @@ var APP = (function () {
 		
 		dom.removeOptions(select);
 
-		for (var j=0;j<APP.CONF.MetadataLanguageIDs.length;j++){
+		forEach(APP.CONF.MetadataLanguageIDs,function(ID){
 
-			var NewOption = new Option(APP.CONF.MetadataLanguageIDs[j][1], APP.CONF.MetadataLanguageIDs[j][0], false, true);
+			var NewOption = new Option(ID[1], ID[0], false, true);
 			select.options[select.options.length] = NewOption;
-		}
+			
+		});
 	  
 		select.selectedIndex = 0;
 
@@ -336,11 +337,12 @@ var APP = (function () {
 		
 		dom.removeOptions(select);
 	
-		for (var j=0;j<my.languages.length;j++){
+		forEach(my.languages, function(language){
 
-			var NewOption = new Option(my.languages[j].name, my.languages[j].id, false, true);
+			var NewOption = new Option(language.name, language.id, false, true);
 			select.options[select.options.length] = NewOption;
-		}
+			
+		});
 	  
 		select.selectedIndex = 0;
 

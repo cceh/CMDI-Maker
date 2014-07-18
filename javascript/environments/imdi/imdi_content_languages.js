@@ -73,13 +73,9 @@ imdi_environment.workflow[0].content_languages = (function() {
 	};
 	
 	
-	my.recall = function(data){
+	my.recall = function(LanguageObjects){
 	
-		for (var l=0;l<data.length;l++){
-		
-			my.set(data[l]);
-			
-		}
+		forEach(LanguageObjects, my.set);
 		
 	};
 	
@@ -92,8 +88,6 @@ imdi_environment.workflow[0].content_languages = (function() {
 
 
 	my.search = function(){
-
-		var non_letters = " ,";
 
 		var input = g("content_language_select").value;
 		
@@ -108,35 +102,35 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		var results = [];
 
-		for (var i=0;i<LanguageIndex.length;i++){
+		forEach(LanguageIndex, function(LanguageObject){
 			
-			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
+			if (isSubstringAStartOfAWordInString(LanguageObject[3],input)){
 				
 				//get an array with all relevant IDs
-				name_hits.push(LanguageIndex[i][0]);
+				name_hits.push(LanguageObject[0]);
 			}
 
-		}
+		});
 		
 		//now we have all relevant languageIDs in name_hits. next-step: get the L-names of theses language IDs. i.e. get the respective entries with the l-names.
 		
-		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
+		forEach(LanguageIndex, function(LanguageObject){   //for all entries in LanguageIndex
 		
-			if ( (name_hits.indexOf(LanguageIndex[j][0]) != -1)  &&  (LanguageIndex[j][2] == "L" )){		//look for their l-name entry
+			if ( (name_hits.indexOf(LanguageObject[0]) != -1)  &&  (LanguageObject[2] == "L" )){		//look for their l-name entry
 			
-				results.push(LanguageIndex[j]);
+				results.push(LanguageObject);
 			
 			}
 		
-		}
+		});
 		
 		var titles = [];
 		
-		for (var j=0;j<results.length;j++){
+		forEach(results, function(result){
 
-			titles.push(results[j][0] + ", "+results[j][1]+", " + results[j][3]);
+			titles.push(result[0] + ", "+result[1]+", " + result[3]);
 
-		}
+		});
 		
 		var heading = my.l("languages", "language_search") + ": " + results.length + " " +
 		((results.length == 1) ? my.l("languages", "result") : my.l("languages", "results"));
