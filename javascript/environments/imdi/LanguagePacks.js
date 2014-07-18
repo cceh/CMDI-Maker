@@ -203,6 +203,11 @@ imdi_environment.languages[0] = {
 		actors: {
 			description: "This description concerns all Actors and should be used to describe interactions and interrelations between Actors."
 		}
+	},
+	
+	corpus_form_comments: {
+		name: "A short archivable name of your corpus",
+		title: "The complete and extensive title of your corpus"
 	}
 	
 };
