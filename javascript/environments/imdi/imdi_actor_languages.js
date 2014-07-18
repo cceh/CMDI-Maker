@@ -218,7 +218,7 @@ imdi_environment.workflow[2].languages = (function (){
 			ok: l("ok")
 		}});
 		
-		alertify.alert(l("iso_code") + " " + input + " " + l("not_found_in_db") + ".");
+		alertify.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
 
 	};
 
