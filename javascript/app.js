@@ -83,11 +83,11 @@ var APP = (function () {
 	};
 	
 	
-	my.getActiveLanguagePackFromID = function(id, LanguagesArray){
+	my.getActiveLanguagePackFromID = function(id, LPArray){
 	
-		for (var l=0; l<LanguagesArray.length; l++){
-			if (LanguagesArray[l].id == id){
-				return LanguagesArray[l];
+		for (var l=0; l<LPArray.length; l++){
+			if (LPArray[l].id == id){
+				return LPArray[l];
 			}
 		}
 	
@@ -96,11 +96,27 @@ var APP = (function () {
 	};
 	
 	
-	var getTermInLP = function(LP,arg1,arg2,arg3){
+	var getTermInLP = function(LP, arg1, arg2, arg3, arg4){
+
+		if (typeof LP[arg1] == "undefined"){
+			return undefined;
+		}
+	
+		if (arg4){
+
+			if (typeof LP[arg1][arg2][arg3][arg4] != "undefined"){
+				return LP[arg1][arg2][arg3][arg4];
+			}
+			
+			else {
+				return undefined;
+			}
+			
+		}
 	
 		if (arg3){
 
-			if (typeof LP[arg1][arg2][arg3] != "undefined"){
+			if (typeof LP[arg1] != "undefined" && typeof LP[arg1][arg2][arg3] != "undefined"){
 				return LP[arg1][arg2][arg3];
 			}
 			
@@ -112,7 +128,7 @@ var APP = (function () {
 		
 		if (arg2){
 
-			if (typeof LP[arg1][arg2] != "undefined"){
+			if (typeof LP[arg1] != "undefined" && typeof LP[arg1][arg2] != "undefined"){
 				return LP[arg1][arg2];
 			}
 			
@@ -122,41 +138,37 @@ var APP = (function () {
 			
 		}
 		
-		if (LP[arg1]){
-			return LP[arg1];
-		}
-		
-		return undefined;
+		return LP[arg1];
 	
 	}
 	
 	
-	my.getTermInActiveLanguage = function(LanguagePacksArray, arg1, arg2, arg3){
+	my.getTermInActiveLanguage = function(LanguagePacksArray, arg1, arg2, arg3, arg4){
 	
 		//Look in the LanguagesArray, that's been given by the APP or by one environment and then search for the language that has the id of the APP's active language
 		var LP = my.getActiveLanguagePackFromID(my.active_language.id, LanguagePacksArray);
 	
 		
 		
-		var termInLP = getTermInLP(LP,arg1,arg2,arg3);
+		var termInLP = getTermInLP(LP, arg1, arg2, arg3, arg4);
 		
 		if (typeof termInLP != "undefined"){
 			return termInLP;
 		}
 		
 		//try to get term in default language
-		console.log("Haven't found a term in active language: " + arg1 + ", " + arg2 + ", " + arg3);
+		console.log("Haven't found a term in active language: " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4);
 		console.log("Trying to get it in default language");
 		
 		var defaultLP = LanguagePacksArray[0];
-		var termInDefaultLP = getTermInLP(defaultLP,arg1,arg2,arg3);
+		var termInDefaultLP = getTermInLP(defaultLP,arg1,arg2,arg3,arg4);
 		
 		if (typeof termInDefaultLP != "undefined"){
 			return termInDefaultLP;
 		}
 		
 		//if there's no word at all, PROBLEM!!!
-		console.log("LANGUAGE ERROR: " + arg1 + ", " + arg2 + ", " + arg3);
+		console.log("LANGUAGE ERROR: " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4);
 		return "###";
 
 	};

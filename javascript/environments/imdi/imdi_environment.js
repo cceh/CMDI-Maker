@@ -25,8 +25,8 @@ var imdi_environment = (function(){
 	my.workflow = [];
 	my.languages = [];
 	
-	my.l = function(arg1, arg2, arg3){
-		return APP.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
+	my.l = function(arg1, arg2, arg3, arg4){
+		return APP.getTermInActiveLanguage(my.languages, arg1, arg2, arg3, arg4);
 	};
 	
 	
