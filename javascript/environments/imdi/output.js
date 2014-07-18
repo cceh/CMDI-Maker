@@ -22,6 +22,9 @@ imdi_environment.workflow[4] = (function (){
 	var corpus;
 	var session;
 	
+	my.parent = imdi_environment;
+	var l = my.parent.l;
+	
 	my.identity = {
 		id: "xml_output",
 		title: "XML Output",
@@ -33,27 +36,29 @@ imdi_environment.workflow[4] = (function (){
 	
 		corpus = imdi_environment.workflow[0];
 		session = imdi_environment.workflow[3];
-		my.createOutputFormatSelect(my.formats);
+		my.createOutputFormatSelect(my.formats());
 	
 	};
 	
 	
-	my.formats = [
-		{
-			title: "IMDI",
-			name: "imdi",
-			file_ending: "imdi",
-			output_name: "IMDI",
-			generator_object: imdi_environment.imdi_generator,
-		},
-		{
-			title: "CMDI with IMDI Profile",
-			name: "cmdi-imdi",
-			file_ending: "cmdi",
-			output_name: "CMDI",
-			generator_object: imdi_environment.cmdi_generator,
-		}
-	];
+	my.formats = function(){
+		return [
+			{
+				title: l("output", "imdi"),
+				name: "imdi",
+				file_ending: "imdi",
+				output_name: "IMDI",
+				generator_object: imdi_environment.imdi_generator,
+			},
+			{
+				title: l("output", "cmdi_with_imdi_profile"),
+				name: "cmdi-imdi",
+				file_ending: "cmdi",
+				output_name: "CMDI",
+				generator_object: imdi_environment.cmdi_generator,
+			}
+		];
+	};
 	
 	
 	my.createOutputFormatSelect = function (formats){
@@ -83,9 +88,9 @@ imdi_environment.workflow[4] = (function (){
 		if ((get("corpus_name") === "") && (session.sessions.length === 0)){
 		
 			alertify.set({ labels: {
-				ok     : "OK"
+				ok     : l("ok")
 			} });
-			alertify.alert("You must create some sessions first!");
+			alertify.alert(l("output", "you_must_create_some_sessions_first"));
 			APP.view(session);
 			return;
 		}
@@ -102,10 +107,10 @@ imdi_environment.workflow[4] = (function (){
 			else {
 				
 				alertify.set({ labels: {
-					ok     : "OK"
+					ok     : l("ok")
 				} });
 				
-				alertify.alert("Every session must have a project name!");
+				alertify.alert(l("output", "every_session_must_have_a_project_name"));
 			
 				APP.view(session);
 			
@@ -116,33 +121,35 @@ imdi_environment.workflow[4] = (function (){
 		else {
 			
 			alertify.set({ labels: {
-				ok     : "OK"
+				ok     : l("ok")
 			} });
 			
 			//if corpus has a name, but an invalid one
 			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") !== ""){   //show corpus
 				APP.view(corpus);
-				alertify.alert("The corpus must have a proper name or no name at all.<br>Not allowed chars are: " + APP.CONF.not_allowed_chars);
+				alertify.alert(l("output", "corpus_must_have_proper_name") + APP.CONF.not_allowed_chars);
 			
 			}
 			
 			else {  //show sessions
 				APP.view(session);
-				alertify.alert("Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: " + APP.CONF.not_allowed_chars);
+				alertify.alert(l("output", "sessions_must_have_proper_name") + APP.CONF.not_allowed_chars);
 			}
 		}
 	};
 	
 
-	my.functions = [
-		{
-			id: "link_export_corpus",
-			icon: "download.png",
-			label: "Download Corpus including all Sessions",
-			onclick: function(){APP.saveAllOutputFiles();}
-		}
-	
-	];
+	my.functions = function() {
+		return [
+			{
+				id: "link_export_corpus",
+				icon: "download.png",
+				label: l("output", "download_corpus_including_all_sessions"),
+				onclick: function(){APP.saveAllOutputFiles();}
+			}
+		
+		];
+	};
 	
 
 	my.generate = function (){
@@ -156,9 +163,9 @@ imdi_environment.workflow[4] = (function (){
 		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		
 		// initiate object for imdi_structure class
-		var xml_strings = new my.formats[output_format_index].generator_object();
-		var output_format = my.formats[output_format_index].output_name;
-		var file_ending = my.formats[output_format_index].file_ending;
+		var xml_strings = new my.formats()[output_format_index].generator_object();
+		var output_format = my.formats()[output_format_index].output_name;
+		var file_ending = my.formats()[output_format_index].file_ending;
 		
 		//if corpus is to be created
 		if (get("corpus_name") !== ""){

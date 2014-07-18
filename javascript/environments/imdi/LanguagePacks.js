@@ -152,6 +152,18 @@ imdi_environment.languages[0] = {
 		at_least_2_sessions_to_assign_metadata: "There have to be at least 2 sessions to assign metadata from one to another.",
 		session_1_metadata_assigned_to_all_sessions: "Session 1 metadata assigned to all sessions.",
 		
+	},
+	
+	output: {
+		xml_output: "XML Output",
+		imdi: "IMDI",
+		cmdi_with_imdi_profile: "CMDI with IMDI Profile",
+		you_must_create_some_sessions_first: "You must create some sessions first!",
+		every_session_must_have_a_project_name: "Every session must have a project name!",
+		corpus_must_have_proper_name: "The corpus must have a proper name or no name at all.<br>Not allowed chars are: ",
+		sessions_must_have_proper_name: "Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: ",
+		download_corpus_including_all_sessions: "Download Corpus including all Sessions",
+
 	}
 	
 };
@@ -294,6 +306,18 @@ imdi_environment.languages[1] = {
 		at_least_2_sessions_to_assign_metadata: "Es muss mindestens 2 Sessions geben, damit von einer Session in die andere kopiert werden können.",
 		session_1_metadata_assigned_to_all_sessions: "Die Metadaten von Session 1 wurden in allen Sessions dupliziert.",
 		
+	},
+	
+	output: {
+		xml_output: "XML",
+		imdi: "IMDI",
+		cmdi_with_imdi_profile: "CMDI mit IMDI-Profil",
+		you_must_create_some_sessions_first: "Du musst zuerst Sessions erstellen!",
+		every_session_must_have_a_project_name: "Jede Session muss einen Project Name haben!",
+		corpus_must_have_proper_name: "Das Corpus muss einen validen oder garkeinen Namen haben.<br>Nicht erlaubt sind: ",
+		sessions_must_have_proper_name: "Jede Session muss einen validen Namen haben.<br>Unbenannte Sessions sind nicht erlaubt.<br>Nicht erlaubte Zeichen sind: ",
+		download_corpus_including_all_sessions: "Corpus inklusive alle Sessions herunterladen",
+
 	}
 	
 	
