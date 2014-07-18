@@ -236,7 +236,11 @@ imdi_environment.workflow[0].content_languages = (function() {
 
 		var index = my.getLanguageObjectIndexByID(cl_id);
 
-		alertify.log("Content Language \"" + my.content_languages[index][3] + "\" removed","",5000);
+		alertify.log(
+			my.l("languages", "content_language_removed__before_lang") +
+			my.content_languages[index][3] +
+			my.l("languages", "content_language_removed__after_lang"),
+		"",5000);
 
 		my.content_languages.splice(index,1);
 		

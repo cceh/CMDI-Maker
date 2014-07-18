@@ -68,7 +68,9 @@ imdi_environment.languages[0] = {
 		specify_search_request_at_least_3_chars: "Please specify your search request.\nType in at least 3 characters.",
 		primary_language: "Primary Language",
 		mother_tongue: "Mother Tongue",
-		current_content_languages: "Current Content Languages"
+		current_content_languages: "Current Content Languages",
+		content_language_removed__before_lang: "Content Language \"",
+		content_language_removed__after_lang: "\" removed"
 		
 	},
 	
@@ -264,7 +266,9 @@ imdi_environment.languages[1] = {
 		specify_search_request_at_least_3_chars: "Bitte sei etwas genauer.\nGib mindestens 3 Zeichen ins Suchfeld ein.",
 		current_content_languages: "Derzeitige Content Languages",
 		primary_language: "Primärsprache",
-		mother_tongue: "Muttersprache"
+		mother_tongue: "Muttersprache",
+		content_language_removed__before_lang: "Content Language \"",
+		content_language_removed__after_lang: "\" entfernt"
 	},
 	
 	resources: {
