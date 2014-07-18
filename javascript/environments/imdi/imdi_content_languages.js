@@ -70,7 +70,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 			}
 		};		
 	
-	}
+	};
 	
 	
 	my.recall = function(data){
@@ -81,14 +81,14 @@ imdi_environment.workflow[0].content_languages = (function() {
 			
 		}
 		
-	}
+	};
 	
 	
 	my.getSaveData = function(){
 	
 		return my.content_languages;
 		
-	}
+	};
 
 
 	my.search = function(){
@@ -99,7 +99,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		if (input.length < 3){
 	
-			alertify.alert(my.l("languages", "specify_search_request_at_least_3_chars"));
+			APP.alert(my.l("languages", "specify_search_request_at_least_3_chars"));
 			
 			return;
 		}
@@ -145,7 +145,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		dom.showSelectFrame(results, titles, corpus.content_languages.choose, heading, subheading);
 		
-	}
+	};
 	
 	
 	my.choose = function(LanguageObject){
@@ -154,7 +154,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 			alertify.log("\"" + LanguageObject[3]+"\" " + my.l("languages", "is_new_global"), "", "5000");	
 		}
 	
-	}
+	};
 
 
 	my.set = function(LanguageObjectFromDB){
@@ -201,7 +201,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		return true;
 		
-	}
+	};
 	
 	
 	my.render = function(LanguageObject, id){
@@ -222,7 +222,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		dom.br(div);
 		dom.span(div,"","","Country ID: " + LanguageObject[1]);
 
-	}
+	};
 
 	
 	my.removeAll = function(){
@@ -235,7 +235,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		my.id_counter = 0;
 
-	}
+	};
 
 	
 	my.remove = function(cl_id){
@@ -248,7 +248,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		dom.remove("content_language_"+cl_id+"_div");
 
-	}
+	};
 
 
 	my.addByISO = function(){
@@ -268,14 +268,9 @@ imdi_environment.workflow[0].content_languages = (function() {
 
 		}
 		
-		alertify.set({ labels: {
-			ok     : my.l("ok")
-		} });
+		APP.alert(my.l("languages", "iso_code") + " " + input + " " + my.l("languages", "not_found_in_db") + ".");
 		
-		alertify.alert(my.l("languages", "iso_code") + " " + input + " " + my.l("languages", "not_found_in_db") + ".");
-		
-
-	}
+	};
 	
 	
 	my.getLanguageObjectIndexByID = function(cl_id){
@@ -288,7 +283,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		}
 
-	}
+	};
 	
 	
 	return my;

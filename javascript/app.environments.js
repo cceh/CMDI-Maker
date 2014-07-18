@@ -43,7 +43,7 @@ APP.environments = (function () {
 	my.active_environment = undefined;
 
 	
-	my.display = function (){
+	my.displayAllInSelect = function (){
 		
 		var select = g("profile_select");
 		var start_select = g("start_profile_select");
@@ -164,10 +164,8 @@ APP.environments = (function () {
 	
 	my.createWorkflow = function(workflow){
 	
-		for (var e=0; e<workflow.length; e++){
+		forEach(workflow, function(module){
 		
-			var module = workflow[e];
-			
 			//create a view for the module
 			dom.newElement("div",APP.CONF.view_id_prefix+module.identity.id,"content",g(APP.CONF.content_wrapper_id));
 			
@@ -185,7 +183,7 @@ APP.environments = (function () {
 			if (module.init){
 				module.init();
 			}
-		}
+		});
 	
 		my.createWorkflowDisplay(workflow);
 	

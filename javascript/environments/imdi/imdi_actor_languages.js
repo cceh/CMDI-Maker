@@ -77,7 +77,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 			g("actor_language_results_div").innerHTML = "";
 			
-			alertify.alert(l("languages", "specify_search_request_at_least_3_chars"));
+			APP.alert(l("languages", "specify_search_request_at_least_3_chars"));
 			
 			return;
 		}
@@ -214,11 +214,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 		}
 		
-		alertify.set({ labels: {
-			ok: l("ok")
-		}});
-		
-		alertify.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
+		APP.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
 
 	};
 

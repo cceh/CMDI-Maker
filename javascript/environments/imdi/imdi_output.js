@@ -87,10 +87,7 @@ imdi_environment.workflow[4] = (function (){
 		//if there is nothing to be done, return
 		if ((get("corpus_name") === "") && (session.sessions.length === 0)){
 		
-			alertify.set({ labels: {
-				ok     : l("ok")
-			} });
-			alertify.alert(l("output", "you_must_create_some_sessions_first"));
+			APP.alert(l("output", "you_must_create_some_sessions_first"));
 			APP.view(session);
 			return;
 		}
@@ -106,11 +103,7 @@ imdi_environment.workflow[4] = (function (){
 			
 			else {
 				
-				alertify.set({ labels: {
-					ok     : l("ok")
-				} });
-				
-				alertify.alert(l("output", "every_session_must_have_a_project_name"));
+				APP.alert(l("output", "every_session_must_have_a_project_name"));
 			
 				APP.view(session);
 			
@@ -120,20 +113,16 @@ imdi_environment.workflow[4] = (function (){
 		
 		else {
 			
-			alertify.set({ labels: {
-				ok     : l("ok")
-			} });
-			
 			//if corpus has a name, but an invalid one
 			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") !== ""){   //show corpus
 				APP.view(corpus);
-				alertify.alert(l("output", "corpus_must_have_proper_name") + APP.CONF.not_allowed_chars);
+				APP.alert(l("output", "corpus_must_have_proper_name") + APP.CONF.not_allowed_chars);
 			
 			}
 			
 			else {  //show sessions
 				APP.view(session);
-				alertify.alert(l("output", "sessions_must_have_proper_name") + APP.CONF.not_allowed_chars);
+				APP.alert(l("output", "sessions_must_have_proper_name") + APP.CONF.not_allowed_chars);
 			}
 		}
 	};

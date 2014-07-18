@@ -303,7 +303,7 @@ var APP = (function () {
 		my.initSettings(my.settings(), g("core_settings"));
 		my.displayMetadataLanguages();
 		my.displayLanguages();
-		my.environments.display();
+		my.environments.displayAllInSelect();
 		my.addEventListeners();
 		
 		if ((!no_recall) && (typeof recall_object != "undefined")){
@@ -383,10 +383,20 @@ var APP = (function () {
 		}
 
 	};
+	
+	
+	my.alert = function(message) {
+	
+		alertify.set({ labels: {
+			ok     : my.l("ok")
+		} });
+		
+		alertify.alert(message);
+	
+	};
 
 
 	my.sayHello = function (){
-
 
 		var index = Math.floor(Math.random() * APP.CONF.hellos.length);
 
@@ -399,7 +409,6 @@ var APP = (function () {
 		g("greeting_text").innerHTML = my.l("start","greeting_text");
 		
 		g("start_select_profile_span").innerHTML = my.l("start","select_your_profile");
-		
 		
 		g("link_lets_go").innerHTML = my.l("start","lets_go");
 		g("supported_by_label").innerHTML = my.l("start","is_supported_by");
@@ -420,11 +429,11 @@ var APP = (function () {
 	
 		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
 		
-		for (var t=0; t<textareas.length; t++){
+		forEach(textareas, function(textarea){
 		
-			my.save_file(textareas[t].value, textareas[t].filename);
+			my.save_file(textarea.value, textarea.filename);
 			
-		}
+		});
 	
 	};
 	
@@ -719,11 +728,7 @@ var APP = (function () {
 			
 			else {
 			
-				alertify.set({ labels: {
-					ok     : my.l("ok")
-				} });
-				
-				alertify.alert(my.l("error","no_workflow"));
+				my.alert(my.l("error","no_workflow"));
 			}
 			
 		});

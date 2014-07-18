@@ -806,11 +806,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			if (!without_questions){
 			
-				alertify.set({ labels: {
-					ok     : "OK",
-				} });
-		
-				alertify.alert("We have a problem.<br>I don't know if this file is a Media File or a Written Resource:<br>" + resources.available_resources[resource_file_index][0] + 
+				APP.alert("We have a problem.<br>I don't know if this file is a Media File or a Written Resource:<br>" + resources.available_resources[resource_file_index][0] + 
 				"<br>As for now, I will handle it as a written resource. But you really shouldn't do that");
 			
 			}

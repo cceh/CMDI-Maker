@@ -76,7 +76,7 @@ eldp_environment.workflow[1].languages = (function (){
 		
 			g("actor_language_results_div").innerHTML = "";
 			
-			alertify.alert("Please specify your search request.\nType in at least 3 characters.");
+			APP.alert("Please specify your search request.\nType in at least 3 characters.");
 			
 			return;
 		}
@@ -211,11 +211,7 @@ eldp_environment.workflow[1].languages = (function (){
 
 		}
 		
-		alertify.set({ labels: {
-			ok: "OK"
-		}});	
-		
-		alertify.alert("ISO code " + input + " not found in database.");
+		APP.alert("ISO code " + input + " not found in database.");
 
 	};
 

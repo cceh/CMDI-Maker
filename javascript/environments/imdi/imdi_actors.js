@@ -261,7 +261,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		else {
 		
-			alertify.alert(l("there_are_no_actors"));
+			APP.alert(l("there_are_no_actors"));
 		
 		}
 
@@ -503,11 +503,7 @@ imdi_environment.workflow[2] = (function(){
 
 		else {
 		
-			alertify.set({ labels: {
-				ok     : l("ok")
-			} });
-
-			alertify.alert(l("give_your_actor_a_name_first"));
+			APP.alert(l("give_your_actor_a_name_first"));
 			return false;
 			
 		}

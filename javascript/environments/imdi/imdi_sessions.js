@@ -801,11 +801,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			if (!without_questions){
 			
-				alertify.set({ labels: {
-					ok     : "OK",
-				} });
-		
-				alertify.alert(l("session", "unknown_file_problem__before_filename") + "<br>" +
+				APP.alert(l("session", "unknown_file_problem__before_filename") + "<br>" +
 				resources.available_resources[resource_file_index][0] + 
 				"<br>" + l("session", "unknown_file_problem__after_filename"));
 			

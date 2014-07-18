@@ -254,7 +254,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		else {
 		
-			alertify.alert("There are no actors!");
+			APP.alert("There are no actors!");
 		
 		}
 
@@ -496,11 +496,7 @@ eldp_environment.workflow[1] = (function(){
 
 		else {
 		
-			alertify.set({ labels: {
-				ok     : "OK"
-			} });
-
-			alertify.alert("Please give your actor a name first.");
+			APP.alert("Please give your actor a name first.");
 			return false;
 			
 		}
