@@ -85,198 +85,222 @@ APP.forms = (function () {
 		
 	};
 
-	
-	var my = {};
-	
-	my.make = function (parent, field, element_id_prefix, element_class_prefix, session_object){
-		
-		var input;
-		var f;
 
-		switch (field.type){
+	var makeFunctions = {
+		text: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var input;
 			
-			case "text": {
+			input = dom.makeTextInput(parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				field.comment
+			);
 			
-				input = dom.makeTextInput(parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name] : ""),
-					field.comment
-				);
-				
-				break;
+			return input;
+			
+		},
+		
+		date: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var input;
+		
+			input = dom.makeDateInput(parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name].year : ""),
+				(session_object && session_object[field.name] ? session_object[field.name].month : ""),				
+				(session_object && session_object[field.name] ? session_object[field.name].day : ""),					
+				field.comment
+			);
+			
+			return input;
+		
+		},
+		
+		textarea: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var input;
+		
+			input = dom.makeTextarea(
+				APP.CONF.form_textarea_rows,
+				APP.CONF.form_textarea_columns,
+				parent,
+				field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				field.comment
+			);
+			
+			return input;
+		
+		},	
+
+		subarea: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var h3 = dom.h3(parent, field.heading);
+			
+			if (field.comment){
+				h3.title = field.comment;
 			}
 			
-			case "date": {
+			if (field.fields){
 			
-				input = dom.makeDateInput(parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name].year : ""),
-					(session_object && session_object[field.name] ? session_object[field.name].month : ""),				
-					(session_object && session_object[field.name] ? session_object[field.name].day : ""),					
-					field.comment
-				);
+				element_id_prefix += field.name + "_";
+				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, session_object[field.name]);
 				
-				break;
+			}
+		},
+		
+		column: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var td_name;		
+			
+			if (field.name && field.name !== ""){
+			
+				td_name = field.name+"_td";
+			
 			}
 			
-			case "textarea": {
+			else {
 			
-				input = dom.makeTextarea(
-					APP.CONF.form_textarea_rows,
-					APP.CONF.form_textarea_columns,
-					parent,
-					field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name] : ""),
-					field.comment
-				);
-				break;
-			}			
+				td_name = "td";
 			
-			case "subarea": {
+			}
+		
+			var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
 			
-				var h3 = dom.h3(parent, field.heading);
-				
-				if (field.comment){
-					h3.title = field.comment;
-				}
-				
-				if (field.fields){
-				
-					element_id_prefix += field.name + "_";
-			
-					for (f=0; f<field.fields.length; f++){
-					
-						my.make(parent, field.fields[f], element_id_prefix, element_class_prefix, session_object[field.name]);
-				
-					}
-				
-				}
-				
-				break;
+			if (field.title && field.title !== ""){
+				dom.newElement("h2","","",td,field.title);
 			}
 			
-			case "column": {
-				var td_name;		
+			if (field.fields){
 			
 				if (field.name && field.name !== ""){
-				
-					td_name = field.name+"_td";
-				
-				}
-				
-				else {
-				
-					td_name = "td";
-				
-				}
 			
-				var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
-				
-				if (field.title && field.title !== ""){
-					dom.newElement("h2","","",td,field.title);
-				}
-				
-				if (field.fields){
-				
-					if (field.name && field.name !== ""){
-				
-						element_id_prefix += field.name + "_";
-						
-					}
-				
-					for (f=0; f<field.fields.length; f++){
+					element_id_prefix += field.name + "_";
 					
-						my.make(td, field.fields[f], element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
-				
-					}
-				
 				}
-				
-				break;
-			}
 			
-			case "form": {
-				
-				if ((field.fields) && (field.fields[0].type == "column")){
-					var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
-					var tr = dom.newElement("tr","","",table);
-					var form_parent = tr;
-				}
-				
-				else {
-					form_parent = parent;
-				}
-				
-				for (f=0; f<field.fields.length; f++){
-					
-					my.make(form_parent, field.fields[f], element_id_prefix, element_class_prefix, session_object);
-				
-				}
-				
-				break;
-			}
-			
-			case "special": {
-				APP.environments.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
-				break;
+				makeForEach(field.fields, td, element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
 			
 			}
 			
-			case "select": {
-				input = dom.makeSelect(
-					parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					field.size,
-					field.vocabulary,
-					(session_object && session_object[field.name] ? session_object[field.name] : field.default_value),
-					field.comment
-				);
-				break;
+		},
+		
+		form: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			if ((field.fields) && (field.fields[0].type == "column")){
+				var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
+				var tr = dom.newElement("tr","","",table);
+				var form_parent = tr;
 			}
+			
+			else {
+				form_parent = parent;
+			}
+			
+			makeForEach(field.fields, form_parent, element_id_prefix, element_class_prefix, session_object);
+			
+		},
+		
+		special: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			APP.environments.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
+			
+		},
+		
+		select: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var input;
+			
+			input = dom.makeSelect(
+				parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				field.size,
+				field.vocabulary,
+				(session_object && session_object[field.name] ? session_object[field.name] : field.default_value),
+				field.comment
+			);
+			
+			return input;
 
-			case "open_vocabulary": {
-			
-				var value;
-			
-				if (session_object && session_object[field.name]){
-					value = session_object[field.name];
-				}
-				
-				else if (field.default_value){
-					value = field.default_value;
-				}
-				
-				input = dom.openVocabulary(
-					parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					field.size,
-					field.vocabulary,
-					value,
-					field.comment
-				);
-				break;
+		},
+		
+		open_vocabulary: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var value;
+			var input;
+		
+			if (session_object && session_object[field.name]){
+				value = session_object[field.name];
 			}
 			
-			case "check": {
-				input = dom.makeCheckbox(
-					parent, field.heading,
-					element_id_prefix+field.name,
-					element_id_prefix+field.name,
-					(session_object && session_object[field.name] ? session_object[field.name] : false),
-					field.comment
-				);
-				break;
+			else if (field.default_value){
+				value = field.default_value;
 			}
 			
+			input = dom.openVocabulary(
+				parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				field.size,
+				field.vocabulary,
+				value,
+				field.comment
+			);
+			
+			return input;
+		
+		},
+
+		check:  function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+			var input;
+			
+			input = dom.makeCheckbox(
+				parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(session_object && session_object[field.name] ? session_object[field.name] : false),
+				field.comment
+			);
+			
+			return input;
+		},
+		
+
+	};
+
+	
+	var makeForEach = function (fields, parent, element_id_prefix, element_class_prefix, session_object){
+	
+		forEach(fields, function (subfield){
+			
+			make(parent, subfield, element_id_prefix, element_class_prefix, session_object);
+			
+		});
+		
+	};	
+	
+
+	var make = function (parent, field, element_id_prefix, element_class_prefix, session_object){
+		
+		var input;
+
+		if (makeFunctions[field.type]) {
+			input = makeFunctions[field.type](parent, field, element_id_prefix, element_class_prefix, session_object);
 		}
-
+		
+		else {
+			console.log("ERROR: APP.forms.make: Field type not supported! Field type = " + field.type);
+			return;
+		}
+		
 		if (field.not_allowed_chars){
 		
 			input.onkeypress = function(e) {
@@ -292,6 +316,9 @@ APP.forms = (function () {
 
 	};
 	
+	var my = {};
+	
+	my.make = make;
 	
 	my.fill = function (field, element_id_prefix, data_object){
 		
