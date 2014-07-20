@@ -266,8 +266,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 		}
 		
-		alertify.log(l("session", "new_session_has_been_created") + "<br>" +
-		l("session", "name") + ": " + name, "", "5000");
+		APP.log(l("session", "new_session_has_been_created") + "<br>" +
+		l("session", "name") + ": " + name);
 		
 		return session_object.id;
 		
@@ -583,7 +583,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				// user clicked "cancel"
 				my.erase(session_id);
 
-				alertify.log(l("session", "session_deleted"), "", "5000");
+				APP.log(l("session", "session_deleted"));
 			}
 		});
 
@@ -716,7 +716,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		else {
 		
-			alertify.log(l("session", "this_actor_is_already_in_the_session"),"error",5000);
+			APP.log(l("session", "this_actor_is_already_in_the_session"),"error");
 		
 		}
 	};
@@ -860,8 +860,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				g(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month").value = date.month;
 				g(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day").value = date.day;
 				
-				alertify.log(l("session", "session_date_extracted_from_eaf_file_name") +
-				": " + date.year + "-" + date.month + "-" + date.day, "", 5000);
+				APP.log(l("session", "session_date_extracted_from_eaf_file_name") +
+				": " + date.year + "-" + date.month + "-" + date.day);
 			
 			}
 		
@@ -971,7 +971,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		if (my.sessions.length < 2){
 		
-			alertify.log(l("session", "at_least_2_sessions_to_assign_metadata"), "error", "5000");
+			APP.log(l("session", "at_least_2_sessions_to_assign_metadata"), "error");
 			return;
 			
 		}
@@ -1000,7 +1000,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		}
 
-		alertify.log(l("session", "session_1_metadata_assigned_to_all_sessions"), "", "5000");
+		APP.log(l("session", "session_1_metadata_assigned_to_all_sessions"));
 
 	};
 

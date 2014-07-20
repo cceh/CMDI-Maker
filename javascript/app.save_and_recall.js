@@ -123,18 +123,18 @@ APP.save_and_recall = (function () {
 		}
 		
 		catch (e){
-			alertify.log(APP.l("save_and_recall","no_data_found"),"",5000);
+			APP.log(APP.l("save_and_recall","no_data_found"));
 			return;
 		}
 		
-		alertify.log(APP.l("save_and_recall","active_profile_data_deleted"),"",5000);
+		APP.log(APP.l("save_and_recall","active_profile_data_deleted"));
 
 	};
 	
 	
 	my.userSave = function(){
 		my.save();
-		alertify.log(APP.l("save_and_recall","form_saved"),"",5000);
+		APP.log(APP.l("save_and_recall","form_saved"));
 	};
 
 	
@@ -192,7 +192,7 @@ APP.save_and_recall = (function () {
 			}
 			
 			catch (e) {
-				alertify.log(APP.l("settings","no_project_data_found_in_file"),"error",5000);
+				APP.log(APP.l("settings","no_project_data_found_in_file"),"error");
 			}
 			
 			if (typeof project_data == "undefined"){

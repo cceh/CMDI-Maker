@@ -157,7 +157,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 					else {
 						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
 						APP.reset_form();
-						alertify.log("Form reset","",5000);
+						APP.log("Form reset");
 						
 					}
 				});

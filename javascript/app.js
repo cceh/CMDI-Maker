@@ -380,11 +380,22 @@ var APP = (function () {
 		
 		else {
 		
-			alertify.log(my.l("welcome_back"), "", 5000);
+			my.log(my.l("welcome_back"));
 		
 		}
 
 	};
+	
+	
+	my.log = function(message, type){
+		
+		if (!type){
+			type = "";
+		}
+		
+		alertify.log(message, type, APP.CONF.log_message_period);
+	
+	}
 	
 	
 	my.alert = function(message) {

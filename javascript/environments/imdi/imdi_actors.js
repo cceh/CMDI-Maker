@@ -161,7 +161,7 @@ imdi_environment.workflow[2] = (function(){
 				my.id_counter = 0;
 				my.actors = [];
 
-				alertify.log(l("all_actors_deleted"), "", "5000");
+				APP.log(l("all_actors_deleted"));
 				APP.save();
 				
 				my.refreshListDisplay();
@@ -482,7 +482,7 @@ imdi_environment.workflow[2] = (function(){
 		//then create a duplicate
 		if (save === true){
 			my.save_active_actor(true);
-			alertify.log(l("actor_saved_and_duplicated"),"success",5000);
+			APP.log(l("actor_saved_and_duplicated"),"success");
 		}
 
 	};
@@ -596,8 +596,7 @@ imdi_environment.workflow[2] = (function(){
 				my.refreshListDisplay();
 				APP.save();
 				
-				alertify.log(l("actor_deleted_before_name") + name_of_actor + 
-				l("actor_deleted_after_name"), "", "5000");
+				APP.log(l("actor_deleted_before_name") + name_of_actor + l("actor_deleted_after_name"));
 
 			}
 		});
@@ -655,7 +654,7 @@ imdi_environment.workflow[2] = (function(){
 		APP.save();
 		my.refreshListDisplay();
 		
-		alertify.log(l("actors_alphabetically_sorted"),"",5000);
+		APP.log(l("actors_alphabetically_sorted"));
 
 	};
 
