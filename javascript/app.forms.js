@@ -373,6 +373,8 @@ APP.forms = (function () {
 
 
 	my.createEmptyObjectFromTemplate = function (field, resulting_object){
+	//resulting object does not have to be specified, when calling this method, it is only neccessary because of
+	//the recursive nature of this method
 		
 		var f;
 		var sub_object;
@@ -493,68 +495,72 @@ APP.forms = (function () {
 	
 	
 	};
+	
+	
+	var fillObjectForEach = function(fields, object, element_id_prefix){
+
+		forEach(fields, function(field){
+
+			fillObjectWithFormData(object, element_id_prefix, field);
+			
+		});
+
+	};
 
 
-	my.fillObjectWithFormData = function (object, element_id_prefix, form_element){
+	var fillObjectWithFormData = function (object, element_id_prefix, field){
 	//object = the object to be filled with form data
-	//form_element = element of the form as specified in session_form
+	//field = form template object
 	
 		var f;
 		var sub_object;
 
-		if ((form_element.type == "text") || (form_element.type == "textarea") || (form_element.type == "select") || (form_element.type == "open_vocabulary")){
+		if ((field.type == "text") || (field.type == "textarea") || (field.type == "select") || (field.type == "open_vocabulary")){
 
-			object[form_element.name] = get(element_id_prefix+form_element.name);
+			object[field.name] = get(element_id_prefix+field.name);
 			
 		}
 		
-		if (form_element.type == "check"){
+		if (field.type == "check"){
 
-			object[form_element.name] = g(element_id_prefix+form_element.name).checked;
+			object[field.name] = g(element_id_prefix+field.name).checked;
 			
 		}
 		
-		if (form_element.type == "date"){
+		if (field.type == "date"){
 		
-			object[form_element.name].year = get(element_id_prefix+form_element.name+"_year");
-			object[form_element.name].month = get(element_id_prefix+form_element.name+"_month");
-			object[form_element.name].day = get(element_id_prefix+form_element.name+"_day");
+			object[field.name].year = get(element_id_prefix+field.name+"_year");
+			object[field.name].month = get(element_id_prefix+field.name+"_month");
+			object[field.name].day = get(element_id_prefix+field.name+"_day");
 		}
 		
-		if (form_element.type == "column"){
+		if (field.type == "column"){
 			
-			if (form_element.name && form_element.name !== ""){
-				element_id_prefix += form_element.name + "_";
+			if (field.name && field.name !== ""){
+				element_id_prefix += field.name + "_";
 			}
 			
-			for (f=0; f<form_element.fields.length; f++){
-
-				my.fillObjectWithFormData(object, element_id_prefix, form_element.fields[f]);
+			fillObjectForEach(field.fields, object, element_id_prefix);
 			
-			}
 		}
 		
-		if (form_element.type == "subarea"){
+		if (field.type == "subarea"){
 		
-			if (form_element.name && form_element.name !== ""){
-				element_id_prefix += form_element.name + "_";
+			if (field.name && field.name !== ""){
+				element_id_prefix += field.name + "_";
 			}
 			
-			for (f=0; f<form_element.fields.length; f++){
-				
-				my.fillObjectWithFormData(object[form_element.name], element_id_prefix, form_element.fields[f]);
+			fillObjectForEach(field.fields, object[field.name], element_id_prefix);
 			
-			}
 		}
 		
-		if (form_element.type == "form"){
+		if (field.type == "form"){
 		
-			for (f=0; f<form_element.fields.length; f++){
-				var subfield = form_element.fields[f];
+			forEach(field.fields, function(field){
 				
 				//check if a sub object has to be created
-				if (subfield.name && subfield.name !== "" && (subfield.type == "column" || subfield.type == "subarea")){
-					sub_object = object[subfield.name];
+				if (field.name && field.name !== "" && (field.type == "column" || field.type == "subarea")){
+					sub_object = object[field.name];
 				}
 				
 				else {
@@ -562,20 +568,22 @@ APP.forms = (function () {
 				}
 				
 				
-				my.fillObjectWithFormData(sub_object, element_id_prefix, subfield);
+				my.fillObjectWithFormData(sub_object, element_id_prefix, field);
 			
-			}
+			});
 			
 		}
 		
-		if (form_element.type == "special"){
+		if (field.type == "special"){
 			// TO DO!!!
-			//object[form_element.name] = APP.active_environment.getSpecialFormData(field, parent, element_id_prefix, element_class_prefix);
+			//object[field.name] = APP.active_environment.getSpecialFormData(field, parent, element_id_prefix, element_class_prefix);
 			return;
 		}
 		
 
 	};
+	
+	my.fillObjectWithFormData = fillObjectWithFormData;
 	
 	return my;
 	
