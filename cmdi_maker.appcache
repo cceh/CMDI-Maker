@@ -6,10 +6,10 @@ index.html
 css/alertify.core.css
 css/alertify.default.css
 css/common.css
-css/screen/layout.css
-css/screen/layout-cmdi.css
-css/screen/typography.css
-css/yaml/core/base.css
+css/layout.css
+css/layout-cmdi.css
+css/typography.css
+css/yaml.css
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -46,6 +46,7 @@ img/icons/trash.png
 img/icons/up.png
 img/icons/user.png
 img/icons/warning.png
+img/icons/wrench.png
 img/favicon.ico
 img/logo-128.png
 img/logos/LOGO_BMBF.jpg
