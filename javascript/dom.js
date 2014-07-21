@@ -666,6 +666,13 @@ var dom = (function() {
 			forEach(functions, function(func){
 				if (func.type == "function_wrap"){
 					g(func.wrapper_id).style.display = "inline";
+					
+					//set the sub_div to same width and position as function_div
+					var rect = g(func.wrapper_id).children[0].getBoundingClientRect();
+					g(func.wrapper_id).children[1].style.left = rect.left + "px";
+					g(func.wrapper_id).children[1].style.width = (rect.width - 30) + "px";
+					//-30 because of the 15px border of sub_divs
+
 				}
 				
 				else {

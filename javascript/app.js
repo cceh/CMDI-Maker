@@ -155,8 +155,8 @@ var APP = (function () {
 		}
 		
 		//try to get term in default language
-		console.log("Haven't found a term in active language: " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4);
-		console.log("Trying to get it in default language");
+		console.log("Haven't found a term in " + LP.name + ": " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4 + ". " +
+		"Trying to get it in default language.");
 		
 		var defaultLP = LanguagePacksArray[0];
 		var termInDefaultLP = getTermInLP(defaultLP,arg1,arg2,arg3,arg4);
@@ -454,40 +454,42 @@ var APP = (function () {
 	
 		var functions_div = g("functions");
 		var function_div;
+		var rect;
 	
-		for (var f=0; f<functions.length; f++){
+		forEach(functions, function(func){
 		
-			if (functions[f].type != "function_wrap"){
-				function_div = dom.newElement("div", functions[f].id, "function_icon",functions_div);
-				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + functions[f].icon);
-				var label = dom.h3(function_div, functions[f].label);
+			if (func.type != "function_wrap"){
+			
+				function_div = dom.newElement("div", func.id, "function_icon",functions_div);
+				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + func.icon);
+				var label = dom.h3(function_div, func.label);
 				
-				if (functions[f].label_span_id){
-					dom.newElement("span", functions[f].label_span_id, "", label);
+				if (func.label_span_id){
+					dom.newElement("span", func.label_span_id, "", label);
 				}
 				
-				else if (functions[f].label) {  //if label is there
-					label.innerHTML = functions[f].label;
+				else if (func.label) {  //if label is there
+					label.innerHTML = func.label;
 				}
 				
-				function_div.addEventListener('click', functions[f].onclick);
+				function_div.addEventListener('click', func.onclick);
 
 			}
 
 			else {
 			
-				var function_wrap = dom.div(functions_div,functions[f].wrapper_id,"function_wrap");
+				var function_wrap = dom.div(functions_div,func.wrapper_id,"function_wrap");
 				
-				function_div = dom.div(function_wrap, functions[f].id, "function_icon");
-				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + functions[f].icon);
-				dom.h3(function_div, functions[f].label);
+				function_div = dom.div(function_wrap, func.id, "function_icon");
+				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + func.icon);
+				dom.h3(function_div, func.label);
 				
-				function_div.addEventListener('click', functions[f].onclick);
+				function_div.addEventListener('click', func.onclick);
 
-				var sub_div = dom.newElement("div",functions[f].sub_div,"",function_wrap);
+				var sub_div = dom.newElement("div",func.sub_div,"",function_wrap);
 				
-				if (functions[f].sub_div_innerHTML){
-					sub_div.innerHTML = functions[f].sub_div_innerHTML;
+				if (func.sub_div_innerHTML){
+					sub_div.innerHTML = func.sub_div_innerHTML;
 				}
 				
 				
@@ -503,14 +505,14 @@ var APP = (function () {
 						elem.style.backgroundColor = "";
 					};
 				}(function_div));
-			
+				
 			}
 			
-			if (functions[f].after_that){
-				functions[f].after_that();
+			if (func.after_that){
+				func.after_that();
 			}
 		
-		}
+		});
 	};
 
 	

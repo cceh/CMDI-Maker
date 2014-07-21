@@ -430,8 +430,6 @@ background: cornflowerblue;
 color: black;
 padding: 15px;
 cursor: default;
-
-width: 244px;
 }
 
 #crps_filetype_select h3{
@@ -768,8 +766,6 @@ clear: left;
 display: none;
 bottom: 44px;
 position: absolute;
-width: 353px;
-left: 165px;
 background: cornflowerblue;
 color: black;
 padding: 15px;
