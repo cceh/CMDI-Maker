@@ -965,7 +965,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 
 	my.assignSession1Metadata = function(){
-		var session_form = session_form();
+		var session_form_template = session_form();
 
 		if (my.sessions.length < 2){
 		
@@ -974,25 +974,25 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 		}
 		
-		for (var i=0; i<session_form.fields_to_copy.length; i++){
+		for (var i=0; i<session_form_template.fields_to_copy.length; i++){
 		
-			if (g(APP.CONF.copy_checkbox_element_prefix+session_form.fields_to_copy[i].name).checked){  //if checkbox is checked
+			if (g(APP.CONF.copy_checkbox_element_prefix+session_form_template.fields_to_copy[i].name).checked){  //if checkbox is checked
 			
-				if (session_form.fields_to_copy[i].name == "actors"){  //special case: actors!
+				if (session_form_template.fields_to_copy[i].name == "actors"){  //special case: actors!
 				
 					for (var s=1; s<my.sessions.length; s++){
 						my.removeAllActors(my.sessions[s].id);
 			
 						// copy actors from session 1 to session session
-						for (var a=0;a<my.sessions[0].actors.actors.length;a++){
-							my.addActor(my.sessions[s].id,my.sessions[0].actors.actors[a]);
-						}
+						forEach(my.sessions[0].actors.actors, function (actor){
+							my.addActor(my.sessions[s].id, actor);
+						});
 					
 					}
 				
 				}
 			
-				my.copyFieldsToAllSessions(session_form.fields_to_copy[i].fields);
+				my.copyFieldsToAllSessions(session_form_template.fields_to_copy[i].fields);
 				
 			}
 		
