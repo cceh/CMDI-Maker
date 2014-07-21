@@ -139,7 +139,7 @@ APP.environments = (function () {
 			}
 		}
 	
-		//Variable has to be set first, because later methods depend on it
+		//Variable has to be set first, because later methods depend on that
 		my.active_environment = environment;	
 		
 		console.log("Creating environment: " + environment.id);
@@ -148,7 +148,10 @@ APP.environments = (function () {
 	
 		my.createWorkflow(environment.workflow);
 		
-		g("profile_select").selectedIndex = getIndex(environment) + 1;
+		var profile_select_index = getIndex(environment) + 1;
+		//+1 because the first option of profile select is an empty option
+		
+		g("profile_select").selectedIndex = profile_select_index;
 		
 		APP.view("default");
 	

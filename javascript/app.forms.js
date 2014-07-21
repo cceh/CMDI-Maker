@@ -275,6 +275,93 @@ APP.forms = (function () {
 		
 
 	};
+	
+	var setEmptyString = function(field, resulting_object){
+		resulting_object[field.name] = "";
+	};
+	
+	
+	var createEmptyObjectFunctions = {
+		select: setEmptyString,
+		open_vocabulary: setEmptyString,
+		textarea: setEmptyString,
+		text: setEmptyString,
+		check: function (field, resulting_object){
+			resulting_object[field.name] = false;
+		},
+		
+		form: function(field) {
+
+			var object = {};
+		
+			createEmptyObjectForEach(field.fields, object);
+			
+			return object;
+
+		},
+		
+		column: function(field, resulting_object) {
+			var sub_object;
+			
+			if (field.name && field.name !== ""){
+				//create sub object
+				sub_object = {};
+				resulting_object[field.name] = sub_object;
+			}
+			
+			else {  //if field has no name, do not create a sub object
+				sub_object = resulting_object;
+			}
+		
+			createEmptyObjectForEach(field.fields, sub_object);
+			
+		},
+		
+		subarea: function(field, resulting_object) {
+			var parent_field_name = field.name;
+			
+			//create sub object
+			resulting_object[parent_field_name] = {};
+		
+			createEmptyObjectForEach(field.fields, resulting_object[parent_field_name]);
+			
+		},
+		
+		date: function(field, resulting_object) {
+		
+			var date_object = {
+				year: "",
+				month: "",
+				day: ""
+			};
+		
+			resulting_object[field.name] = date_object;
+			
+		},
+		
+		special: function(field, resulting_object) {
+			if (field.object_structure == "array"){
+				resulting_object[field.name] = [];
+			}
+			
+			else if (field.object_structure == "object"){
+				resulting_object[field.name] = {};
+				
+				if (field.object_arrays){
+				
+					forEach(field.object_arrays, function (object_array){
+						resulting_object[field.name][object_array] = [];
+					});
+				
+				}
+			}
+			
+			else {
+				resulting_object[field.name] = null;
+			}
+			
+		}
+	};
 
 	
 	var makeForEach = function (fields, parent, element_id_prefix, element_class_prefix, session_object){
@@ -316,11 +403,8 @@ APP.forms = (function () {
 
 	};
 	
-	var my = {};
-	
-	my.make = make;
-	
-	my.fill = function (field, element_id_prefix, data_object){
+
+	var fill = function (field, element_id_prefix, data_object, on_special){
 		
 		var target;
 		var f;
@@ -363,129 +447,44 @@ APP.forms = (function () {
 			
 		}
 		
-		if (field.type == "special"){
-			//?????
-			return;
-		
+		if (field.type == "special" && on_special){
+			on_special(field, element_id_prefix, data_object);
 		}
 		
 	};
+	
+	
+	var createEmptyObjectForEach = function (fields, resulting_object){
+	
+		if (typeof fields == "undefined"){
+			return;
+		}
+	
+		forEach(fields, function(field){
+			
+			createEmptyObjectFromTemplate(field, resulting_object);
+			
+		});
+	
+	};
 
 
-	my.createEmptyObjectFromTemplate = function (field, resulting_object){
+	var createEmptyObjectFromTemplate = function (field, resulting_object){
 	//resulting object does not have to be specified, when calling this method, it is only neccessary because of
 	//the recursive nature of this method
 		
-		var f;
-		var sub_object;
-
-		if (field.type == "form") {
-
-			var object = {};
-		
-			forEach(field.fields, function(field){
-			
-				my.createEmptyObjectFromTemplate(field, object);
-				
-			});
-			
-			return object;
-
+		if (createEmptyObjectFunctions[field.type]) {
+			return createEmptyObjectFunctions[field.type](field, resulting_object);
 		}
 		
-		if (field.type == "column") {
-			
-			if (field.name && field.name !== ""){
-				//create sub object
-				sub_object = {};
-				resulting_object[field.name] = sub_object;
-			}
-			
-			else {  //if field has no name, do not create a sub object
-				sub_object = resulting_object;
-			}
-		
-			if (field.fields){
-			
-				forEach(field.fields, function(field){
-			
-					my.createEmptyObjectFromTemplate(field, sub_object);
-				
-				});
-			
-			}
-			
-		}
-		
-		if (field.type == "subarea") {
-			var parent_field_name = field.name;
-			
-			//create sub object
-			resulting_object[parent_field_name] = {};
-		
-			if (field.fields){
-			
-				forEach(field.fields, function(field){
-				
-					my.createEmptyObjectFromTemplate(field, resulting_object[parent_field_name]);
-			
-				});
-			
-			}
-			
-		}
-		
-		if (field.type == "date") {
-		
-			var date_object = {
-				year: "",
-				month: "",
-				day: ""
-			};
-		
-			resulting_object[field.name] = date_object;
-			
-			return;
-		}
-		
-		if (field.type == "special") {
-			if (field.object_structure == "array"){
-				resulting_object[field.name] = [];
-			}
-			
-			else if (field.object_structure == "object"){
-				resulting_object[field.name] = {};
-				
-				if (field.object_arrays){
-				
-					forEach(field.object_arrays, function (object_array){
-						resulting_object[field.name][object_array] = [];
-					});
-				
-				}
-			}
-			
-			else {
-				resulting_object[field.name] = null;
-			}
-			
-			return;
-		}
-		
-		if (field.type == "select" || field.type == "open_vocabulary" || field.type == "textarea" || field.type == "text") {
-			resulting_object[field.name] = "";
-			return;
-		}
-		
-		if (field.type == "check") {
-			resulting_object[field.name] = false;
-			return;
+		else {
+			console.log("ERROR: createEmptyObjectFromTemplate: field.type not defined: " + field.type);
 		}
 		
 	};
 	
 	
-	my.makeObjectWithFormData = function(field, element_id_prefix){
+	var makeObjectWithFormData = function(field, element_id_prefix){
 	
 		var object = my.createEmptyObjectFromTemplate(field);
 		
@@ -508,11 +507,10 @@ APP.forms = (function () {
 	};
 
 
-	var fillObjectWithFormData = function (object, element_id_prefix, field){
+	var fillObjectWithFormData = function (object, element_id_prefix, field, on_special){
 	//object = the object to be filled with form data
 	//field = form template object
 	
-		var f;
 		var sub_object;
 
 		if ((field.type == "text") || (field.type == "textarea") || (field.type == "select") || (field.type == "open_vocabulary")){
@@ -574,16 +572,21 @@ APP.forms = (function () {
 			
 		}
 		
-		if (field.type == "special"){
-			// TO DO!!!
-			//object[field.name] = APP.active_environment.getSpecialFormData(field, parent, element_id_prefix, element_class_prefix);
-			return;
+		if (field.type == "special" && on_special){
+			on_special(object, element_id_prefix, field);
 		}
 		
 
 	};
 	
+	
+	var my = {};
+	
+	my.make = make;
+	my.fill = fill;
+	my.makeObjectWithFormData = makeObjectWithFormData;
 	my.fillObjectWithFormData = fillObjectWithFormData;
+	my.createEmptyObjectFromTemplate = createEmptyObjectFromTemplate;
 	
 	return my;
 	

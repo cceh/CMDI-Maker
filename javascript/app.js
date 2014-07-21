@@ -148,8 +148,6 @@ var APP = (function () {
 		//Look in the LanguagesArray, that's been given by the APP or by one environment and then search for the language that has the id of the APP's active language
 		var LP = my.getActiveLanguagePackFromID(my.active_language.id, LanguagePacksArray);
 	
-		
-		
 		var termInLP = getTermInLP(LP, arg1, arg2, arg3, arg4);
 		
 		if (typeof termInLP != "undefined"){
@@ -303,8 +301,9 @@ var APP = (function () {
 		my.initSettings(my.settings(), g("core_settings"));
 		my.displayMetadataLanguages();
 		my.displayLanguages();
-		my.environments.displayAllInSelect();
 		my.addEventListeners();
+		
+		my.environments.displayAllInSelect();
 		
 		if ((!no_recall) && (typeof recall_object != "undefined")){
 			my.recall(recall_object);
@@ -805,8 +804,6 @@ var APP = (function () {
 				my.save_and_recall.recallEnvironmentData(environment_data);
 			}
 			
-			g("profile_select").selectedIndex = my.environments.getByID(recall_object.active_environment_id) + 1;
-		
 		}
 		
 		my.view(recall_object.active_view);
