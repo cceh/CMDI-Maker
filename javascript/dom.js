@@ -180,7 +180,7 @@ var dom = (function() {
 		var span = dom.newElement("span","","",parent,title);
 		span.title = hover;
 
-		parent.appendChild(document.createElement("br"));
+		my.br(parent);
 
 		return input;	
 		

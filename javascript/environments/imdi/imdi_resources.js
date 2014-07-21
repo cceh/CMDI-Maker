@@ -70,8 +70,8 @@ imdi_environment.workflow[1] = (function(){
 		var fileending = filename.slice(index_of_dot+1);
 		
 		var fileinfo = {
-			type: l("unknown"),
-			mimetype: l("unknown")
+			type: l("resources", "unknown"),
+			mimetype: l("resources", "unknown")
 		};
 		
 		var list = a(file_types.valid_lamus_written_resource_file_types,0);
@@ -469,7 +469,7 @@ imdi_environment.workflow[1] = (function(){
 		
 			for (f=0; f<my.available_resources.length; f++){
 			
-				if (GetFileTypeFromFilename(my.available_resources[f][0]) == chosen_file_type){
+				if (getFileTypeFromFilename(my.available_resources[f][0]) == chosen_file_type){
 				
 					console.log("Found a file of file type " + chosen_file_type);
 					

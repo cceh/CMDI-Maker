@@ -111,29 +111,29 @@ imdi_environment.imdi_generator = function(){
 		//Actors
 		return_string+=xml.tag("Actors",0);
     
-		for (var a=0;a<session.sessions[session.getSessionIndexFromID(session_id)].actors.actors.length;a++){
-			return_string += insert_actor(session_id,session.sessions[session.getSessionIndexFromID(session_id)].actors.actors[a]);
-		}
+		forEach(session.sessions[session.getSessionIndexFromID(session_id)].actors.actors, function(actor){
+			return_string += insert_actor(session_id, actor);
+		});
 
 		return_string+=xml.tag("Actors",1);
 		return_string+=xml.tag("MDGroup",1);
 		return_string+=xml.tag("Resources",0);
 
-		for (var r=0; r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.length; r++){
+		forEach(session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles, function(mediaFile){
 	
-			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles[r].id;
+			var id = mediaFile.id;
 			console.log("looking for mediafile with id " + id);
 			return_string += insert_mediafile(get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		
-		}
+		});
 	
-		for (var r=0; r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources.length; r++){  
+		forEach(session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources, function(writtenResource){
 
-			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources[r].id;	
+			var id = writtenResource.id;	
 			console.log("looking for wr with id " + id);
 			return_string += insert_written_resource(get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		
-		}
+		});
     
 		return_string+=xml.tag("Resources",1);
 		return_string+=xml.tag("References",0);
@@ -368,9 +368,9 @@ imdi_environment.imdi_generator = function(){
 	my.sessions = [];           
 	my.corpus = create_imdi_corpus();
     
-	for (var s=0;s<session.sessions.length;s++){   
-		my.sessions.push(create_imdi_session(session.sessions[s].id));
-	}
+	forEach(session.sessions, function(session){   
+		my.sessions.push(create_imdi_session(session.id));
+	});
 
 	return my;
 	

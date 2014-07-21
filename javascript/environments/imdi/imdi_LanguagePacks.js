@@ -80,7 +80,7 @@ imdi_environment.languages[0] = {
 			invalid_media_file: 'This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).',
 			invalid_written_resource: 'This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.'
 		},
-		unkown: "Unknown",
+		unknown: "Unknown",
 		create_one_session_per_file: "Create one session per file",
 		files: "Files",
 		selected_files: "Selected Files",
@@ -277,7 +277,7 @@ imdi_environment.languages[1] = {
 			invalid_media_file: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie in WAV oder MP4 umgewandelt werden.',
 			invalid_written_resource: 'Diese Datei scheint keine valide Datei für LAMUS zu sein. Vielleicht sollte sie in PDF oder TXT umgewandelt werden.'
 		},
-		unkown: "Unbekannt",
+		unknown: "Unbekannt",
 		create_one_session_per_file: "Eine Session pro Datei erstellen",
 		files: "Dateien",
 		selected_files: "Ausgewählte Dateien",

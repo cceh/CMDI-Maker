@@ -610,17 +610,17 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		for (var s=0;s<my.sessions.length;s++){
 		
-			for (r=0; r<my.sessions[s].resources.writtenResources.length; r++){
+			for (r=0; r<my.sessions[s].resources.resources.writtenResources.length; r++){
 		
-				if (my.sessions[s].resources.writtenResources[r].id == resource_id){
+				if (my.sessions[s].resources.resources.writtenResources[r].id == resource_id){
 					return r;
 				}
 			
 			}
 			
-			for (r=0; r<my.sessions[s].resources.mediaFiles.length; r++){
+			for (r=0; r<my.sessions[s].resources.resources.mediaFiles.length; r++){
 		
-				if (my.sessions[s].resources.mediaFiles[r].id == resource_id){
+				if (my.sessions[s].resources.resources.mediaFiles[r].id == resource_id){
 					return r;
 				}
 			
@@ -929,33 +929,31 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 
 	my.removeResource = function(session_id, resource_id){
-		var m;
-
 		var ids_of_sessions_media_files = [];
 		
-		for (m=0; m<my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.length; m++){
+		forEach(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles, function(mediaFile){
 		
-			ids_of_sessions_media_files.push(my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles[m].id);
+			ids_of_sessions_media_files.push(mediaFile.id);
 		
-		}
+		});
 		
 		var ids_of_sessions_written_resources = [];
 		
-		for (m=0; m<my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.length; m++){
+		forEach(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources, function(writtenResource){
 		
-			ids_of_sessions_written_resources.push(my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources[m].id);
+			ids_of_sessions_written_resources.push(writtenResource.id);
 		
-		}
+		});
 
 		if (ids_of_sessions_written_resources.indexOf(resource_id) != -1){
 
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
 		if (ids_of_sessions_media_files.indexOf(resource_id) != -1){
 
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
+			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
