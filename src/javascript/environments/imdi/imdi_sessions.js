@@ -80,14 +80,14 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 		var array = [];
 	
-		for (var s=0; s<my.sessions.length; s++){
+		forEach(my.sessions, function(session){
 		
-			var session_object = my.sessions[s];
+			var session_object = session;
 			
-			APP.forms.fillObjectWithFormData(session_object, APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_", session_form());		
+			APP.forms.fillObjectWithFormData(session_object, APP.CONF.session_dom_element_prefix+session.id+"_", session_form());		
 			
 			array.push(session_object);
-		}
+		});
 		
 		my.sessions = array;	
 	
@@ -108,15 +108,15 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var options = sf.fields_to_copy;
 
-		for (var c=0; c<options.length; c++){
+		forEach(options, function(option){
 		
-			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+options[c].name, "", "", "checkbox");
+			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+option.name, "", "", "checkbox");
 			input.checked = true;
 			
-			dom.span(div, "", "", " "+options[c].label);
+			dom.span(div, "", "", " "+option.label);
 			dom.br(div);
 		
-		}
+		});
 
 
 	};
@@ -260,11 +260,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		my.drawNewSession(session_object);
 		
-		for (var r=0; r<resources.length; r++){
+		forEach(resources, function(resource){
 		
-			my.addResource(session_object.id, resources[r]);
+			my.addResource(session_object.id, resource);
 			
-		}
+		});
 		
 		APP.log(l("session", "new_session_has_been_created") + "<br>" +
 		l("session", "name") + ": " + name);
@@ -287,11 +287,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 		}
 		
-		for (var s=0; s<my.sessions.length; s++){
-		
-			my.drawNewSession(my.sessions[s]);
-		
-		}
+		forEach(my.sessions, my.drawNewSession);
 	
 	};
 	
@@ -372,11 +368,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (typeof(session_object.actors.actors) != "undefined"){
 		
-			for (var a=0; a<session_object.actors.actors.length; a++){
+			forEach(session_object.actors.actors, function(actor){
 		
-				my.renderActor(session_id, session_object.actors.actors[a]);
+				my.renderActor(session_id, actor);
 		
-			}
+			});
 		}
 		
 		
@@ -397,14 +393,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (typeof(session_object.resources.resources.mediaFiles) != "undefined"){
 			
-			for (r=0; r<session_object.resources.resources.mediaFiles.length; r++){
+			forEach(session_object.resources.resources.mediaFiles, function(file){
 			
-				file = session_object.resources.resources.mediaFiles[r];
 				file.id = my.resource_id_counter;
 				my.renderResource(file.id, session_id, "mf", file.name, file.size);
-
 				my.resource_id_counter += 1;
-			}
+				
+			});
 		
 		}
 		
@@ -514,20 +509,20 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		
 		//check if actor in session is part of actors[...].id(s)? if not, remove it immediately!
-		for (var k=0;k<my.sessions[s].actors.actors.length;k++){
+		forEach(my.sessions[s].actors.actors, function(actor){
 			
-			console.log("Trying to find id " + my.sessions[s].actors.actors[k] + " in actors of session "+s);
+			console.log("Trying to find id " + actor + " in actors of session "+s);
 			
 			// if an actor k is not in all available actors, remove it in the session!
-			if (all_available_actor_ids.indexOf(my.sessions[s].actors.actors[k]) == -1){
+			if (all_available_actor_ids.indexOf(actor) == -1){
 				
 				console.log("There is an actor in session "+s+" that does not exist anymore. Deleting!");
-				my.removeActor(my.sessions[s].id,my.sessions[s].actors.actors[k]);
+				my.removeActor(my.sessions[s].id, actor);
 			
 			}
 		
 		
-		}
+		});
 
 
 	};
@@ -539,9 +534,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var all_available_actor_ids = [];
 		
-		for (var n=0; n<actors.length; n++){
-			all_available_actor_ids.push(actors[n].id);
-		}
+		forEach(actors, function(actor){
+			all_available_actor_ids.push(actor.id);
+		});
 		
 		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
 		
@@ -1009,9 +1004,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		for (var s=1;s<my.sessions.length;s++){   //important to not include the first session in this loop
 		
-			for (var k=0;k<fields_to_copy.length;k++){
-				dom.copyField(APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_"+fields_to_copy[k],APP.CONF.session_dom_element_prefix+my.sessions[0].id+"_"+fields_to_copy[k]);
-			}
+			forEach(fields_to_copy, function(field_to_copy){
+				dom.copyField(
+					APP.CONF.session_dom_element_prefix+my.sessions[s].id+"_"+field_to_copy,
+					APP.CONF.session_dom_element_prefix+my.sessions[0].id+"_"+field_to_copy
+				);
+			});
 		
 		}
 		
