@@ -50,6 +50,8 @@ function get(name){
 			else {
 				return "";
 			}
+			
+			break;
 		}
 		
 		default: console.log("Function \"get\" has been misused with a "+elem.nodeName+" element. This should not have happened!");
@@ -70,7 +72,7 @@ var g = function (id){
 
 	return document.getElementById(id);
 
-}
+};
 
 
 function randomString(length, chars) {
@@ -196,9 +198,9 @@ function today(){
 	if (month < 10) {month = "0" + month;}
 
 
-	var today = now.getFullYear() + "-" + month + "-" + day;
+	var today_date = now.getFullYear() + "-" + month + "-" + day;
 
-	return today;
+	return today_date;
 }    
 
 
@@ -300,19 +302,22 @@ function parseDate(str){
 }
 
 
-function parse_birth_date(string){
+var parse_birth_date = function(string){
+	var year;
+	var month;
+	var day;
 
 	if (string.length != 10 || string == "Unspecified" || string == "Unknown"){
-		var year = "YYYY";
-		var month = "MM";
-		var day = "DD";
+		year = "YYYY";
+		month = "MM";
+		day = "DD";
 	}
 	
 	else {
 	
-		var year = string.slice(0,4);
-		var month = string.slice(5,7);
-		var day = string.slice(8,10);	
+		year = string.slice(0,4);
+		month = string.slice(5,7);
+		day = string.slice(8,10);	
 
 	}
 
@@ -328,4 +333,4 @@ function parse_birth_date(string){
 	
 	return object;
 
-}
+};

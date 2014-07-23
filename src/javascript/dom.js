@@ -41,7 +41,7 @@ var dom = (function() {
 	
 		return radios[my.getSelectedRadioIndex(radios)].value;
 	
-	}
+	};
 	
 	
 	my.removeOptions = function(selectbox){
@@ -789,7 +789,7 @@ var dom = (function() {
 	
 		my.removeOptions(select);
 		
-		if (first_option_empty == true){
+		if (first_option_empty === true){
 		
 			var NewOption = new Option("", 0, false, true);
 			select.options[select.options.length] = NewOption;

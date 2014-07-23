@@ -14,6 +14,51 @@ var htmlreplace = require('gulp-html-replace');
 var header = require('gulp-header');
 
  
+var source_scripts = [
+/* Dependencies */
+"./src/javascript/alertify.min.js",
+"./src/javascript/FileSaver.js",
+"./src/javascript/xml.js",
+"./src/javascript/helpers.js",
+"./src/javascript/dom.js",	
+"./src/javascript/LanguageIndex.js",
+	
+	
+/*Environments */
+	/*IMDI */
+	"./src/javascript/environments/imdi/imdi_environment.js",
+	"./src/javascript/environments/imdi/imdi_LanguagePacks.js",
+	"./src/javascript/environments/imdi/imdi_generator.js",
+	"./src/javascript/environments/imdi/cmdi_generator.js",
+	"./src/javascript/environments/imdi/imdi_forms.js",
+	"./src/javascript/environments/imdi/imdi_corpus.js",
+		"./src/javascript/environments/imdi/imdi_content_languages.js",
+	"./src/javascript/environments/imdi/imdi_resources.js",
+	"./src/javascript/environments/imdi/imdi_actors.js",
+		"./src/javascript/environments/imdi/imdi_actor_languages.js",
+	"./src/javascript/environments/imdi/imdi_sessions.js",
+	"./src/javascript/environments/imdi/imdi_output.js",
+
+	/*ELDP */
+	"./src/javascript/environments/eldp/eldp_environment.js",
+	"./src/javascript/environments/eldp/eldp_LanguagePacks.js",			
+	"./src/javascript/environments/eldp/eldp_forms.js",
+	"./src/javascript/environments/eldp/eldp_resources.js",
+	"./src/javascript/environments/eldp/eldp_actors.js",
+	"./src/javascript/environments/eldp/eldp_actor_languages.js",
+	"./src/javascript/environments/eldp/eldp_sessions.js",
+			
+/*Core */
+"./src/javascript/app.js",
+"./src/javascript/LanguagePacks.js",
+"./src/javascript/app.environments.js",
+"./src/javascript/app.forms.js",
+"./src/javascript/app.save_and_recall.js",
+"./src/javascript/app.config.js"
+
+];
+ 
+ 
 // JS hint task
 gulp.task('jshint', function() {
   gulp.src('./src/javascript/*.js')
@@ -52,49 +97,7 @@ gulp.task('htmlminify', function() {
 });
 
 
-var source_scripts = [
-/* Dependencies */
-"./src/javascript/alertify.min.js",
-"./src/javascript/FileSaver.js",
-"./src/javascript/xml.js",
-"./src/javascript/helpers.js",
-"./src/javascript/dom.js",	
-"./src/javascript/LanguageIndex.js",
-		
-		
-/*Environments */
-	/*IMDI */
-	"./src/javascript/environments/imdi/imdi_environment.js",
-	"./src/javascript/environments/imdi/imdi_LanguagePacks.js",
-	"./src/javascript/environments/imdi/imdi_generator.js",
-	"./src/javascript/environments/imdi/cmdi_generator.js",
-	"./src/javascript/environments/imdi/imdi_forms.js",
-	"./src/javascript/environments/imdi/imdi_corpus.js",
-		"./src/javascript/environments/imdi/imdi_content_languages.js",
-	"./src/javascript/environments/imdi/imdi_resources.js",
-	"./src/javascript/environments/imdi/imdi_actors.js",
-		"./src/javascript/environments/imdi/imdi_actor_languages.js",
-	"./src/javascript/environments/imdi/imdi_sessions.js",
-	"./src/javascript/environments/imdi/imdi_output.js",
 
-	/*ELDP */
-	"./src/javascript/environments/eldp/eldp_environment.js",
-	"./src/javascript/environments/eldp/eldp_LanguagePacks.js",			
-	"./src/javascript/environments/eldp/eldp_forms.js",
-	"./src/javascript/environments/eldp/eldp_resources.js",
-	"./src/javascript/environments/eldp/eldp_actors.js",
-	"./src/javascript/environments/eldp/eldp_actor_languages.js",
-	"./src/javascript/environments/eldp/eldp_sessions.js",
-			
-/*Core */
-"./src/javascript/app.js",
-"./src/javascript/LanguagePacks.js",
-"./src/javascript/app.environments.js",
-"./src/javascript/app.forms.js",
-"./src/javascript/app.save_and_recall.js",
-"./src/javascript/app.config.js"
-
-];
 
 
 var header_text = '/*\n'+

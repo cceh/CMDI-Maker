@@ -89,7 +89,7 @@ APP.environments = (function () {
 		
 		});
 	
-	}
+	};
 	
 	
 	my.unloadActive = function (){

@@ -140,7 +140,7 @@ var APP = (function () {
 		
 		return LP[arg1];
 	
-	}
+	};
 	
 	
 	my.getTermInActiveLanguage = function(LanguagePacksArray, arg1, arg2, arg3, arg4){
@@ -324,7 +324,7 @@ var APP = (function () {
 			select.options[select.options.length] = NewOption;
 			
 		});
-	  
+	
 		select.selectedIndex = 0;
 
 	};
@@ -342,7 +342,7 @@ var APP = (function () {
 			select.options[select.options.length] = NewOption;
 			
 		});
-	  
+	
 		select.selectedIndex = 0;
 
 	};
@@ -394,7 +394,7 @@ var APP = (function () {
 		
 		alertify.log(message, type, APP.CONF.log_message_period);
 	
-	}
+	};
 	
 	
 	my.alert = function(message) {

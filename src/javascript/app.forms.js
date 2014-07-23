@@ -192,11 +192,12 @@ APP.forms = (function () {
 		},
 		
 		form: function(parent, field, element_id_prefix, element_class_prefix, session_object){
-		
+			var form_parent;
+			
 			if ((field.fields) && (field.fields[0].type == "column")){
 				var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
 				var tr = dom.newElement("tr","","",table);
-				var form_parent = tr;
+				form_parent = tr;
 			}
 			
 			else {
