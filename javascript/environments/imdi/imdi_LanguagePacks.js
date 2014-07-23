@@ -364,7 +364,7 @@ imdi_environment.languages[1] = {
 		every_session_must_have_a_project_name: "Jede Session muss einen Project Name haben!",
 		corpus_must_have_proper_name: "Das Corpus muss einen validen oder garkeinen Namen haben.<br>Nicht erlaubt sind: ",
 		sessions_must_have_proper_name: "Jede Session muss einen validen Namen haben.<br>Unbenannte Sessions sind nicht erlaubt.<br>Nicht erlaubte Zeichen sind: ",
-		download_corpus_including_all_sessions: "Corpus inklusive alle Sessions herunterladen",
+		download_corpus_including_all_sessions: "Corpus inklusive aller Sessions herunterladen",
 
 	}
 	

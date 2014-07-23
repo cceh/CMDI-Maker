@@ -69,7 +69,7 @@ APP.languages[0] = {
 	start: {
 		greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
 		"When you load this page, you can pick up where you left off.",
-		lets_go: "Let's go!",
+		lets_go: "and get started!",
 		is_supported_by: "CMDI Maker is supported by",
 		need_help: "Need help?",
 		help_pages_description: "On the help pages you will find video tutorials in several languages, a mailing list, go-to persons and much more!",
@@ -142,7 +142,7 @@ APP.languages[1] = {
 	start: {
 		greeting_text: "Willkommen!<br>Dies ist eine Offline-Webanwendung. Du kannst sie fortan auch ohne Internetverbindung nutzen.<br>"+
 		"Wenn Du diese Seite lädst, kannst du genau dort weitermachen, wo du aufgehört hast.",
-		lets_go: "Los geht's!",
+		lets_go: "und leg los!",
 		is_supported_by: "CMDI Maker wird unterstützt von",
 		need_help: "Brauchst Du Hilfe?",
 		help_pages_description: "Auf den Hilfe-Seiten findest Du Video-Tutorials in verschiedenen Sprachen, eine Mailing-Liste, Ansprechpartner und vieles mehr!",
