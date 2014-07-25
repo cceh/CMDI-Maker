@@ -83,7 +83,7 @@ gulp.task('imagemin', function() {
 // minify new or changed HTML pages
 gulp.task('htmlminify', function() {
   //var htmlSrc = './*.html';
-  var htmlSrc = './build/*.html';
+  var htmlSrc = './src/index.html';
   //because we first replace script and style tags and then replace the file
   //at the build direction
   
@@ -92,6 +92,10 @@ gulp.task('htmlminify', function() {
  
   gulp.src(htmlSrc)
     .pipe(changed(htmlDst))
+    .pipe(htmlreplace({
+        'css': 'styles/styles.css',
+        'js': 'scripts/script.js'
+    }))
     .pipe(minifyHTML())
     .pipe(gulp.dest(htmlDst));
 });
@@ -146,21 +150,9 @@ gulp.task('styles', function() {
     .pipe(gulp.dest('./build/styles/'));
 });
 
-//Replace script tags in HTML
-gulp.task('htmlreplace', function() {
-  gulp.src('./src/index.html')
-    .pipe(htmlreplace({
-        'css': 'styles/styles.css',
-        'js': 'scripts/script.js'
-    }))
-    .pipe(gulp.dest('./build/'));
-});
-
-
-
 
 // default gulp task
-gulp.task('default', ['imagemin', 'htmlreplace', 'htmlminify', 'scripts', 'styles'], function() {
+gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'styles'], function() {
 });
 
 

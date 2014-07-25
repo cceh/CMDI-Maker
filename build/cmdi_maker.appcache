@@ -3,7 +3,7 @@ CACHE MANIFEST
 
 CACHE:
 index.html
-css/styles.css
+styles/styles.css
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
