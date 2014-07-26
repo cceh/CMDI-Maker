@@ -20,6 +20,42 @@ var APP = (function () {
 
 	var my = {};
 	
+	
+	my.init = function (no_recall) {
+		var recall_object;
+		
+		my.active_language = my.languages[0];
+		
+		if (!no_recall){
+			recall_object = my.save_and_recall.getRecallDataForApp();
+			
+			if (recall_object && recall_object.settings.active_language_id){
+				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
+			}
+		}
+		
+		my.checkIfFirstStart();
+		g("version_span").innerHTML = APP.CONF.version;
+		my.sayHello();
+		g("settings_heading").innerHTML = my.l("settings","settings");
+		my.initSettings(my.settings(), g("core_settings"));
+		my.displayMetadataLanguages();
+		my.displayLanguages();
+		my.addEventListeners();
+		
+		my.environments.displayAllInSelect();
+		
+		if ((!no_recall) && (typeof recall_object != "undefined")){
+			my.recall(recall_object);
+		}
+		
+		my.drawMainMenu(my.main_menu_elements());
+		
+		window.addEventListener("beforeunload", my.save, false);
+		
+	};
+
+	
 	my.languages = [];
 	
 	my.getLPFromID = function(id){
@@ -66,12 +102,10 @@ var APP = (function () {
 		{
 			id: "settings",
 			icon: "gear2.png",
-			place: "bottom"
 		},
 		{
 			id: "about",
 			icon: "about.png",
-			place: "bottom"
 		}
 	];
 	
@@ -170,6 +204,88 @@ var APP = (function () {
 		return "###";
 
 	};
+	
+	
+	my.main_menu_elements = function(){
+		return [
+			{
+				title: my.l("save"),
+				id: "LINK_save_form",
+				icon:	"save.png",
+				onclick: function(){ my.save_and_recall.userSave(); }
+			},
+			{
+				title: my.l("settings", "settings"),
+				id: "VIEWLINK_settings",
+				icon:	"wrench.png",
+				onclick: function(){ APP.view("VIEW_settings"); }
+			},
+			{
+				title: my.l("about"),
+				id: "VIEWLINK_about",
+				icon:	"about.png",
+				onclick: function(){ APP.view("VIEW_about"); }
+			}
+		];
+	
+	};
+	
+	
+	my.drawMainMenu = function(menu_elements){
+	
+		var menu = dom.div(g("cmdi_maker_body"), "main_menu_div", "");
+		
+		forEach(menu_elements, function(element){
+		
+			var div = dom.div(menu, element.id, "main_menu_entry");
+			dom.img(div, "", "main_menu_entry_img", APP.CONF.path_to_icons + element.icon);
+			
+			dom.span(div, "", "main_menu_entry_span", element.title);
+			
+			div.addEventListener("click", element.onclick, false);
+			div.addEventListener("click", my.closeMainMenu, false);
+		
+		});
+		
+		my.closeMainMenu();
+		
+		g("main_menu_icon").addEventListener("click", my.changeMainMenuDisplay);
+	
+	};
+	
+	
+	my.changeMainMenuDisplay = function(){
+	
+		if (g("main_menu_div").style.display == "none"){
+			my.openMainMenu();
+		}
+		
+		else {
+			my.closeMainMenu();
+		}
+		
+	
+	};
+	
+	
+	my.closeMainMenu = function(){
+		
+		if (!g("main_menu_div")){
+			return;
+		}
+		
+		g("main_menu_div").style.display = "none";
+		g("main_menu_icon").style.backgroundColor = "";
+		
+	};
+	
+	
+	my.openMainMenu = function(){
+
+		g("main_menu_div").style.display = "block";
+		g("main_menu_icon").style.backgroundColor = "cornflowerblue";
+	
+	};	
 	
 	
 	my.settings = function(){
@@ -280,37 +396,6 @@ var APP = (function () {
 		];
 	};
 	
-	
-	my.init = function (no_recall) {
-		var recall_object;
-		
-		my.active_language = my.languages[0];
-		
-		if (!no_recall){
-			recall_object = my.save_and_recall.getRecallDataForApp();
-			
-			if (recall_object && recall_object.settings.active_language_id){
-				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
-			}
-		}
-		
-		my.checkIfFirstStart();
-		g("version_span").innerHTML = APP.CONF.version;
-		my.sayHello();
-		g("settings_heading").innerHTML = my.l("settings","settings");
-		my.initSettings(my.settings(), g("core_settings"));
-		my.displayMetadataLanguages();
-		my.displayLanguages();
-		my.addEventListeners();
-		
-		my.environments.displayAllInSelect();
-		
-		if ((!no_recall) && (typeof recall_object != "undefined")){
-			my.recall(recall_object);
-		}
-		
-	};
-
 	
 	my.displayMetadataLanguages = function (){
 	
@@ -521,6 +606,7 @@ var APP = (function () {
 		var id;
 	
 		dom.closeSelectFrame();
+		my.closeMainMenu();
 	
 		if (typeof module_or_id === 'string') {
 			
@@ -571,7 +657,7 @@ var APP = (function () {
 		if (module && module.view){
 			module.view();
 		}
-	
+		
 	};
 	
 	
@@ -586,9 +672,7 @@ var APP = (function () {
 		}
 
 		//Unhighlight APP VIEWLINKS
-		forEach(my.views, function(view){
-			g(APP.CONF.viewlink_id_prefix + view.id).style.backgroundColor = "";
-		});
+		g(APP.CONF.viewlink_id_prefix + "start").style.backgroundColor = "";
 		
 		var module = my.environments.getModuleByViewID(id);
 		
@@ -596,7 +680,7 @@ var APP = (function () {
 			g(APP.CONF.viewlink_id_prefix + module.identity.id).style.backgroundColor = APP.CONF.highlight_color;
 		}
 		
-		else {
+		else if (id == "VIEW_start"){
 			id = id.substr(APP.CONF.view_id_prefix.length);
 			g(APP.CONF.viewlink_id_prefix+id).style.backgroundColor = APP.CONF.highlight_color;
 		}
@@ -730,6 +814,8 @@ var APP = (function () {
 	
 	my.addEventListeners = function(){
 	
+		g("VIEWLINK_start").addEventListener("click", function() { my.view("start"); });
+	
 		g('link_lets_go').addEventListener('click', function() {
 		
 			if (typeof my.environments.active_environment == "undefined"){
@@ -746,16 +832,6 @@ var APP = (function () {
 			}
 			
 		});
-		
-		for (var v=0; v<my.views.length; v++){
-			g(APP.CONF.viewlink_id_prefix + my.views[v].id).addEventListener('click', function(num) {
-				return function(){
-					my.view(APP.CONF.view_id_prefix + num);
-				};
-			}(my.views[v].id));
-		}
-		
-		g("LINK_save_form").addEventListener("click", function(){ my.save_and_recall.userSave(); });
 		
 		document.getElementsByName("radio_auto_save").selectedIndex = 3;
 		

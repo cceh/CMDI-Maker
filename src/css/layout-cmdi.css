@@ -104,11 +104,9 @@ padding-bottom: 15px;
 
 }
 
-.icon_div:hover, .icon_div_hover:hover{
+.icon_div:hover, .icon_div_hover:hover, #main_menu_icon:hover{
 
 background-color: pink;
-
-/*background-color: rgb(255, 139, 199);*/
 
 }
 
@@ -277,9 +275,55 @@ position: fixed;
 bottom: 0px;
 background: cornflowerblue;
 left: 0px;
-right: 100px;
+right: 0px;
 height: 44px;
 
+}
+
+
+#main_menu_icon{
+
+height: 36px;
+padding: 7px;
+float: right;
+cursor: pointer;
+
+}
+
+#main_menu_div{
+
+background: cornflowerblue;
+position: fixed;
+top: 50px;
+right: 0px;
+width: 300px;
+
+}
+
+.main_menu_entry{
+
+color: white;
+cursor: pointer;
+height: 50px;
+
+}
+
+.main_menu_entry:hover{
+
+background: pink;
+
+}
+
+.main_menu_entry_img{
+	height: 30px;
+	padding: 10px;
+	margin-right: 10px;
+}
+
+.main_menu_entry_span{
+	font-size: 16pt;
+	position: relative;
+	top: -16px;
 }
 
 input, textarea, select{

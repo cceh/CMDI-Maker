@@ -65,6 +65,8 @@ APP.languages[0] = {
 	ok: "OK",
 
 	welcome_back: "Welcome back!",
+	about: "About",
+	save: "Save",
 	
 	start: {
 		greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
@@ -138,6 +140,8 @@ APP.languages[1] = {
 	ok: "OK",
 	
 	welcome_back: "Willkommen zurück!",
+	about: "Über",
+	save: "Speichern",
 	
 	start: {
 		greeting_text: "Willkommen!<br>Dies ist eine Offline-Webanwendung. Du kannst sie fortan auch ohne Internetverbindung nutzen.<br>"+
