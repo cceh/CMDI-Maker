@@ -2,6 +2,7 @@
 
 .webapp_icon{
 float: left;
+width: 30px;
 height: 25px;
 padding: 12px;
 }
@@ -283,6 +284,7 @@ height: 44px;
 
 #main_menu_icon{
 
+width: 36px;
 height: 36px;
 padding: 7px;
 float: right;
@@ -321,6 +323,7 @@ background: black;
 }
 
 .main_menu_entry_img{
+	width: 30px;
 	height: 30px;
 	padding: 10px;
 	margin-right: 10px;
@@ -386,6 +389,8 @@ margin: 2px;
 }
 
 #about_img {
+width: 128px;
+height: 128px;
 border-radius: 10px;
 margin-bottom: 15px;
 }
@@ -1066,6 +1071,7 @@ float: left;
 .wizard_icon{
 
 height: 22px;
+width: 11px;
 padding-top: 15px;
 padding-left: 10px;
 padding-right: 10px;
