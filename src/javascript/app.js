@@ -250,7 +250,7 @@ var APP = (function () {
 		my.closeMainMenu();
 		
 		g("main_menu_icon").addEventListener("click", my.changeMainMenuDisplay);
-	
+		g("content_wrapper").addEventListener("click", my.closeMainMenu);
 	};
 	
 	

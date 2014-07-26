@@ -310,7 +310,13 @@ height: 50px;
 
 .main_menu_entry:hover{
 
-background: pink;
+background: tomato;
+
+}
+
+.main_menu_entry:active{
+
+background: black;
 
 }
 
