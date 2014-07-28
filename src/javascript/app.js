@@ -815,7 +815,7 @@ var APP = (function () {
 	
 	my.addEventListeners = function(){
 	
-		g("VIEWLINK_start").addEventListener("click", function() { my.view("start"); });
+		g("VIEWLINK_start").addEventListener("click", function() { my.view("VIEW_start"); });
 	
 		g('link_lets_go').addEventListener('click', function() {
 		
