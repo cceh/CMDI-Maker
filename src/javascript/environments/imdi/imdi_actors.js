@@ -39,15 +39,13 @@ imdi_environment.workflow[2] = (function(){
 	my.id_counter = 0;
 	my.active_actor = -1;
 	
-	my.init = function(){
+	my.init = function(view){
 	
 		my.actors = [];
 		my.id_counter = 0;
 		my.active_actor = -1;
 		
 		session = my.parent.workflow[3];
-		
-		var view = g(APP.CONF.view_id_prefix + my.identity.id);
 		
 		dom.newElement("div","ac_list","",view);
 		var ac_view = dom.newElement("div","ac_view","",view);
@@ -100,13 +98,6 @@ imdi_environment.workflow[2] = (function(){
 		my.active_actor = data.active_actor;
 		
 		my.refreshListDisplay();
-	
-	};
-	
-	
-	my.view = function(){
-	
-		my.show(my.active_actor);
 	
 	};
 	
@@ -175,21 +166,6 @@ imdi_environment.workflow[2] = (function(){
 
 		console.log("Showing actor "+actor_id);
 		
-		if (actor_id == -1) {
-			g('link_delete_active_actor').style.display = "none";
-			g('link_duplicate_active_actor').style.display = "none";
-			
-			g("save_actor_span").innerHTML = l("save_actor");
-		}
-		
-		else {
-			g('link_delete_active_actor').style.display = "inline";
-			g('link_duplicate_active_actor').style.display = "inline";
-			
-			g("save_actor_span").innerHTML = l("save_changes_to_this_actor");
-		}
-		
-		my.languages.closeLanguageSelect();	
 		my.highlight_active_actor_div(actor_id);
 		my.languages.clearActiveActorLanguages();
 
@@ -206,19 +182,19 @@ imdi_environment.workflow[2] = (function(){
 			
 			my.showLanguagesOfActiveActor();
 			
-			if (APP.active_view == APP.CONF.view_id_prefix + my.identity.id){
+			g('link_delete_active_actor').style.display = "inline";
+			g('link_duplicate_active_actor').style.display = "inline";
 			g("save_actor_span").innerHTML = l("save_changes_to_this_actor");
-			}
 
 		}
 
 		else {
 
 			my.blank_form();
-
-			if (APP.active_view == APP.CONF.view_id_prefix + my.identity.id){
-				g("save_actor_span").innerHTML = l("save_actor");
-			}
+			
+			g('link_delete_active_actor').style.display = "none";
+			g('link_duplicate_active_actor').style.display = "none";
+			g("save_actor_span").innerHTML = l("save_actor");
 
 		}
 

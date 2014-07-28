@@ -217,16 +217,6 @@ imdi_environment.workflow[2].languages = (function (){
 		APP.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
 
 	};
-
-
-
-	my.closeLanguageSelect = function(){
-
-		g("actor_language_results_div").style.display = "none";
-		g("ac_view").style.display = "inline";
-
-	};
-	
 	
 	return my;
 	

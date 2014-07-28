@@ -49,14 +49,14 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.l = my.parent.l;
 	
-	my.init = function(){
+	my.init = function(view){
 		
-		var div = dom.newElement("div","corpus_form","",g(APP.CONF.view_id_prefix + my.identity.id));
+		var div = dom.newElement("div","corpus_form","",view);
 		dom.newElement("h1","","",div,"Corpus");
 		
 		APP.forms.make(div, corpus_form_template(), my.form_id_prefix, my.form_id_prefix);
 
-		my.content_languages.init();
+		my.content_languages.init(view);
 		
 	}
 	

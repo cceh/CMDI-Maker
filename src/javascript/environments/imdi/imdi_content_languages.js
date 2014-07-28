@@ -29,11 +29,11 @@ imdi_environment.workflow[0].content_languages = (function() {
 	my.l = my.parent.l;
 	
 
-	my.init = function(){
+	my.init = function(view){
 	
 		corpus = imdi_environment.workflow[0];
 	
-		var cl = dom.newElement("div","content_languages","",g("VIEW_corpus"));
+		var cl = dom.newElement("div","content_languages","",view);
 		
 		var lsd = dom.div(cl, "lang_search_div", "");
 		dom.h1(lsd, my.l("languages", "set_global_languages_of_content"));

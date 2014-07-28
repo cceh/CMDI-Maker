@@ -517,6 +517,7 @@ var APP = (function () {
 	my.hard_reset = function(){
 
 		my.save_and_recall.deleteAllData();
+		window.removeEventListener("beforeunload", my.save);
 		location.reload();
 
 	};

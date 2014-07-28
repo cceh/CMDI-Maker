@@ -167,28 +167,34 @@ APP.environments = (function () {
 	
 	my.createWorkflow = function(workflow){
 	
-		forEach(workflow, function(module){
-		
-			//create a view for the module
-			dom.newElement("div",APP.CONF.view_id_prefix+module.identity.id,"content",g(APP.CONF.content_wrapper_id));
-			
-			//initialize functions for the interface
-			if (module.functions){
-				if (typeof module.functions == "function"){
-					APP.initFunctions(module.functions());
-				}
-				
-				else {
-					APP.initFunctions(module.functions);
-				}
-			}
-
-			if (module.init){
-				module.init();
-			}
-		});
+		forEach(workflow, my.createWorkflowModule);
 	
 		my.createWorkflowDisplay(workflow);
+	
+	};
+	
+	
+	my.createWorkflowModule = function(module){
+	
+		//create a view for the module
+		var view = dom.newElement("div",APP.CONF.view_id_prefix+module.identity.id,"content",g(APP.CONF.content_wrapper_id));
+		
+		//initialize functions for the interface
+		if (module.functions){
+		
+			if (typeof module.functions == "function"){
+				APP.initFunctions(module.functions());
+			}
+			
+			else {
+				APP.initFunctions(module.functions);
+			}
+			
+		}
+		
+		if (module.init){
+			module.init(view);
+		}
 	
 	};
 	

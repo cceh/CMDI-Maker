@@ -226,11 +226,10 @@ imdi_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.init = function(){
+	my.init = function(view){
 	
 		session = imdi_environment.workflow[3];
 	
-		var view = g(APP.CONF.view_id_prefix + my.identity.id);
 		var div = dom.newElement("div","files","",view);
 		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>" + l("resources", "drag_and_drop_files_here") + "</h2>");
 		

@@ -22,7 +22,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.parent = imdi_environment;
 	var l = my.parent.l;
 	
-	var session_form = my.parent.session_form;
+	var session_form = undefined;  //yet
 	
 	my.identity = {
 		id: "session",
@@ -43,6 +43,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		my.sessions = [];
 		my.id_counter = 0;
 		my.resource_id_counter = 0;
+		
+		session_form = my.parent.session_form();
+		
+		my.createCopySessionOptions();
 
 	};
 	
@@ -84,7 +88,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			var session_object = session;
 			
-			APP.forms.fillObjectWithFormData(session_object, APP.CONF.session_dom_element_prefix+session.id+"_", session_form());		
+			APP.forms.fillObjectWithFormData(session_object, APP.CONF.session_dom_element_prefix+session.id+"_", session_form);		
 			
 			array.push(session_object);
 		});
@@ -95,7 +99,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	
 	my.createCopySessionOptions = function (){
-		var sf = session_form();
+		var sf = session_form;
 
 		var div = g("copy_sessions_select");
 		
@@ -137,8 +141,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				wrapper_id: "copy_sessions_div",
 				type: "function_wrap",
 				sub_div: "copy_sessions_select",
-				onclick: function() { my.assignSession1Metadata(); },
-				after_that: my.createCopySessionOptions
+				onclick: function() { my.assignSession1Metadata(); }
 			},
 			{
 				label: l("session", "reset_form"),
@@ -223,7 +226,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.newSession = function(){
 
-		var session_object = APP.forms.createEmptyObjectFromTemplate(my.parent.session_form());
+		var session_object = APP.forms.createEmptyObjectFromTemplate(session_form);
 		session_object.id = my.getNewSessionID();
 		
 		//new sessions are always expanded
@@ -252,7 +255,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
-		var session_object = APP.forms.createEmptyObjectFromTemplate(my.parent.session_form());
+		var session_object = APP.forms.createEmptyObjectFromTemplate(session_form);
 		session_object.session.name = name;
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
@@ -355,7 +358,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		var session_content = dom.newElement('div',APP.CONF.session_dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
-		APP.forms.make(session_content, session_form(), APP.CONF.session_dom_element_prefix+session_id+"_", APP.CONF.session_dom_element_prefix, session_object);
+		APP.forms.make(session_content, session_form, APP.CONF.session_dom_element_prefix+session_id+"_", APP.CONF.session_dom_element_prefix, session_object);
 		
 		g(APP.CONF.session_dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		
@@ -958,7 +961,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 
 	my.assignSession1Metadata = function(){
-		var session_form_template = session_form();
+		var session_form_template = session_form;
 
 		if (my.sessions.length < 2){
 		
