@@ -745,8 +745,6 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		dom.remove(APP.CONF.session_dom_element_prefix+session_id+"_actor_"+actor_id);
 		
-		APP.save();
-		
 	};
 
 

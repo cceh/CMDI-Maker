@@ -162,7 +162,6 @@ imdi_environment.workflow[2] = (function(){
 				my.actors = [];
 
 				APP.log(l("all_actors_deleted"));
-				APP.save();
 				
 				my.refreshListDisplay();
 
@@ -315,7 +314,6 @@ imdi_environment.workflow[2] = (function(){
 				my.save(imported_actors[a], true);
 			}
 			
-			APP.save();
 			my.refreshListDisplay();
 			
 			alertify.log(imported_actors.length + " " + l("actors_imported"));
@@ -552,7 +550,6 @@ imdi_environment.workflow[2] = (function(){
 	 
 		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
 
-		APP.save();
 		my.refreshListDisplay();
 		
 		return true;
@@ -594,7 +591,6 @@ imdi_environment.workflow[2] = (function(){
 				
 				my.actors.splice(my.active_actor,1);
 				my.refreshListDisplay();
-				APP.save();
 				
 				APP.log(l("actor_deleted_before_name") + name_of_actor + l("actor_deleted_after_name"));
 
@@ -651,7 +647,6 @@ imdi_environment.workflow[2] = (function(){
 
 		my.actors = sortByKey(my.actors,"name");
 
-		APP.save();
 		my.refreshListDisplay();
 		
 		APP.log(l("actors_alphabetically_sorted"));
