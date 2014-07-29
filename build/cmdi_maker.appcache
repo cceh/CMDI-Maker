@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# v1.1.2
+# v1.2
 
 CACHE:
 index.html
@@ -21,6 +21,7 @@ img/icons/edit.png
 img/icons/folder.png
 img/icons/gear.png
 img/icons/gear2.png
+img/icons/hamburger_menu.png
 img/icons/in_box.png
 img/icons/left.png
 img/icons/minus.png
