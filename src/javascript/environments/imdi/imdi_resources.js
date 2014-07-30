@@ -292,36 +292,40 @@ imdi_environment.workflow[1] = (function(){
 		
 		var file_type = getFileTypeFromFilename(filename);
 		
-		for (j=0;j<my.file_types.valid_lamus_media_file_types.length; j++){
+		for (j=0; j<my.file_types.valid_lamus_media_file_types.length; j++){
 			if (file_type == my.file_types.valid_lamus_media_file_types[j][0]) {
 				return {
+					type: "Media File",
 					comptaibility_warning: undefined,
 					file_entry_class: "media_file_entry",
 				};
 			}
 		}
 		
-		for (j=0;j<my.file_types.valid_lamus_written_resource_file_types.length; j++){
+		for (j=0; j<my.file_types.valid_lamus_written_resource_file_types.length; j++){
 			if (file_type == my.file_types.valid_lamus_written_resource_file_types[j][0]){
 				return {
+					type: "Written Resource",
 					comptaibility_warning: undefined,
 					file_entry_class: "written_resource_file_entry",
 				};
 			}
 		}
 
-		for (j=0;j<my.file_types.invalid_lamus_media_file_types.length; j++){
+		for (j=0; j<my.file_types.invalid_lamus_media_file_types.length; j++){
 			if (file_type == my.file_types.invalid_lamus_media_file_types[j][0]){
 				return {
+					type: "Media File",
 					compatibility_warning: l("resources", "compatibility_warnings", "invalid_media_file"),
 					file_entry_class: "media_file_entry"
 				};
 			}
 		}	
 
-		for (j=0;j<my.file_types.invalid_lamus_written_resource_file_types.length; j++){
+		for (j=0; j<my.file_types.invalid_lamus_written_resource_file_types.length; j++){
 			if (file_type == my.file_types.invalid_lamus_written_resource_file_types[j][0]){
 				return {
+					type: "Written Resource",
 					compatibility_warning: l("resources", "compatibility_warnings", "invalid_written_resource"),
 					file_entry_class: "written_resource_file_entry"
 				};
@@ -329,6 +333,7 @@ imdi_environment.workflow[1] = (function(){
 		}
 
 		return {
+			type: "Unknown",
 			compatibility_warning: l("resources", "compatibility_warnings", "general"),
 			file_entry_class: "invalid_file_entry"
 		};

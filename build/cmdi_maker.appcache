@@ -1,9 +1,12 @@
 CACHE MANIFEST
-# v1.1.2
+
 
 CACHE:
 index.html
+img/favicon.ico
+img/logo-128.png
 styles/styles.css
+scripts/script.js
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -18,13 +21,17 @@ img/icons/down.png
 img/icons/download.png
 img/icons/duplicate_user.png
 img/icons/edit.png
+img/icons/export.png
+img/icons/flags.png
 img/icons/folder.png
 img/icons/gear.png
 img/icons/gear2.png
+img/icons/hamburger_menu.png
 img/icons/in_box.png
 img/icons/left.png
 img/icons/minus.png
 img/icons/network.png
+img/icons/open.png
 img/icons/plus.png
 img/icons/reset.png
 img/icons/right.png
@@ -32,6 +39,7 @@ img/icons/right2.png
 img/icons/right3.png
 img/icons/save.png
 img/icons/search.png
+img/icons/shapes.png
 img/icons/star.png
 img/icons/submit.png
 img/icons/text.png
@@ -41,13 +49,15 @@ img/icons/up.png
 img/icons/user.png
 img/icons/warning.png
 img/icons/wrench.png
-img/favicon.ico
-img/logo-128.png
 img/logos/LOGO_BMBF.jpg
 img/logos/LOGO_CCeH.png
 img/logos/LOGO_CLARIN-D.png
 img/logos/LOGO_CLASS.png
 img/logos/LOGO_HRELP.png
-img/logos/LOGO_Uni_Koeln.png
 img/logos/LOGO_SOAS.png
-scripts/script.js
+img/logos/LOGO_Uni_Koeln.png
+
+
+NETWORK:
+
+# hash: d1366312c9c7cd7c460f3f201796851fde18d932d56054c9d2ad3d8fbd84307f

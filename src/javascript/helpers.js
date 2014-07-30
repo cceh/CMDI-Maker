@@ -94,6 +94,28 @@ function remove_invalid_chars(string){
 }
 
 
+var removeCharactersFromString = function (string, char_string){
+	var character;
+	var pos;
+	
+	for (var c=0; c< char_string.length; c++){
+
+		character = char_string[c];
+	
+		while (string.indexOf(character) != -1){
+		
+			pos = string.indexOf(character);
+		
+			string = string.slice(0, pos) + string.slice(pos+1, string.length);
+		
+		}
+
+	}
+	
+	return string;
+};
+
+
 function calcAgeAtDate(dateString,birthDate) {
 	
 	var date = +new Date(dateString);

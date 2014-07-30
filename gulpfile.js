@@ -12,6 +12,7 @@ var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var htmlreplace = require('gulp-html-replace');
 var header = require('gulp-header');
+var manifest = require('gulp-manifest');
 
  
 var source_scripts = [
@@ -151,8 +152,21 @@ gulp.task('styles', function() {
 });
 
 
+gulp.task('manifest', function(){
+  gulp.src(['build/**/*'])
+    .pipe(manifest({
+      hash: true,
+      filename: 'cmdi_maker.appcache',
+	  network: [],
+      exclude: ['cmdi_maker.appcache', 'img/logos/Thumbs.db']
+     }))
+    .pipe(gulp.dest('build'));
+});
+
+
+
 // default gulp task
-gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'styles'], function() {
+gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'styles', 'manifest'], function() {
 });
 
 

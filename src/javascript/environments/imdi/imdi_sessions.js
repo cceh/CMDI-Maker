@@ -256,7 +256,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
 		var session_object = APP.forms.createEmptyObjectFromTemplate(session_form);
-		session_object.session.name = name;
+		session_object.session.name = removeCharactersFromString(name, APP.CONF.not_allowed_chars);
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
 		my.sessions.push(session_object);
@@ -763,11 +763,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		}
 		
 		var resource_id = my.resource_id_counter;
-
-		if ((resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) === 0)
-		|| (resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 2)){
-			//Media File
 		
+		var file_type = resources.getValidityOfFile(resources.available_resources[resource_file_index][0]).type;
+
+		if (file_type == "Media File"){
+			
 			resource_type = "mf";
 		
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.push({
@@ -779,9 +779,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		}
 		
-		else if ((resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 1)
-		|| (resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 3)){
-		
+		else if (file_type == "Written Resource"){
+			
 			resource_type = "wr";
 		
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
