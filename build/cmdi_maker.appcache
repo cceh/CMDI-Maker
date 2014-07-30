@@ -1,16 +1,12 @@
 CACHE MANIFEST
-<<<<<<< HEAD
 
-=======
-# v1.2
->>>>>>> origin/master
 
 CACHE:
 index.html
 img/favicon.ico
 img/logo-128.png
-styles/styles.css
 scripts/script.js
+styles/styles.css
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -64,4 +60,4 @@ img/logos/LOGO_Uni_Koeln.png
 
 NETWORK:
 
-# hash: d1366312c9c7cd7c460f3f201796851fde18d932d56054c9d2ad3d8fbd84307f
+# hash: c9fb6f2303c0782299974c8cc5c4f86f9c8ee518ca78c66f564e9dad160b99f0
