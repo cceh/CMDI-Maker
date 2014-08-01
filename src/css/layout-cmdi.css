@@ -771,9 +771,15 @@ display: inline;
 
 .session_header{
 
-padding: 15px;
+	padding: 15px;
+	cursor: pointer;
 
-cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 
 }
 
@@ -788,6 +794,7 @@ cursor: pointer;
 .session_content{
 	
 	background-color: #9999FF;
+	display: block;
 	
 }
 

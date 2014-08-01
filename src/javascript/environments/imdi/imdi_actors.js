@@ -17,6 +17,182 @@ limitations under the License.
 
 imdi_environment.workflow[2] = (function(){
 	'use strict';
+	
+	
+	//PRIVATE
+	
+	var showLanguagesOfActiveActor = function(){
+
+		for (var l=0; l < my.actors[my.active_actor].languages.length; l++){
+		
+			my.languages.set(my.actors[my.active_actor].languages[l] );
+		
+		}
+
+	};
+	
+	
+	var highlightActiveActorInList = function(actor_id){
+
+		for (var i=0;i<my.actors.length;i++){
+			g("ac_list_entry_"+i).style.background = "#FF8BC7";
+		}
+
+		g("ac_list_entry_-1").style.background = "#FF8BC7";
+		//make everything normal at first
+
+		g("ac_list_entry_"+actor_id).style.background = "lightskyblue";
+
+	};
+	
+	
+	var getLanguagesOfActiveActorFromForm = function(){
+	
+		var array = []; 
+		
+		forEach(my.languages.languages_of_active_actor, function(AL){
+		
+			var ActorLanguageObject = {
+				
+				LanguageObject: AL.LanguageObject,
+				MotherTongue: g("mothertongue_" + AL.id).checked,
+				PrimaryLanguage: g("primarylanguage_" + AL.id).checked
+				
+			};
+			
+			array.push(ActorLanguageObject);
+			
+		});
+		
+		return array;
+	
+	};
+	
+	
+	var makeActorObjectFromFormInput = function(){
+
+		var object = APP.forms.createEmptyObjectFromTemplate(actor_form);
+
+		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, actor_form);
+		
+		object.languages = getLanguagesOfActiveActorFromForm();  //PRELIMINARY OVERWRITE!
+
+		//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
+		if (my.active_actor != -1) {
+			object.id = my.actors[my.active_actor].id;
+			console.log("Saving actor with id "+object.id);
+		}
+		
+		else {
+		
+			object.id = my.id_counter;
+			console.log("Saving actor with id "+object.id);
+			my.id_counter++;
+			
+		}
+
+		return object;
+	 
+	};
+	
+	
+	var blankForm = function(){
+
+		g(my.element_id_prefix + "form_title").innerHTML = l("new_actor");
+
+		APP.forms.fill(actor_form, my.element_id_prefix);
+
+		my.languages.clearActiveActorLanguages();
+		
+	};
+	
+	
+	var parse_imdi_for_actors = function(xml){
+
+		var actors_in_xml = xml.getElementsByTagName("Actor");
+		
+		var actors_in_json = [];
+		
+		for (var a=0; a<actors_in_xml.length; a++){
+		
+			
+			console.log("Actor in IMDI found. Name: " + actors_in_xml[a].querySelector("Name").textContent.trim());
+			
+			var actor = {
+				name: actors_in_xml[a].querySelector("Name").textContent.trim(),
+				role: actors_in_xml[a].querySelector("Role").textContent.trim(),
+				full_name: actors_in_xml[a].querySelector("FullName").textContent.trim(),
+				code: actors_in_xml[a].querySelector("Code").textContent.trim(),		
+				age: actors_in_xml[a].querySelector("Age").textContent.trim(),
+				sex: actors_in_xml[a].querySelector("Sex").textContent.trim(),		
+				education: actors_in_xml[a].querySelector("Education").textContent.trim(),
+				birth_date: parse_birth_date(actors_in_xml[a].querySelector("BirthDate").textContent.trim()),
+				ethnic_group: actors_in_xml[a].querySelector("EthnicGroup").textContent.trim(),
+				family_social_role: actors_in_xml[a].querySelector("FamilySocialRole").textContent.trim(),
+				
+				description: actors_in_xml[a].querySelector("Description").textContent.trim(),
+				
+				contact: {
+				
+					name: actors_in_xml[a].querySelector("Contact").querySelector("Name").textContent.trim(),
+					address: actors_in_xml[a].querySelector("Contact").querySelector("Address").textContent.trim(),
+					email: actors_in_xml[a].querySelector("Contact").querySelector("Email").textContent.trim(),
+					organisation: actors_in_xml[a].querySelector("Contact").querySelector("Organisation").textContent.trim(),
+				
+				
+				},
+				
+				anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
+				
+				languages: []
+			
+			};
+			
+			var actor_languages = actors_in_xml[a].querySelector("Languages");
+			
+			console.log(actor_languages.children);
+			
+			for (var l=0; l<actor_languages.children.length; l++){
+			
+				if (actor_languages.children[l].nodeName != "Language"){
+					continue;
+				}
+			
+				var Actor_Language = {
+				
+					LanguageObject: [
+					
+					actor_languages.children[l].querySelector("Id").textContent.trim().slice(9),
+					"?",
+					"?",
+					actor_languages.children[l].querySelector("Name").textContent.trim(),
+					
+					
+					],
+					
+					MotherTongue: (actor_languages.children[l].querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
+					PrimaryLanguage: (actor_languages.children[l].querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
+				
+				
+				};
+				
+				
+				my.languages.push(Actor_Language);
+			
+			}
+			
+			actors_in_json.push(actor);
+
+		}
+		
+		console.log(actors_in_xml);
+		
+		return actors_in_json;
+
+	};
+
+	
+	//PUBLIC
 
 	var my = {};
 	my.parent = imdi_environment;
@@ -29,6 +205,8 @@ imdi_environment.workflow[2] = (function(){
 	var actor_form = my.parent.actor_form;
 	
 	my.actors = [];
+	
+	my.element_id_prefix = "actor_";
 	
 	my.identity = {
 		id: "actor",
@@ -49,24 +227,24 @@ imdi_environment.workflow[2] = (function(){
 		
 		dom.newElement("div","ac_list","",view);
 		var ac_view = dom.newElement("div","ac_view","",view);
-		dom.newElement("div","actor_title_div","",ac_view,
-		'<h1 id="actor_form_title">' + l("new_actor") + '</h1>');
-		dom.newElement("div","actor_content_div","",ac_view);
-		dom.newElement("div","actor_language_results_div","",view);
+		var title_div = dom.newElement("div", my.element_id_prefix + "title_div","",ac_view);
+		dom.newElement("h1", my.element_id_prefix + "form_title", "", title_div, l("new_actor"));
+		dom.newElement("div", my.element_id_prefix + "content_div","",ac_view);
+		dom.newElement("div", my.element_id_prefix + "language_results_div","",view);
 		
 		my.createForm();
 		
-		g('actor_language_search_button').addEventListener('click', function() {  my.languages.search();   });
-		g('actor_language_iso_ok').addEventListener('click', function() {  my.languages.addByISO();    });
+		g(my.element_id_prefix + "language_search_button").addEventListener('click', function() {  my.languages.search();   });
+		g(my.element_id_prefix + "language_iso_ok").addEventListener('click', function() {  my.languages.addByISO();    });
 
-		g("actor_language_select").onkeydown = function(event) {
+		g(my.element_id_prefix + "language_select").onkeydown = function(event) {
 
 			if (event.keyCode == 13) {  //if enter is pressed
 				my.languages.search();
 			}
 		};
 		
-		g("actor_language_iso_input").onkeydown = function(event) {
+		g(my.element_id_prefix + "language_iso_input").onkeydown = function(event) {
 
 			if (event.keyCode == 13) {  //if enter is pressed
 				my.languages.addByISO();
@@ -164,9 +342,9 @@ imdi_environment.workflow[2] = (function(){
 	my.show = function(actor_id){
 	// -1 = empty form to create a new actor
 
-		console.log("Showing actor "+actor_id);
+		console.log("Showing actor " + actor_id);
 		
-		my.highlight_active_actor_div(actor_id);
+		highlightActiveActorInList(actor_id);
 		my.languages.clearActiveActorLanguages();
 
 		my.active_actor = actor_id;
@@ -174,13 +352,13 @@ imdi_environment.workflow[2] = (function(){
 		if (actor_id != -1){
 			//show data of selected actor in form
 
-			g("actor_form_title").innerHTML = my.actors[actor_id].name;
+			g(my.element_id_prefix + "form_title").innerHTML = my.actors[actor_id].name;
 			
 			var actor_to_display = my.actors[actor_id];
 			
-			APP.forms.fill(actor_form, "actor_", actor_to_display);
+			APP.forms.fill(actor_form, my.element_id_prefix, actor_to_display);
 			
-			my.showLanguagesOfActiveActor();
+			showLanguagesOfActiveActor();
 			
 			g('link_delete_active_actor').style.display = "inline";
 			g('link_duplicate_active_actor').style.display = "inline";
@@ -190,7 +368,7 @@ imdi_environment.workflow[2] = (function(){
 
 		else {
 
-			my.blank_form();
+			blankForm();
 			
 			g('link_delete_active_actor').style.display = "none";
 			g('link_duplicate_active_actor').style.display = "none";
@@ -215,17 +393,6 @@ imdi_environment.workflow[2] = (function(){
 	};
 	
 	
-	my.showLanguagesOfActiveActor = function(){
-
-		for (var l=0; l < my.actors[my.active_actor].languages.length; l++){
-		
-			my.languages.set(my.actors[my.active_actor].languages[l] );
-		
-		}
-
-	};
-	
-
 	my.export_actors = function(){
 		
 		if (my.actors.length !== 0){
@@ -301,149 +468,9 @@ imdi_environment.workflow[2] = (function(){
 	};
 
 
-	my.parse_imdi_for_actors = function(xml){
-
-		var actors_in_xml = xml.getElementsByTagName("Actor");
-		
-		var actors_in_json = [];
-		
-		for (var a=0; a<actors_in_xml.length; a++){
-		
-			
-			console.log("Actor in IMDI found. Name: " + actors_in_xml[a].querySelector("Name").textContent.trim());
-			
-			var actor = {
-				name: actors_in_xml[a].querySelector("Name").textContent.trim(),
-				role: actors_in_xml[a].querySelector("Role").textContent.trim(),
-				full_name: actors_in_xml[a].querySelector("FullName").textContent.trim(),
-				code: actors_in_xml[a].querySelector("Code").textContent.trim(),		
-				age: actors_in_xml[a].querySelector("Age").textContent.trim(),
-				sex: actors_in_xml[a].querySelector("Sex").textContent.trim(),		
-				education: actors_in_xml[a].querySelector("Education").textContent.trim(),
-				birth_date: parse_birth_date(actors_in_xml[a].querySelector("BirthDate").textContent.trim()),
-				ethnic_group: actors_in_xml[a].querySelector("EthnicGroup").textContent.trim(),
-				family_social_role: actors_in_xml[a].querySelector("FamilySocialRole").textContent.trim(),
-				
-				description: actors_in_xml[a].querySelector("Description").textContent.trim(),
-				
-				contact: {
-				
-					name: actors_in_xml[a].querySelector("Contact").querySelector("Name").textContent.trim(),
-					address: actors_in_xml[a].querySelector("Contact").querySelector("Address").textContent.trim(),
-					email: actors_in_xml[a].querySelector("Contact").querySelector("Email").textContent.trim(),
-					organisation: actors_in_xml[a].querySelector("Contact").querySelector("Organisation").textContent.trim(),
-				
-				
-				},
-				
-				anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
-				
-				languages: []
-			
-			};
-			
-			var actor_languages = actors_in_xml[a].querySelector("Languages");
-			
-			console.log(actor_languages.children);
-			
-			for (var l=0; l<actor_languages.children.length; l++){
-			
-				if (actor_languages.children[l].nodeName != "Language"){
-					continue;
-				}
-			
-				var Actor_Language = {
-				
-					LanguageObject: [
-					
-					actor_languages.children[l].querySelector("Id").textContent.trim().slice(9),
-					"?",
-					"?",
-					actor_languages.children[l].querySelector("Name").textContent.trim(),
-					
-					
-					],
-					
-					MotherTongue: (actor_languages.children[l].querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
-					PrimaryLanguage: (actor_languages.children[l].querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
-				
-				
-				};
-				
-				
-				my.languages.push(Actor_Language);
-			
-			}
-			
-			actors_in_json.push(actor);
-
-		}
-		
-		console.log(actors_in_xml);
-		
-		return actors_in_json;
-
-	};
-
-
-	my.blank_form = function(){
-
-		g("actor_form_title").innerHTML = l("new_actor");
-
-		APP.forms.fill(actor_form, "actor_");
-
-		my.languages.clearActiveActorLanguages();
-		
-	};
-
-
-	my.make_actor_object_out_of_form = function(){
-
-		var object = APP.forms.createEmptyObjectFromTemplate(actor_form);
-
-		APP.forms.fillObjectWithFormData(object, "actor_", actor_form);
-		
-		object.languages = [];  //PRELIMINARY OVERWRITE!
-		
-		for (var l=0; l<my.languages.languages_of_active_actor.length; l++){
-		
-			var id = my.languages.languages_of_active_actor[l].id;
-		
-			var ActorLanguageObject = {
-				
-				LanguageObject: my.languages.languages_of_active_actor[l].LanguageObject,
-				MotherTongue: g("mothertongue_" + id).checked,
-				PrimaryLanguage: g("primarylanguage_" + id).checked
-				
-			};
-			
-			object.languages.push(ActorLanguageObject);
-			
-		}
-		
-
-		//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
-		if (my.active_actor != -1) {
-			object.id = my.actors[my.active_actor].id;
-			console.log("Saving actor with id "+object.id);
-		}
-		
-		else {
-		
-			object.id = my.id_counter;
-			console.log("Saving actor with id "+object.id);
-			my.id_counter++;
-			
-		}
-
-		return object;
-	 
-	};
-	
-	
 	my.createForm = function(){
 
-		APP.forms.make(g("actor_content_div"), actor_form, "actor_", "actor_", undefined);
+		APP.forms.make(g(my.element_id_prefix + "content_div"), actor_form, my.element_id_prefix, my.element_id_prefix, undefined);
 
 	};
 
@@ -465,13 +492,13 @@ imdi_environment.workflow[2] = (function(){
 	my.save_active_actor = function(do_not_overwrite){
 	//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
 
-		if (get("actor_name") !== ""){
+		if (get(my.element_id_prefix + "name") !== ""){
 
 			if (!do_not_overwrite){
 				do_not_overwrite = false;
 			}
 			
-			var actor_to_put = my.make_actor_object_out_of_form();
+			var actor_to_put = makeActorObjectFromFormInput();
 			
 			return my.save(actor_to_put, do_not_overwrite);
 			
@@ -498,27 +525,18 @@ imdi_environment.workflow[2] = (function(){
 
 		//if this actor does already exist and is to be overwritten, overwrite the object in the array
 		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite === false)) {
+			
 			my.actors.splice(my.getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
 			
 			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
-			for (var s=0; s<session.sessions.length; s++){
-		
-				//search for actor_id in this session's actors
-				if (session.sessions[s].actors.actors.indexOf(actor_to_put.id) != -1){
-					
-					session.refreshActorName(session.sessions[s].id, actor_to_put.id);
-		
-				}
-				
-			}
-		
+			session.updateActorNameInAllSessions(actor_to_put.id);
 			
 		}
 		
 		else {    //if actor shall not be overwritten, give the duplicate/new generated actor a new id
 			
 			actor_to_put.id = my.id_counter;
-			console.log("Saving actor with id "+actor_to_put.id);
+			console.log("Saving actor with id " + actor_to_put.id);
 			my.id_counter++;
 			
 			my.actors.push(actor_to_put);
@@ -532,20 +550,6 @@ imdi_environment.workflow[2] = (function(){
 
 	};
 
-
-	my.highlight_active_actor_div = function(actor_id){
-
-		for (var i=0;i<my.actors.length;i++){
-			g("ac_list_entry_"+i).style.background = "#FF8BC7";
-		}
-
-		g("ac_list_entry_-1").style.background = "#FF8BC7";
-		//make everything normal at first
-
-		g("ac_list_entry_"+actor_id).style.background = "lightskyblue";
-
-	};
-	
 
 	my.delete_active_actor = function(){
 
@@ -584,8 +588,8 @@ imdi_environment.workflow[2] = (function(){
 			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
-				var sessionDate = get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") + "-" +
-				get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day"); 
+				var sessionDate = get(session.dom_element_prefix+session_id+"_session_date_year") + "-" +
+				get(session.dom_element_prefix+session_id+"_session_date_month") + "-" + get(session.dom_element_prefix+session_id+"_session_date_day"); 
 				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
 				
 				if (age_calc_result !== 0){

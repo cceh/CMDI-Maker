@@ -28,7 +28,6 @@ APP.CONF = {
 	project_file_name: "CMDI-Maker-Project.cmp",
 	content_wrapper_id: "content_wrapper",
 
-	session_dom_element_prefix: "session_",
 	copy_checkbox_element_prefix: "copy_check_",
 	viewlink_id_prefix: "VIEWLINK_",
 	view_id_prefix: "VIEW_",

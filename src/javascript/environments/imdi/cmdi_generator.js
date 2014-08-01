@@ -113,13 +113,13 @@ imdi_environment.cmdi_generator = function(){
 		var return_string = "";
 		
 		return_string += xml.tag("Session",0);
-		return_string += xml.element("Name",get(APP.CONF.session_dom_element_prefix+session_id+"_session_name"));
-		return_string += xml.element("Title",get(APP.CONF.session_dom_element_prefix+session_id+"_session_title"));
+		return_string += xml.element("Name",get(session.dom_element_prefix+session_id+"_session_name"));
+		return_string += xml.element("Title",get(session.dom_element_prefix+session_id+"_session_title"));
 		
 		
-		if ((get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") != "") && (get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
+		if ((get(session.dom_element_prefix+session_id+"_session_date_year") != "") && (get(session.dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
 		
-			return_string += xml.element("Date",get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year")+"-"+get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month")+"-"+get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day"));
+			return_string += xml.element("Date",get(session.dom_element_prefix+session_id+"_session_date_year")+"-"+get(session.dom_element_prefix+session_id+"_session_date_month")+"-"+get(session.dom_element_prefix+session_id+"_session_date_day"));
 			
 		}
 		
@@ -132,31 +132,31 @@ imdi_environment.cmdi_generator = function(){
 		
 		return_string += xml.tag("MDGroup",0);
 		return_string += xml.tag("Location",0);
-		return_string += xml.element("Continent",get(APP.CONF.session_dom_element_prefix+session_id+"_session_location_continent"));
-		return_string += xml.element("Country",get(APP.CONF.session_dom_element_prefix+session_id+"_session_location_country"));
-		return_string += xml.element("Region",get(APP.CONF.session_dom_element_prefix+session_id+"_session_location_region"));
-		return_string += xml.element("Address",get(APP.CONF.session_dom_element_prefix+session_id+"_session_location_address"));
+		return_string += xml.element("Continent",get(session.dom_element_prefix+session_id+"_session_location_continent"));
+		return_string += xml.element("Country",get(session.dom_element_prefix+session_id+"_session_location_country"));
+		return_string += xml.element("Region",get(session.dom_element_prefix+session_id+"_session_location_region"));
+		return_string += xml.element("Address",get(session.dom_element_prefix+session_id+"_session_location_address"));
 		return_string += xml.tag("Location",1);
 		
 		
 		return_string += xml.tag("Project",0);
-		return_string += xml.element("Name",get(APP.CONF.session_dom_element_prefix+session_id+"_project_name"));
-		return_string += xml.element("Title",get(APP.CONF.session_dom_element_prefix+session_id+"_project_title"));
-		return_string += xml.element("Id",get(APP.CONF.session_dom_element_prefix+session_id+"_project_id"));
+		return_string += xml.element("Name",get(session.dom_element_prefix+session_id+"_project_name"));
+		return_string += xml.element("Title",get(session.dom_element_prefix+session_id+"_project_title"));
+		return_string += xml.element("Id",get(session.dom_element_prefix+session_id+"_project_id"));
 		
 		return_string += xml.tag("Contact",0);
-		return_string += xml.element("Name",get(APP.CONF.session_dom_element_prefix+session_id+"_project_contact_name"));
-		return_string += xml.element("Address",get(APP.CONF.session_dom_element_prefix+session_id+"_project_contact_address"));
-		return_string += xml.element("Email",get(APP.CONF.session_dom_element_prefix+session_id+"_project_contact_email"));
-		return_string += xml.element("Organisation",get(APP.CONF.session_dom_element_prefix+session_id+"_project_contact_organisation"));
+		return_string += xml.element("Name",get(session.dom_element_prefix+session_id+"_project_contact_name"));
+		return_string += xml.element("Address",get(session.dom_element_prefix+session_id+"_project_contact_address"));
+		return_string += xml.element("Email",get(session.dom_element_prefix+session_id+"_project_contact_email"));
+		return_string += xml.element("Organisation",get(session.dom_element_prefix+session_id+"_project_contact_organisation"));
 		return_string += xml.tag("Contact",1);
 		return_string += xml.tag("Project",1);
 		return_string += xml.tag("Keys",2);
 		return_string += xml.tag("Content",0);
 		
-		return_string += xml.element("Genre",get(APP.CONF.session_dom_element_prefix+session_id+"_content_genre"));
-		return_string += xml.element("SubGenre",get(APP.CONF.session_dom_element_prefix+session_id+"_content_subgenre"));
-		return_string += xml.element("Task",get(APP.CONF.session_dom_element_prefix+session_id+"_content_task"));
+		return_string += xml.element("Genre",get(session.dom_element_prefix+session_id+"_content_genre"));
+		return_string += xml.element("SubGenre",get(session.dom_element_prefix+session_id+"_content_subgenre"));
+		return_string += xml.element("Task",get(session.dom_element_prefix+session_id+"_content_task"));
 		
 		return_string += xml.element("Modalities","");
 		//no input yet
@@ -165,11 +165,11 @@ imdi_environment.cmdi_generator = function(){
 		//no input yet
 		
 		return_string += xml.tag("CommunicationContext",0);
-		return_string += xml.element("Interactivity",get(APP.CONF.session_dom_element_prefix+session_id+"_content_communication_context_interactivity"));
-		return_string += xml.element("PlanningType",get(APP.CONF.session_dom_element_prefix+session_id+"_content_communication_context_interactivity"));
-		return_string += xml.element("Involvement",get(APP.CONF.session_dom_element_prefix+session_id+"_content_communication_context_involvement"));	
-		return_string += xml.element("SocialContext",get(APP.CONF.session_dom_element_prefix+session_id+"_content_communication_context_socialcontext"));
-		return_string += xml.element("EventStructure",get(APP.CONF.session_dom_element_prefix+session_id+"_content_communication_context_eventstructure"));
+		return_string += xml.element("Interactivity",get(session.dom_element_prefix+session_id+"_content_communication_context_interactivity"));
+		return_string += xml.element("PlanningType",get(session.dom_element_prefix+session_id+"_content_communication_context_interactivity"));
+		return_string += xml.element("Involvement",get(session.dom_element_prefix+session_id+"_content_communication_context_involvement"));	
+		return_string += xml.element("SocialContext",get(session.dom_element_prefix+session_id+"_content_communication_context_socialcontext"));
+		return_string += xml.element("EventStructure",get(session.dom_element_prefix+session_id+"_content_communication_context_eventstructure"));
 		return_string += xml.element("Channel","Unknown");
 		/* no input yet. channel must be one of
 		<item ConceptLink="http://www.isocat.org/datcat/DC-2591">Unknown</item>
@@ -210,14 +210,14 @@ imdi_environment.cmdi_generator = function(){
 		
 			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles[r].id;
 		
-			return_string += insert_cmdi_mediafile(get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
+			return_string += insert_cmdi_mediafile(get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}
 		
 		for (var r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources.length;r++){  
 
 			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources[r].id;	
 
-			return_string += insert_cmdi_written_resource(get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(APP.CONF.session_dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
+			return_string += insert_cmdi_written_resource(get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}
 		
 		//more resource stuff
@@ -453,7 +453,7 @@ imdi_environment.cmdi_generator = function(){
 				
 				return_string+=xml.tag("ResourceProxy",0,[["id",IDREFS[i-1]]]);
 				return_string+=xml.element("ResourceType","Metadata");
-				return_string+=xml.element("ResourceRef",get(APP.CONF.session_dom_element_prefix+session.sessions[i-1].id+"_session_name")+".cmdi");
+				return_string+=xml.element("ResourceRef",get(session.dom_element_prefix+session.sessions[i-1].id+"_session_name")+".cmdi");
 				return_string+=xml.tag("ResourceProxy",1);
 			}
 			

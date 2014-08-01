@@ -44,14 +44,21 @@ var dom = (function() {
 	};
 	
 	
-	my.removeOptions = function(selectbox){
+	my.removeOptions = function (selectbox){
 		
 		var i;
 		
-		for (i=selectbox.options.length-1; i>=0; i--){
+		for (i = selectbox.options.length - 1; i >= 0; i--){
 			selectbox.remove(i);
 		}
 		
+	};
+	
+	
+	my.setIcon = function (element, icon_id){
+	
+		element.src = APP.CONF.path_to_icons + icon_id + ".png";
+	
 	};
 	
 
@@ -648,6 +655,13 @@ var dom = (function() {
 	
 	my.hideElement = function(elem){
 		elem.style.display = "none";
+	};
+
+
+	my.unhideElement = function(elem){
+	
+		elem.style.display = "";
+	
 	};
 	
 	

@@ -293,7 +293,7 @@ eldp_environment.workflow[1] = (function(){
 					
 					var xml = parser.parseFromString(result,"text/xml");
 					
-					imported_actors = parse_imdi_for_actors(xml);
+					imported_actors = my.parse_imdi_for_actors(xml);
 					
 				}
 				
@@ -605,7 +605,7 @@ eldp_environment.workflow[1] = (function(){
 			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
-				var sessionDate = get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_year") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_month") + "-" + get(APP.CONF.session_dom_element_prefix+session_id+"_session_date_day"); 
+				var sessionDate = get(session.dom_element_prefix+session_id+"_session_date_year") + "-" + get(session.dom_element_prefix+session_id+"_session_date_month") + "-" + get(session.dom_element_prefix+session_id+"_session_date_day"); 
 				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
 				
 				if (age_calc_result !== 0){
