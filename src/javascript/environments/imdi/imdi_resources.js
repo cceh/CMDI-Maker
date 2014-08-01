@@ -257,7 +257,7 @@ imdi_environment.workflow[1] = (function(){
 		
 		my.refreshFileListDisplay(true);
 		
-		document.onkeydown = function(event) {
+		document.addEventListener("keydown", function(event) {
 		
 			if (event.keyCode == 16) {  //if shift is pressed
 				if (my.shift === false){
@@ -272,16 +272,16 @@ imdi_environment.workflow[1] = (function(){
 			
 			}
 		
-		};
+		});
 		
-		document.onkeyup = function(event) {
+		document.addEventListener("keyup", function(event) {
 		
 			if (event.keyCode == 16) {  //if shift is let go
 				my.shift = false;
 				console.log("shift off");
 			}
 			
-		};
+		});
 		
 	};
 

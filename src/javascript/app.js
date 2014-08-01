@@ -836,16 +836,25 @@ var APP = (function () {
 		
 		document.getElementsByName("radio_auto_save").selectedIndex = 3;
 		
-		for (var r=0; r<document.getElementsByName("radio_auto_save").length; r++){
-		
-			var radio = document.getElementsByName("radio_auto_save")[r];
+		forEach(document.getElementsByName("radio_auto_save"), function(radio){
 		
 			radio.addEventListener( "click", function(num) {
 				return function(){
-					save_and_recall.setAutosaveInterval(num);
+					my.save_and_recall.setAutosaveInterval(num);
 				};
 			}(radio.value));
-		}
+			
+		});
+		
+		document.addEventListener("keydown", function(event) {
+		
+			if (event.keyCode == 27)  {   //escape pressed
+			
+				dom.closeSelectFrame();
+			
+			}
+		
+		});
 		
 	};
 	
@@ -894,8 +903,7 @@ var APP = (function () {
 	my.changeLanguage = function(index){
 		
 		my.active_language = my.languages[index];
-		my.save();
-		location.reload();
+		location.reload(); //includes auto save before unload
 	
 	};
 	

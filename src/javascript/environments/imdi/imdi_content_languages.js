@@ -124,11 +124,9 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		});
 		
-		var titles = [];
-		
-		forEach(results, function(result){
+		var titles = map(results, function(result){
 
-			titles.push(result[0] + ", "+result[1]+", " + result[3]);
+			return result[0] + ", " + result[1] + ", " + result[3];
 
 		});
 		
@@ -156,7 +154,6 @@ imdi_environment.workflow[0].content_languages = (function() {
 		//LanguageObjectFromDB is only a reference to the original array in the LanguageIndex.
 		// We have to clone our Language Object from the DB first.
 		// Otherwise we would overwrite the DB array which we do not want.
-		// More info: http://davidwalsh.name/javascript-clone-array
 		var LanguageObject = LanguageObjectFromDB.slice(0);
 
 		//add an id to the object before it goes to content_languages
@@ -242,7 +239,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 			my.l("languages", "content_language_removed__after_lang")
 		);
 
-		my.content_languages.splice(index,1);
+		my.content_languages.splice(index, 1);
 		
 		dom.remove("content_language_"+cl_id+"_div");
 
