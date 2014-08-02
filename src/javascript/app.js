@@ -331,7 +331,8 @@ var APP = (function () {
 						value: 600
 					}
 				],
-				default_option: 2
+				default_option: 2,
+				onchange: my.save_and_recall.setAutosaveInterval
 			},
 			{
 				
@@ -371,6 +372,7 @@ var APP = (function () {
 			{
 				title: my.l("settings","hard_reset"),
 				importance: "high",
+				type: "link",
 				description: my.l("settings","hard_reset_description"),
 				onclick: function() {    
 
@@ -710,106 +712,136 @@ var APP = (function () {
 	};
 	
 	
-	my.initSettings = function (settings, parent){
-		var input;
-		var h2;
-		
-		parent.innerHTML = "";
-		
-		for (var s=0; s<settings.length; s++){
-		
-			h2 = dom.h2(parent);	
-			
-			if ((settings[s].importance) && (settings[s].importance == "high")){
-				h2.style.color = "red";
-			}
-			
-			if (settings[s].onclick){
+	my.makeSettingFunctions = {
 	
-				var a = dom.a(h2,"","","#",settings[s].title, settings[s].onclick);
+		radio: function(setting, parent){
+		
+			for (var r=0; r<setting.options.length; r++){
+				var input;
 				
-				if ((settings[s].importance) && (settings[s].importance == "high")){
-					a.style.color = "red";
-				}
-
-			}
-			
-			else {
-			
-				h2.innerHTML = settings[s].title;
-			
-			}
-			
-			if (settings[s].description){
-				dom.newElement("p","","",parent,settings[s].description);
-			}
-
-			if (settings[s].type == "radio"){
-			
-				for (var r=0; r<settings[s].options.length; r++){
+				input = dom.input(parent,"","",setting.radio_name, "radio", setting.options[r].value);
 				
-					input = dom.input(parent,"","",settings[s].radio_name, "radio", settings[s].options[r].value);
-					
-					dom.span(parent,"","",settings[s].options[r].title);
-					dom.br(parent);	
-					
-					if (r == settings[s].default_option) {
-						input.checked = true;
-					}
-				}	
-			
-			}
-			
-			if (settings[s].type == "select"){
-			
-				var select = dom.newElement("select",settings[s].id,"",parent);
-				select.size = 1;
-				select.name = settings[s].name;
+				dom.span(parent,"","",setting.options[r].title);
+				dom.br(parent);	
 				
-				if (settings[s].onchange){
-					select.addEventListener("change", settings[s].onchange, false);
+				if (r == setting.default_option) {
+					input.checked = true;
 				}
 				
-				dom.br(parent);
-			
-			}
-			
-			if (settings[s].type == "switch"){
-			
-				input = dom.input(parent,settings[s].id,"on_off_switch",settings[s].name, "button", "Off");
-				input.on = false;
-				input.addEventListener("click", function(){dom.onOffSwitch(this);}, false);
-				
-				dom.setOnOffSwitchValue(g(settings[s].id),settings[s].default_value);
-				
-				dom.br(parent);
-			
-			}
-			
-			if (settings[s].type == "file"){
+				if (setting.onchange) {
+					input.addEventListener("click", function (num) {
+						return function () {
+							setting.onchange(setting.options[num].value);
+						}
+					}(r), false);
+				}
+			}		
+		},
 		
-				input = dom.input(parent,settings[s].file_input_id,"",settings[s].file_input_name,"file");
-				input.addEventListener('change', settings[s].onchange, false);
-				dom.br(parent);
-			}
-			
-			if (settings[s].type == "text"){
+		select: function(setting, parent){
 		
-				input = dom.input(parent,settings[s].id,"",settings[s].name, "text", settings[s].value);
-				input.addEventListener('change', settings[s].onchange, false);
-				dom.br(parent);
-			}
+			var select = dom.newElement("select",setting.id,"",parent);
+			select.size = 1;
+			select.name = setting.name;
 			
-			if (settings[s].type == "empty"){
-				
-				dom.newElement("div",settings[s].id,"",parent);
-		
+			if (setting.onchange){
+				select.addEventListener("change", setting.onchange, false);
 			}
 			
 			dom.br(parent);
 			
+		},
+		
+		
+		powerSwitch: function(setting, parent){
+			
+			var input = dom.input(parent,setting.id,"on_off_switch",setting.name, "button", "Off");
+			input.on = false;
+			input.addEventListener("click", function(){dom.onOffSwitch(this);}, false);
+			
+			dom.setOnOffSwitchValue(g(setting.id),setting.default_value);
+			
+			dom.br(parent);
+			
+		},
+		
+		file: function(setting, parent){
+		
+			var input = dom.input(parent,setting.file_input_id,"",setting.file_input_name,"file");
+			input.addEventListener('change', setting.onchange, false);
+			dom.br(parent);
+		},
+		
+		text: function(setting, parent){
+			
+			var input = dom.input(parent,setting.id,"",setting.name, "text", setting.value);
+			input.addEventListener('change', setting.onchange, false);
+			dom.br(parent);
+		},
+		
+		empty: function(setting, parent){
+			
+			dom.newElement("div",setting.id,"",parent);
+		
+		},
+		
+		link: function(){
+			return;
 		}
 	
+	
+	};
+	
+	
+	my.initSettings = function (settings, parent){
+	
+		parent.innerHTML = "";
+		
+		forEach(settings, function(setting) { my.initSetting(setting, parent); });
+	
+	};
+	
+
+	my.initSetting = function(setting, parent){
+		
+		var h2 = dom.h2(parent);
+		
+		if ((setting.importance) && (setting.importance == "high")){
+			h2.style.color = "red";
+		}
+		
+		if (setting.onclick){
+			var a = dom.a(h2,"","","#",setting.title, setting.onclick);
+			
+			if ((setting.importance) && (setting.importance == "high")){
+				a.style.color = "red";
+			}
+		}
+		
+		else {
+		
+			h2.innerHTML = setting.title;
+		
+		}
+		
+		if (setting.description){
+			dom.newElement("p","","",parent,setting.description);
+		}
+
+		if (my.makeSettingFunctions[setting.type]) {
+		
+			my.makeSettingFunctions[setting.type](setting, parent);
+		
+		}
+		
+		else {
+		
+			console.warn("Unknown setting type: " + setting.type);
+			
+		}
+		
+		dom.br(parent);
+		
 	};
 	
 	
@@ -831,18 +863,6 @@ var APP = (function () {
 			
 				my.alert(my.l("error","no_workflow"));
 			}
-			
-		});
-		
-		document.getElementsByName("radio_auto_save").selectedIndex = 3;
-		
-		forEach(document.getElementsByName("radio_auto_save"), function(radio){
-		
-			radio.addEventListener( "click", function(num) {
-				return function(){
-					my.save_and_recall.setAutosaveInterval(num);
-				};
-			}(radio.value));
 			
 		});
 		

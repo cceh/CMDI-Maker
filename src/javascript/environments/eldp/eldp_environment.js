@@ -41,7 +41,7 @@ var eldp_environment = (function(){
 					"can be calculated from the actor's birth date and the session date.<br>"+
 					"When an age can be calculated, it will appear in the output file.<br>"+
 					"(Age = Session Date - Actor's Birth Date)",
-				type: "switch",
+				type: "powerSwitch",
 				default_value: true,
 				name: "radio_age_calc",
 				id: "radio_age_calc"

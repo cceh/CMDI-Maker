@@ -41,7 +41,7 @@ var imdi_environment = (function(){
 				
 				title: my.l("settings","calculate_actors_age"),
 				description: my.l("settings","calculate_actors_age_description"),
-				type: "switch",
+				type: "powerSwitch",
 				default_value: true,
 				name: "radio_age_calc",
 				id: "radio_age_calc"
