@@ -33,6 +33,8 @@ APP.CONF = {
 	view_id_prefix: "VIEW_",
 	xml_textarea_class_name: "xml_textarea",
 	select_frame_id: "SF",
+	main_menu_div_id: "main_menu_div",
+	
 
 	output_textarea_rows: 40,
 	output_textarea_columns: 130,

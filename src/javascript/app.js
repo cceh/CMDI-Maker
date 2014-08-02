@@ -231,21 +231,24 @@ var APP = (function () {
 	};
 	
 	
+	my.drawMainMenuElement = function(element, parent){
+		
+		var div = dom.div(parent, element.id, "main_menu_entry");
+		dom.img(div, "", "main_menu_entry_img", APP.CONF.path_to_icons + element.icon);
+		
+		dom.span(div, "", "main_menu_entry_span", element.title);
+		
+		div.addEventListener("click", element.onclick, false);
+		div.addEventListener("click", my.closeMainMenu, false);
+		
+	};
+	
+	
 	my.drawMainMenu = function(menu_elements){
 	
-		var menu = dom.div(g("cmdi_maker_body"), "main_menu_div", "");
+		var menu = dom.div(g("cmdi_maker_body"), APP.CONF.main_menu_div_id, "");
 		
-		forEach(menu_elements, function(element){
-		
-			var div = dom.div(menu, element.id, "main_menu_entry");
-			dom.img(div, "", "main_menu_entry_img", APP.CONF.path_to_icons + element.icon);
-			
-			dom.span(div, "", "main_menu_entry_span", element.title);
-			
-			div.addEventListener("click", element.onclick, false);
-			div.addEventListener("click", my.closeMainMenu, false);
-		
-		});
+		forEach(menu_elements, function(element){ my.drawMainMenuElement(element, menu); });
 		
 		my.closeMainMenu();
 		
@@ -256,7 +259,7 @@ var APP = (function () {
 	
 	my.changeMainMenuDisplay = function(){
 	
-		if (g("main_menu_div").style.display == "none"){
+		if (g(APP.CONF.main_menu_div_id).style.display == "none"){
 			my.openMainMenu();
 		}
 		
@@ -270,11 +273,11 @@ var APP = (function () {
 	
 	my.closeMainMenu = function(){
 		
-		if (!g("main_menu_div")){
+		if (!g(APP.CONF.main_menu_div_id)){
 			return;
 		}
 		
-		g("main_menu_div").style.display = "none";
+		dom.hideElement(g(APP.CONF.main_menu_div_id));
 		g("main_menu_icon").style.backgroundColor = "";
 		
 	};
@@ -282,7 +285,7 @@ var APP = (function () {
 	
 	my.openMainMenu = function(){
 
-		g("main_menu_div").style.display = "block";
+		g(APP.CONF.main_menu_div_id).style.display = "block";
 		g("main_menu_icon").style.backgroundColor = "cornflowerblue";
 	
 	};	
