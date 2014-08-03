@@ -180,23 +180,25 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 	
 
-	my.refreshResources = function(s){
+	my.refreshResources = function(session_index){
 	//refresh resources for one session
+	
+		var add_resource_div = g(my.dom_element_prefix + my.sessions[session_index].id + "_resources_add_mf_div");
 
-		g(my.dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").innerHTML = "";
+		add_resource_div.innerHTML = "";
 
 		var select = document.createElement("select");
 		
 		for (var i=0; i<resources.available_resources.length; i++){ 
 			
-			var NewOption = new Option( resources.available_resources[i][0], i, false, true);
-			select.options[select.options.length] = NewOption;		
+			var NewOption = new Option( resources.available_resources[i].name, i, false, true);
+			select.options[select.options.length] = NewOption;	
 			
 		}
 
 		if (resources.available_resources.length > 0){
 		
-			g(my.dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(select);
+			add_resource_div.appendChild(select);
 		
 			select.selectedIndex = 0;	
 		
@@ -204,19 +206,19 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			add_button.type = "button";
 			add_button.value = l("session", "add_to_session");
 			
-			dom.br(g(my.dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div"));
-			g(my.dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(add_button);		
+			dom.br(add_resource_div);
+			add_resource_div.appendChild(add_button);		
 			
 			add_button.addEventListener('click', function(num) { 
 				return function(){ my.addResource(num, select.selectedIndex);  };
-			}(my.sessions[s].id) );
+			}(my.sessions[session_index].id) );
 			
 		}
 
 		if (resources.available_resources.length === 0){
 		
 			var p = document.createElement("h5");
-			g(my.dom_element_prefix+my.sessions[s].id+"_resources_add_mf_div").appendChild(p);
+			add_resource_div.appendChild(p);
 			p.innerHTML = l("session", "no_files_have_been_added") + "<br>";
 		
 			dom.a(p,"","","#",l("session", "add_some_files"), function(){APP.view(resources);});
@@ -766,15 +768,15 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		var resource_id = my.resource_id_counter;
 		
-		var file_type = resources.getValidityOfFile(resources.available_resources[resource_file_index][0]).type;
+		var file_type = resources.getValidityOfFile(resources.available_resources[resource_file_index].name).type;
 
 		if (file_type == "Media File"){
 			
 			resource_type = "mf";
 		
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.push({
-				name: resources.available_resources[resource_file_index][0],
-				size: resources.available_resources[resource_file_index][2],
+				name: resources.available_resources[resource_file_index].name,
+				size: resources.available_resources[resource_file_index].size,
 				id: my.resource_id_counter,
 				resource_file_index: resource_file_index
 			});
@@ -786,8 +788,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			resource_type = "wr";
 		
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
-				name: resources.available_resources[resource_file_index][0],
-				size: resources.available_resources[resource_file_index][2],
+				name: resources.available_resources[resource_file_index].name,
+				size: resources.available_resources[resource_file_index].size,
 				id: my.resource_id_counter,
 				resource_file_index: resource_file_index
 			});
@@ -799,7 +801,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			if (!without_questions){
 			
 				APP.alert(l("session", "unknown_file_problem__before_filename") + "<br>" +
-				resources.available_resources[resource_file_index][0] + 
+				resources.available_resources[resource_file_index].name + 
 				"<br>" + l("session", "unknown_file_problem__after_filename"));
 			
 			}
@@ -807,8 +809,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			resource_type = "wr";
 			
 			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
-				name: resources.available_resources[resource_file_index][0],
-				size: resources.available_resources[resource_file_index][2],
+				name: resources.available_resources[resource_file_index].name,
+				size: resources.available_resources[resource_file_index].size,
 				id: my.resource_id_counter,
 				resource_file_index: resource_file_index
 			});
@@ -820,8 +822,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (resource_file_index!=-1){
 		// if an existing media file is added, adopt its name and date to the input fields
-			filename = resources.available_resources[resource_file_index][0];	//name
-			filesize = resources.available_resources[resource_file_index][2];	//size
+			filename = resources.available_resources[resource_file_index].name;
+			filesize = resources.available_resources[resource_file_index].size;
 
 		}
 		
@@ -834,13 +836,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//Rename the session if an EAF file is added for the first time and session has no name yet
 		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+session_id+"_session_name") === "")){
 		
-			var name = removeEndingFromFilename(resources.available_resources[resource_file_index][0]);
+			var name = removeEndingFromFilename(resources.available_resources[resource_file_index].name);
 			
 			g(my.dom_element_prefix+session_id+"_session_name").value = name;
 			
 			my.refreshSessionHeading(session_id);
 		
-			alertify.log(l("session", "session_name_taken_from_eaf"),"",8000);
+			APP.log(l("session", "session_name_taken_from_eaf"));
 		
 		}
 		
@@ -849,7 +851,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//only, if session date is still YYYY
 		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
 			
-			var date = parseDate(resources.available_resources[resource_file_index][0]);
+			var date = parseDate(resources.available_resources[resource_file_index].name);
 			
 			if (date !== null){
 			

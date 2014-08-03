@@ -353,14 +353,14 @@ imdi_environment.workflow[1] = (function(){
 
 		for (var i = 0; i < my.available_resources.length; i++) {
 		
-			file_vailidity = my.getValidityOfFile(my.available_resources[i][0]);
+			file_vailidity = my.getValidityOfFile(my.available_resources[i].name);
 		
 			my.renderResource(
 				i,
-				my.available_resources[i][0],
-				my.available_resources[i][1],
-				my.available_resources[i][2],
-				my.available_resources[i][3],
+				my.available_resources[i].name,
+				my.available_resources[i].mime_type,
+				my.available_resources[i].size,
+				my.available_resources[i].last_change,
 				"file_entry_"+i,
 				"file_entry " + file_vailidity.file_entry_class,
 				list,
@@ -413,7 +413,12 @@ imdi_environment.workflow[1] = (function(){
 		// files is a FileList of File objects. List some properties.
 		var output = [];
 		for (var i = 0, f; !!(f = FileList[i]); i++) {
-			my.available_resources.push([f.name, f.type || 'n/a',bytesToSize(f.size,1), f.lastModifiedDate.toLocaleDateString()  ]);  //push an array with 4 values
+			my.available_resources.push({
+				name: f.name,
+				mime_type: f.type || 'n/a',
+				size: bytesToSize(f.size,1),
+				last_change: f.lastModifiedDate.toLocaleDateString()
+			});
 		}
 		
 		my.refreshFileListDisplay();
@@ -431,7 +436,7 @@ imdi_environment.workflow[1] = (function(){
 
 	my.sortAlphabetically = function(){
 
-		my.available_resources = sortByKey(my.available_resources,0);
+		my.available_resources = sortByKey(my.available_resources, "name");
 
 		my.refreshFileListDisplay();
 	};
@@ -450,14 +455,7 @@ imdi_environment.workflow[1] = (function(){
 		
 		if (chosen_file_type == "selected"){
 		
-			console.log("Searching for selected files");
-			
-			for (f=0; f<my.selected_files.length; f++){
-		
-				my.createSessionForResource(my.selected_files[f]);
-			
-			}
-			
+			forEach(my.selected_files, my.createSessionForResource);
 			return;
 		
 		}
@@ -466,10 +464,8 @@ imdi_environment.workflow[1] = (function(){
 		
 			for (f=0; f<my.available_resources.length; f++){
 			
-				if (getFileTypeFromFilename(my.available_resources[f][0]) == chosen_file_type){
+				if (getFileTypeFromFilename(my.available_resources[f].name) == chosen_file_type){
 				
-					console.log("Found a file of file type " + chosen_file_type);
-					
 					my.createSessionForResource(f);
 				
 				}
@@ -520,7 +516,7 @@ imdi_environment.workflow[1] = (function(){
 
 	my.createSessionForResource = function(resource_index){
 
-		var name = remove_invalid_chars(removeEndingFromFilename(my.available_resources[resource_index][0]));
+		var name = remove_invalid_chars(removeEndingFromFilename(my.available_resources[resource_index].name));
 		var expanded = false; //collapse automatically generated session
 		
 		var resources = [];
@@ -533,7 +529,7 @@ imdi_environment.workflow[1] = (function(){
 				continue;
 			}
 		
-			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[f2][0]), removeEndingFromFilename(my.available_resources[resource_index][0]))) {
+			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[f2].name), removeEndingFromFilename(my.available_resources[resource_index].name))) {
 			
 				resources.push(f2);
 			
