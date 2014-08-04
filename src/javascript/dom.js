@@ -295,6 +295,16 @@ var dom = (function() {
 	};
 	
 	
+	my.icon = function(parent,id,className,icon){
+	
+		var img = my.newElement("img",id,className,parent);
+		my.setIcon(img, icon);
+		
+		return img;	
+	
+	};
+	
+	
 	my.div = function(parent,id,className,innerHTML){
 	
 		var div = my.newElement("div",id,className,parent,innerHTML);
@@ -309,6 +319,15 @@ var dom = (function() {
 		var span = my.newElement("span",id,className,parent,innerHTML);
 		
 		return span;	
+	
+	};
+	
+	
+	my.p = function(parent, innerHTML, id, className){
+	
+		var p = my.newElement("p",id,className,parent,innerHTML);
+		
+		return p;	
 	
 	};
 	
@@ -656,6 +675,9 @@ var dom = (function() {
 	my.hideElement = function(elem){
 		elem.style.display = "none";
 	};
+	
+	
+	my.hide = my.hideElement;
 
 
 	my.unhideElement = function(elem){
@@ -827,7 +849,7 @@ var dom = (function() {
 
 		var div = my.newElement("div", "", "output_div", parent);
 		
-		var img = my.img(div,"","download_icon", APP.CONF.path_to_icons + "save.png");
+		var img = my.icon(div,"","download_icon", "save");
 		
 		my.h1(div, title);
 		

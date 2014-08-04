@@ -13,6 +13,7 @@ var minifyCSS = require('gulp-minify-css');
 var htmlreplace = require('gulp-html-replace');
 var header = require('gulp-header');
 var manifest = require('gulp-manifest');
+//var imageResize = require('gulp-image-resize');
 
  
 var source_scripts = [
@@ -163,6 +164,21 @@ gulp.task('manifest', function(){
     .pipe(gulp.dest('build'));
 });
 
+
+/* Don't use ImageMagick because it has a bug that makes some PNGs transparent. GraphicsMagick is in this case better. */
+/* But we don't do image resizing at all at this point. */
+/*
+gulp.task('resize', function () {
+  gulp.src(['src/img/icons/*'])
+    .pipe(imageResize({ 
+      width : 36,
+      height : 36,
+      upscale : false,
+	  imageMagick: false
+    }))
+    .pipe(gulp.dest('build/img/icons/'));
+});
+*/
 
 
 // default gulp task

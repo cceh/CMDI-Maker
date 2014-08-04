@@ -23,11 +23,7 @@ imdi_environment.workflow[2] = (function(){
 	
 	var showLanguagesOfActiveActor = function(){
 
-		for (var l=0; l < my.actors[my.active_actor].languages.length; l++){
-		
-			my.languages.set(my.actors[my.active_actor].languages[l] );
-		
-		}
+		forEach(my.actors[my.active_actor].languages, my.languages.set);
 
 	};
 	
@@ -107,83 +103,75 @@ imdi_environment.workflow[2] = (function(){
 	};
 	
 	
-	var parse_imdi_for_actors = function(xml){
+	var parseIMDIForActors = function(xml){
 
 		var actors_in_xml = xml.getElementsByTagName("Actor");
 		
-		var actors_in_json = [];
+		var actors_in_json = map(actors_in_xml, function(xml_actor){
 		
-		for (var a=0; a<actors_in_xml.length; a++){
-		
+			console.log("Actor in IMDI found. Name: " + xml_actor.querySelector("Name").textContent.trim());
 			
-			console.log("Actor in IMDI found. Name: " + actors_in_xml[a].querySelector("Name").textContent.trim());
-			
-			var actor = {
-				name: actors_in_xml[a].querySelector("Name").textContent.trim(),
-				role: actors_in_xml[a].querySelector("Role").textContent.trim(),
-				full_name: actors_in_xml[a].querySelector("FullName").textContent.trim(),
-				code: actors_in_xml[a].querySelector("Code").textContent.trim(),		
-				age: actors_in_xml[a].querySelector("Age").textContent.trim(),
-				sex: actors_in_xml[a].querySelector("Sex").textContent.trim(),		
-				education: actors_in_xml[a].querySelector("Education").textContent.trim(),
-				birth_date: parse_birth_date(actors_in_xml[a].querySelector("BirthDate").textContent.trim()),
-				ethnic_group: actors_in_xml[a].querySelector("EthnicGroup").textContent.trim(),
-				family_social_role: actors_in_xml[a].querySelector("FamilySocialRole").textContent.trim(),
+			var actor_object = {
+				name: xml_actor.querySelector("Name").textContent.trim(),
+				role: xml_actor.querySelector("Role").textContent.trim(),
+				full_name: xml_actor.querySelector("FullName").textContent.trim(),
+				code: xml_actor.querySelector("Code").textContent.trim(),		
+				age: xml_actor.querySelector("Age").textContent.trim(),
+				sex: xml_actor.querySelector("Sex").textContent.trim(),		
+				education: xml_actor.querySelector("Education").textContent.trim(),
+				birth_date: parse_birth_date(xml_actor.querySelector("BirthDate").textContent.trim()),
+				ethnic_group: xml_actor.querySelector("EthnicGroup").textContent.trim(),
+				family_social_role: xml_actor.querySelector("FamilySocialRole").textContent.trim(),
 				
-				description: actors_in_xml[a].querySelector("Description").textContent.trim(),
+				description: xml_actor.querySelector("Description").textContent.trim(),
 				
 				contact: {
 				
-					name: actors_in_xml[a].querySelector("Contact").querySelector("Name").textContent.trim(),
-					address: actors_in_xml[a].querySelector("Contact").querySelector("Address").textContent.trim(),
-					email: actors_in_xml[a].querySelector("Contact").querySelector("Email").textContent.trim(),
-					organisation: actors_in_xml[a].querySelector("Contact").querySelector("Organisation").textContent.trim(),
+					name: xml_actor.querySelector("Contact").querySelector("Name").textContent.trim(),
+					address: xml_actor.querySelector("Contact").querySelector("Address").textContent.trim(),
+					email: xml_actor.querySelector("Contact").querySelector("Email").textContent.trim(),
+					organisation: xml_actor.querySelector("Contact").querySelector("Organisation").textContent.trim(),
 				
 				
 				},
 				
-				anonymized: (actors_in_xml[a].querySelector("Anonymized").textContent.trim() == "true") ? true : false,
+				anonymized: (xml_actor.querySelector("Anonymized").textContent.trim() == "true") ? true : false,
 				
 				languages: []
 			
 			};
 			
-			var actor_languages = actors_in_xml[a].querySelector("Languages");
+			var actor_languages = xml_actor.querySelector("Languages");
 			
-			console.log(actor_languages.children);
+			forEach(actor_languages.children, function(xml_AL){
 			
-			for (var l=0; l<actor_languages.children.length; l++){
-			
-				if (actor_languages.children[l].nodeName != "Language"){
-					continue;
+				if (xml_AL.nodeName != "Language"){
+					return;
 				}
 			
 				var Actor_Language = {
 				
 					LanguageObject: [
-					
-					actor_languages.children[l].querySelector("Id").textContent.trim().slice(9),
-					"?",
-					"?",
-					actor_languages.children[l].querySelector("Name").textContent.trim(),
-					
-					
+						xml_AL.querySelector("Id").textContent.trim().slice(9),
+						"?",
+						"?",
+						xml_AL.querySelector("Name").textContent.trim()
 					],
 					
-					MotherTongue: (actor_languages.children[l].querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
-					PrimaryLanguage: (actor_languages.children[l].querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
+					MotherTongue: (xml_AL.querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
+					PrimaryLanguage: (xml_AL.querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
 				
 				
 				};
 				
 				
-				my.languages.push(Actor_Language);
+				actor_object.languages.push(Actor_Language);
 			
-			}
+			});
 			
-			actors_in_json.push(actor);
+			return actor_object;
 
-		}
+		});
 		
 		console.log(actors_in_xml);
 		
@@ -211,7 +199,7 @@ imdi_environment.workflow[2] = (function(){
 	my.identity = {
 		id: "actor",
 		title: "Actors",
-		icon: "user.png"
+		icon: "user"
 	};
 	
 	my.id_counter = 0;
@@ -284,25 +272,25 @@ imdi_environment.workflow[2] = (function(){
 		return [
 			{
 				id: "link_save_active_actor",
-				icon: "save.png",
+				icon: "save",
 				label_span_id: "save_actor_span",
 				onclick: function() { my.save_active_actor(); }
 			},
 			{
 				id: "link_delete_active_actor",
-				icon: "reset.png",
+				icon: "reset",
 				label: l("delete_this_actor"),
 				onclick: function() { my.delete_active_actor(); }
 			},
 			{
 				id: "link_sort_actors_alphabetically",
-				icon: "az.png",
+				icon: "az",
 				label: l("sort_actors_alphabetically"),
 				onclick: function() { my.sortAlphabetically(); }
 			},
 			{
 				id: "link_duplicate_active_actor",
-				icon: "duplicate_user.png",
+				icon: "duplicate_user",
 				label: l("save_and_duplicate_this_actor"),
 				onclick: function() { my.duplicate_active_actor(); }
 			}
@@ -370,8 +358,8 @@ imdi_environment.workflow[2] = (function(){
 
 			blankForm();
 			
-			g('link_delete_active_actor').style.display = "none";
-			g('link_duplicate_active_actor').style.display = "none";
+			dom.hide(g('link_delete_active_actor'));
+			dom.hide(g('link_duplicate_active_actor'));
 			g("save_actor_span").innerHTML = l("save_actor");
 
 		}
@@ -411,10 +399,10 @@ imdi_environment.workflow[2] = (function(){
 
 
 	};
-
-
-	my.import_actors = function(evt){
-
+	
+	
+	my.handleImportFileInputChange = function (evt){
+	
 		var files = evt.target.files; // FileList object
 
 		console.log(files);
@@ -442,7 +430,7 @@ imdi_environment.workflow[2] = (function(){
 					
 					var xml = parser.parseFromString(result,"text/xml");
 					
-					imported_actors = parse_imdi_for_actors(xml);
+					imported_actors = parseIMDIForActors(xml);
 					
 				}
 				
@@ -641,8 +629,9 @@ imdi_environment.workflow[2] = (function(){
 
 		for (var i=0;i<my.actors.length;i++){
 
-			div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'), "<h2>" + my.actors[i].name + "</h2>" + "<p>"+my.actors[i].role+"</p>");
-			//display name of actor
+			div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'));
+			dom.h2(div, my.actors[i].name);
+			dom.p(div, my.actors[i].role);
 		
 			div.addEventListener('click', function(num) { 
 				return function(){ my.show(num); }; 

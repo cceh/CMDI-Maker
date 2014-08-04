@@ -208,12 +208,12 @@ APP.environments = (function () {
 			if (w !== 0){
 			
 				var arrow = dom.newElement("div","","wizard_arrow",div);
-				dom.img(arrow,"","wizard_icon", APP.CONF.path_to_icons + "right2.png");
+				dom.icon(arrow,"","wizard_icon", "right2");
 			
 			}
 			
 			var icon = dom.newElement("div",APP.CONF.viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
-			dom.img(icon, "", "module_icon", APP.CONF.path_to_icons + workflow[w].identity.icon);
+			dom.icon(icon, "", "module_icon", workflow[w].identity.icon);
 			dom.br(icon);
 			dom.span(icon,"","",workflow[w].identity.title);
 			

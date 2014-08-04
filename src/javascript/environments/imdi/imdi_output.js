@@ -28,7 +28,7 @@ imdi_environment.workflow[4] = (function (){
 	my.identity = {
 		id: "xml_output",
 		title: "XML Output",
-		icon: "data.png"
+		icon: "data"
 	};
 	
 	
@@ -132,7 +132,7 @@ imdi_environment.workflow[4] = (function (){
 		return [
 			{
 				id: "link_export_corpus",
-				icon: "download.png",
+				icon: "download",
 				label: l("output", "download_corpus_including_all_sessions"),
 				onclick: function(){APP.saveAllOutputFiles();}
 			}

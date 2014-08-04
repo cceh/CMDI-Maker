@@ -189,7 +189,7 @@ var APP = (function () {
 		}
 		
 		//try to get term in default language
-		console.log("Haven't found a term in " + LP.name + ": " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4 + ". " +
+		console.info("Haven't found a term in " + LP.name + ": " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4 + ". " +
 		"Trying to get it in default language.");
 		
 		var defaultLP = LanguagePacksArray[0];
@@ -211,19 +211,19 @@ var APP = (function () {
 			{
 				title: my.l("save"),
 				id: "LINK_save_form",
-				icon:	"save.png",
+				icon:	"save",
 				onclick: function(){ my.save_and_recall.userSave(); }
 			},
 			{
 				title: my.l("settings", "settings"),
 				id: "VIEWLINK_settings",
-				icon:	"wrench.png",
+				icon:	"wrench",
 				onclick: function(){ APP.view("VIEW_settings"); }
 			},
 			{
 				title: my.l("about"),
 				id: "VIEWLINK_about",
-				icon:	"about.png",
+				icon:	"about",
 				onclick: function(){ APP.view("VIEW_about"); }
 			}
 		];
@@ -234,8 +234,7 @@ var APP = (function () {
 	my.drawMainMenuElement = function(element, parent){
 		
 		var div = dom.div(parent, element.id, "main_menu_entry");
-		dom.img(div, "", "main_menu_entry_img", APP.CONF.path_to_icons + element.icon);
-		
+		dom.icon(div, "", "main_menu_entry_img", element.icon);
 		dom.span(div, "", "main_menu_entry_span", element.title);
 		
 		div.addEventListener("click", element.onclick, false);
@@ -552,7 +551,7 @@ var APP = (function () {
 			if (func.type != "function_wrap"){
 			
 				function_div = dom.newElement("div", func.id, "function_icon",functions_div);
-				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + func.icon);
+				dom.icon(function_div,"","function_img", func.icon);
 				var label = dom.h3(function_div, func.label);
 				
 				if (func.label_span_id){
@@ -572,7 +571,7 @@ var APP = (function () {
 				var function_wrap = dom.div(functions_div,func.wrapper_id,"function_wrap");
 				
 				function_div = dom.div(function_wrap, func.id, "function_icon");
-				dom.img(function_div,"","function_img", APP.CONF.path_to_icons + func.icon);
+				dom.icon(function_div,"","function_img", func.icon);
 				dom.h3(function_div, func.label);
 				
 				function_div.addEventListener('click', func.onclick);
@@ -632,17 +631,17 @@ var APP = (function () {
 		}
 		
 		var views = g(APP.CONF.content_wrapper_id).children;
-		var view_ids = [];
 		
 		//make all views invisible
-		forEach(views, function(view){
-			view.style.display = "none";
-			view_ids.push(view.id);
+		forEach(views, dom.hide);
+		
+		var view_ids = map(views, function(view) {
+			return view.id;
 		});
 		
 		//check if view exists, if not, throw error
 		if (view_ids.indexOf(id) == -1){
-			console.log("Error: Unkown view requested (" + id +")!");
+			console.warn("Warning: Unkown view requested (" + id +")!");
 			my.view("default");
 			return;
 		}			

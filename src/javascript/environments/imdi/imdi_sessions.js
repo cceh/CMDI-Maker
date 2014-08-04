@@ -27,7 +27,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.identity = {
 		id: "session",
 		title: "Sessions",
-		icon: "edit.png",
+		icon: "edit",
 	};
 	
 	my.sessions = [];
@@ -132,13 +132,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		return [
 			{
 				label: l("session", "new_session"),
-				icon: "plus.png",
+				icon: "plus",
 				id: "link_newSession",
 				onclick: function() {my.newSession(); }
 			},
 			{
 				label: l("session", "copy_session_1_metadata"),
-				icon: "copy.png",
+				icon: "copy",
 				id: "link_copy_sessions",
 				wrapper_id: "copy_sessions_div",
 				type: "function_wrap",
@@ -147,7 +147,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			},
 			{
 				label: l("session", "reset_form"),
-				icon: "reset.png",
+				icon: "reset",
 				id: "session_link_reset_form",
 				onclick: function() {       
 
@@ -172,7 +172,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			},
 			{
 				label: l("session", "sort_by_name"),
-				icon: "az.png",
+				icon: "az",
 				id: "session_link_sort_by_name",
 				onclick: function() { my.sortAlphabetically(); }
 			}
@@ -731,8 +731,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		my.refreshActorName(session_id, actor_id);
 		
-		var img = dom.img(g(my.dom_element_prefix+session_id+"_actor_" + actor_id),
-		"delete_actor_"+actor_id+"_icon", "delete_actor_icon", APP.CONF.path_to_icons+"reset.png");
+		var img = dom.icon(g(my.dom_element_prefix+session_id+"_actor_" + actor_id),
+		"delete_actor_" + actor_id + "_icon", "delete_actor_icon", "reset");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeActor(num, num2);  
 			};
@@ -895,7 +895,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			return;
 		}
 		
-		var img = dom.img(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon",APP.CONF.path_to_icons+"reset.png");
+		var img = dom.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeResource(num, num2);  
 			};

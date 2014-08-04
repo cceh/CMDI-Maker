@@ -137,7 +137,7 @@ imdi_environment.workflow[2].languages = (function (){
 		my.languages_of_active_actor.push(ActorLanguageObject);
 		
 		var div = dom.newElement("div","actor_language_"+my.id_counter+"_div","current_actor_language_entry",g("current_actor_languages_display"));
-		var img = dom.img(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", APP.CONF.path_to_icons+"reset.png");
+		var img = dom.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) {
 			return function(){ actor.languages.remove(num);  
 			};

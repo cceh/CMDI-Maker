@@ -57,7 +57,7 @@ var imdi_environment = (function(){
 				type: "file",
 				file_input_id: "actors_file_input",
 				file_input_name: "actors_file_input",
-				onchange: function () {my.workflow[2].import_actors();}
+				onchange: my.workflow[2].handleImportFileInputChange
 			},
 			{
 				title: my.l("settings","delete_actors_database"),

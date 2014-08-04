@@ -30,7 +30,7 @@ imdi_environment.workflow[1] = (function(){
 	my.identity = {
 		id: "resources",
 		title: "Resources",
-		icon: "blocks.png",
+		icon: "blocks",
 	};
 	
 	my.last_selected_file = -1;
@@ -53,7 +53,7 @@ imdi_environment.workflow[1] = (function(){
 		var warning_div = dom.newElement("div","","warning_div",parent);
 		var warning_img_div = dom.newElement("div","","warning_img_div",warning_div);
 		var img = dom.newElement("img","","warning_icon",warning_img_div);
-		img.src = APP.CONF.path_to_icons + "warning.png";
+		dom.setIcon(img, "warning");
 		
 		dom.newElement("div","","compatibility_warning",warning_div, string);
 	
@@ -191,7 +191,7 @@ imdi_environment.workflow[1] = (function(){
 		return [
 			{
 				label: l("resources", "create_one_session_per_file"),
-				icon: "plus.png",
+				icon: "plus",
 				id: "crps_icon",
 				wrapper_id: "crps_div",
 				type: "function_wrap",
@@ -206,19 +206,19 @@ imdi_environment.workflow[1] = (function(){
 			},
 			{
 				id: "link_sort_alphabetically",
-				icon: "az.png",
+				icon: "az",
 				label: l("resources", "sort_alphabetically"),
 				onclick: function() { my.sortAlphabetically(); }
 			},
 			{
 				id: "link_remove_files",
-				icon: "reset.png",
+				icon: "reset",
 				label: l("resources", "remove"),
 				onclick: function() { my.removeSelectedFiles(); }
 			},
 			{
 				id: "link_clear_file_list",
-				icon: "reset.png",
+				icon: "reset",
 				label: l("resources", "clear_file_list"),
 				onclick: function() { my.clearFileList(); }
 			}

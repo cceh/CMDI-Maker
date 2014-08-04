@@ -43,7 +43,7 @@ imdi_environment.workflow[0] = (function(){
 	my.identity = {
 		id: "corpus",
 		title: "Corpus",
-		icon: "box.png"
+		icon: "box"
 	};
 	
 	
@@ -85,7 +85,7 @@ imdi_environment.workflow[0] = (function(){
 		return [
 			{
 				label: my.l("reset_form"),
-				icon: "reset.png",
+				icon: "reset",
 				id: "link_reset_form",
 				onclick: function() {     
 
