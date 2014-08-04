@@ -550,12 +550,12 @@ var APP = (function () {
 		
 			if (func.type != "function_wrap"){
 			
-				function_div = dom.newElement("div", func.id, "function_icon",functions_div);
+				function_div = dom.make("div", func.id, "function_icon",functions_div);
 				dom.icon(function_div,"","function_img", func.icon);
 				var label = dom.h3(function_div, func.label);
 				
 				if (func.label_span_id){
-					dom.newElement("span", func.label_span_id, "", label);
+					dom.make("span", func.label_span_id, "", label);
 				}
 				
 				else if (func.label) {  //if label is there
@@ -576,7 +576,7 @@ var APP = (function () {
 				
 				function_div.addEventListener('click', func.onclick);
 
-				var sub_div = dom.newElement("div",func.sub_div,"",function_wrap);
+				var sub_div = dom.make("div",func.sub_div,"",function_wrap);
 				
 				if (func.sub_div_innerHTML){
 					sub_div.innerHTML = func.sub_div_innerHTML;
@@ -742,7 +742,7 @@ var APP = (function () {
 		
 		select: function(setting, parent){
 		
-			var select = dom.newElement("select",setting.id,"",parent);
+			var select = dom.make("select",setting.id,"",parent);
 			select.size = 1;
 			select.name = setting.name;
 			
@@ -783,7 +783,7 @@ var APP = (function () {
 		
 		empty: function(setting, parent){
 			
-			dom.newElement("div",setting.id,"",parent);
+			dom.make("div",setting.id,"",parent);
 		
 		},
 		
@@ -827,7 +827,7 @@ var APP = (function () {
 		}
 		
 		if (setting.description){
-			dom.newElement("p","","",parent,setting.description);
+			dom.make("p","","",parent,setting.description);
 		}
 
 		if (my.makeSettingFunctions[setting.type]) {

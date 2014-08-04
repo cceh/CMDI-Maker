@@ -51,8 +51,8 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.init = function(view){
 		
-		var div = dom.newElement("div","corpus_form","",view);
-		dom.newElement("h1","","",div,"Corpus");
+		var div = dom.make("div","corpus_form","",view);
+		dom.make("h1","","",div,"Corpus");
 		
 		APP.forms.make(div, corpus_form_template(), my.form_id_prefix, my.form_id_prefix);
 

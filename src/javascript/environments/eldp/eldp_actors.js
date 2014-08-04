@@ -213,12 +213,12 @@ eldp_environment.workflow[1] = (function(){
 		
 		session = my.parent.workflow[3];
 		
-		dom.newElement("div",my.element_id_prefix + "list","",view);
-		var ac_view = dom.newElement("div",my.element_id_prefix + "view","",view);
-		var title_div = dom.newElement("div", my.element_id_prefix + "title_div","",ac_view);
-		dom.newElement("h1", my.element_id_prefix + "form_title", "", title_div, l("new_person"));
-		dom.newElement("div", my.element_id_prefix + "content_div","",ac_view);
-		dom.newElement("div", my.languages.element_id_prefix + "results_div","",view);
+		dom.make("div",my.element_id_prefix + "list","",view);
+		var ac_view = dom.make("div",my.element_id_prefix + "view","",view);
+		var title_div = dom.make("div", my.element_id_prefix + "title_div","",ac_view);
+		dom.make("h1", my.element_id_prefix + "form_title", "", title_div, l("new_person"));
+		dom.make("div", my.element_id_prefix + "content_div","",ac_view);
+		dom.make("div", my.languages.element_id_prefix + "results_div","",view);
 		
 		my.createForm();
 		
@@ -614,7 +614,7 @@ eldp_environment.workflow[1] = (function(){
 
 		for (var i=0;i<my.persons.length;i++){
 
-			div = dom.newElement('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
+			div = dom.make('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
 			dom.h2(div, my.persons[i].title);
 			dom.p(div, my.persons[i].role);
 		
@@ -625,7 +625,7 @@ eldp_environment.workflow[1] = (function(){
 		}
 
 		//create field for new person
-		div = dom.newElement('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_person") + "</h2>");
+		div = dom.make('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_person") + "</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
 		if ((session) && (!not_in_sessions)){

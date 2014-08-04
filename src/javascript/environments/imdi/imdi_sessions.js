@@ -107,7 +107,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (!sf.fields_to_copy){
 		
-			dom.newElement("span", "", "", div, l("function_currently_unavailable"));
+			dom.make("span", "", "", div, l("function_currently_unavailable"));
 			return;
 			
 		}
@@ -313,17 +313,17 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			sessions_view.innerHTML = "";
 		}
 		
-		var session_div = dom.newElement('div', my.dom_element_prefix+session_id,'session_div',sessions_view); 
+		var session_div = dom.make('div', my.dom_element_prefix+session_id,'session_div',sessions_view); 
 		//sessions_count is right! but it has to be clear which session in sessions has which session_id
 
-		var session_header = dom.newElement('div', my.dom_element_prefix+session_id+'_header','session_header',session_div);
+		var session_header = dom.make('div', my.dom_element_prefix+session_id+'_header','session_header',session_div);
 		session_header.addEventListener('click', function(num) { 
 			return function(){
 				my.display(num);  
 			};
 		}(session_id) );
 
-		var session_label = dom.newElement('a',my.dom_element_prefix+session_id+'_label','session_label',session_header);
+		var session_label = dom.make('a',my.dom_element_prefix+session_id+'_label','session_label',session_header);
 		
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name === "")){
 		
@@ -341,7 +341,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		session_label.href = "#";
 
 		//create icon for deleting the session
-		var session_delete_link = dom.newElement('a', my.dom_element_prefix + session_id + '_delete_link','session_delete_link', session_header);
+		var session_delete_link = dom.make('a', my.dom_element_prefix + session_id + '_delete_link','session_delete_link', session_header);
 		session_delete_link.addEventListener('click', function(num) {
 
 			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
@@ -354,12 +354,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		session_delete_link.href = "#";
 		
 		//create icon to expand/collapse the session
-		var session_display_link = dom.newElement('a',my.dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
+		var session_display_link = dom.make('a',my.dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
 		session_display_link.innerHTML = "<img id=\""+my.dom_element_prefix+session_id+"_expand_img\" class=\"expand_img\" src=\""+APP.CONF.path_to_icons+"down.png\">";
 		session_display_link.href = "#";
 
 
-		var session_content = dom.newElement('div',my.dom_element_prefix+session_id+'_content','session_content',session_div);
+		var session_content = dom.make('div',my.dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
 		APP.forms.make(session_content, session_form, my.dom_element_prefix+session_id+"_", my.dom_element_prefix, session_object, my.makeSpecialFormInput);
@@ -434,15 +434,15 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			dom.br(parent);
 			
-			dom.newElement("div",element_id_prefix+"actors", "actors", parent);
-			dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
+			dom.make("div",element_id_prefix+"actors", "actors", parent);
+			dom.make("div",element_id_prefix+"addActors_div", "actors", parent);
 		
 		}
 		
 		if (field.name == "resources"){
 		
-			dom.newElement("div",element_id_prefix+"resources", "mfs", parent);
-			dom.newElement("div",element_id_prefix+"add_mf_div", "", parent);
+			dom.make("div",element_id_prefix+"resources", "mfs", parent);
+			dom.make("div",element_id_prefix+"add_mf_div", "", parent);
 		
 		}
 		
@@ -665,11 +665,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		sessions_view.innerHTML = "";
 
-		var no_sessions_message = dom.newElement("h2","no_session_text","no_session_text",sessions_view);
+		var no_sessions_message = dom.make("h2","no_session_text","no_session_text",sessions_view);
 		no_sessions_message.innerHTML = l("session", "this_corpus_contains_no_sessions_yet") + " " + 
 		l("session", "why_not_create_one__before_link");
 
-		var new_session_link = dom.newElement("a","new_session_link","new_session_link",no_sessions_message);
+		var new_session_link = dom.make("a","new_session_link","new_session_link",no_sessions_message);
 
 		new_session_link.innerHTML = l("session", "why_not_create_one__link");
 		new_session_link.href = "#";
@@ -747,8 +747,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.renderActor = function(session_id, actor_id){
 
-		dom.newElement("div", my.dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(my.dom_element_prefix+session_id+"_actors_actors"));
-		var div = dom.newElement("div", my.dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(my.dom_element_prefix+session_id+"_actor_" + actor_id));
+		dom.make("div", my.dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(my.dom_element_prefix+session_id+"_actors_actors"));
+		var div = dom.make("div", my.dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(my.dom_element_prefix+session_id+"_actor_" + actor_id));
 		
 		my.refreshActorName(session_id, actor_id);
 		
@@ -899,7 +899,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.renderResource = function(resource_id, session_id, type, name, size){
 
-		var div = dom.newElement('div', my.dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(my.dom_element_prefix+session_id+"_resources_resources"));
+		var div = dom.make('div', my.dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(my.dom_element_prefix+session_id+"_resources_resources"));
 
 		var h3 = dom.h3(div);
 		

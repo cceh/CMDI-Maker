@@ -622,6 +622,9 @@ var dom = (function() {
 		
 		return element;
 	};
+	
+	
+	my.make = my.newElement;
 
 
 	my.remove = function (id){

@@ -50,12 +50,12 @@ imdi_environment.workflow[1] = (function(){
 	
 	my.addCompatibilityWarning = function(parent, string){
 	
-		var warning_div = dom.newElement("div","","warning_div",parent);
-		var warning_img_div = dom.newElement("div","","warning_img_div",warning_div);
-		var img = dom.newElement("img","","warning_icon",warning_img_div);
+		var warning_div = dom.make("div","","warning_div",parent);
+		var warning_img_div = dom.make("div","","warning_img_div",warning_div);
+		var img = dom.make("img","","warning_icon",warning_img_div);
 		dom.setIcon(img, "warning");
 		
-		dom.newElement("div","","compatibility_warning",warning_div, string);
+		dom.make("div","","compatibility_warning",warning_div, string);
 	
 	
 	};
@@ -230,13 +230,13 @@ imdi_environment.workflow[1] = (function(){
 	
 		session = imdi_environment.workflow[3];
 	
-		var div = dom.newElement("div","files","",view);
-		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>" + l("resources", "drag_and_drop_files_here") + "</h2>");
+		var div = dom.make("div","files","",view);
+		var drop_zone = dom.make("div","drop_zone","",div,"<h2>" + l("resources", "drag_and_drop_files_here") + "</h2>");
 		
 		var input = dom.input(div,"files_input","","files_input", "file");
 		input.multiple = true;
 
-		var usage_table = dom.newElement("div","","workspace-usageTable",div,
+		var usage_table = dom.make("div","","workspace-usageTable",div,
 		'<h3>' + l("resources", "usage") + '</h3>' +
 		'<h4>' + l("resources", "click") + '</h4>'+
 		'<p>' + l("resources", "escape_to_deselect") + '</p>'+
@@ -245,8 +245,8 @@ imdi_environment.workflow[1] = (function(){
 		'<h4>' + l("resources", "escape") + '</h4>'+
 		'<p>' + l("resources", "escape_to_deselect") + '</p>');
 		
-		var file_list_div = dom.newElement("div","file_list_div","",view);
-		var list = dom.newElement("div","list","",file_list_div);
+		var file_list_div = dom.make("div","file_list_div","",view);
+		var list = dom.make("div","list","",file_list_div);
 		
 		// Setup the drag and drop listeners
 		var dropZone = g('drop_zone');
@@ -384,9 +384,9 @@ imdi_environment.workflow[1] = (function(){
 	
 	my.renderResource = function(number, title, mime_type, file_size, last_change, id, className, parent, compatibility_warning){
 	
-		var div = dom.newElement("div", id, className, parent);
-		var title = dom.newElement("h2", "", "file_entry_title", div, title);
-		var p = dom.newElement("p", "", "", div, mime_type +
+		var div = dom.make("div", id, className, parent);
+		var title = dom.make("h2", "", "file_entry_title", div, title);
+		var p = dom.make("p", "", "", div, mime_type +
 		'<br><span class="size_span">' + l("resources", "size") + ': ' + file_size + '</span><br>'+
 		'<span name="date_span" class="date_span">' + l("resources", "last_modified") + ': ' +
 		last_change + '</span>');

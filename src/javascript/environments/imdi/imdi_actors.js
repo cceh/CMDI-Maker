@@ -212,12 +212,12 @@ imdi_environment.workflow[2] = (function(){
 		
 		session = my.parent.workflow[3];
 		
-		dom.newElement("div",my.element_id_prefix + "list","",view);
-		var ac_view = dom.newElement("div", my.element_id_prefix + "view","",view);
-		var title_div = dom.newElement("div", my.element_id_prefix + "title_div","",ac_view);
-		dom.newElement("h1", my.element_id_prefix + "form_title", "", title_div, l("new_actor"));
-		dom.newElement("div", my.element_id_prefix + "content_div","", ac_view);
-		dom.newElement("div", my.element_id_prefix + "language_results_div","",view);
+		dom.make("div",my.element_id_prefix + "list","",view);
+		var ac_view = dom.make("div", my.element_id_prefix + "view","",view);
+		var title_div = dom.make("div", my.element_id_prefix + "title_div","",ac_view);
+		dom.make("h1", my.element_id_prefix + "form_title", "", title_div, l("new_actor"));
+		dom.make("div", my.element_id_prefix + "content_div","", ac_view);
+		dom.make("div", my.element_id_prefix + "language_results_div","",view);
 		
 		my.createForm();
 		
@@ -613,7 +613,7 @@ imdi_environment.workflow[2] = (function(){
 
 		for (var i=0;i<my.actors.length;i++){
 
-			div = dom.newElement('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
+			div = dom.make('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
 			dom.h2(div, my.actors[i].name);
 			dom.p(div, my.actors[i].role);
 		
@@ -624,7 +624,7 @@ imdi_environment.workflow[2] = (function(){
 		}
 
 		//create field for new actor
-		div = dom.newElement('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_actor") + "</h2>");
+		div = dom.make('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_actor") + "</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
 		if ((session) && (!not_in_sessions)){

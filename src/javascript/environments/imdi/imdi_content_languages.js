@@ -33,7 +33,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 	
 		corpus = imdi_environment.workflow[0];
 	
-		var cl = dom.newElement("div","content_languages","",view);
+		var cl = dom.make("div","content_languages","",view);
 		
 		var lsd = dom.div(cl, "lang_search_div", "");
 		dom.h1(lsd, my.l("languages", "set_global_languages_of_content"));
@@ -197,7 +197,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 	
 	my.render = function(LanguageObject, id){
 
-		var div = dom.newElement("div","content_language_"+id+"_div","content_language_entry",g("content_languages_display"));
+		var div = dom.make("div","content_language_"+id+"_div","content_language_entry",g("content_languages_display"));
 		
 		dom.span(div,"","","ISO639-3 Code: " + LanguageObject[0]);
 		

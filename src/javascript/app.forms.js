@@ -171,10 +171,10 @@ APP.forms = (function () {
 			
 			}
 		
-			var td = dom.newElement("td", element_id_prefix+td_name,element_class_prefix+td_name, parent);
+			var td = dom.make("td", element_id_prefix+td_name,element_class_prefix+td_name, parent);
 			
 			if (field.title && field.title !== ""){
-				dom.newElement("h2","","",td,field.title);
+				dom.make("h2","","",td,field.title);
 			}
 			
 			if (field.fields){
@@ -195,8 +195,8 @@ APP.forms = (function () {
 			var form_parent;
 			
 			if ((field.fields) && (field.fields[0].type == "column")){
-				var table = dom.newElement("table",element_id_prefix+"table","session_table",parent);
-				var tr = dom.newElement("tr","","",table);
+				var table = dom.make("table",element_id_prefix+"table","session_table",parent);
+				var tr = dom.make("tr","","",table);
 				form_parent = tr;
 			}
 			
