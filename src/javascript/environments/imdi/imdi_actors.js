@@ -44,9 +44,7 @@ imdi_environment.workflow[2] = (function(){
 	
 	var getLanguagesOfActiveActorFromForm = function(){
 	
-		var array = []; 
-		
-		forEach(my.languages.languages_of_active_actor, function(AL){
+		var array = map(my.languages.languages_of_active_actor, function(AL){
 		
 			var ActorLanguageObject = {
 				
@@ -56,7 +54,7 @@ imdi_environment.workflow[2] = (function(){
 				
 			};
 			
-			array.push(ActorLanguageObject);
+			return ActorLanguageObject;
 			
 		});
 		

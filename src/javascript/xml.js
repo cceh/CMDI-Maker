@@ -23,7 +23,6 @@ var xml = (function () {
 	my.last_mode = 0;
 	
 	my.tab = 0;
-	
 
 	my.tag = function(name,mode,keys){   //keys as array
 		//mode 0 = opening tag
