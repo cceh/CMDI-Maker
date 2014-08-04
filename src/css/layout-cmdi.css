@@ -86,6 +86,7 @@ input[type="checkbox"], input[type="radio"]{
 margin: 3px 3px 3px 4px;
 width: 16px;
 height: 16px;
+
 }
 
 
@@ -93,8 +94,6 @@ height: 16px;
 
 left: 0px;
 right: 0px;
-
-
 
 }
 
@@ -122,15 +121,15 @@ color: #4D87C7;
 
 #close_clrd_icon, #close_alrd_icon, .close_select_frame_icon {
 
-float: right;
-width: 25px;
-cursor: pointer;
-position: relative;
-top: -40px;
+	float: right;
+	width: 25px;
+	cursor: pointer;
+	position: relative;
+	top: -40px;
 
 }
 
-#content_language_iso_input, #actor_language_iso_input{
+#content_language_iso_input, #actor_languages_iso_input{
 
 width: 30px;
 
@@ -417,7 +416,7 @@ margin-right: 20px;
 
 }
 
-.current_content_language_entry{
+.content_language_entry{
 
 background-color: tomato;
 border-radius: 5px;
@@ -452,7 +451,7 @@ width: 135px;
 
 }
 
-#current_content_languages_display{
+#content_languages_display{
 
 float: left;
 
@@ -666,7 +665,7 @@ color: blue;
 
 /*--- Actors ---*/
 
-.current_actor_language_entry{
+.actor_languages_entry{
 
 background-color: tomato;
 border-radius: 5px;
@@ -689,7 +688,7 @@ overflow: hidden;
 
 }
 
-#ac_list{
+#actor_list{
 
 width: 215px;
 position: fixed;
@@ -712,7 +711,7 @@ user-select: none;
 
 }
 
-.ac_list_entry h2{
+.actor_list_entry h2{
 
 line-height: 0em;
 white-space: nowrap;
@@ -731,7 +730,7 @@ padding: 15px;
 background-color: #AABFFF;
 }
 
-#ac_view{
+#actor_view{
 
 background-color: lightskyblue;
 float: left;
@@ -744,7 +743,7 @@ min-width: 850px;
 
 }
 
-.ac_list_entry{
+.actor_list_entry{
 
 background: rgb(255, 139, 199);
 line-height: 0em;

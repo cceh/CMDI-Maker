@@ -31,13 +31,13 @@ imdi_environment.workflow[2] = (function(){
 	var highlightActiveActorInList = function(actor_id){
 
 		for (var i=0;i<my.actors.length;i++){
-			g("ac_list_entry_"+i).style.background = "#FF8BC7";
+			g(my.element_id_prefix + "list_entry_"+i).style.background = "#FF8BC7";
 		}
 
-		g("ac_list_entry_-1").style.background = "#FF8BC7";
+		g(my.element_id_prefix + "list_entry_-1").style.background = "#FF8BC7";
 		//make everything normal at first
 
-		g("ac_list_entry_"+actor_id).style.background = "lightskyblue";
+		g(my.element_id_prefix + "list_entry_"+actor_id).style.background = "lightskyblue";
 
 	};
 	
@@ -203,6 +203,7 @@ imdi_environment.workflow[2] = (function(){
 	my.id_counter = 0;
 	my.active_actor = -1;
 	
+
 	my.init = function(view){
 	
 		my.actors = [];
@@ -211,36 +212,21 @@ imdi_environment.workflow[2] = (function(){
 		
 		session = my.parent.workflow[3];
 		
-		dom.newElement("div","ac_list","",view);
-		var ac_view = dom.newElement("div","ac_view","",view);
+		dom.newElement("div",my.element_id_prefix + "list","",view);
+		var ac_view = dom.newElement("div", my.element_id_prefix + "view","",view);
 		var title_div = dom.newElement("div", my.element_id_prefix + "title_div","",ac_view);
 		dom.newElement("h1", my.element_id_prefix + "form_title", "", title_div, l("new_actor"));
-		dom.newElement("div", my.element_id_prefix + "content_div","",ac_view);
+		dom.newElement("div", my.element_id_prefix + "content_div","", ac_view);
 		dom.newElement("div", my.element_id_prefix + "language_results_div","",view);
 		
 		my.createForm();
 		
-		g(my.element_id_prefix + "language_search_button").addEventListener('click', function() {  my.languages.search();   });
-		g(my.element_id_prefix + "language_iso_ok").addEventListener('click', function() {  my.languages.addByISO();    });
-
-		g(my.element_id_prefix + "language_select").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.languages.search();
-			}
-		};
-		
-		g(my.element_id_prefix + "language_iso_input").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.languages.addByISO();
-			}
-		};
+		my.languages.init(view);
 		
 		my.refreshListDisplay(true);
 		
 	};
-	
+
 	
 	my.getSaveData = function(){
 	
@@ -456,11 +442,11 @@ imdi_environment.workflow[2] = (function(){
 
 	my.createForm = function(){
 
-		APP.forms.make(g(my.element_id_prefix + "content_div"), actor_form, my.element_id_prefix, my.element_id_prefix, undefined);
+		APP.forms.make(g(my.element_id_prefix + "content_div"), actor_form, my.element_id_prefix, my.element_id_prefix, undefined, my.languages.makeInputInForm);
 
 	};
-
-
+	
+	
 	my.duplicate_active_actor = function(){
 
 		//first, save changes to the actor
@@ -623,11 +609,11 @@ imdi_environment.workflow[2] = (function(){
 	my.refreshListDisplay = function(not_in_sessions){
 		var div;
 	
-		g('ac_list').innerHTML = "";
+		g(my.element_id_prefix + 'list').innerHTML = "";
 
 		for (var i=0;i<my.actors.length;i++){
 
-			div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'));
+			div = dom.newElement('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
 			dom.h2(div, my.actors[i].name);
 			dom.p(div, my.actors[i].role);
 		
@@ -638,7 +624,7 @@ imdi_environment.workflow[2] = (function(){
 		}
 
 		//create field for new actor
-		div = dom.newElement('div', "ac_list_entry_-1", "ac_list_entry", g('ac_list'), "<h2>" + l("new_actor") + "</h2>");
+		div = dom.newElement('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_actor") + "</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
 		if ((session) && (!not_in_sessions)){

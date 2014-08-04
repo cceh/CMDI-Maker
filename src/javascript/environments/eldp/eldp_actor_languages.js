@@ -23,29 +23,91 @@ eldp_environment.workflow[1].languages = (function (){
 	my.parent = eldp_environment;
 	var actor = my.parent.workflow[1];
 
-	my.languages_of_active_actor = [];
+	my.languages_of_active_person = [];
+	
+	my.element_id_prefix = actor.element_id_prefix + "languages_";
 	
 	my.id_counter = 0;
+	
+	my.init = function(){
+	
+		g(my.element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
+		g(my.element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
+
+		g(my.element_id_prefix + "select").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				my.search();
+			}
+		};
+		
+		g(my.element_id_prefix + "iso_input").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				my.addByISO();
+			}
+		};
+	
+	
+	}
+	
+	
+	my.makeInputInForm = function (field, parent, element_id_prefix, element_class_prefix){
+		
+		if (field.name == "actor_languages"){
+		
+			var p = dom.newElement("p","", "", parent);
+			var input = dom.newElement("input",element_id_prefix+"select","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = "actor_language_select";
+			
+			dom.newElement("span","","",p," ");
+
+			input = dom.newElement("input",element_id_prefix+"search_button","",p);
+			input.type = "button";
+			input.value = "Search";
+
+			dom.br(p);
+			dom.newElement("span","","",p,"or type in ISO code ");
+			
+			input = dom.newElement("input",element_id_prefix+"iso_input","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = "actor_language_iso_input";
+			
+			dom.newElement("span","","",p," ");
+			
+			input = dom.newElement("input",element_id_prefix+"iso_ok","",p);
+			input.type = "button";
+			input.value = "OK";			
+			
+			dom.newElement("div",element_id_prefix+"display", "", parent);									
+			
+		}
+		
+	};
+	
 
 	my.remove = function (al_id){
 
 
 		var index = my.getActorLanguageObjectIndexFromID(al_id);
 
-		my.languages_of_active_actor.splice(index,1);
+		my.languages_of_active_person.splice(index,1);
 		
-		var child = g("actor_language_"+al_id+"_div");
+		var child = g(my.element_id_prefix + al_id + "_div");
 		
-		g("current_actor_languages_display").removeChild(child);
+		g(my.element_id_prefix + "_display").removeChild(child);
 
 	};
 
 
-	my.clearActiveActorLanguages = function(){
+	my.clearActivePersonLanguages = function(){
 
-		while (my.languages_of_active_actor.length > 0){
+		while (my.languages_of_active_person.length > 0){
 
-			my.remove(my.languages_of_active_actor[0].id);
+			my.remove(my.languages_of_active_person[0].id);
 			
 		}
 		
@@ -56,9 +118,9 @@ eldp_environment.workflow[1].languages = (function (){
 
 	my.getActorLanguageObjectIndexFromID = function (al_id){
 
-		for (var l=0; l<my.languages_of_active_actor.length; l++){
+		for (var l=0; l<my.languages_of_active_person.length; l++){
 		
-			if (my.languages_of_active_actor[l].id == al_id){
+			if (my.languages_of_active_person[l].id == al_id){
 				return l;
 			}
 		
@@ -70,11 +132,11 @@ eldp_environment.workflow[1].languages = (function (){
 	my.search = function(){
 		var j;
 
-		var input = g("actor_language_select").value;
+		var input = g(my.element_id_prefix + "select").value;
 		
 		if (input.length < 3){
 		
-			g("actor_language_results_div").innerHTML = "";
+			g(my.element_id_prefix + "results_div").innerHTML = "";
 			
 			APP.alert("Please specify your search request.\nType in at least 3 characters.");
 			
@@ -131,10 +193,10 @@ eldp_environment.workflow[1].languages = (function (){
 
 		ActorLanguageObject.id = my.id_counter;
 		
-		my.languages_of_active_actor.push(ActorLanguageObject);
+		my.languages_of_active_person.push(ActorLanguageObject);
 		
-		var div = dom.newElement("div","actor_language_"+my.id_counter+"_div","current_actor_language_entry",g("current_actor_languages_display"));
-		var img = dom.img(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", APP.CONF.path_to_icons+"reset.png");
+		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "_entry",g(my.element_id_prefix + "_display"));
+		var img = dom.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
@@ -171,7 +233,7 @@ eldp_environment.workflow[1].languages = (function (){
 	//if actor language is added by user
 		var first_added_language;
 
-		if (my.languages_of_active_actor.length === 0){
+		if (my.languages_of_active_person.length === 0){
 			first_added_language = true;
 		}
 		
@@ -195,7 +257,7 @@ eldp_environment.workflow[1].languages = (function (){
 
 	my.addByISO = function(){
 
-		var input = g("actor_language_iso_input").value;
+		var input = g(my.element_id_prefix + "iso_input").value;
 		console.log("ADDING ISO LANGUAGE " + input);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
@@ -204,7 +266,7 @@ eldp_environment.workflow[1].languages = (function (){
 				
 				my.addFromForm(LanguageIndex[j]);
 				
-				g("actor_language_iso_input").value = "";
+				g(my.element_id_prefix + "iso_input").value = "";
 				return;
 
 			}
@@ -214,16 +276,6 @@ eldp_environment.workflow[1].languages = (function (){
 		APP.alert("ISO code " + input + " not found in database.");
 
 	};
-
-
-
-	my.closeLanguageSelect = function(){
-
-		g("actor_language_results_div").style.display = "none";
-		g("ac_view").style.display = "inline";
-
-	};
-	
 	
 	return my;
 	

@@ -362,7 +362,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		var session_content = dom.newElement('div',my.dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
-		APP.forms.make(session_content, session_form, my.dom_element_prefix+session_id+"_", my.dom_element_prefix, session_object);
+		APP.forms.make(session_content, session_form, my.dom_element_prefix+session_id+"_", my.dom_element_prefix, session_object, my.makeSpecialFormInput);
 		
 		g(my.dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		
@@ -425,6 +425,27 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		}
 	
 	
+	};
+	
+	
+	my.makeSpecialFormInput = function(field, parent, element_id_prefix, element_class_prefix){
+		
+		if (field.name == "actors"){
+			
+			dom.br(parent);
+			
+			dom.newElement("div",element_id_prefix+"actors", "actors", parent);
+			dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
+		
+		}
+		
+		if (field.name == "resources"){
+		
+			dom.newElement("div",element_id_prefix+"resources", "mfs", parent);
+			dom.newElement("div",element_id_prefix+"add_mf_div", "", parent);
+		
+		}
+		
 	};
 	
 	

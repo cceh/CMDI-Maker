@@ -29,7 +29,7 @@ eldp_environment.workflow[0] = (function(){
 	my.identity = {
 		id: "resources",
 		title: "Resources",
-		icon: "blocks.png",
+		icon: "blocks",
 	};
 	
 	my.last_selected_file = -1;
@@ -59,7 +59,7 @@ eldp_environment.workflow[0] = (function(){
 		var warning_div = dom.newElement("div","","warning_div",parent);
 		var warning_img_div = dom.newElement("div","","warning_img_div",warning_div);
 		var img = dom.newElement("img","","warning_icon",warning_img_div);
-		img.src = APP.CONF.path_to_icons + "warning.png";
+		dom.setIcon(img, "warning");
 		
 		dom.newElement("div","","compatibility_warning",warning_div, string);
 	
@@ -195,7 +195,7 @@ eldp_environment.workflow[0] = (function(){
 	my.functions = [
 		{
 			label: "Create one session per file",
-			icon: "plus.png",
+			icon: "plus",
 			id: "crps_icon",
 			wrapper_id: "crps_div",
 			type: "function_wrap",
@@ -210,19 +210,19 @@ eldp_environment.workflow[0] = (function(){
 		},
 		{
 			id: "link_sort_alphabetically",
-			icon: "az.png",
+			icon: "az",
 			label: "Sort Files alphabetically",
 			onclick: function() { my.sortAlphabetically(); }
 		},
 		{
 			id: "link_remove_files",
-			icon: "reset.png",
+			icon: "reset",
 			label: "Remove",
 			onclick: function() { my.removeSelectedFiles(); }
 		},
 		{
 			id: "link_clear_file_list",
-			icon: "reset.png",
+			icon: "reset",
 			label: "Clear File List",
 			onclick: function() { my.clearFileList(); }
 		},

@@ -27,7 +27,67 @@ imdi_environment.workflow[2].languages = (function (){
 	my.parent = imdi_environment;
 	var l = my.parent.l;
 	
+	my.element_id_prefix = actor.element_id_prefix + "languages_";
+	
 	my.id_counter = 0;
+	
+	my.init = function(){
+
+		g(my.element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
+		g(my.element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
+
+		g(my.element_id_prefix + "select").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				my.search();
+			}
+		};
+		
+		g(my.element_id_prefix + "iso_input").onkeydown = function(event) {
+
+			if (event.keyCode == 13) {  //if enter is pressed
+				my.addByISO();
+			}
+		};
+		
+	};
+	
+	
+	my.makeInputInForm = function(field, parent, element_id_prefix, element_class_prefix){
+
+		if (field.name == "actor_languages"){
+		
+			var p = dom.newElement("p","", "", parent);
+			var input = dom.newElement("input", element_id_prefix + "select","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = element_id_prefix + "select";
+			
+			dom.newElement("span","","",p," ");
+			input = dom.newElement("input", element_id_prefix + "search_button" ,"",p);
+			input.type = "button";
+			input.value = "Search";
+
+			dom.br(p);
+			dom.newElement("span","","",p,"or type in ISO code ");
+			
+			input = dom.newElement("input", element_id_prefix + "iso_input","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = element_id_prefix + "iso_input";
+			
+			dom.newElement("span","","",p," ");
+			
+			input = dom.newElement("input", element_id_prefix + "iso_ok","",p);
+			input.type = "button";
+			input.value = "OK";			
+			
+			dom.newElement("div",element_id_prefix + "display", "", parent);									
+			
+		}
+		
+	};
+	
 
 	my.remove = function (al_id){
 
@@ -35,9 +95,9 @@ imdi_environment.workflow[2].languages = (function (){
 
 		my.languages_of_active_actor.splice(index,1);
 		
-		var child = g("actor_language_"+al_id+"_div");
+		var child = g(my.element_id_prefix + al_id + "_div");
 		
-		g("current_actor_languages_display").removeChild(child);
+		g(my.element_id_prefix + "display").removeChild(child);
 
 	};
 
@@ -71,11 +131,11 @@ imdi_environment.workflow[2].languages = (function (){
 	my.search = function(){
 		var j;
 
-		var input = g("actor_language_select").value;
+		var input = g(my.element_id_prefix + "select").value;
 		
 		if (input.length < 3){
 		
-			g("actor_language_results_div").innerHTML = "";
+			g(my.element_id_prefix + "results_div").innerHTML = "";
 			
 			APP.alert(l("languages", "specify_search_request_at_least_3_chars"));
 			
@@ -136,8 +196,8 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		my.languages_of_active_actor.push(ActorLanguageObject);
 		
-		var div = dom.newElement("div","actor_language_"+my.id_counter+"_div","current_actor_language_entry",g("current_actor_languages_display"));
-		var img = dom.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset");
+		var div = dom.newElement("div", my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry",g(my.element_id_prefix + "display"));
+		var img = dom.icon(div,"","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
@@ -198,7 +258,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.addByISO = function(){
 
-		var input = g("actor_language_iso_input").value;
+		var input = g(my.element_id_prefix + "iso_input").value;
 		console.log("ADDING ISO LANGUAGE " + input);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
@@ -207,7 +267,7 @@ imdi_environment.workflow[2].languages = (function (){
 				
 				my.addFromForm(LanguageIndex[j]);
 				
-				g("actor_language_iso_input").value = "";
+				g(my.element_id_prefix + "iso_input").value = "";
 				return;
 
 			}

@@ -84,57 +84,6 @@ var eldp_environment = (function(){
 	
 	};
 	
-	my.specialInput = function(field, parent, element_id_prefix, element_class_prefix){
-	
-		if (field.name == "actors"){
-		
-			dom.newElement("br","","",parent);
-			
-			dom.newElement("div",element_id_prefix+"actors", "actors", parent);
-			dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
-		
-		}
-		
-		if (field.name == "resources"){
-		
-			dom.newElement("div",element_id_prefix+"resources", "mfs", parent);
-			dom.newElement("div",element_id_prefix+"add_mf_div", "", parent);
-		
-		}
-		
-		if (field.name == "actor_languages"){
-		
-			var p = dom.newElement("p","", "", parent);
-			var input = dom.newElement("input","actor_language_select","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = "actor_language_select";
-			
-			dom.newElement("span","","",p," ");
-
-			input = dom.newElement("input","actor_language_search_button","",p);
-			input.type = "button";
-			input.value = "Search";
-
-			dom.br(p);
-			dom.newElement("span","","",p,"or type in ISO code ");
-			
-			input = dom.newElement("input","actor_language_iso_input","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = "actor_language_iso_input";
-			
-			dom.newElement("span","","",p," ");
-			
-			input = dom.newElement("input","actor_language_iso_ok","",p);
-			input.type = "button";
-			input.value = "OK";			
-			
-			dom.newElement("div","current_actor_languages_display", "", parent);									
-			
-		}
-	
-	};
 	
 	my.reset = function(){
 	

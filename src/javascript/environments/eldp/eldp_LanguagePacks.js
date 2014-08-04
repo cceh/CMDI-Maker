@@ -23,29 +23,53 @@ eldp_environment.languages[0] = {
 	workflow: {
 		corpus: "Corpus",
 		resources: "Resources",
-		actors: "Actors",
+		persons: "persons",
 		session: "Sessions",
 		xml_output: "XML Output"
 	},
 	
 	settings: {
 	
-		calculate_actors_age: "Calculate Actor's Age",
-		calculate_actors_age_description: "When this feature is activated, CMDI Maker checks if the age of an actor (if it has not been specified already) "+
-			"can be calculated from the actor's birth date and the session date.<br>"+
+		calculate_persons_age: "Calculate person's Age",
+		calculate_persons_age_description: "When this feature is activated, CMDI Maker checks if the age of an person (if it has not been specified already) "+
+			"can be calculated from the person's birth date and the session date.<br>"+
 			"When an age can be calculated, it will appear in the output file.<br>"+
-			"(Age = Session Date - Actor's Birth Date)",
+			"(Age = Session Date - person's Birth Date)",
 		output_format: "Output Format",
 		imdi: "IMDI",
 		cmdi_with_imdi_profile: "CMDI with IMDI profile",
-		export_actors_as_json: "Export Actors as JSON",
-		import_actors_from_json_or_imdi: "Import Actors from JSON or IMDI",
-		import_actors_description: "Please import UTF-8 encoded files only!",
-		delete_actors_database: "Delete Actors Database",
-		delete_actors_database_description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window.",
+		export_persons_as_json: "Export persons as JSON",
+		import_persons_from_json_or_imdi: "Import persons from JSON or IMDI",
+		import_persons_description: "Please import UTF-8 encoded files only!",
+		delete_persons_database: "Delete persons Database",
+		delete_persons_database_description: "CMDI Maker saves all your persons in a Web Storage browser database, so that they are kept, even if you close the browser window.",
 		
-	}
+	},
 	
+	persons: {
+		new_person: "New Person",
+		delete_this_person: "Delete this person",
+		sort_persons_alphabetically: "Sort persons alphabetically",
+		persons_alphabetically_sorted: "persons sorted",
+		save_and_duplicate_this_person: "Save and duplicate this person",
+		yes_delete_all_persons: "Yes, delete all persons",
+		no: "No",
+		ok: "OK",
+		confirm_erasing_persons_db: "Really?<br>You want to erase the whole persons database?",
+		all_persons_deleted: "All persons deleted",
+		save_person: "Save person",
+		save_changes_to_this_person: "Save changes to this person",
+		there_are_no_persons: "There are no persons!",
+		persons_imported: "persons imported",
+		person_saved_and_duplicated: "Person saved and duplicated.",
+		give_your_person_a_name_first: "Please give your person a name first.",
+		yes_delete_person: "Yes, delete person",
+		really_erase_before_name: "Really?<br>You want to erase ",
+		really_erase_after_name: "?",
+		person_deleted_before_name: "",
+		person_deleted_after_name: " deleted",
+
+	},
 };
 
 
@@ -57,25 +81,25 @@ eldp_environment.languages[1] = {
 	workflow: {
 		corpus: "Corpus",
 		resources: "Resources",
-		actors: "Actors",
+		persons: "persons",
 		session: "Sessions",
 		xml_output: "XML"
 	},
 	
 	settings: {
-		calculate_actors_age: "Automatische Altersberechnung von Actors",
-		calculate_actors_age_description: "Wenn diese Funktion aktiviert ist, prüft CMDI Maker, ob das Alter eines Actors (wenn es noch nicht angegeben worden ist) "+
-			"aus dem Geburtsdatum des Actors und dem Datum der Session berechnet werden kann.<br>"+
+		calculate_persons_age: "Automatische Altersberechnung von persons",
+		calculate_persons_age_description: "Wenn diese Funktion aktiviert ist, prüft CMDI Maker, ob das Alter eines persons (wenn es noch nicht angegeben worden ist) "+
+			"aus dem Geburtsdatum des persons und dem Datum der Session berechnet werden kann.<br>"+
 			"Wenn ein Alter berechnet werden kann, erscheint dieses in der generierten XML-Datei.<br>"+
-			"(Alter = Datum der Session - Geburtsdatum des Actors)",
+			"(Alter = Datum der Session - Geburtsdatum des persons)",
 		output_format: "Ausgabeformat",
 		imdi: "IMDI",
 		cmdi_with_imdi_profile: "CMDI mit IMDI-Profil",
-		export_actors_as_json: "Actors als JSON exportieren",
-		import_actors_from_json_or_imdi: "Actors von JSON oder IMDI importieren",
-		import_actors_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
-		delete_actors_database: "Actors-Datenbank löschen",
-		delete_actors_database_description: "CMDI Maker speichert all deine Actors in einer Browserdatenbank. Sie bleiben also erhalten, auch nachdem du den Browser geschlossen hast.",
+		export_persons_as_json: "persons als JSON exportieren",
+		import_persons_from_json_or_imdi: "persons von JSON oder IMDI importieren",
+		import_persons_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
+		delete_persons_database: "persons-Datenbank löschen",
+		delete_persons_database_description: "CMDI Maker speichert all deine persons in einer Browserdatenbank. Sie bleiben also erhalten, auch nachdem du den Browser geschlossen hast.",
 	}
 	
 };

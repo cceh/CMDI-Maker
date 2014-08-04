@@ -200,7 +200,7 @@ var APP = (function () {
 		}
 		
 		//if there's no word at all, PROBLEM!!!
-		console.log("LANGUAGE ERROR: " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4);
+		console.error("LANGUAGE ERROR: " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4);
 		return "###";
 
 	};

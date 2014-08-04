@@ -26,7 +26,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	my.identity = {
 		id: "session",
 		title: "Bundles",
-		icon: "edit.png",
+		icon: "edit",
 	};
 	
 	my.sessions = [];
@@ -126,13 +126,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	my.functions = [
 		{
 			label: "New Session",
-			icon: "plus.png",
+			icon: "plus",
 			id: "link_newSession",
 			onclick: function() {my.newSession(); }
 		},
 		{
 			label: "Copy Session 1 metadata to all sessions",
-			icon: "copy.png",
+			icon: "copy",
 			id: "link_copy_sessions",
 			wrapper_id: "copy_sessions_div",
 			type: "function_wrap",
@@ -142,7 +142,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		},
 		{
 			label: "Reset Form",
-			icon: "reset.png",
+			icon: "reset",
 			id: "session_link_reset_form",
 			onclick: function() {       
 
@@ -167,7 +167,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		},
 		{
 			label: "Sort by Name",
-			icon: "az.png",
+			icon: "az",
 			id: "session_link_sort_by_name",
 			onclick: function() { my.sortAlphabetically(); }
 		}
@@ -367,7 +367,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		var session_content = dom.newElement('div',my.dom_element_prefix+session_id+'_content','session_content',session_div);
 
 		//create the form
-		APP.forms.make(session_content, session_form, my.dom_element_prefix+session_id+"_", my.dom_element_prefix, session_object);
+		APP.forms.make(session_content, session_form, my.dom_element_prefix+session_id+"_", my.dom_element_prefix, session_object, my.makeSpecialFormInput);
 		
 		g(my.dom_element_prefix+session_id+"_session_name").addEventListener("blur", function(num){
 		
@@ -430,6 +430,27 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			my.display(session_id);
 		}
 	
+	
+	};
+	
+	
+	my.makeSpecialFormInput = function (field, parent, element_id_prefix, element_class_prefix){
+	
+		if (field.name == "actors"){
+		
+			dom.newElement("br","","",parent);
+			
+			dom.newElement("div",element_id_prefix+"actors", "actors", parent);
+			dom.newElement("div",element_id_prefix+"addActors_div", "actors", parent);
+		
+		}
+		
+		if (field.name == "resources"){
+		
+			dom.newElement("div",element_id_prefix+"resources", "mfs", parent);
+			dom.newElement("div",element_id_prefix+"add_mf_div", "", parent);
+		
+		}
 	
 	};
 	
@@ -512,7 +533,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			var h5 = dom.h5(aad, "There are no actors in the database yet.<br>");	
 			
 			dom.a(h5,"","","#","Create some actors.", function() { 
-				APP.view(actor);  
+				APP.view("VIEW_persons");  
 			} );
 			
 		}

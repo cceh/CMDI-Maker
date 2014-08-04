@@ -171,7 +171,7 @@ eldp_environment.session_form = {
 };
 
 
-eldp_environment.actor_form = {
+eldp_environment.person_form = {
 
 	title: "eldp-actors",
 	type: "form",

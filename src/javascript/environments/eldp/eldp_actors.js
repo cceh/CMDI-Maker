@@ -21,34 +21,34 @@ eldp_environment.workflow[1] = (function(){
 	
 	//PRIVATE
 	
-	var showLanguagesOfActiveActor = function(){
+	var showLanguagesOfActiveperson = function(){
 
-		forEach(my.actors[my.active_actor].languages, my.languages.set);
+		forEach(my.persons[my.active_person].languages, my.languages.set);
 
 	};
 	
 	
-	var highlightActiveActorInList = function(actor_id){
+	var highlightActivepersonInList = function(person_id){
 
-		for (var i=0;i<my.actors.length;i++){
-			g("ac_list_entry_"+i).style.background = "#FF8BC7";
+		for (var i=0;i<my.persons.length;i++){
+			g(my.element_id_prefix + "list_entry_"+i).style.background = "#FF8BC7";
 		}
 
-		g("ac_list_entry_-1").style.background = "#FF8BC7";
+		g(my.element_id_prefix + "list_entry_-1").style.background = "#FF8BC7";
 		//make everything normal at first
 
-		g("ac_list_entry_"+actor_id).style.background = "lightskyblue";
+		g(my.element_id_prefix + "list_entry_"+person_id).style.background = "lightskyblue";
 
 	};
 	
 	
-	var getLanguagesOfActiveActorFromForm = function(){
+	var getLanguagesOfActivepersonFromForm = function(){
 	
 		var array = []; 
 		
-		forEach(my.languages.languages_of_active_actor, function(AL){
+		forEach(my.languages.languages_of_active_person, function(AL){
 		
-			var ActorLanguageObject = {
+			var personLanguageObject = {
 				
 				LanguageObject: AL.LanguageObject,
 				MotherTongue: g("mothertongue_" + AL.id).checked,
@@ -56,7 +56,7 @@ eldp_environment.workflow[1] = (function(){
 				
 			};
 			
-			array.push(ActorLanguageObject);
+			array.push(personLanguageObject);
 			
 		});
 		
@@ -65,24 +65,24 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	var makeActorObjectFromFormInput = function(){
+	var makepersonObjectFromFormInput = function(){
 
-		var object = APP.forms.createEmptyObjectFromTemplate(actor_form);
+		var object = APP.forms.createEmptyObjectFromTemplate(person_form);
 
-		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, actor_form);
+		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, person_form);
 		
-		object.languages = getLanguagesOfActiveActorFromForm();  //PRELIMINARY OVERWRITE!
+		object.languages = getLanguagesOfActivepersonFromForm();  //PRELIMINARY OVERWRITE!
 
-		//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
-		if (my.active_actor != -1) {
-			object.id = my.actors[my.active_actor].id;
-			console.log("Saving actor with id "+object.id);
+		//if we're not creating a new person but updating an existing one, we also pass the id of active person to the db
+		if (my.active_person != -1) {
+			object.id = my.persons[my.active_person].id;
+			console.log("Saving person with id "+object.id);
 		}
 		
 		else {
 		
 			object.id = my.id_counter;
-			console.log("Saving actor with id "+object.id);
+			console.log("Saving person with id "+object.id);
 			my.id_counter++;
 			
 		}
@@ -94,62 +94,62 @@ eldp_environment.workflow[1] = (function(){
 	
 	var blankForm = function(){
 
-		g(my.element_id_prefix + "form_title").innerHTML = l("new_actor");
+		g(my.element_id_prefix + "form_title").innerHTML = l("new_person");
 
-		APP.forms.fill(actor_form, my.element_id_prefix);
+		APP.forms.fill(person_form, my.element_id_prefix);
 
-		my.languages.clearActiveActorLanguages();
+		my.languages.clearActivePersonLanguages();
 		
 	};
 	
 	
-	var parseIMDIForActors = function(xml){
+	var parseIMDIForpersons = function(xml){
 
-		var actors_in_xml = xml.getElementsByTagName("Actor");
+		var persons_in_xml = xml.getElementsByTagName("person");
 		
-		var actors_in_json = map(actors_in_xml, function(xml_actor){
+		var persons_in_json = map(persons_in_xml, function(xml_person){
 		
-			console.log("Actor in IMDI found. Name: " + xml_actor.querySelector("Name").textContent.trim());
+			console.log("person in IMDI found. Name: " + xml_person.querySelector("Name").textContent.trim());
 			
-			var actor_object = {
-				name: xml_actor.querySelector("Name").textContent.trim(),
-				role: xml_actor.querySelector("Role").textContent.trim(),
-				full_name: xml_actor.querySelector("FullName").textContent.trim(),
-				code: xml_actor.querySelector("Code").textContent.trim(),		
-				age: xml_actor.querySelector("Age").textContent.trim(),
-				sex: xml_actor.querySelector("Sex").textContent.trim(),		
-				education: xml_actor.querySelector("Education").textContent.trim(),
-				birth_date: parse_birth_date(xml_actor.querySelector("BirthDate").textContent.trim()),
-				ethnic_group: xml_actor.querySelector("EthnicGroup").textContent.trim(),
-				family_social_role: xml_actor.querySelector("FamilySocialRole").textContent.trim(),
+			var person_object = {
+				name: xml_person.querySelector("Name").textContent.trim(),
+				role: xml_person.querySelector("Role").textContent.trim(),
+				full_name: xml_person.querySelector("FullName").textContent.trim(),
+				code: xml_person.querySelector("Code").textContent.trim(),		
+				age: xml_person.querySelector("Age").textContent.trim(),
+				sex: xml_person.querySelector("Sex").textContent.trim(),		
+				education: xml_person.querySelector("Education").textContent.trim(),
+				birth_date: parse_birth_date(xml_person.querySelector("BirthDate").textContent.trim()),
+				ethnic_group: xml_person.querySelector("EthnicGroup").textContent.trim(),
+				family_social_role: xml_person.querySelector("FamilySocialRole").textContent.trim(),
 				
-				description: xml_actor.querySelector("Description").textContent.trim(),
+				description: xml_person.querySelector("Description").textContent.trim(),
 				
 				contact: {
 				
-					name: xml_actor.querySelector("Contact").querySelector("Name").textContent.trim(),
-					address: xml_actor.querySelector("Contact").querySelector("Address").textContent.trim(),
-					email: xml_actor.querySelector("Contact").querySelector("Email").textContent.trim(),
-					organisation: xml_actor.querySelector("Contact").querySelector("Organisation").textContent.trim(),
+					name: xml_person.querySelector("Contact").querySelector("Name").textContent.trim(),
+					address: xml_person.querySelector("Contact").querySelector("Address").textContent.trim(),
+					email: xml_person.querySelector("Contact").querySelector("Email").textContent.trim(),
+					organisation: xml_person.querySelector("Contact").querySelector("Organisation").textContent.trim(),
 				
 				
 				},
 				
-				anonymized: (xml_actor.querySelector("Anonymized").textContent.trim() == "true") ? true : false,
+				anonymized: (xml_person.querySelector("Anonymized").textContent.trim() == "true") ? true : false,
 				
 				languages: []
 			
 			};
 			
-			var actor_languages = xml_actor.querySelector("Languages");
+			var person_languages = xml_person.querySelector("Languages");
 			
-			forEach(actor_languages.children, function(xml_AL){
+			forEach(person_languages.children, function(xml_AL){
 			
 				if (xml_AL.nodeName != "Language"){
 					return;
 				}
 			
-				var Actor_Language = {
+				var person_Language = {
 				
 					LanguageObject: [
 						xml_AL.querySelector("Id").textContent.trim().slice(9),
@@ -165,17 +165,17 @@ eldp_environment.workflow[1] = (function(){
 				};
 				
 				
-				actor_object.languages.push(Actor_Language);
+				person_object.languages.push(person_Language);
 			
 			});
 			
-			return actor_object;
+			return person_object;
 
 		});
 		
-		console.log(actors_in_xml);
+		console.log(persons_in_xml);
 		
-		return actors_in_json;
+		return persons_in_json;
 
 	};
 
@@ -187,57 +187,42 @@ eldp_environment.workflow[1] = (function(){
 	var session;
 	
 	var l = function(arg1, arg2){
-		return my.parent.l("actors", arg1, arg2);
+		return my.parent.l("persons", arg1, arg2);
 	}
 	
-	var actor_form = my.parent.actor_form;
+	var person_form = my.parent.person_form;
 	
-	my.actors = [];
+	my.persons = [];
 	
 	my.element_id_prefix = "actor_";
 	
 	my.identity = {
-		id: "actor",
-		title: "Actors",
+		id: "person",
+		title: "Persons",
 		icon: "user"
 	};
 	
 	my.id_counter = 0;
-	my.active_actor = -1;
+	my.active_person = -1;
 	
 	my.init = function(view){
 	
-		my.actors = [];
+		my.persons = [];
 		my.id_counter = 0;
-		my.active_actor = -1;
+		my.active_person = -1;
 		
 		session = my.parent.workflow[3];
 		
-		dom.newElement("div","ac_list","",view);
-		var ac_view = dom.newElement("div","ac_view","",view);
+		dom.newElement("div",my.element_id_prefix + "list","",view);
+		var ac_view = dom.newElement("div",my.element_id_prefix + "view","",view);
 		var title_div = dom.newElement("div", my.element_id_prefix + "title_div","",ac_view);
-		dom.newElement("h1", my.element_id_prefix + "form_title", "", title_div, l("new_actor"));
+		dom.newElement("h1", my.element_id_prefix + "form_title", "", title_div, l("new_person"));
 		dom.newElement("div", my.element_id_prefix + "content_div","",ac_view);
-		dom.newElement("div", my.element_id_prefix + "language_results_div","",view);
+		dom.newElement("div", my.languages.element_id_prefix + "results_div","",view);
 		
 		my.createForm();
 		
-		g(my.element_id_prefix + "language_search_button").addEventListener('click', function() {  my.languages.search();   });
-		g(my.element_id_prefix + "language_iso_ok").addEventListener('click', function() {  my.languages.addByISO();    });
-
-		g(my.element_id_prefix + "language_select").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.languages.search();
-			}
-		};
-		
-		g(my.element_id_prefix + "language_iso_input").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.languages.addByISO();
-			}
-		};
+		my.languages.init();
 		
 		my.refreshListDisplay(true);
 		
@@ -248,9 +233,9 @@ eldp_environment.workflow[1] = (function(){
 	
 		var object = {};
 		
-		object.actors = my.actors;
+		object.persons = my.persons;
 		object.id_counter = my.id_counter;
-		object.active_actor = my.active_actor;
+		object.active_person = my.active_person;
 		
 		return object;
 	
@@ -259,9 +244,9 @@ eldp_environment.workflow[1] = (function(){
 	
 	my.recall = function(data){
 	
-		my.actors = data.actors;
+		my.persons = data.persons;
 		my.id_counter = data.id_counter;
-		my.active_actor = data.active_actor;
+		my.active_person = data.active_person;
 		
 		my.refreshListDisplay();
 	
@@ -271,28 +256,28 @@ eldp_environment.workflow[1] = (function(){
 	my.functions = function(){
 		return [
 			{
-				id: "link_save_active_actor",
+				id: "link_save_active_person",
 				icon: "save",
-				label_span_id: "save_actor_span",
-				onclick: function() { my.save_active_actor(); }
+				label_span_id: "save_person_span",
+				onclick: function() { my.save_active_person(); }
 			},
 			{
-				id: "link_delete_active_actor",
+				id: "link_delete_active_person",
 				icon: "reset",
-				label: l("delete_this_actor"),
-				onclick: function() { my.delete_active_actor(); }
+				label: l("delete_this_person"),
+				onclick: function() { my.delete_active_person(); }
 			},
 			{
-				id: "link_sort_actors_alphabetically",
+				id: "link_sort_persons_alphabetically",
 				icon: "az",
-				label: l("sort_actors_alphabetically"),
+				label: l("sort_persons_alphabetically"),
 				onclick: function() { my.sortAlphabetically(); }
 			},
 			{
-				id: "link_duplicate_active_actor",
+				id: "link_duplicate_active_person",
 				icon: "duplicate_user",
-				label: l("save_and_duplicate_this_actor"),
-				onclick: function() { my.duplicate_active_actor(); }
+				label: l("save_and_duplicate_this_person"),
+				onclick: function() { my.duplicate_active_person(); }
 			}
 		];
 	};
@@ -302,10 +287,10 @@ eldp_environment.workflow[1] = (function(){
 
 		alertify.set({ labels: {
 			ok     : l("no"),
-			cancel : l("yes_delete_all_actors")
+			cancel : l("yes_delete_all_persons")
 		} });
 
-		alertify.confirm(l("confirm_erasing_actors_db"), function (e) {
+		alertify.confirm(l("confirm_erasing_persons_db"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -316,9 +301,9 @@ eldp_environment.workflow[1] = (function(){
 				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button
 				
 				my.id_counter = 0;
-				my.actors = [];
+				my.persons = [];
 
-				APP.log(l("all_actors_deleted"));
+				APP.log(l("all_persons_deleted"));
 				
 				my.refreshListDisplay();
 
@@ -327,30 +312,30 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.show = function(actor_id){
-	// -1 = empty form to create a new actor
+	my.show = function(person_id){
+	// -1 = empty form to create a new person
 
-		console.log("Showing actor " + actor_id);
+		console.log("Showing person " + person_id);
 		
-		highlightActiveActorInList(actor_id);
-		my.languages.clearActiveActorLanguages();
+		highlightActivepersonInList(person_id);
+		my.languages.clearActivePersonLanguages();
 
-		my.active_actor = actor_id;
+		my.active_person = person_id;
 
-		if (actor_id != -1){
-			//show data of selected actor in form
+		if (person_id != -1){
+			//show data of selected person in form
 
-			g(my.element_id_prefix + "form_title").innerHTML = my.actors[actor_id].name;
+			g(my.element_id_prefix + "form_title").innerHTML = my.persons[person_id].title;
 			
-			var actor_to_display = my.actors[actor_id];
+			var person_to_display = my.persons[person_id];
 			
-			APP.forms.fill(actor_form, my.element_id_prefix, actor_to_display);
+			APP.forms.fill(person_form, my.element_id_prefix, person_to_display);
 			
-			showLanguagesOfActiveActor();
+			showLanguagesOfActiveperson();
 			
-			g('link_delete_active_actor').style.display = "inline";
-			g('link_duplicate_active_actor').style.display = "inline";
-			g("save_actor_span").innerHTML = l("save_changes_to_this_actor");
+			g('link_delete_active_person').style.display = "inline";
+			g('link_duplicate_active_person').style.display = "inline";
+			g("save_person_span").innerHTML = l("save_changes_to_this_person");
 
 		}
 
@@ -358,9 +343,9 @@ eldp_environment.workflow[1] = (function(){
 
 			blankForm();
 			
-			dom.hide(g('link_delete_active_actor'));
-			dom.hide(g('link_duplicate_active_actor'));
-			g("save_actor_span").innerHTML = l("save_actor");
+			dom.hide(g('link_delete_active_person'));
+			dom.hide(g('link_duplicate_active_person'));
+			g("save_person_span").innerHTML = l("save_person");
 
 		}
 
@@ -368,32 +353,32 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.getActorsIndexFromID = function(actor_id) {
+	my.getpersonsIndexFromID = function(person_id) {
 
-		for (var i = 0, len = my.actors.length; i < len; i++) {
-			if (my.actors[i].id == actor_id){
+		for (var i = 0, len = my.persons.length; i < len; i++) {
+			if (my.persons[i].id == person_id){
 				return i;
 			}
 		}
 		
-		return alert("An error has occured.\nCould not find actors cache index from actor id!\n\nactor_id = " + actor_id);
+		return alert("An error has occured.\nCould not find persons cache index from person id!\n\nperson_id = " + person_id);
 		
 	};
 	
 	
-	my.export_actors = function(){
+	my.export_persons = function(){
 		
-		if (my.actors.length !== 0){
+		if (my.persons.length !== 0){
 		
-			var actors_json = JSON.stringify(my.actors);
+			var persons_json = JSON.stringify(my.persons);
 			
-			APP.save_file(actors_json, "actors.json", APP.CONF.file_download_header);
+			APP.save_file(persons_json, "persons.json", APP.CONF.file_download_header);
 			
 		}
 		
 		else {
 		
-			APP.alert(l("there_are_no_actors"));
+			APP.alert(l("there_are_no_persons"));
 		
 		}
 
@@ -414,12 +399,12 @@ eldp_environment.workflow[1] = (function(){
 		var reader = new FileReader();
 		
 		reader.onload = function(e){
-			var imported_actors;
+			var imported_persons;
 		
 			var result = e.target.result;
 		
 			try {
-				imported_actors = JSON.parse(result);
+				imported_persons = JSON.parse(result);
 			}
 			
 			catch (e) {
@@ -430,24 +415,24 @@ eldp_environment.workflow[1] = (function(){
 					
 					var xml = parser.parseFromString(result,"text/xml");
 					
-					imported_actors = parseIMDIForActors(xml);
+					imported_persons = parseIMDIForpersons(xml);
 					
 				}
 				
 				
 			}
 			
-			if (!imported_actors){
+			if (!imported_persons){
 				return;
 			}
 			
-			for (var a=0; a<imported_actors.length; a++){
-				my.save(imported_actors[a], true);
+			for (var a=0; a<imported_persons.length; a++){
+				my.save(imported_persons[a], true);
 			}
 			
 			my.refreshListDisplay();
 			
-			alertify.log(imported_actors.length + " " + l("actors_imported"));
+			alertify.log(imported_persons.length + " " + l("persons_imported"));
 		
 		};
 		
@@ -458,43 +443,43 @@ eldp_environment.workflow[1] = (function(){
 
 	my.createForm = function(){
 
-		APP.forms.make(g(my.element_id_prefix + "content_div"), actor_form, my.element_id_prefix, my.element_id_prefix, undefined);
+		APP.forms.make(g(my.element_id_prefix + "content_div"), person_form, my.element_id_prefix, my.element_id_prefix, undefined, my.languages.makeInputInForm);
 
 	};
 
 
-	my.duplicate_active_actor = function(){
+	my.duplicate_active_person = function(){
 
-		//first, save changes to the actor
-		var save = my.save_active_actor();
+		//first, save changes to the person
+		var save = my.save_active_person();
 		
 		//then create a duplicate
 		if (save === true){
-			my.save_active_actor(true);
-			APP.log(l("actor_saved_and_duplicated"),"success");
+			my.save_active_person(true);
+			APP.log(l("person_saved_and_duplicated"),"success");
 		}
 
 	};
 
 
-	my.save_active_actor = function(do_not_overwrite){
-	//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
+	my.save_active_person = function(do_not_overwrite){
+	//do_not_overwrite can be true or false. if true, active person will not be overwritten, but duplicated
 
-		if (get(my.element_id_prefix + "name") !== ""){
+		if (get(my.element_id_prefix + "title") !== ""){
 
 			if (!do_not_overwrite){
 				do_not_overwrite = false;
 			}
 			
-			var actor_to_put = makeActorObjectFromFormInput();
+			var person_to_put = makepersonObjectFromFormInput();
 			
-			return my.save(actor_to_put, do_not_overwrite);
+			return my.save(person_to_put, do_not_overwrite);
 			
 		}
 
 		else {
 		
-			APP.alert(l("give_your_actor_a_name_first"));
+			APP.alert(l("give_your_person_a_name_first"));
 			return false;
 			
 		}
@@ -502,35 +487,35 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.save = function(actor_to_put, do_not_overwrite){
+	my.save = function(person_to_put, do_not_overwrite){
 
-		var actor_ids = [];
+		var person_ids = [];
 		
-		//create array with all actor ids
-		for (var a=0; a<my.actors.length;a++){
-			actor_ids.push(my.actors[a].id);
+		//create array with all person ids
+		for (var a=0; a<my.persons.length;a++){
+			person_ids.push(my.persons[a].id);
 		}
 
-		//if this actor does already exist and is to be overwritten, overwrite the object in the array
-		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite === false)) {
+		//if this person does already exist and is to be overwritten, overwrite the object in the array
+		if ((person_ids.indexOf(person_to_put.id ) != -1) && (do_not_overwrite === false)) {
 			
-			my.actors.splice(my.getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
+			my.persons.splice(my.getpersonsIndexFromID(person_to_put.id),1,person_to_put);
 			
-			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
-			session.updateActorNameInAllSessions(actor_to_put.id);
+			//if the person does already exist, check if it is in a session and correct the person name in the session, if required
+			session.updatepersonNameInAllSessions(person_to_put.id);
 			
 		}
 		
-		else {    //if actor shall not be overwritten, give the duplicate/new generated actor a new id
+		else {    //if person shall not be overwritten, give the duplicate/new generated person a new id
 			
-			actor_to_put.id = my.id_counter;
-			console.log("Saving actor with id " + actor_to_put.id);
+			person_to_put.id = my.id_counter;
+			console.log("Saving person with id " + person_to_put.id);
 			my.id_counter++;
 			
-			my.actors.push(actor_to_put);
+			my.persons.push(person_to_put);
 		}
 	 
-		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
+		console.log('Yeah, dude inserted! insertId is: ' + person_to_put.id);
 
 		my.refreshListDisplay();
 		
@@ -539,16 +524,16 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.delete_active_actor = function(){
+	my.delete_active_person = function(){
 
-		var name_of_actor = my.actors[my.active_actor].name;
+		var name_of_person = my.persons[my.active_person].title;
 
 		alertify.set({ labels: {
 			ok     : l("no"),
-			cancel : l("yes_delete_actor")
+			cancel : l("yes_delete_person")
 		} });
 
-		alertify.confirm(l("really_erase_before_name") + name_of_actor + l("really_erase_after_name"), function (e) {
+		alertify.confirm(l("really_erase_before_name") + name_of_person + l("really_erase_after_name"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -557,32 +542,32 @@ eldp_environment.workflow[1] = (function(){
 			else {
 				// user clicked "cancel"
 				
-				my.actors.splice(my.active_actor,1);
+				my.persons.splice(my.active_person,1);
 				my.refreshListDisplay();
 				
-				APP.log(l("actor_deleted_before_name") + name_of_actor + l("actor_deleted_after_name"));
+				APP.log(l("person_deleted_before_name") + name_of_person + l("person_deleted_after_name"));
 
 			}
 		});
 	};
 	
 	
-	my.getAge = function (session_id, actor_id){
+	my.getAge = function (session_id, person_id){
 
-		var i = my.getActorsIndexFromID(actor_id);
+		var i = my.getpersonsIndexFromID(person_id);
 		
-		if (my.actors[i].age === ""){   //at first, check, if actor's age hasn't been specified yet
+		if (my.persons[i].age === ""){   //at first, check, if person's age hasn't been specified yet
 		
 			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
-				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
+				var birthDate = my.persons[i].birth_date.year + "-" + my.persons[i].birth_date.month + "-" + my.persons[i].birth_date.day;
 				var sessionDate = get(session.dom_element_prefix+session_id+"_session_date_year") + "-" +
 				get(session.dom_element_prefix+session_id+"_session_date_month") + "-" + get(session.dom_element_prefix+session_id+"_session_date_day"); 
 				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
 				
 				if (age_calc_result !== 0){
 				
-					console.log("Actor's age successfully calculated");			
+					console.log("person's age successfully calculated");			
 					return age_calc_result;
 			
 				}
@@ -602,9 +587,9 @@ eldp_environment.workflow[1] = (function(){
 			}
 		}
 		
-		else { //if actor's age has been specified
+		else { //if person's age has been specified
 		
-			return my.actors[i].age;
+			return my.persons[i].age;
 		
 		}
 
@@ -613,11 +598,11 @@ eldp_environment.workflow[1] = (function(){
 
 	my.sortAlphabetically = function(){
 
-		my.actors = sortByKey(my.actors,"name");
+		my.persons = sortByKey(my.persons,"title");
 
 		my.refreshListDisplay();
 		
-		APP.log(l("actors_alphabetically_sorted"));
+		APP.log(l("persons_alphabetically_sorted"));
 
 	};
 
@@ -625,13 +610,13 @@ eldp_environment.workflow[1] = (function(){
 	my.refreshListDisplay = function(not_in_sessions){
 		var div;
 	
-		g('ac_list').innerHTML = "";
+		g(my.element_id_prefix + 'list').innerHTML = "";
 
-		for (var i=0;i<my.actors.length;i++){
+		for (var i=0;i<my.persons.length;i++){
 
-			div = dom.newElement('div', "ac_list_entry_"+(i), "ac_list_entry", g('ac_list'));
-			dom.h2(div, my.actors[i].name);
-			dom.p(div, my.actors[i].role);
+			div = dom.newElement('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
+			dom.h2(div, my.persons[i].title);
+			dom.p(div, my.persons[i].role);
 		
 			div.addEventListener('click', function(num) { 
 				return function(){ my.show(num); }; 
@@ -639,15 +624,15 @@ eldp_environment.workflow[1] = (function(){
 			
 		}
 
-		//create field for new actor
-		div = dom.newElement('div', "ac_list_entry_-1", "ac_list_entry", g('ac_list'), "<h2>" + l("new_actor") + "</h2>");
+		//create field for new person
+		div = dom.newElement('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_person") + "</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
 		if ((session) && (!not_in_sessions)){
-			session.refreshActorLists(my.actors);
+			session.refreshpersonLists(my.persons);
 		}
 
-		switch (my.actors.length){
+		switch (my.persons.length){
 		
 			case 0: {
 				my.show(-1);
@@ -661,12 +646,12 @@ eldp_environment.workflow[1] = (function(){
 			
 			default: {
 			
-				if (my.active_actor >= my.actors.length){
-					my.show(my.actors.length-1);
+				if (my.active_person >= my.persons.length){
+					my.show(my.persons.length-1);
 				}
 				
 				else {
-					my.show(my.active_actor);
+					my.show(my.active_person);
 				}
 			
 				break;

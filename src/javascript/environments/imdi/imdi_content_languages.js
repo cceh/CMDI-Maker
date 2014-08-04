@@ -47,7 +47,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		span.innerHTML += " ";		
 		dom.input(span, "content_language_iso_ok", "", "content_language_iso_ok", "button", my.l("ok"));
 
-		var ccld = dom.div(cl, "current_content_languages_display", "");
+		var ccld = dom.div(cl, "content_languages_display", "");
 		dom.h1(ccld, my.l("languages", "current_content_languages"));
 
 		dom.div(cl, "content_language_results_div", "");
@@ -197,7 +197,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 	
 	my.render = function(LanguageObject, id){
 
-		var div = dom.newElement("div","content_language_"+id+"_div","current_content_language_entry",g("current_content_languages_display"));
+		var div = dom.newElement("div","content_language_"+id+"_div","content_language_entry",g("content_languages_display"));
 		
 		dom.span(div,"","","ISO639-3 Code: " + LanguageObject[0]);
 		

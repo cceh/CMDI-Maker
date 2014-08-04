@@ -139,7 +139,7 @@ APP.forms = (function () {
 		
 		},	
 
-		subarea: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		subarea: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
 		
 			var h3 = dom.h3(parent, field.heading);
 			
@@ -150,12 +150,12 @@ APP.forms = (function () {
 			if (field.fields){
 			
 				element_id_prefix += field.name + "_";
-				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, session_object[field.name]);
+				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, session_object[field.name], on_special);
 				
 			}
 		},
 		
-		column: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		column: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
 		
 			var td_name;		
 			
@@ -171,7 +171,7 @@ APP.forms = (function () {
 			
 			}
 		
-			var td = dom.newElement("td",element_id_prefix+td_name,element_class_prefix+td_name,parent);
+			var td = dom.newElement("td", element_id_prefix+td_name,element_class_prefix+td_name, parent);
 			
 			if (field.title && field.title !== ""){
 				dom.newElement("h2","","",td,field.title);
@@ -185,13 +185,13 @@ APP.forms = (function () {
 					
 				}
 			
-				makeForEach(field.fields, td, element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined));
+				makeForEach(field.fields, td, element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined), on_special);
 			
 			}
 			
 		},
 		
-		form: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		form: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
 			var form_parent;
 			
 			if ((field.fields) && (field.fields[0].type == "column")){
@@ -204,13 +204,23 @@ APP.forms = (function () {
 				form_parent = parent;
 			}
 			
-			makeForEach(field.fields, form_parent, element_id_prefix, element_class_prefix, session_object);
+			makeForEach(field.fields, form_parent, element_id_prefix, element_class_prefix, session_object, on_special);
 			
 		},
 		
-		special: function(parent, field, element_id_prefix, element_class_prefix, session_object){
-		
-			APP.environments.active_environment.specialInput(field, parent, element_id_prefix, element_class_prefix);
+		special: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
+			
+			if (!on_special){
+			
+				console.error("APP.forms.make: Form Template has special fields, but no method on_special has been specified!");
+				console.error("field: ");
+				console.error(field);
+				console.error("element_id_prefix: " + element_id_prefix);
+				return;
+			
+			}
+			
+			on_special(field, parent, element_id_prefix, element_class_prefix);
 			
 		},
 		
@@ -365,27 +375,27 @@ APP.forms = (function () {
 	};
 
 	
-	var makeForEach = function (fields, parent, element_id_prefix, element_class_prefix, session_object){
+	var makeForEach = function (fields, parent, element_id_prefix, element_class_prefix, session_object, on_special){
 	
 		forEach(fields, function (subfield){
 			
-			make(parent, subfield, element_id_prefix, element_class_prefix, session_object);
+			make(parent, subfield, element_id_prefix, element_class_prefix, session_object, on_special);
 			
 		});
 		
 	};	
 	
 
-	var make = function (parent, field, element_id_prefix, element_class_prefix, session_object){
+	var make = function (parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
 		
 		var input;
 
 		if (makeFunctions[field.type]) {
-			input = makeFunctions[field.type](parent, field, element_id_prefix, element_class_prefix, session_object);
+			input = makeFunctions[field.type](parent, field, element_id_prefix, element_class_prefix, session_object, on_special);
 		}
 		
 		else {
-			console.log("ERROR: APP.forms.make: Field type not supported! Field type = " + field.type);
+			console.error("ERROR: APP.forms.make: Field type not supported! Field type = " + field.type);
 			return;
 		}
 		
