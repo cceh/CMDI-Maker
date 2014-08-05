@@ -24,6 +24,34 @@ function getFileTypeFromFilename(filename){
 }
 
 
+var getIndex = function(array, key, value){
+
+	for (var i=0; i < array.length; i++){
+		
+		if (array[i][key] == value){
+			return i;
+		}
+	}
+	
+	return undefined;
+
+};
+
+
+var getObject = function(array, key, value){
+
+	for (var i=0; i < array.length; i++){
+		
+		if (array[i][key] == value){
+			return array[i];
+		}
+	}
+	
+	return undefined;
+
+};
+
+
 var map = function(array, transform) {
 	var mapped = [];
 	

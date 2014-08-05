@@ -476,16 +476,15 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	
 	my.getSessionIndexFromID = function(session_id){
-
-		for (var i = 0; i < my.sessions.length; i++) {
-			if (my.sessions[i].id == session_id) {
-				return i;
-			}
+		
+		var index = getIndex(my.sessions, "id", session_id);
+		
+		if (typeof index == "undefined"){
+			console.error("An error has occured.\nCould not find session index from session_id!\n\nsession_id = " + session_id);
+			console.error(sessions);
 		}
 		
-		alert("An error has occured.\nCould not find session index from session_id!\n\nsession_id = " + session_id);
-		console.log(sessions);
-		
+		return index;
 
 	};
 	

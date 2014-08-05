@@ -60,32 +60,26 @@ var APP = (function () {
 	
 	my.getLPFromID = function(id){
 	
-		for (var l=0; l<my.languages.length; l++){
+		var LP = getObject(my.languages, "id", id);
 		
-			if (id == my.languages[l].id){
-				return my.languages[l];
-			}
-		
+		if (typeof LP == "undefined"){
+			console.error("ERROR: No language object with id " + id + " found!");
 		}
 		
-		console.log("ERROR: No language object with id " + id + " found!");
-		return undefined;
+		return LP;
 	
 	};
 	
 	
 	my.getIndexFromLPID = function(id){
 	
-		for (var l=0; l<my.languages.length; l++){
+		var index = getIndex(my.languages, "id", id);
 		
-			if (id == my.languages[l].id){
-				return l;
-			}
-		
+		if (typeof index == "undefined"){
+			console.error("ERROR: No language object with id " + id + " found!");
 		}
 		
-		console.log("ERROR: No language object with id " + id + " found!");
-		return undefined;
+		return index;
 	
 	};
 	
@@ -119,13 +113,7 @@ var APP = (function () {
 	
 	my.getActiveLanguagePackFromID = function(id, LPArray){
 	
-		for (var l=0; l<LPArray.length; l++){
-			if (LPArray[l].id == id){
-				return LPArray[l];
-			}
-		}
-	
-		return undefined;
+		return getObject(LPArray, "id", id);
 	
 	};
 	

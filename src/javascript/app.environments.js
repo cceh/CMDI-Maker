@@ -20,17 +20,15 @@ APP.environments = (function () {
 	
 	//PRIVATE
 	
-	var getIndex = function(environment){
+	var getIndexOfEnvironment = function(environment){
+	
+		var index = getIndex(my.environments, "id", environment.id);
 		
-		for (var e=0; e<my.environments.length; e++){
-		
-			if (environment.id == my.environments[e].id){
-				return e;
-			}
-		
+		if (typeof index == "undefined"){
+			return console.log("Environment " + environment.id + " not found in APP.environments");
 		}
 		
-		return console.log("Environment " + environment.id + " not found in APP.environments");
+		return index;
 	
 	};
 	
@@ -148,7 +146,7 @@ APP.environments = (function () {
 	
 		my.createWorkflow(environment.workflow);
 		
-		var profile_select_index = getIndex(environment) + 1;
+		var profile_select_index = getIndexOfEnvironment(environment) + 1;
 		//+1 because the first option of profile select is an empty option
 		
 		g("profile_select").selectedIndex = profile_select_index;
@@ -228,16 +226,8 @@ APP.environments = (function () {
 	
 	
 	my.getByID = function(id){
-	
-		for (var e=0; e<my.environments.length; e++){
-			
-			if (my.environments[e].id == id){
-				return my.environments[e];
-			}
-			
-		}
 		
-		return undefined;
+		return getObject(my.environments, "id", id);
 	
 	};
 	
@@ -277,17 +267,14 @@ APP.environments = (function () {
 	
 	
 	my.getIndexFromID = function(id){
-	
-		for (var e=0; e<my.environments.length; e++){
 		
-			if (my.environments[e].id == id){
-				return e;
-			}
+		var index = getIndex(my.environments, "id", id);
 		
+		if (typeof index == "undefined"){
+			console.error("ERROR: Unknown environment id: " + id);
 		}
-	
-		console.log("ERROR: Unknown environment id: " + id);
-		return undefined;
+		
+		return index;
 	
 	};
 	
