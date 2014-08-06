@@ -65,19 +65,7 @@ imdi_environment.workflow[4] = (function (){
 
 		var parent = g("output_format_select");
 
-		for (var f=0; f<formats.length; f++){
-		
-			var input = dom.input(parent,"output_format_radio_"+f, "", "output_format", "radio", f);
-			
-			dom.span(parent, "","", " " + formats[f].title);
-			
-			if (f === 0){
-				input.checked = true;
-			}
-			
-			dom.br(parent);
-			
-		}
+		dom.makeRadios(parent, formats, "output_format", "output_format_radio_", "title", "name", 0, undefined);
 
 	};
 	
@@ -166,7 +154,7 @@ imdi_environment.workflow[4] = (function (){
 		
 		for (var s=0;s<session.sessions.length;s++){
 
-			filename = get("session_"+session.sessions[s].id+"_session_name")+"."+file_ending;
+			filename = get(session.dom_element_prefix+session.sessions[s].id+"_session_name")+"."+file_ending;
 			dom.createXMLOutputDIV(xml_window, output_format + " Session " + (s+1), "textarea_session_"+s,
 			xml_strings.sessions[s],filename);
 			

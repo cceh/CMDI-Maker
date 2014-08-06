@@ -121,8 +121,16 @@ function g_value(id){
 
 
 var g = function (id){
-
-	return document.getElementById(id);
+	
+	if (document.getElementById(id)){
+		return document.getElementById(id);
+	}
+	
+	if (document.getElementsByName(id).length > 0){
+		return document.getElementsByName(id);
+	}
+	
+	return undefined;
 
 };
 

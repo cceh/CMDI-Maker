@@ -706,26 +706,8 @@ var APP = (function () {
 	
 		radio: function(setting, parent){
 		
-			for (var r=0; r<setting.options.length; r++){
-				var input;
-				
-				input = dom.input(parent,"","",setting.radio_name, "radio", setting.options[r].value);
-				
-				dom.span(parent,"","",setting.options[r].title);
-				dom.br(parent);	
-				
-				if (r == setting.default_option) {
-					input.checked = true;
-				}
-				
-				if (setting.onchange) {
-					input.addEventListener("click", function (num) {
-						return function () {
-							setting.onchange(setting.options[num].value);
-						}
-					}(r), false);
-				}
-			}		
+			dom.makeRadios(parent, setting.options, setting.radio_name, setting.radio_name + "_", "title", "value", setting.default_option, setting.onchange);
+		
 		},
 		
 		select: function(setting, parent){
@@ -886,7 +868,8 @@ var APP = (function () {
 			g("language_select").selectedIndex = index;
 			
 		}		
-
+		
+		dom.setRadiosByValue(g("radio_auto_save"), recall_object.settings.save_interval_time);
 		my.save_and_recall.setAutosaveInterval(recall_object.settings.save_interval_time);
 		
 		if (recall_object.active_environment_id){

@@ -66,7 +66,7 @@ APP.save_and_recall = (function () {
 		window.clearInterval(my.interval);	
 		
 		if (!time){
-			console.log("ERROR: setAutosaveInterval called without time parameter!");
+			console.error("ERROR: setAutosaveInterval called without time parameter!");
 			return;
 		}
 		
@@ -258,7 +258,7 @@ APP.save_and_recall = (function () {
 			settings: {
 				metadata_creator: get("metadata_creator"),
 				metadata_language: g("metadata_language_select").selectedIndex,
-				save_interval_time: dom.getValueOfRadios("radio_auto_save"),
+				save_interval_time: dom.getSelectedRadioValue(g("radio_auto_save")),
 				active_language_id: APP.active_language.id
 			}
 			

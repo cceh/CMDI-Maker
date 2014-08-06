@@ -71,7 +71,7 @@ var imdi_environment = (function(){
 	
 	my.recall = function (settings){
 		
-		dom.setRadioIndex(document.getElementsByName("output_format"), settings.output_format);
+		dom.setRadiosByValue(g("output_format"), settings.output_format);
 		dom.setOnOffSwitchValue(g("radio_age_calc"),settings.calc_actors_age);
 		
 	};
@@ -81,7 +81,7 @@ var imdi_environment = (function(){
 		
 		var object = {};
 
-		object.output_format = dom.getValueOfRadios("output_format");
+		object.output_format = dom.getSelectedRadioValue(g("output_format"));
 		object.calc_actors_age = g("radio_age_calc").on;
 	
 		return object;

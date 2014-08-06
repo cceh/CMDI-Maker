@@ -44,6 +44,34 @@ var dom = (function() {
 	};
 	
 	
+	my.makeRadios = function(parent, array, name, id_prefix, title_key, value_key, start_value, on_change){
+		var input;
+		
+		for (var f=0; f<array.length; f++){
+		
+			input = dom.input(parent, id_prefix+f, "", name, "radio", array[f][value_key]);
+			
+			dom.span(parent, "","", " " + array[f][title_key]);
+			
+			if (f === start_value){
+				input.checked = true;
+			}
+			
+			dom.br(parent);
+			
+			if (on_change) {
+				input.addEventListener("click", function (num) {
+					return function () {
+						on_change(array[num].value);
+					}
+				}(f), false);
+			}
+			
+		}
+	
+	};
+	
+	
 	my.removeOptions = function (selectbox){
 		
 		var i;
@@ -61,22 +89,32 @@ var dom = (function() {
 	
 	};
 	
-
-	my.getValueOfRadios = function (radios_name){
-		
-		var radios = document.getElementsByName(radios_name);
-		var index = my.getSelectedRadioIndex(radios);
-		return radios[index].value;
-
-	};
-
 	
+	my.setRadiosByValue = function(radios, value){
+	
+		for (var r=0; r< radios.length; r++){
+		
+			if (radios[r].value == value){
+			
+				radios[r].checked = true;
+				return;
+				
+			}
+		
+		}		
+	
+		console.error("dom.setRadioByValue: Value " + value + " not available in radios!");
+	
+	}
+	
+
 	my.setRadioIndex = function (radios, index){
 
-		if ((!index) || (typeof index == "undefined")){
-			index = 0;
+		if (typeof index != "number"){
+			console.error("dom.setRadioIndex: index is not of type number but " + typeof index);
+			return;
 		}
-
+	
 		radios[index].checked = true;
 
 	};
