@@ -87,14 +87,14 @@ APP.forms = (function () {
 
 
 	var makeFunctions = {
-		text: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		text: function(parent, field, element_id_prefix, element_class_prefix, data_object){
 		
 			var input;
 			
 			input = dom.makeTextInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				(data_object && data_object[field.name] ? data_object[field.name] : ""),
 				field.comment
 			);
 			
@@ -102,16 +102,16 @@ APP.forms = (function () {
 			
 		},
 		
-		date: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		date: function(parent, field, element_id_prefix, element_class_prefix, data_object){
 		
 			var input;
 		
 			input = dom.makeDateInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name].year : ""),
-				(session_object && session_object[field.name] ? session_object[field.name].month : ""),				
-				(session_object && session_object[field.name] ? session_object[field.name].day : ""),					
+				(data_object && data_object[field.name] ? data_object[field.name].year : ""),
+				(data_object && data_object[field.name] ? data_object[field.name].month : ""),				
+				(data_object && data_object[field.name] ? data_object[field.name].day : ""),					
 				field.comment
 			);
 			
@@ -119,7 +119,7 @@ APP.forms = (function () {
 		
 		},
 		
-		textarea: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		textarea: function(parent, field, element_id_prefix, element_class_prefix, data_object){
 		
 			var input;
 		
@@ -131,7 +131,7 @@ APP.forms = (function () {
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name] : ""),
+				(data_object && data_object[field.name] ? data_object[field.name] : ""),
 				field.comment
 			);
 			
@@ -139,7 +139,7 @@ APP.forms = (function () {
 		
 		},	
 
-		subarea: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
+		subarea: function(parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 		
 			var h3 = dom.h3(parent, field.heading);
 			
@@ -150,12 +150,12 @@ APP.forms = (function () {
 			if (field.fields){
 			
 				element_id_prefix += field.name + "_";
-				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, session_object[field.name], on_special);
+				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, data_object[field.name], on_special);
 				
 			}
 		},
 		
-		column: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
+		column: function(parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 		
 			var td_name;		
 			
@@ -185,13 +185,13 @@ APP.forms = (function () {
 					
 				}
 			
-				makeForEach(field.fields, td, element_id_prefix, element_class_prefix, (session_object ? session_object[field.name] : undefined), on_special);
+				makeForEach(field.fields, td, element_id_prefix, element_class_prefix, (data_object ? data_object[field.name] : undefined), on_special);
 			
 			}
 			
 		},
 		
-		form: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
+		form: function(parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 			var form_parent;
 			
 			if ((field.fields) && (field.fields[0].type == "column")){
@@ -204,11 +204,11 @@ APP.forms = (function () {
 				form_parent = parent;
 			}
 			
-			makeForEach(field.fields, form_parent, element_id_prefix, element_class_prefix, session_object, on_special);
+			makeForEach(field.fields, form_parent, element_id_prefix, element_class_prefix, data_object, on_special);
 			
 		},
 		
-		special: function(parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
+		special: function(parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 			
 			if (!on_special){
 			
@@ -224,7 +224,7 @@ APP.forms = (function () {
 			
 		},
 		
-		select: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		select: function(parent, field, element_id_prefix, element_class_prefix, data_object){
 		
 			var input;
 			
@@ -234,7 +234,7 @@ APP.forms = (function () {
 				element_id_prefix+field.name,
 				field.size,
 				field.vocabulary,
-				(session_object && session_object[field.name] ? session_object[field.name] : field.default_value),
+				(data_object && data_object[field.name] ? data_object[field.name] : field.default_value),
 				field.comment
 			);
 			
@@ -242,13 +242,13 @@ APP.forms = (function () {
 
 		},
 		
-		open_vocabulary: function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		open_vocabulary: function(parent, field, element_id_prefix, element_class_prefix, data_object){
 		
 			var value;
 			var input;
 		
-			if (session_object && session_object[field.name]){
-				value = session_object[field.name];
+			if (data_object && data_object[field.name]){
+				value = data_object[field.name];
 			}
 			
 			else if (field.default_value){
@@ -269,7 +269,7 @@ APP.forms = (function () {
 		
 		},
 
-		check:  function(parent, field, element_id_prefix, element_class_prefix, session_object){
+		check:  function(parent, field, element_id_prefix, element_class_prefix, data_object){
 		
 			var input;
 			
@@ -277,7 +277,7 @@ APP.forms = (function () {
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(session_object && session_object[field.name] ? session_object[field.name] : false),
+				(data_object && data_object[field.name] ? data_object[field.name] : false),
 				field.comment
 			);
 			
@@ -375,23 +375,23 @@ APP.forms = (function () {
 	};
 
 	
-	var makeForEach = function (fields, parent, element_id_prefix, element_class_prefix, session_object, on_special){
+	var makeForEach = function (fields, parent, element_id_prefix, element_class_prefix, data_object, on_special){
 	
 		forEach(fields, function (subfield){
 			
-			make(parent, subfield, element_id_prefix, element_class_prefix, session_object, on_special);
+			make(parent, subfield, element_id_prefix, element_class_prefix, data_object, on_special);
 			
 		});
 		
 	};	
 	
 
-	var make = function (parent, field, element_id_prefix, element_class_prefix, session_object, on_special){
+	var make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 		
 		var input;
 
 		if (makeFunctions[field.type]) {
-			input = makeFunctions[field.type](parent, field, element_id_prefix, element_class_prefix, session_object, on_special);
+			input = makeFunctions[field.type](parent, field, element_id_prefix, element_class_prefix, data_object, on_special);
 		}
 		
 		else {
@@ -418,7 +418,6 @@ APP.forms = (function () {
 	var fill = function (field, element_id_prefix, data_object, on_special){
 		
 		var target;
-		var f;
 		
 		if (field.type == "column"){
 		

@@ -35,7 +35,6 @@ APP.CONF = {
 	select_frame_id: "SF",
 	main_menu_div_id: "main_menu_div",
 	
-
 	output_textarea_rows: 40,
 	output_textarea_columns: 130,
 	form_textarea_rows: 18,
