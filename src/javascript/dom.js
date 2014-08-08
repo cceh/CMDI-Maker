@@ -22,7 +22,7 @@ var dom = (function() {
 	my.getSelectedRadioIndex = function (radios){
 
 
-		for (var r=0; r< radios.length; r++){
+		for (var r = 0; r < radios.length; r++){
 		
 			if (radios[r].checked === true){
 			
@@ -198,14 +198,17 @@ var dom = (function() {
 
 		var span = my.span(parent, "", "", title);
 		
-		if (!hover){		
+		if (hover){		
 			span.title = hover;
 		}
 
 		my.br(parent);
 		
 		var input = my.input(parent, id, "", name, "text", value);
-		input.title = hover;
+		
+		if (hover){		
+			input.title = hover;
+		}
 		
 		my.br(parent);
 
@@ -216,21 +219,21 @@ var dom = (function() {
 
 	my.makeCheckbox = function (parent,title,name,id,checked,hover){
 
-		if (!hover){
-			hover = "";
-		}
-		
 		var input = document.createElement("input");
 		input.type = "checkbox";
 		input.name = name;
 		input.id = id;
 		input.checked = checked;
-		input.title = hover;
+		if (hover){		
+			input.title = hover;
+		}
 		
 		parent.appendChild(input);
 		
 		var span = dom.newElement("span","","",parent,title);
-		span.title = hover;
+		if (hover){
+			span.title = hover;
+		}
 
 		my.br(parent);
 
@@ -250,12 +253,13 @@ var dom = (function() {
 		
 		parent.appendChild(document.createElement("br"));
 
-
 		var select = document.createElement("select");
 		select.name = name;
 		select.id = id;
 		select.size = size;
-		select.title = hover;
+		if (hover){		
+			select.title = hover;
+		}
 		
 		for (var o=0; o<options.length; o++){
 		
@@ -276,7 +280,9 @@ var dom = (function() {
 		input.name = name;
 		input.id = id;
 		input.type = "text";
-		input.title = hover;
+		if (hover){		
+			input.title = hover;
+		}
 		
 
 		if ((typeof value == "undefined") || (options.indexOf(value) != -1)) {	

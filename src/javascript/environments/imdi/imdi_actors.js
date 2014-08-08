@@ -438,7 +438,7 @@ imdi_environment.workflow[2] = (function(){
 			
 			my.refreshListDisplay();
 			
-			alertify.log(imported_actors.length + " " + l("actors_imported"));
+			APP.log(imported_actors.length + " " + l("actors_imported"));
 		
 		};
 		

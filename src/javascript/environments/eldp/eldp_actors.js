@@ -211,7 +211,7 @@ eldp_environment.workflow[1] = (function(){
 		my.id_counter = 0;
 		my.active_person = -1;
 		
-		session = my.parent.workflow[3];
+		session = my.parent.workflow[2];
 		
 		dom.make("div",my.element_id_prefix + "list","",view);
 		var ac_view = dom.make("div",my.element_id_prefix + "view","",view);
@@ -629,7 +629,7 @@ eldp_environment.workflow[1] = (function(){
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
 		if ((session) && (!not_in_sessions)){
-			session.refreshpersonLists(my.persons);
+			session.refreshPersonLists(my.persons);
 		}
 
 		switch (my.persons.length){

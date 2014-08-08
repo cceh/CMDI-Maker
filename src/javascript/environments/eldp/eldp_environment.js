@@ -45,7 +45,7 @@ var eldp_environment = (function(){
 				default_value: true,
 				name: "radio_age_calc",
 				id: "radio_age_calc"
-			},
+			}/*,
 			{
 				title: "Export Actors as JSON",
 				onclick: function (){actor.export_actors();},
@@ -64,7 +64,7 @@ var eldp_environment = (function(){
 				description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window.",
 				type: "link",
 				onclick: function (){actor.erase_database();}
-			}
+			}*/
 		];
 	};
 	

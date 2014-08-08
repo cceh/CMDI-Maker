@@ -15,14 +15,14 @@ limitations under the License.
 */
 
 
-eldp_environment.session_form = {
+eldp_environment.bundle_form = {
 
 	title: "eldp-form",
 	type: "form",
 	fields: [
 		{
 			title: "Bundle",
-			name: "session",
+			name: "bundle",
 			type: "column",
 			fields: [
 				{
@@ -104,6 +104,16 @@ eldp_environment.session_form = {
 					heading: "Keywords",
 					type: "textarea",
 					name: "keywords"
+				},
+				{
+					heading: "Languages",
+					type: "subarea",
+					fields: [
+						{
+							name: "bundle_languages",
+							type: "special"
+						}
+					]
 				}
 			]
 		},

@@ -1,3 +1,303 @@
+.webapp_icon{
+	float: left;
+	width: 30px;
+	height: 25px;
+	padding: 12px;
+}
+
+.module_title{
+
+	height: 50px;
+	width: 188px;
+	color: black;
+	font-size: 16pt;
+	float: left;
+
+}
+
+#VIEWLINK_start{
+
+	cursor: pointer;
+
+}
+
+textarea{
+
+	width: 146px;
+
+}
+
+#wait_wrapper{
+	text-align: center;
+}
+
+#wait_img{
+	margin: 50px;
+}
+
+
+input[type="button"], input[type="submit"]{
+
+	cursor: pointer;
+	height: 20px;
+	margin: 0px;
+
+}
+
+.on_off_switch{
+
+	width: 100px;
+	height: 30px !important;
+	margin: 10px 0px !important;
+	background: tomato;
+	border-radius: 10px;
+	color: white;
+	outline: none;
+
+}
+
+.ultra_big{
+
+	font-size: 80pt;
+	text-align: center;
+
+}
+
+#hello{
+
+	cursor: pointer;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+
+
+.YearInput{
+
+	width: 45px !important;
+
+}
+
+.MonthInput, .DayInput{
+
+	width: 26px !important;
+
+}
+
+
+
+.function_icon:hover{
+
+	background-color: tomato;
+	color: white;
+
+}
+
+.function_wrap:hover .function_icon{
+
+	background-color: tomato;
+	color: white;
+
+}
+
+.function_icon:active{
+
+	background-color: black;
+
+}
+
+
+.function_icon h3{
+
+	color: white;
+	height: 100%;
+	padding-right: 15px;
+	margin: 0px;
+	line-height: 48px;
+	float: left;
+
+}
+
+
+.function_icon{
+
+	color: white;
+	cursor: pointer;
+	float: left;
+	height: 100%;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+/*--- SF ---*/
+
+.SF {
+
+	overflow: hidden;
+	padding: 20px;
+	background-color: lightskyblue;
+	padding-top: 15px;
+	display: none;
+	color: black;
+	border-radius: 10px;
+
+}
+
+.SF_search_entry{
+
+	background: bisque;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left:0px;
+	margin-right: 20px;
+	float: left;
+	width: 200px;
+}
+
+.SF a{
+
+	color: black;
+
+}
+
+.SF a:hover div{
+
+	background-color: rgb(255, 139, 199);
+
+}
+
+body {
+
+	overflow: hidden;
+
+}
+
+td{
+
+	white-space: nowrap;
+
+}
+
+#functions{
+
+	position: fixed;
+	bottom: 0px;
+	background: cornflowerblue;
+	left: 0px;
+	right: 0px;
+	height: 44px;
+
+}
+
+
+#main_menu_icon{
+
+	width: 36px;
+	height: 36px;
+	padding: 7px;
+	float: right;
+	cursor: pointer;
+
+}
+
+#main_menu_div{
+
+	background: cornflowerblue;
+	position: fixed;
+	top: 50px;
+	right: 0px;
+	width: 300px;
+
+}
+
+.main_menu_entry{
+
+	color: white;
+	cursor: pointer;
+	height: 50px;
+
+}
+
+.main_menu_entry:hover{
+
+	background: tomato;
+
+}
+
+.main_menu_entry:active{
+
+	background: black;
+
+}
+
+.main_menu_entry_img{
+	width: 30px;
+	height: 30px;
+	padding: 10px;
+	margin-right: 10px;
+}
+
+.main_menu_entry_span{
+	font-size: 16pt;
+	position: relative;
+	top: -16px;
+}
+
+input, textarea, select{
+
+	border: none;
+
+}
+
+
+input[type="text"], select{
+
+	width: 150px;
+	border: none;
+	height: 20px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	padding: 0px;
+
+}
+
+
+#close_clrd_icon, #close_alrd_icon, .close_select_frame_icon {
+
+	float: right;
+	width: 25px;
+	cursor: pointer;
+	position: relative;
+	top: -40px;
+
+}
+
+
+input[type="checkbox"], input[type="radio"]{
+
+	margin: 3px 3px 3px 4px;
+	width: 16px;
+	height: 16px;
+
+}
+
+
 .webapp_header {
 	padding-left: 30px;
 	padding-top: 15px;
@@ -30,7 +330,7 @@
 
 .header_icon_active{
 
-background-color: #bbffcc;
+	background-color: #bbffcc;
 
 }
 
@@ -43,17 +343,13 @@ background-color: #bbffcc;
 	padding: 0px 12px;
 	width: 70px;
 	cursor: pointer;
-	
 	color: #4D87C7;
-	
-	
 }
 
 .module_icon{
 	
 	width: 25px;
 	height: 25px;
-	
 	padding-top: 7px;
 }
 
@@ -61,7 +357,6 @@ background-color: #bbffcc;
 	
 	width: 25px;
 	height: 25px;
-	
 	float: right;
 	cursor: pointer;
 }
@@ -70,10 +365,8 @@ background-color: #bbffcc;
 
 	width: 25px;
 	height: 25px;
-	
 	padding: 10px;
 	float: left;
-
 
 }
 
@@ -135,22 +428,17 @@ background-color: #bbffcc;
 .header_icons{
 	display: inline;
 	padding: 20px;
-	
 }
 
 
-
-
 textarea{
-	
 	resize: none;
 }
 
 
-
-/* force vertical scrollbar */
 body {
-	overflow-y: scroll;
+	overflow: hidden;
     background:#CCEEFF;
     margin: 30px;
+	font-size: small !important;
 }

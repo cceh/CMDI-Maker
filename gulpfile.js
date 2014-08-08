@@ -49,7 +49,8 @@ var source_scripts = [
 	"./src/javascript/environments/eldp/eldp_actors.js",
 	"./src/javascript/environments/eldp/eldp_actor_languages.js",
 	"./src/javascript/environments/eldp/eldp_sessions.js",
-			
+	"./src/javascript/environments/eldp/eldp_output.js",
+
 /*Core */
 "./src/javascript/app.js",
 "./src/javascript/LanguagePacks.js",
@@ -138,7 +139,8 @@ var style_sources = [
 "./src/css/yaml.css",
 "./src/css/layout.css",
 "./src/css/typography.css",
-"./src/css/layout-cmdi.css",
+"./src/css/layout-eldp.css",
+"./src/css/layout-imdi.css",
 "./src/css/alertify.core.css",
 "./src/css/alertify.default.css"
 ];

@@ -233,7 +233,7 @@ var APP = (function () {
 	
 	my.drawMainMenu = function(menu_elements){
 	
-		var menu = dom.div(g("cmdi_maker_body"), APP.CONF.main_menu_div_id, "");
+		var menu = dom.div(document.body, APP.CONF.main_menu_div_id, "");
 		
 		forEach(menu_elements, function(element){ my.drawMainMenuElement(element, menu); });
 		

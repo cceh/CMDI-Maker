@@ -232,18 +232,20 @@ eldp_environment.workflow[0] = (function(){
 	];
 	
 	
-	my.init = function(){
+	my.init = function(view){
 	
 		session = eldp_environment.workflow[2];
 	
-		var view = g(APP.CONF.view_id_prefix + my.identity.id);
 		var div = dom.newElement("div","files","",view);
+		
+		dom.h3(div, "Import Files");
 		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
 		
-		var input = dom.newElement("input","files_input","",div);
-		input.name = "files_input";
-		input.type = "file";
+		var input = dom.input(div,"files_input","","files_input","file");
 		input.multiple = true;
+		
+		dom.h3(div, "Import File List");
+		dom.input(div, "file_list_import_input", "", "", "file");
 
 		var usage_table = dom.newElement("div","","workspace-usageTable",div,
 		'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
@@ -258,7 +260,9 @@ eldp_environment.workflow[0] = (function(){
 		dropZone.addEventListener('dragover', my.handleDragOver, false);
 		dropZone.addEventListener('drop', my.handleFileDrop, false);
 
+		g('file_list_import_input').addEventListener('change', my.handleFileListInputChange, false);
 		g('files_input').addEventListener('change', my.handleFileInputChange, false);
+		
 		
 		my.refreshFileListDisplay(true);
 		
@@ -338,7 +342,7 @@ eldp_environment.workflow[0] = (function(){
 
 		for (var i = 0; i < my.available_resources.length; i++) {
 		
-			switch (my.getValidityOfFile(my.available_resources[i][0])){
+			switch (my.getValidityOfFile(my.available_resources[i].name)){
 			
 				case 0: {
 					file_entry_class = "media_file_entry";
@@ -371,13 +375,13 @@ eldp_environment.workflow[0] = (function(){
 			}
 
 			
-			var file_size = my.available_resources[i][2];
+			var file_size = my.available_resources[i].size;
 		
 			var div = dom.newElement("div", "file_entry_"+i, "file_entry " + file_entry_class, list);
-			var title = dom.newElement("h2", "", "file_entry_title", div, my.available_resources[i][0]);
-			var p = dom.newElement("p", "", "", div, my.available_resources[i][1] +
+			var title = dom.newElement("h2", "", "file_entry_title", div, my.available_resources[i].name);
+			var p = dom.newElement("p", "", "", div, my.available_resources[i].mimeType +
 			'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
-			my.available_resources[i][3] + '</span>');
+			my.available_resources[i].lastModified + '</span>');
 			
 			var cb1 = dom.newElement("input","","",div);
 			cb1.type = "checkbox";
@@ -413,7 +417,7 @@ eldp_environment.workflow[0] = (function(){
 		}
 
 		if ((session) && (!not_in_sessions)){
-			session.refreshResourcesOfAllSessions();
+			session.refreshResourcesOfAllBundles();
 		}
 		
 		my.selected_files = [];
@@ -426,10 +430,16 @@ eldp_environment.workflow[0] = (function(){
 		// files is a FileList of File objects. List some properties.
 		var output = [];
 		for (var i = 0, f; !!(f = FileList[i]); i++) {
-			my.available_resources.push([f.name, f.type || 'n/a', bytesToSize(f.size,1), f.lastModifiedDate.toLocaleDateString() ]);  //push an array with 4 values
+			my.available_resources.push({
+				name: f.name,
+				type: f.type || 'n/a',
+				size: bytesToSize(f.size,1),
+				lastModified: f.lastModifiedDate.toLocaleDateString()
+			});
 		}
 		
 		my.refreshFileListDisplay();
+		
 	};
   
 
@@ -586,6 +596,48 @@ eldp_environment.workflow[0] = (function(){
 	my.handleFileInputChange = function(evt){
 	 
 		my.pushFileMetadata(evt.target.files);
+	 
+	};
+	
+
+	my.handleFileListInputChange = function(evt){
+	 
+		var file = evt.target.files[0]; // File object
+		
+		var file_list;  //this is where the file strings will be stored
+		
+		console.log(file);
+		
+		var reader = new FileReader();
+		
+		reader.onload = function(e){
+			var result = e.target.result;
+		
+			//try {
+				file_list = linesToArray(result);
+				
+				forEach(file_list, function(file_string){
+					my.available_resources.push({
+						name: file_string
+					});
+				});
+				
+				my.refreshFileListDisplay();
+			/*}
+			
+			catch (e) {
+			//if json parsing is not possible, try xml parsing
+
+				console.info("No files found!");
+				return;
+			}*/
+			
+			console.log(file_list);
+			
+		
+		};
+		
+		reader.readAsText(file);
 	 
 	};
 

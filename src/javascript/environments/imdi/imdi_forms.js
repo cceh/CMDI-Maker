@@ -323,16 +323,19 @@ imdi_environment.actor_form = {
 					heading: "Name",
 					name: "name",
 					type: "text",
+					comment: "Name of the actor as used by others in the transcription"
 				},    
 				{
 					heading: "Full Name",
 					name: "full_name",
 					type: "text",
+					comment: "Official name of the actor"
 				},
    				{
 					heading: "Code",
 					name: "code",
 					type: "text",
+					comment: "Short unique code to identify the actor as used in the transcription"
 				},
    				{
 					heading: "Birth Date",
@@ -371,7 +374,8 @@ imdi_environment.actor_form = {
 						"Unknown","Unspecified","Annotator","Author","Collector","Consultant","Computer","Depositor","Editor","Filmer",	
 						"Illustrator","Interviewer","Musician","Photographer","Publisher","Recorder","Referent","Researcher","Singer","Speaker/Signer","Translator"
 					],
-					default_value: "Unspecified"
+					default_value: "Unspecified",
+					comment: "Functional role of the actor e.g. consultant, contributor, interviewer, researcher, publisher, collector, translator"
 				},    
 				{
 					heading: "Ethnic Group",
@@ -394,6 +398,7 @@ imdi_environment.actor_form = {
 					heading: "Anonymized",
 					name: "anonymized",
 					type: "check",
+					comment: "Indicates if real names or anonymized codes are used to identify the actor"
 				}
 			]
 		},	

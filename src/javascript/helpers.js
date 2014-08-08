@@ -24,6 +24,13 @@ function getFileTypeFromFilename(filename){
 }
 
 
+var linesToArray = function(string){
+
+	return string.split("\n");
+
+};
+
+
 var getIndex = function(array, key, value){
 
 	for (var i=0; i < array.length; i++){
