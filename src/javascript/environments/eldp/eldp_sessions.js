@@ -369,6 +369,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		//create the form
 		APP.forms.make(bundle_content, bundle_form, my.dom_element_prefix+bundle_id+"_", my.dom_element_prefix, bundle_object, my.makeSpecialFormInput);
 		
+		
 		g(my.dom_element_prefix+bundle_id+"_bundle_name").addEventListener("blur", function(num){
 		
 			return function(){
@@ -380,49 +381,40 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		if (typeof(bundle_object.actors.actors) != "undefined"){
 		
-			for (var a=0; a<bundle_object.actors.actors.length; a++){
+			forEach(bundle_object.actors.actors, function(actor){
 		
-				my.renderActor(bundle_id, bundle_object.actors.actors[a]);
+				my.renderActor(bundle_id, actor);
 		
-			}
+			});
 		}
 		
 		
 		if (typeof(bundle_object.resources.resources.writtenResources) != "undefined"){
 			
-			for (r=0; r<bundle_object.resources.resources.writtenResources.length; r++){
-			
-				file = bundle_object.resources.resources.writtenResources[r];	
+			forEach(bundle_object.resources.resources.writtenResources, function (file){
 				file.id = my.resource_id_counter;
 				my.renderResource(my.resource_id_counter, bundle_id, "wr", file.name, file.size);
-				
 				my.resource_id_counter += 1;
-		
-			}
+			});
 		
 		}
 		
 		
 		if (typeof(bundle_object.resources.resources.mediaFiles) != "undefined"){
 			
-			for (r=0; r<bundle_object.resources.resources.mediaFiles.length; r++){
-			
-				file = bundle_object.resources.resources.mediaFiles[r];
+			forEach(bundle_object.resources.resources.mediaFiles, function(file){
 				file.id = my.resource_id_counter;
 				my.renderResource(file.id, bundle_id, "mf", file.name, file.size);
-
 				my.resource_id_counter += 1;
-			}
+			});
 		
 		}
 		
 		my.refreshResources(my.getBundleIndexFromID(bundle_id));
 		
-		var all_available_actor_ids = [];
-		
-		for (var n=0; n<actor.actors.length; n++){
-			all_available_actor_ids.push(actor.actors[n].id);
-		}   // find a better place for that
+		var all_available_actor_ids = map(actor.actors, function(actor){
+			return actor.id;
+		});   // find a better place for that
 
 		my.refreshPersonListInBundle(my.getBundleIndexFromID(bundle_id),all_available_actor_ids);
 		
@@ -435,6 +427,54 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	
 	my.makeSpecialFormInput = function (field, parent, element_id_prefix, element_class_prefix){
+	
+		if (field.name == "bundle_languages"){
+		
+			var p = dom.newElement("p","", "", parent);
+			var input = dom.newElement("input", element_id_prefix + "select","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = element_id_prefix + "select";
+			
+			dom.newElement("span","","",p," ");
+			input = dom.newElement("input", element_id_prefix + "search_button" ,"",p);
+			input.type = "button";
+			input.value = "Search";
+
+			dom.br(p);
+			dom.newElement("span","","",p,"or type in ISO code ");
+			
+			input = dom.newElement("input", element_id_prefix + "iso_input","",p);
+			input.type = "text";
+			input.size = 1;
+			input.name = element_id_prefix + "iso_input";
+			
+			dom.newElement("span","","",p," ");
+			
+			input = dom.newElement("input", element_id_prefix + "iso_ok","",p);
+			input.type = "button";
+			input.value = "OK";			
+			
+			dom.newElement("div",element_id_prefix + "display", "", parent);
+
+			g(element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
+			g(element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
+
+			g(element_id_prefix + "select").onkeydown = function(event) {
+
+				if (event.keyCode == 13) {  //if enter is pressed
+					my.search();
+				}
+			};
+			
+			g(element_id_prefix + "iso_input").onkeydown = function(event) {
+
+				if (event.keyCode == 13) {  //if enter is pressed
+					my.addByISO();
+				}
+			};
+			
+		}
 	
 		if (field.name == "actors"){
 		
@@ -455,6 +495,158 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 	
 	
+	
+	my.search = function(){
+		var j;
+
+		var input = g(my.dom_element_prefix + "select").value;
+		
+		if (input.length < 3){
+		
+			g(my.dom_element_prefix + "results_div").innerHTML = "";
+			
+			APP.alert(l("languages", "specify_search_request_at_least_3_chars"));
+			
+			return;
+		}
+		
+		var name_hits = [];
+		
+		var results = [];
+
+		for (var i=0;i<LanguageIndex.length;i++){
+
+			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
+				
+				//get an array with all relevant IDs
+				name_hits.push(LanguageIndex[i][0]);
+			}
+
+		}
+		
+		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
+		
+		for (j=0;j<LanguageIndex.length;j++){
+		
+			if ( (name_hits.indexOf(LanguageIndex[j][0]) != -1)  &&  (LanguageIndex[j][2] == "L" )){		//look for their l-name entry
+			
+				results.push(LanguageIndex[j]);
+				
+			}
+		
+		}
+		
+		var titles = [];
+		
+		forEach(results, function(result){
+
+			titles.push(result[0] + ", "+result[1]+", " + result[3]);
+
+		});
+		
+		var heading = l("languages", "language_search") + ": " + results.length + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
+		
+		dom.showSelectFrame(results, titles, actor.languages.addFromForm, heading,
+		"(ISO639-3 Code, Country ID, " + l("languages", "language_name") + ")"); 
+
+	};
+
+
+	my.set = function(ActorLanguageObject){
+
+		//LanguageObject is only a reference to the original array in the LanguageIndex.
+		// We have to clone our Language Object from the DB first.
+		// Otherwise we would overwrite the DB array which we do not want.
+		// More info: http://davidwalsh.name/javascript-clone-array
+		var LanguageObject = ActorLanguageObject.LanguageObject.slice(0);
+
+		ActorLanguageObject.id = my.id_counter;
+		
+		my.languages_of_active_actor.push(ActorLanguageObject);
+		
+		var div = dom.newElement("div", my.dom_element_prefix + my.id_counter+"_div",my.dom_element_prefix + "entry",g(my.dom_element_prefix + "display"));
+		var img = dom.icon(div,"","delete_lang_icon", "reset");
+		img.addEventListener('click', function(num) {
+			return function(){ actor.languages.remove(num);  
+			};
+		}(my.id_counter) );
+		
+		dom.span(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
+		dom.br(div);
+		dom.span(div,"","", "Name: " + LanguageObject[3]);
+		dom.br(div);
+		dom.span(div,"","", "Country ID: " + LanguageObject[1]);
+		dom.br(div);
+		
+		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
+		
+		if (ActorLanguageObject.MotherTongue === true){
+			input.checked = true;
+		}
+
+		dom.span(div,"","", l("languages", "mother_tongue") + "  ");
+		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
+		
+		if (ActorLanguageObject.PrimaryLanguage === true){
+			input.checked = true;
+		}
+		
+		dom.span(div,"","",l("languages", "primary_language"));
+
+		my.id_counter += 1;
+
+	};
+
+
+	my.addFromForm = function(LanguageObject){
+	//if actor language is added by user
+		var first_added_language;
+
+		if (my.languages_of_active_actor.length === 0){
+			first_added_language = true;
+		}
+		
+		else {
+			first_added_language = false;	
+		}			
+		
+		//Let's create a new ActorLanguageObject
+		var ActorLanguageObject = {
+		
+			LanguageObject: LanguageObject,
+			MotherTongue: first_added_language,
+			PrimaryLanguage: first_added_language
+
+		};
+
+		my.set(ActorLanguageObject);  
+
+	};
+
+
+	my.addByISO = function(){
+
+		var input = g(my.dom_element_prefix + "iso_input").value;
+		console.log("ADDING ISO LANGUAGE " + input);
+		
+		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
+		
+			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
+				
+				my.addFromForm(LanguageIndex[j]);
+				
+				g(my.dom_element_prefix + "iso_input").value = "";
+				return;
+
+			}
+
+		}
+		
+		APP.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
+
+	};
+
+	
 	my.refreshPersonName = function(bundle_id, actor_id){
 
 		var div = g(my.dom_element_prefix + bundle_id + "_actor_" + actor_id + "_label");
@@ -474,6 +666,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}
 		
 		else {
+		
 			return "Bundle: " + my.bundles[bundle_index].name;
 		
 		}

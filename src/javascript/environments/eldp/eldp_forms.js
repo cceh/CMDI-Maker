@@ -107,6 +107,7 @@ eldp_environment.bundle_form = {
 				},
 				{
 					heading: "Languages",
+					name: "languages",
 					type: "subarea",
 					fields: [
 						{

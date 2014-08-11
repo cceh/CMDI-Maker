@@ -227,6 +227,7 @@ imdi_environment.workflow[2] = (function(){
 		
 	};
 	
+	
 	my.view = function(){
 	//has to be there, because of the functions that have to be hidden 
 	

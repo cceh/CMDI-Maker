@@ -33,22 +33,7 @@ imdi_environment.workflow[2].languages = (function (){
 	
 	my.init = function(){
 
-		g(my.element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
-		g(my.element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
-
-		g(my.element_id_prefix + "select").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.search();
-			}
-		};
-		
-		g(my.element_id_prefix + "iso_input").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.addByISO();
-			}
-		};
+		return;
 		
 	};
 	
@@ -82,7 +67,26 @@ imdi_environment.workflow[2].languages = (function (){
 			input.type = "button";
 			input.value = "OK";			
 			
-			dom.newElement("div",element_id_prefix + "display", "", parent);									
+			dom.newElement("div",element_id_prefix + "display", "", parent);	
+
+
+			g(my.element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
+			g(my.element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
+
+			g(my.element_id_prefix + "select").onkeydown = function(event) {
+
+				if (event.keyCode == 13) {  //if enter is pressed
+					my.search();
+				}
+			};
+			
+			g(my.element_id_prefix + "iso_input").onkeydown = function(event) {
+
+				if (event.keyCode == 13) {  //if enter is pressed
+					my.addByISO();
+				}
+			};
+			
 			
 		}
 		

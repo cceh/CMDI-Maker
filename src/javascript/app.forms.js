@@ -137,10 +137,10 @@ APP.forms = (function () {
 			
 			return input;
 		
-		},	
+		},
 
 		subarea: function(parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
-		
+
 			var h3 = dom.h3(parent, field.heading);
 			
 			if (field.comment){
@@ -148,8 +148,10 @@ APP.forms = (function () {
 			}
 			
 			if (field.fields){
-			
-				element_id_prefix += field.name + "_";
+				if (field.name && field.name != ""){
+					element_id_prefix += field.name + "_";
+				}
+				
 				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, data_object[field.name], on_special);
 				
 			}

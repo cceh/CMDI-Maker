@@ -146,10 +146,12 @@ APP.environments = (function () {
 	
 		my.createWorkflow(environment.workflow);
 		
-		var profile_select_index = getIndexOfEnvironment(environment) + 1;
+		var index = getIndexOfEnvironment(environment);
+	
+		g("profile_select").selectedIndex = index + 1;
 		//+1 because the first option of profile select is an empty option
 		
-		g("profile_select").selectedIndex = profile_select_index;
+		g("start_profile_select").selectedIndex = index;
 		
 		APP.view("default");
 	
