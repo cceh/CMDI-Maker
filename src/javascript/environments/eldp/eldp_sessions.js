@@ -458,7 +458,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			dom.newElement("div",element_id_prefix + "display", "", parent);
 
 			g(element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
-			g(element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
+			g(element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO(element_id_prefix);    });
 
 			g(element_id_prefix + "select").onkeydown = function(event) {
 
@@ -470,7 +470,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			g(element_id_prefix + "iso_input").onkeydown = function(event) {
 
 				if (event.keyCode == 13) {  //if enter is pressed
-					my.addByISO();
+					my.addByISO(element_id_prefix);
 				}
 			};
 			
@@ -552,7 +552,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 
-	my.set = function(ActorLanguageObject){
+	my.set = function(ActorLanguageObject, bundle_id){
 
 		//LanguageObject is only a reference to the original array in the LanguageIndex.
 		// We have to clone our Language Object from the DB first.
@@ -567,7 +567,8 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		var div = dom.newElement("div", my.dom_element_prefix + my.id_counter+"_div",my.dom_element_prefix + "entry",g(my.dom_element_prefix + "display"));
 		var img = dom.icon(div,"","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) {
-			return function(){ actor.languages.remove(num);  
+			return function(){
+				actor.languages.remove(num);  
 			};
 		}(my.id_counter) );
 		
@@ -598,7 +599,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 
-	my.addFromForm = function(LanguageObject){
+	my.addFromForm = function(LanguageObject, bundle_id){
 	//if actor language is added by user
 		var first_added_language;
 
@@ -619,14 +620,14 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		};
 
-		my.set(ActorLanguageObject);  
+		my.set(ActorLanguageObject, bundle_id);  
 
 	};
 
 
-	my.addByISO = function(){
-
-		var input = g(my.dom_element_prefix + "iso_input").value;
+	my.addByISO = function(element_prefix){
+		console.log(element_prefix);
+		var input = g(element_prefix + "iso_input").value;
 		console.log("ADDING ISO LANGUAGE " + input);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex

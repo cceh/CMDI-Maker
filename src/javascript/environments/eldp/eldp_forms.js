@@ -112,7 +112,8 @@ eldp_environment.bundle_form = {
 					fields: [
 						{
 							name: "bundle_languages",
-							type: "special"
+							type: "special",
+							object_structure: "array"
 						}
 					]
 				}
