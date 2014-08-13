@@ -245,7 +245,6 @@ imdi_environment.languages[1] = {
 		import_actors_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
 		delete_actors_database: "Alle Actors löschen",
 		delete_actors_database_description: "CMDI Maker speichert all deine Actors in einer Browserdatenbank. Sie bleiben also erhalten, auch nachdem du den Browser geschlossen hast.",
-		current_content_languages: "Current Content Languages"
 	},
 	
 	reset_form: "Formular zurücksetzen",
@@ -255,6 +254,7 @@ imdi_environment.languages[1] = {
 	form_reset: "Formular zurückgesetzt",
 	search: "Suchen",
 	ok: "OK",
+	function_currently_unavailable: "Diese Funktion ist derzeit nicht verfügbar!",
 	
 	languages: {
 		set_global_languages_of_content: "Globale Content Language hinzufügen",
@@ -267,9 +267,9 @@ imdi_environment.languages[1] = {
 		iso_code: "ISO-Code",
 		not_found_in_db: "wurde nicht gefunden",
 		specify_search_request_at_least_3_chars: "Bitte sei etwas genauer.\nGib mindestens 3 Zeichen ins Suchfeld ein.",
-		current_content_languages: "Derzeitige Content Languages",
 		primary_language: "Primärsprache",
 		mother_tongue: "Muttersprache",
+		current_content_languages: "Derzeitige Content Languages",
 		content_language_removed__before_lang: "Content Language \"",
 		content_language_removed__after_lang: "\" entfernt"
 	},
@@ -352,7 +352,7 @@ imdi_environment.languages[1] = {
 		why_not_create_one__before_link: "Warum ",
 		why_not_create_one__link: "erstellst",
 		why_not_create_one__after_link: " du nicht eine?",
-		this_actor_is_already_in_the_session: "Dieser Actor wurde schon hinzugefügt.",
+		this_actor_is_already_in_the_session: "Dieser Actor existiert bereits in der Session.",
 		unknown_file_problem__before_filename: "Es gibt ein Problem.<br>Ich weiß nicht, ob diese Datei ein Media File oder eine Written Resource ist:",
 		unknown_file_problem__after_filename: "Ich werde sie erstmal als Written Resource behandeln. Aber sowas solltest du nicht tun.",
 		session_name_taken_from_eaf: "Der Session-Name wurde vom Dateinamen der EAF-Datei übernommen, da die Session noch keinen Namen hatte.",

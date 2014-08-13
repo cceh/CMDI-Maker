@@ -833,7 +833,8 @@ var APP = (function () {
 			
 			else {
 			
-				my.alert(my.l("error","no_workflow"));
+				console.error("ERROR: The active profile does not have a workflow!");
+				
 			}
 			
 		});
