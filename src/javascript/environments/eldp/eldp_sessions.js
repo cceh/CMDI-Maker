@@ -566,11 +566,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		var div = dom.newElement("div", my.dom_element_prefix + my.id_counter+"_div",my.dom_element_prefix + "entry",g(my.dom_element_prefix + "display"));
 		var img = dom.icon(div,"","delete_lang_icon", "reset");
-		img.addEventListener('click', function(num) {
+		img.addEventListener('click', function(num){
 			return function(){
 				actor.languages.remove(num);  
 			};
-		}(my.id_counter) );
+		}(my.id_counter));
 		
 		dom.span(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
 		dom.br(div);

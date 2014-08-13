@@ -76,15 +76,10 @@ APP.languages[0] = {
 		need_help: "Need help?",
 		help_pages_description: "On the help pages you will find video tutorials in several languages, a mailing list, go-to persons and much more!",
 		select_your_profile: "Select your profile"
-	},
-	
-	this_is: {
-		before: "This is ",
-		after: "!"
-	},
-	
-	error: {
-		no_workflow: "ERROR: <br>The active profile does not have a workflow!"
+		this_is: {
+			before_language: "This is ",
+			after_language: "!"
+		}
 	}
 
 };
@@ -117,7 +112,7 @@ APP.languages[1] = {
 			"Diese Funktion löscht nur die Daten des zur Zeit ausgewählten Profils!",
 		hard_reset: "Hard Reset",
 		hard_reset_description: "Diese Funktion löscht alle Daten, die der CMDI Maker jemals auf deinem PC gespeichert hat.",
-		program_language: "Anzeigesprache",
+		program_language: "Programmsprache",
 		no_project_data_found_in_file: "In der Datei wurden keine Daten für den CMDI Maker gefunden!"
 	},
 	
@@ -151,15 +146,10 @@ APP.languages[1] = {
 		need_help: "Brauchst Du Hilfe?",
 		help_pages_description: "Auf den Hilfe-Seiten findest Du Video-Tutorials in verschiedenen Sprachen, eine Mailing-Liste, Ansprechpartner und vieles mehr!",
 		select_your_profile: "Wähle dein Profil"
-	},
-	
-	this_is: {
-		before: "Das ist ",
-		after: "!"
-	},
-	
-	error: {
-		no_workflow: "ERROR: <br>Das aktive Profil besitzt keinen Workflow!"
+		this_is: {
+			before_language: "Das ist ",
+			after_language: "!"
+		}
 	}
-
+	
 };

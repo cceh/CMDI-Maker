@@ -492,7 +492,7 @@ var APP = (function () {
 		g("hello").innerHTML = APP.CONF.hellos[index][0];
 		
 		g("hello").addEventListener("click", function () {
-			alertify.log(my.l("this_is","before") + APP.CONF.hellos[index][1] + my.l("this_is","after"));
+			my.log(my.l("start", "this_is","before_language") + APP.CONF.hellos[index][1] + my.l("start", "this_is","after_language"));
 		});
 
 		g("greeting_text").innerHTML = my.l("start","greeting_text");
