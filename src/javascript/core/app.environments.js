@@ -160,7 +160,7 @@ APP.environments = (function () {
 	
 	my.initSettings = function (settings){
 	
-		APP.initSettings(settings, g("environment_settings"));
+		APP.settings.init(settings, g("environment_settings"));
 	
 	};
 	

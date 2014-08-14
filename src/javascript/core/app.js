@@ -38,7 +38,7 @@ var APP = (function () {
 		g("version_span").innerHTML = APP.CONF.version;
 		my.sayHello();
 		g("settings_heading").innerHTML = my.l("settings","settings");
-		my.initSettings(my.settings(), g("core_settings"));
+		my.settings.init(my.coreSettings(), g("core_settings"));
 		my.displayMetadataLanguages();
 		my.displayLanguages();
 		my.addEventListeners();
@@ -49,7 +49,7 @@ var APP = (function () {
 			my.recall(recall_object);
 		}
 		
-		my.drawMainMenu(my.main_menu_elements());
+		my.GUI.mainMenu.draw(my.main_menu_elements());
 		
 		window.addEventListener("beforeunload", my.save, false);
 		
@@ -104,9 +104,9 @@ var APP = (function () {
 	];
 	
 	
-	my.l = function(arg1, arg2, arg3){
+	my.l = function(arg1, arg2, arg3, arg4){
 		
-		return my.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
+		return my.getTermInActiveLanguage(my.languages, arg1, arg2, arg3, arg4);
 		
 	};
 	
@@ -218,67 +218,8 @@ var APP = (function () {
 	
 	};
 	
-	
-	my.drawMainMenuElement = function(element, parent){
-		
-		var div = dom.div(parent, element.id, "main_menu_entry");
-		my.GUI.icon(div, "", "main_menu_entry_img", element.icon);
-		dom.span(div, "", "main_menu_entry_span", element.title);
-		
-		div.addEventListener("click", element.onclick, false);
-		div.addEventListener("click", my.closeMainMenu, false);
-		
-	};
-	
-	
-	my.drawMainMenu = function(menu_elements){
-	
-		var menu = dom.div(document.body, APP.CONF.main_menu_div_id, "");
-		
-		forEach(menu_elements, function(element){ my.drawMainMenuElement(element, menu); });
-		
-		my.closeMainMenu();
-		
-		g("main_menu_icon").addEventListener("click", my.changeMainMenuDisplay);
-		g("content_wrapper").addEventListener("click", my.closeMainMenu);
-	};
-	
-	
-	my.changeMainMenuDisplay = function(){
-	
-		if (g(APP.CONF.main_menu_div_id).style.display == "none"){
-			my.openMainMenu();
-		}
-		
-		else {
-			my.closeMainMenu();
-		}
-		
-	
-	};
-	
-	
-	my.closeMainMenu = function(){
-		
-		if (!g(APP.CONF.main_menu_div_id)){
-			return;
-		}
-		
-		dom.hideElement(g(APP.CONF.main_menu_div_id));
-		g("main_menu_icon").style.backgroundColor = "";
-		
-	};
-	
-	
-	my.openMainMenu = function(){
 
-		g(APP.CONF.main_menu_div_id).style.display = "block";
-		g("main_menu_icon").style.backgroundColor = "cornflowerblue";
-	
-	};	
-	
-	
-	my.settings = function(){
+	my.coreSettings = function(){
 	
 		return [
 			{
@@ -586,7 +527,7 @@ var APP = (function () {
 		var id;
 	
 		my.GUI.closeSelectFrame();
-		my.closeMainMenu();
+		my.GUI.mainMenu.close();
 	
 		if (typeof module_or_id === 'string') {
 			
@@ -623,7 +564,7 @@ var APP = (function () {
 
 		my.active_view = id;
 
-		my.highlightViewIcon(id);
+		my.GUI.highlightViewIcon(id);
 		
 		g("module_icons").style.display = "block";
 		
@@ -638,33 +579,6 @@ var APP = (function () {
 			module.view();
 		}
 		
-	};
-	
-	
-	my.highlightViewIcon = function (id) {
-		
-		if (typeof my.environments.active_environment != "undefined"){
-		
-			//Unhighlight all workflow icons
-			forEach(my.environments.active_environment.workflow, function(workflow){
-				g(APP.CONF.viewlink_id_prefix + workflow.identity.id).style.backgroundColor = "";
-			});
-		}
-
-		//Unhighlight APP VIEWLINKS
-		g(APP.CONF.viewlink_id_prefix + "start").style.backgroundColor = "";
-		
-		var module = my.environments.getModuleByViewID(id);
-		
-		if (module){
-			g(APP.CONF.viewlink_id_prefix + module.identity.id).style.backgroundColor = APP.CONF.highlight_color;
-		}
-		
-		else if (id == "VIEW_start"){
-			id = id.substr(APP.CONF.view_id_prefix.length);
-			g(APP.CONF.viewlink_id_prefix+id).style.backgroundColor = APP.CONF.highlight_color;
-		}
-
 	};
 	
 	
@@ -686,121 +600,6 @@ var APP = (function () {
 		var blob = new Blob([text], {type: mime_type});
 		saveAs(blob, clean_filename);
 
-	};
-	
-	
-	my.makeSettingFunctions = {
-	
-		radio: function(setting, parent){
-		
-			dom.makeRadios(parent, setting.options, setting.radio_name, setting.radio_name + "_", "title", "value", setting.default_option, setting.onchange);
-		
-		},
-		
-		select: function(setting, parent){
-		
-			var select = dom.make("select",setting.id,"",parent);
-			select.size = 1;
-			select.name = setting.name;
-			
-			if (setting.onchange){
-				select.addEventListener("change", setting.onchange, false);
-			}
-			
-			dom.br(parent);
-			
-		},
-		
-		
-		powerSwitch: function(setting, parent){
-			
-			var input = dom.input(parent,setting.id,"on_off_switch",setting.name, "button", "Off");
-			input.on = false;
-			input.addEventListener("click", function(){dom.onOffSwitch(this);}, false);
-			
-			my.GUI.setOnOffSwitchValue(g(setting.id),setting.default_value);
-			
-			dom.br(parent);
-			
-		},
-		
-		file: function(setting, parent){
-		
-			var input = dom.input(parent,setting.file_input_id,"",setting.file_input_name,"file");
-			input.addEventListener('change', setting.onchange, false);
-			dom.br(parent);
-		},
-		
-		text: function(setting, parent){
-			
-			var input = dom.input(parent,setting.id,"",setting.name, "text", setting.value);
-			input.addEventListener('change', setting.onchange, false);
-			dom.br(parent);
-		},
-		
-		empty: function(setting, parent){
-			
-			dom.make("div",setting.id,"",parent);
-		
-		},
-		
-		link: function(){
-			return;
-		}
-	
-	
-	};
-	
-	
-	my.initSettings = function (settings, parent){
-	
-		parent.innerHTML = "";
-		
-		forEach(settings, function(setting) { my.initSetting(setting, parent); });
-	
-	};
-	
-
-	my.initSetting = function(setting, parent){
-		
-		var h2 = dom.h2(parent);
-		
-		if ((setting.importance) && (setting.importance == "high")){
-			h2.style.color = "red";
-		}
-		
-		if (setting.onclick){
-			var a = dom.a(h2,"","","#",setting.title, setting.onclick);
-			
-			if ((setting.importance) && (setting.importance == "high")){
-				a.style.color = "red";
-			}
-		}
-		
-		else {
-		
-			h2.innerHTML = setting.title;
-		
-		}
-		
-		if (setting.description){
-			dom.make("p","","",parent,setting.description);
-		}
-
-		if (my.makeSettingFunctions[setting.type]) {
-		
-			my.makeSettingFunctions[setting.type](setting, parent);
-		
-		}
-		
-		else {
-		
-			console.warn("Unknown setting type: " + setting.type);
-			
-		}
-		
-		dom.br(parent);
-		
 	};
 	
 	

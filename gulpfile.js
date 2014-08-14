@@ -58,6 +58,7 @@ var source_scripts = [
 "./src/javascript/core/app.forms.js",
 "./src/javascript/core/app.gui.js",
 "./src/javascript/core/app.save_and_recall.js",
+"./src/javascript/core/app.settings.js",
 "./src/javascript/core/app.config.js"
 
 ];

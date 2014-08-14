@@ -581,6 +581,100 @@ APP.GUI = (function() {
 
 	};
 	
+	
+	my.highlightViewIcon = function (id) {
+		
+		if (typeof APP.environments.active_environment != "undefined"){
+		
+			//Unhighlight all workflow icons
+			forEach(APP.environments.active_environment.workflow, function(workflow){
+				g(APP.CONF.viewlink_id_prefix + workflow.identity.id).style.backgroundColor = "";
+			});
+		}
+
+		//Unhighlight APP VIEWLINKS
+		g(APP.CONF.viewlink_id_prefix + "start").style.backgroundColor = "";
+		
+		var module = APP.environments.getModuleByViewID(id);
+		
+		if (module){
+			g(APP.CONF.viewlink_id_prefix + module.identity.id).style.backgroundColor = APP.CONF.highlight_color;
+		}
+		
+		else if (id == "VIEW_start"){
+			id = id.substr(APP.CONF.view_id_prefix.length);
+			g(APP.CONF.viewlink_id_prefix+id).style.backgroundColor = APP.CONF.highlight_color;
+		}
+
+	};
+	
+	
+	my.mainMenu = (function() {
+		
+		var my = {};
+		
+		my.drawElement = function(element, parent){
+			
+			var div = dom.div(parent, element.id, "main_menu_entry");
+			APP.GUI.icon(div, "", "main_menu_entry_img", element.icon);
+			dom.span(div, "", "main_menu_entry_span", element.title);
+			
+			div.addEventListener("click", element.onclick, false);
+			div.addEventListener("click", my.close, false);
+			
+		};	
+		
+		my.draw = function(menu_elements){
+		
+			var menu = dom.div(document.body, APP.CONF.main_menu_div_id, "");
+			
+			forEach(menu_elements, function(element){ my.drawElement(element, menu); });
+			
+			my.close();
+			
+			g("main_menu_icon").addEventListener("click", my.changeDisplay);
+			g("content_wrapper").addEventListener("click", my.close);
+		};
+		
+		
+		my.changeDisplay = function(){
+		
+			if (g(APP.CONF.main_menu_div_id).style.display == "none"){
+				my.open();
+			}
+			
+			else {
+				my.close();
+			}
+			
+		
+		};
+		
+		
+		my.close = function(){
+			
+			if (!g(APP.CONF.main_menu_div_id)){
+				return;
+			}
+			
+			dom.hideElement(g(APP.CONF.main_menu_div_id));
+			g("main_menu_icon").style.backgroundColor = "";
+			
+		};
+		
+		
+		my.open = function(){
+
+			g(APP.CONF.main_menu_div_id).style.display = "block";
+			g("main_menu_icon").style.backgroundColor = "cornflowerblue";
+		
+		};
+		
+		return my;
+		
+	})();
+	
+	
 	return my;
 	
 })();
