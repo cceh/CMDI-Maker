@@ -425,19 +425,6 @@ var APP = (function () {
 	};
 	
 	
-	my.displayEnvironments = function (){
-		
-		var select = g("profile_select");
-		var start_select = g("start_profile_select");
-		
-		dom.setSelectOptions(select, my.environments, true);
-		dom.setSelectOptions(start_select, my.environments, false);
-		
-		start_select.addEventListener("change", function(){my.changeEnvironment(start_select.selectedIndex);});
-		
-	};
-
-
 	my.checkIfFirstStart = function (){
 
 		var first_start = localStorage.getItem("first_start");
