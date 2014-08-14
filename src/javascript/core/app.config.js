@@ -38,7 +38,7 @@ APP.CONF = {
 	output_textarea_rows: 40,
 	output_textarea_columns: 130,
 	form_textarea_rows: 18,
-	form_textarea_columns: 5,
+	form_textarea_columns: 6,
 	
 	log_message_period: 5000,  //ms
 
