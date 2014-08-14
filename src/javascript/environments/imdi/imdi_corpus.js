@@ -28,7 +28,7 @@ imdi_environment.workflow[0] = (function(){
 	};
 	
 	my.parent = imdi_environment;
-	var corpus_form_template = my.parent.corpus_form;
+	var corpus_form_template;
 	
 	my.form_id_prefix = "corpus_";
 	
@@ -50,11 +50,13 @@ imdi_environment.workflow[0] = (function(){
 	my.l = my.parent.l;
 	
 	my.init = function(view){
+	
+		corpus_form_template = my.parent.corpus_form();
 		
 		var div = dom.make("div","corpus_form","",view);
 		dom.make("h1","","",div,"Corpus");
 		
-		APP.forms.make(div, corpus_form_template(), my.form_id_prefix, my.form_id_prefix);
+		APP.forms.make(div, corpus_form_template, my.form_id_prefix, my.form_id_prefix);
 
 		my.content_languages.init(view);
 		
@@ -63,7 +65,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.recall = function(corpus){
 	
-		APP.forms.fill(corpus_form_template(), my.form_id_prefix, corpus);
+		APP.forms.fill(corpus_form_template, my.form_id_prefix, corpus);
 		
 		my.content_languages.recall(corpus.content_languages);
 	
@@ -72,7 +74,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.getSaveData = function(){
 	
-		var object = APP.forms.makeObjectWithFormData(corpus_form_template(), my.form_id_prefix);
+		var object = APP.forms.makeObjectWithFormData(corpus_form_template, my.form_id_prefix);
 	
 		object.content_languages = my.content_languages.getSaveData();
 		

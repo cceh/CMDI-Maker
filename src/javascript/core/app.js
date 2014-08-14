@@ -191,7 +191,7 @@ var APP = (function () {
 			return termInDefaultLP;
 		}
 		
-		//if there's no word at all, PROBLEM!!!
+		//if there's no term at all, BAD!!!
 		console.error("LANGUAGE ERROR: " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4);
 		return "###";
 
