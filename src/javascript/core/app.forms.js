@@ -124,8 +124,8 @@ APP.forms = (function () {
 			var input;
 		
 			input = APP.GUI.makeTextarea(
-				APP.CONF.form_textarea_rows,
 				APP.CONF.form_textarea_columns,
+				APP.CONF.form_textarea_rows,
 				parent,
 				field.heading,
 				element_id_prefix+field.name,
