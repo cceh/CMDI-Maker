@@ -42,7 +42,6 @@ APP.settings = (function () {
 			
 		},
 		
-		
 		powerSwitch: function(setting, parent){
 			
 			var input = dom.input(parent, setting.id, "on_off_switch", setting.name, "button");
@@ -78,7 +77,6 @@ APP.settings = (function () {
 		link: function(){
 			return;
 		}
-	
 	
 	};
 	

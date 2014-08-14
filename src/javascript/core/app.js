@@ -177,8 +177,12 @@ var APP = (function () {
 		}
 		
 		//try to get term in default language
-		console.info("Haven't found a term in " + LP.name + ": " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4 + ". " +
-		"Trying to get it in default language.");
+		console.info("Haven't found a term in " + LP.name + ": " +
+		arg1 +
+		(arg2 ? ", " + arg2 : "") +
+		(arg3 ? ", " + arg3 : "") +
+		(arg4 ? ", " + arg4 : "") +
+		". Trying to get it in default language.");
 		
 		var defaultLP = LanguagePacksArray[0];
 		var termInDefaultLP = getTermInLP(defaultLP,arg1,arg2,arg3,arg4);
@@ -220,7 +224,6 @@ var APP = (function () {
 	
 
 	my.coreSettings = function(){
-	
 		return [
 			{
 				title: my.l("settings","program_language"),
