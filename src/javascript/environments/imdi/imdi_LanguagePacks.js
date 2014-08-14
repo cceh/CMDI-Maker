@@ -372,6 +372,11 @@ imdi_environment.languages[1] = {
 		sessions_must_have_proper_name: "Jede Session muss einen validen Namen haben.<br>Unbenannte Sessions sind nicht erlaubt.<br>Nicht erlaubte Zeichen sind: ",
 		download_corpus_including_all_sessions: "Corpus inklusive aller Sessions herunterladen",
 
+	},
+	
+	corpus_form_comments: {
+		name: "Ein kurzer, archivierbarer Name für dein Korpus.",
+		title: "Der komplette und ausführliche Titel deines Korpus."
 	}
 	
 	
