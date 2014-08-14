@@ -52,12 +52,13 @@ var source_scripts = [
 	"./src/javascript/environments/eldp/eldp_output.js",
 
 /*Core */
-"./src/javascript/app.js",
-"./src/javascript/LanguagePacks.js",
-"./src/javascript/app.environments.js",
-"./src/javascript/app.forms.js",
-"./src/javascript/app.save_and_recall.js",
-"./src/javascript/app.config.js"
+"./src/javascript/core/app.js",
+"./src/javascript/core/LanguagePacks.js",
+"./src/javascript/core/app.environments.js",
+"./src/javascript/core/app.forms.js",
+"./src/javascript/core/app.gui.js",
+"./src/javascript/core/app.save_and_recall.js",
+"./src/javascript/core/app.config.js"
 
 ];
  

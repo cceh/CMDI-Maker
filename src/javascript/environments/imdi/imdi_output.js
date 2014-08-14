@@ -148,14 +148,14 @@ imdi_environment.workflow[4] = (function (){
 		if (get("corpus_name") !== ""){
 
 			filename = get("corpus_name")+"."+file_ending;
-			dom.createXMLOutputDIV(xml_window, output_format + " Corpus", "textarea_corpus",
+			APP.GUI.createXMLOutputDIV(xml_window, output_format + " Corpus", "textarea_corpus",
 			xml_strings.corpus, filename);
 		}
 		
 		for (var s=0;s<session.sessions.length;s++){
 
 			filename = get(session.dom_element_prefix+session.sessions[s].id+"_session_name")+"."+file_ending;
-			dom.createXMLOutputDIV(xml_window, output_format + " Session " + (s+1), "textarea_session_"+s,
+			APP.GUI.createXMLOutputDIV(xml_window, output_format + " Session " + (s+1), "textarea_session_"+s,
 			xml_strings.sessions[s],filename);
 			
 		}

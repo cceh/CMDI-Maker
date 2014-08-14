@@ -55,7 +55,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.view = function(){
 	
-		dom.scrollTop();
+		APP.GUI.scrollTop();
 	
 	};
 	
@@ -389,14 +389,14 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			};
 			
 		}(session_id) );
-		var icon = dom.icon(session_delete_link,my.dom_element_prefix+session_id+"_delete_img", "delete_img", "reset");
+		var icon = APP.GUI.icon(session_delete_link,my.dom_element_prefix+session_id+"_delete_img", "delete_img", "reset");
 		icon.alt = l("session", "delete_session");
 		icon.title = l("session", "delete_session");
 		session_delete_link.href = "#";
 		
 		//create icon to expand/collapse the session
 		var session_display_link = dom.make('a',my.dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
-		icon = dom.icon(session_display_link, my.dom_element_prefix+session_id+"_expand_img", "expand_img", "down");
+		icon = APP.GUI.icon(session_display_link, my.dom_element_prefix+session_id+"_expand_img", "expand_img", "down");
 		icon.alt = l("session", "expand_collapse_session");
 		icon.title = l("session", "expand_collapse_session");
 		session_display_link.href = "#";
@@ -760,7 +760,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		my.refreshActorName(session_id, actor_id);
 		
-		var img = dom.icon(g(my.dom_element_prefix+session_id+"_actor_" + actor_id),
+		var img = APP.GUI.icon(g(my.dom_element_prefix+session_id+"_actor_" + actor_id),
 		"delete_actor_" + actor_id + "_icon", "delete_actor_icon", "reset");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeActor(num, num2);  
@@ -924,7 +924,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			return;
 		}
 		
-		var img = dom.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
+		var img = APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeResource(num, num2);  
 			};

@@ -75,7 +75,7 @@ APP.languages[0] = {
 		is_supported_by: "CMDI Maker is supported by",
 		need_help: "Need help?",
 		help_pages_description: "On the help pages you will find video tutorials in several languages, a mailing list, go-to persons and much more!",
-		select_your_profile: "Select your profile"
+		select_your_profile: "Select your profile",
 		this_is: {
 			before_language: "This is ",
 			after_language: "!"
@@ -145,7 +145,7 @@ APP.languages[1] = {
 		is_supported_by: "CMDI Maker wird unterstützt von",
 		need_help: "Brauchst Du Hilfe?",
 		help_pages_description: "Auf den Hilfe-Seiten findest Du Video-Tutorials in verschiedenen Sprachen, eine Mailing-Liste, Ansprechpartner und vieles mehr!",
-		select_your_profile: "Wähle dein Profil"
+		select_your_profile: "Wähle dein Profil",
 		this_is: {
 			before_language: "Das ist ",
 			after_language: "!"

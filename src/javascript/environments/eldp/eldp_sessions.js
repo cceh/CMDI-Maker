@@ -51,7 +51,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.view = function(){
 	
-		dom.scrollTop();
+		APP.GUI.scrollTop();
 	
 	};
 	
@@ -565,7 +565,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		my.languages_of_active_actor.push(ActorLanguageObject);
 		
 		var div = dom.newElement("div", my.dom_element_prefix + my.id_counter+"_div",my.dom_element_prefix + "entry",g(my.dom_element_prefix + "display"));
-		var img = dom.icon(div,"","delete_lang_icon", "reset");
+		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num){
 			return function(){
 				actor.languages.remove(num);  

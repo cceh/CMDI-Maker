@@ -196,7 +196,7 @@ eldp_environment.workflow[1].languages = (function (){
 		my.languages_of_active_person.push(ActorLanguageObject);
 		
 		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "_entry",g(my.element_id_prefix + "_display"));
-		var img = dom.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset");
+		var img = APP.GUI.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) {
 			return function(){ actor.languages.remove(num);  
 			};

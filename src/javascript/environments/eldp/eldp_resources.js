@@ -40,7 +40,7 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.view = function(){
 	
-		dom.scrollTop();
+		APP.GUI.scrollTop();
 	
 	};
 	
@@ -56,13 +56,11 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.addCompatibilityWarning = function(parent, string){
 	
-		var warning_div = dom.newElement("div","","warning_div",parent);
-		var warning_img_div = dom.newElement("div","","warning_img_div",warning_div);
-		var img = dom.newElement("img","","warning_icon",warning_img_div);
-		dom.setIcon(img, "warning");
+		var warning_div = dom.div(parent,"","warning_div");
+		var warning_img_div = dom.div(warning_div,"","warning_img_div");
+		APP.GUI.icon(warning_img_div,"","warning_icon", "warning");
 		
-		dom.newElement("div","","compatibility_warning",warning_div, string);
-	
+		dom.div(warning_div,"","compatibility_warning", string);
 	
 	};
 	

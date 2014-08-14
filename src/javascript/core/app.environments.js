@@ -208,12 +208,12 @@ APP.environments = (function () {
 			if (w !== 0){
 			
 				var arrow = dom.newElement("div","","wizard_arrow",div);
-				dom.icon(arrow,"","wizard_icon", "right2");
+				APP.GUI.icon(arrow,"","wizard_icon", "right2");
 			
 			}
 			
 			var icon = dom.newElement("div",APP.CONF.viewlink_id_prefix + workflow[w].identity.id,"icon_div",div);
-			dom.icon(icon, "", "module_icon", workflow[w].identity.icon);
+			APP.GUI.icon(icon, "", "module_icon", workflow[w].identity.icon);
 			dom.br(icon);
 			dom.span(icon,"","",workflow[w].identity.title);
 			
@@ -261,7 +261,7 @@ APP.environments = (function () {
 			
 		}
 		
-		dom.scrollTop();
+		APP.GUI.scrollTop();
 		
 		my.create(my.environments[index]);
 	

@@ -91,7 +91,7 @@ APP.forms = (function () {
 		
 			var input;
 			
-			input = dom.makeTextInput(parent, field.heading,
+			input = APP.GUI.makeTextInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				(data_object && data_object[field.name] ? data_object[field.name] : ""),
@@ -106,7 +106,7 @@ APP.forms = (function () {
 		
 			var input;
 		
-			input = dom.makeDateInput(parent, field.heading,
+			input = APP.GUI.makeDateInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				(data_object && data_object[field.name] ? data_object[field.name].year : ""),
@@ -123,7 +123,7 @@ APP.forms = (function () {
 		
 			var input;
 		
-			input = dom.makeTextarea(
+			input = APP.GUI.makeTextarea(
 				APP.CONF.form_textarea_rows,
 				APP.CONF.form_textarea_columns,
 				parent,
@@ -230,7 +230,7 @@ APP.forms = (function () {
 		
 			var input;
 			
-			input = dom.makeSelect(
+			input = APP.GUI.makeSelect(
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
@@ -257,7 +257,7 @@ APP.forms = (function () {
 				value = field.default_value;
 			}
 			
-			input = dom.openVocabulary(
+			input = APP.GUI.openVocabulary(
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
@@ -275,7 +275,7 @@ APP.forms = (function () {
 		
 			var input;
 			
-			input = dom.makeCheckbox(
+			input = APP.GUI.makeCheckbox(
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
@@ -445,7 +445,7 @@ APP.forms = (function () {
 		
 			target = checkForValueOrTakeDefault(data_object, field);
 		
-			dom.setFormValue(element_id_prefix+field.name, target, field.vocabulary);
+			APP.GUI.setFormValue(element_id_prefix+field.name, target, field.vocabulary);
 
 		}
 		

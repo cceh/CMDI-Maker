@@ -201,7 +201,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		dom.span(div,"","","ISO639-3 Code: " + LanguageObject[0]);
 		
-		var img = dom.icon(div,"delete_lang_"+id+"_icon","delete_lang_icon", "reset");
+		var img = APP.GUI.icon(div,"delete_lang_"+id+"_icon","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) { 
 			return function(){
 				corpus.content_languages.remove(num);  

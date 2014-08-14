@@ -222,7 +222,7 @@ var APP = (function () {
 	my.drawMainMenuElement = function(element, parent){
 		
 		var div = dom.div(parent, element.id, "main_menu_entry");
-		dom.icon(div, "", "main_menu_entry_img", element.icon);
+		my.GUI.icon(div, "", "main_menu_entry_img", element.icon);
 		dom.span(div, "", "main_menu_entry_span", element.title);
 		
 		div.addEventListener("click", element.onclick, false);
@@ -539,7 +539,7 @@ var APP = (function () {
 			if (func.type != "function_wrap"){
 			
 				function_div = dom.make("div", func.id, "function_icon",functions_div);
-				dom.icon(function_div,"","function_img", func.icon);
+				my.GUI.icon(function_div,"","function_img", func.icon);
 				var label = dom.h3(function_div, func.label);
 				
 				if (func.label_span_id){
@@ -559,7 +559,7 @@ var APP = (function () {
 				var function_wrap = dom.div(functions_div,func.wrapper_id,"function_wrap");
 				
 				function_div = dom.div(function_wrap, func.id, "function_icon");
-				dom.icon(function_div,"","function_img", func.icon);
+				APP.GUI.icon(function_div,"","function_img", func.icon);
 				dom.h3(function_div, func.label);
 				
 				function_div.addEventListener('click', func.onclick);
@@ -598,7 +598,7 @@ var APP = (function () {
 		var module;
 		var id;
 	
-		dom.closeSelectFrame();
+		my.GUI.closeSelectFrame();
 		my.closeMainMenu();
 	
 		if (typeof module_or_id === 'string') {
@@ -640,7 +640,7 @@ var APP = (function () {
 		
 		g("module_icons").style.display = "block";
 		
-		dom.showFunctionsForView(module);
+		my.GUI.showFunctionsForView(module);
 		
 		//make the selected view visible
 		g(id).style.display = "block";
@@ -731,7 +731,7 @@ var APP = (function () {
 			input.on = false;
 			input.addEventListener("click", function(){dom.onOffSwitch(this);}, false);
 			
-			dom.setOnOffSwitchValue(g(setting.id),setting.default_value);
+			my.GUI.setOnOffSwitchValue(g(setting.id),setting.default_value);
 			
 			dom.br(parent);
 			
