@@ -87,14 +87,12 @@ APP.GUI = (function() {
 
 	my.makeTextInput = function (parent,title,name,id,value,hover){
 
-		var span = dom.span(parent, "", "", title);
+		var span = dom.spanBR(parent, "", "", title);
 		
 		if (hover){		
 			span.title = hover;
 		}
 
-		dom.br(parent);
-		
 		var input = dom.input(parent, id, "", name, "text", value);
 		
 		if (hover){		
@@ -121,12 +119,11 @@ APP.GUI = (function() {
 		
 		parent.appendChild(input);
 		
-		var span = dom.newElement("span","","",parent,title);
+		var span = dom.spanBR(parent,"","",title);
+		
 		if (hover){
 			span.title = hover;
 		}
-
-		dom.br(parent);
 
 		return input;	
 		
@@ -139,10 +136,8 @@ APP.GUI = (function() {
 			hover = "";
 		}
 
-		var span = dom.newElement("span","","",parent,title);
+		var span = dom.spanBR(parent,"","",title);
 		span.title = hover;
-		
-		parent.appendChild(document.createElement("br"));
 
 		var select = document.createElement("select");
 		select.name = name;
@@ -185,11 +180,9 @@ APP.GUI = (function() {
 			parent.appendChild(input);
 		}
 		
-		var img = dom.img(parent,"","edit_img", APP.CONF.path_to_icons + "textedit.png");
+		var img = my.icon(parent,"","edit_img", "textedit");
 		img.alt = "Custom Property";
 		img.title = "Custom Property";
-
-		
 		
 		img.addEventListener("click", function(){
 			
@@ -227,7 +220,6 @@ APP.GUI = (function() {
 		
 		var source_element = document.getElementsByName(source_element_name)[0];
 		var target_element = document.getElementsByName(target_element_name)[0];
-		
 		
 		if (source_element.nodeName != target_element.nodeName){
 			var options;
@@ -325,12 +317,8 @@ APP.GUI = (function() {
 			hover = "";
 		}
 
-		var span = document.createElement("span");
-		span.innerHTML = title;
+		var span = dom.spanBR(parent, "", "", title);
 		span.title = hover;
-		
-		parent.appendChild(span);
-		parent.appendChild(document.createElement("br"));
 		
 		var select = document.createElement("select");
 		select.name = name;
@@ -368,10 +356,8 @@ APP.GUI = (function() {
 			hover = "";
 		}
 
-		span = dom.span(parent,"","",title);
+		span = dom.spanBR(parent,"","",title);
 		span.title = hover;
-		
-		dom.br(span);
 		
 		var y_input = dom.input(parent, id_prefix+"_year", "YearInput", name_prefix+"_year", "text", (y_value !== "") ? y_value : "YYYY");
 		y_input.title = hover;
@@ -399,12 +385,8 @@ APP.GUI = (function() {
 			hover = "";
 		}
 		
-		var span = document.createElement("span");
-		span.innerHTML = title;
-		span.title= hover;
-		
-		parent.appendChild(span);
-		parent.appendChild(document.createElement("br"));
+		var span = dom.spanBR(parent, "", "", title);
+		span.title = hover;
 		
 		var textarea = dom.make("textarea", t_id, t_class, parent);
 		textarea.name = t_name;

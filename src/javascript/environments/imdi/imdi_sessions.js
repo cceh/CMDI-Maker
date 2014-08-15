@@ -1123,13 +1123,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		if (content.style.display != "none"){
 		
 			dom.hideElement(content);
-			dom.setIcon(g(element_prefix + "expand_img"), "up");
+			APP.GUI.setIcon(g(element_prefix + "expand_img"), "up");
 			my.sessions[my.getSessionIndexFromID(session_id)].expanded = false;
 		}
 		
 		else {
 			dom.unhideElement(content);
-			dom.setIcon(g(element_prefix + "expand_img"), "down");
+			APP.GUI.setIcon(g(element_prefix + "expand_img"), "down");
 			my.sessions[my.getSessionIndexFromID(session_id)].expanded = true;
 		}
 	};

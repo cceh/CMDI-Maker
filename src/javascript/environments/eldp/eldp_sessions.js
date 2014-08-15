@@ -459,21 +459,25 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			input.value = "OK";			
 			
 			dom.newElement("div",element_id_prefix + "display", "", parent);
+			
+			//BAD
+			var bundle_id = element_id_prefix.substring(7,8);
+			
 
-			g(element_id_prefix + "language_search_button").addEventListener('click', function() {  my.search(element_id_prefix);   });
-			g(element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO(element_id_prefix);    });
+			g(element_id_prefix + "language_search_button").addEventListener('click', function() {  my.search(element_id_prefix, bundle_id);   });
+			g(element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO(element_id_prefix, bundle_id);    });
 
 			g(element_id_prefix + "language_input").onkeydown = function(event) {
 			
 				if (event.keyCode == 13) {  //if enter is pressed
-					my.search(element_id_prefix);
+					my.search(element_id_prefix, bundle_id);
 				}
 			};
 			
 			g(element_id_prefix + "iso_input").onkeydown = function(event) {
 
 				if (event.keyCode == 13) {  //if enter is pressed
-					my.addByISO(element_id_prefix);
+					my.addByISO(element_id_prefix, bundle_id);
 				}
 			};
 			
@@ -499,7 +503,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	
 	
-	my.search = function(element_id_prefix){
+	my.search = function(element_id_prefix, bundle_id){
 		var j;
 		console.log(element_id_prefix);
 		var input = g(element_id_prefix + "language_input").value;
@@ -549,13 +553,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		var heading = l("languages", "language_search") + ": " + results.length + " " + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
 		
-		APP.GUI.showSelectFrame(results, titles, my.set, heading,
+		APP.GUI.showSelectFrame(results, titles, function(result){ my.set(result, bundle_id, element_id_prefix); }, heading,
 		"(ISO639-3 Code, Country ID, " + l("languages", "language_name") + ")"); 
 
 	};
 
 
-	my.set = function(LanguageObject, bundle_id){
+	my.set = function(LanguageObject, bundle_id, element_id_prefix){
 
 		//LanguageObject is only a reference to the original array in the LanguageIndex.
 		// We have to clone our Language Object from the DB first.
@@ -565,9 +569,12 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		LanguageObject.id = my.id_counter;
 		
-		my.bundles[my.getBundleIndexByID(bundle_id)].push(LanguageObject);
+		var bundle_index = my.getBundleIndexByID(bundle_id);
 		
-		var div = dom.newElement("div", my.dom_element_prefix + my.id_counter+"_div",my.dom_element_prefix + "entry",g(my.dom_element_prefix + "display"));
+		my.bundles[bundle_index].content.languages.bundle_languages.push(LanguageObject);
+		
+		var div = dom.div(g(element_id_prefix + "display"), element_id_prefix + my.id_counter+"_div", "bundle_language_entry");
+		
 		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num){
 			return function(){
@@ -579,21 +586,6 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
 		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
 		
-		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
-		
-		if (LanguageObject.MotherTongue === true){
-			input.checked = true;
-		}
-
-		dom.span(div,"","", l("languages", "mother_tongue") + "  ");
-		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
-		
-		if (LanguageObject.PrimaryLanguage === true){
-			input.checked = true;
-		}
-		
-		dom.span(div,"","",l("languages", "primary_language"));
-
 		my.id_counter += 1;
 
 	};
@@ -655,7 +647,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		if (typeof index == "undefined"){
 		
-			alert("An error has occured.\nCould not find bundle index from bundle_id!\n\nbundle_id = " + bundle_id);
+			console.error("ERROR: Could not find bundle index from bundle_id! bundle_id = " + bundle_id);
 			console.log(my.bundles);
 			
 		}

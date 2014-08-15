@@ -261,6 +261,22 @@ color: #4D87C7;
 
 }
 
+
+.bundle_language_entry{
+
+	background-color: tomato;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: 10px;
+	color: white;
+	font-size: 12pt;
+	margin-right: 10px;
+	height: 55px;
+	width: 260px;
+	overflow: hidden;
+
+}
+
 #actor_languages_td{
 
 	width: 350px;

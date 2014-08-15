@@ -176,7 +176,7 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		forEach(results, function(result){
 
-			titles.push(result[0] + ", "+result[1]+", " + result[3]);
+			titles.push(result[0] + ", " + result[1]+", " + result[3]);
 
 		});
 		
@@ -207,12 +207,9 @@ imdi_environment.workflow[2].languages = (function (){
 			};
 		}(my.id_counter) );
 		
-		dom.span(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
-		dom.br(div);
-		dom.span(div,"","", "Name: " + LanguageObject[3]);
-		dom.br(div);
-		dom.span(div,"","", "Country ID: " + LanguageObject[1]);
-		dom.br(div);
+		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
+		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
+		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
 		
 		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
 		
