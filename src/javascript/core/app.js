@@ -341,7 +341,6 @@ var APP = (function () {
 	my.displayMetadataLanguages = function (){
 	
 		var select = g("metadata_language_select");
-		
 		dom.setSelectOptions(select, APP.CONF.MetadataLanguageIDs, 1, 0, false);
 
 	};
@@ -350,7 +349,6 @@ var APP = (function () {
 	my.displayLanguages = function (){
 		
 		var select = g("language_select");
-		
 		dom.setSelectOptions(select, my.languages, "name", "id", false);
 
 	};
@@ -449,66 +447,68 @@ var APP = (function () {
 	my.initFunctions = function(functions){
 	
 		var functions_div = g("functions");
-		var function_div;
-		var rect;
+		forEach(functions, function(func) { my.createFunction(functions_div, func); });
+		
+	};
 	
-		forEach(functions, function(func){
+	
+	my.createFunction = function(parent, func){
+		var function_div;
 		
-			if (func.type != "function_wrap"){
-			
-				function_div = dom.make("div", func.id, "function_icon",functions_div);
-				my.GUI.icon(function_div,"","function_img", func.icon);
-				var label = dom.h3(function_div, func.label);
-				
-				if (func.label_span_id){
-					dom.make("span", func.label_span_id, "", label);
-				}
-				
-				else if (func.label) {  //if label is there
-					label.innerHTML = func.label;
-				}
-				
-				function_div.addEventListener('click', func.onclick);
-
-			}
-
-			else {
-			
-				var function_wrap = dom.div(functions_div,func.wrapper_id,"function_wrap");
-				
-				function_div = dom.div(function_wrap, func.id, "function_icon");
-				APP.GUI.icon(function_div,"","function_img", func.icon);
-				dom.h3(function_div, func.label);
-				
-				function_div.addEventListener('click', func.onclick);
-
-				var sub_div = dom.make("div",func.sub_div,"",function_wrap);
-				
-				if (func.sub_div_innerHTML){
-					sub_div.innerHTML = func.sub_div_innerHTML;
-				}
-				
-				
-				//this cannot be done with css
-				function_div.addEventListener('mousedown', function(elem) {
-					return function(){
-						elem.style.backgroundColor = "black";
-					};
-				}(function_div));
-				
-				function_div.addEventListener('mouseup', function(elem) {
-					return function(){
-						elem.style.backgroundColor = "";
-					};
-				}(function_div));
-				
-			}
-			
-			if (func.after_that){
-				func.after_that();
-			}
+		if (func.type != "function_wrap"){
 		
-		});
+			function_div = dom.make("div", func.id, "function_icon", parent);
+			my.GUI.icon(function_div,"","function_img", func.icon);
+			var label = dom.h3(function_div, func.label);
+			
+			if (func.label_span_id){
+				dom.make("span", func.label_span_id, "", label);
+			}
+			
+			else if (func.label) {  //if label is there
+				label.innerHTML = func.label;
+			}
+			
+			function_div.addEventListener('click', func.onclick);
+
+		}
+
+		else {
+		
+			var function_wrap = dom.div(parent, func.wrapper_id, "function_wrap");
+			
+			function_div = dom.div(function_wrap, func.id, "function_icon");
+			APP.GUI.icon(function_div,"","function_img", func.icon);
+			dom.h3(function_div, func.label);
+			
+			function_div.addEventListener('click', func.onclick);
+
+			var sub_div = dom.make("div",func.sub_div,"",function_wrap);
+			
+			if (func.sub_div_innerHTML){
+				sub_div.innerHTML = func.sub_div_innerHTML;
+			}
+			
+			
+			//this cannot be done with css
+			function_div.addEventListener('mousedown', function(elem) {
+				return function(){
+					elem.style.backgroundColor = "black";
+				};
+			}(function_div));
+			
+			function_div.addEventListener('mouseup', function(elem) {
+				return function(){
+					elem.style.backgroundColor = "";
+				};
+			}(function_div));
+			
+		}
+		
+		if (func.after_that){
+			func.after_that();
+		}
+	
 	};
 
 	
