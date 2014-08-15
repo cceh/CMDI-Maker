@@ -80,7 +80,12 @@ APP.languages[0] = {
 			before_language: "This is ",
 			after_language: "!"
 		}
-	}
+	},
+	
+	language_search: {
+		or_type_in_iso_code: "or type in ISO code",
+		search: "Search"		
+	},
 
 };
 
@@ -150,6 +155,11 @@ APP.languages[1] = {
 			before_language: "Das ist ",
 			after_language: "!"
 		}
+	},
+	
+	language_search: {
+		or_type_in_iso_code: "oder gib den ISO-Code ein",
+		search: "Suchen"		
 	}
 	
 };

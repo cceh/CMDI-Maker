@@ -38,37 +38,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		var lsd = dom.div(cl, "lang_search_div", "");
 		dom.h1(lsd, my.l("languages", "set_global_languages_of_content"));
 		
-		var span = dom.span(lsd);
-		dom.input(span, "content_language_select", "", "content_language_select", "text", "");
-		span.innerHTML += " ";
-		dom.input(span, "content_language_search_button", "", "content_language_search_button", "button", my.l("search"));
-		span.innerHTML += ' ' + my.l("languages", "or_type_in_iso_code") + ' ';
-		dom.input(span, "content_language_iso_input", "", "content_language_iso_input", "text", "");
-		span.innerHTML += " ";		
-		dom.input(span, "content_language_iso_ok", "", "content_language_iso_ok", "button", my.l("ok"));
-
-		var ccld = dom.div(cl, "content_languages_display", "");
-		dom.h1(ccld, my.l("languages", "current_content_languages"));
-
-		dom.div(cl, "content_language_results_div", "");
-		
-		
-		g('content_language_search_button').addEventListener('click', function() {  corpus.content_languages.search();     });
-		g('content_language_iso_ok').addEventListener('click', function() {  corpus.content_languages.addByISO();     });
-
-		g("content_language_select").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				corpus.content_languages.search();
-			}
-		};
-		
-		g("content_language_iso_input").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				corpus.content_languages.addByISO();
-			}
-		};		
+		APP.GUI.makeLanguageSearchForm(lsd, "content_language_", corpus.content_languages.search, corpus.content_languages.addByISO, true);
 	
 	};
 	
@@ -87,10 +57,8 @@ imdi_environment.workflow[0].content_languages = (function() {
 	};
 
 
-	my.search = function(){
+	my.search = function(input){
 
-		var input = g("content_language_select").value;
-		
 		if (input.length < 3){
 	
 			APP.alert(my.l("languages", "specify_search_request_at_least_3_chars"));
@@ -246,9 +214,8 @@ imdi_environment.workflow[0].content_languages = (function() {
 	};
 
 
-	my.addByISO = function(){
+	my.addByISO = function(input){
 
-		var input = g("content_language_iso_input").value;
 		console.log("ADDING ISO LANGUAGE " + input);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex

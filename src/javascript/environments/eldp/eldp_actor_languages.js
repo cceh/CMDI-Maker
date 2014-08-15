@@ -30,26 +30,8 @@ eldp_environment.workflow[1].languages = (function (){
 	my.id_counter = 0;
 	
 	my.init = function(){
-	
-		g(my.element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
-		g(my.element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
-
-		g(my.element_id_prefix + "select").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.search();
-			}
-		};
-		
-		g(my.element_id_prefix + "iso_input").onkeydown = function(event) {
-
-			if (event.keyCode == 13) {  //if enter is pressed
-				my.addByISO();
-			}
-		};
-	
-	
-	}
+		return;
+	};
 	
 	
 	my.makeInputInForm = function (field, parent, element_id_prefix, element_class_prefix){
@@ -103,10 +85,8 @@ eldp_environment.workflow[1].languages = (function (){
 	};
 
 
-	my.search = function(){
+	my.search = function(input){
 		var j;
-
-		var input = g(my.element_id_prefix + "select").value;
 		
 		if (input.length < 3){
 		
@@ -226,9 +206,8 @@ eldp_environment.workflow[1].languages = (function (){
 	};
 
 
-	my.addByISO = function(){
+	my.addByISO = function(input){
 
-		var input = g(my.element_id_prefix + "iso_input").value;
 		console.log("ADDING ISO LANGUAGE " + input);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex

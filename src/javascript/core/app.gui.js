@@ -16,7 +16,9 @@ limitations under the License.
 
 
 APP.GUI = (function() {
-
+	
+	var l = APP.l;
+	
 	var my = {};
 
 	my.setIcon = function (element, icon_id){
@@ -204,7 +206,7 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.makeLanguageSearchForm = function(parent, element_id_prefix, on_search, on_add_ISO){
+	my.makeLanguageSearchForm = function(parent, element_id_prefix, on_search, on_add_ISO, no_br){
 		
 		var p = dom.make("p","", "", parent);
 		var input = dom.make("input", element_id_prefix + "input","language_input",p);
@@ -215,10 +217,17 @@ APP.GUI = (function() {
 		dom.make("span","","",p," ");
 		var button = dom.make("input", element_id_prefix + "search_button" ,"language_search_button",p);
 		button.type = "button";
-		button.value = "Search";
+		button.value = l("language_search", "search");
 
-		dom.br(p);
-		dom.make("span","","",p,"or type in ISO code ");
+		if (no_br && no_br == true){
+			dom.make("span","","",p," ");
+		}
+		
+		else {
+			dom.br(p);
+		}
+		
+		dom.make("span","","",p,l("language_search", "or_type_in_iso_code") + " ");
 		
 		var iso_input = dom.make("input", element_id_prefix + "iso_input","language_iso_input",p);
 		iso_input.type = "text";
@@ -229,7 +238,7 @@ APP.GUI = (function() {
 		
 		var iso_button = dom.make("input", element_id_prefix + "iso_ok","language_iso_add_button",p);
 		iso_button.type = "button";
-		iso_button.value = "OK";			
+		iso_button.value = l("ok");			
 		
 		dom.make("div",element_id_prefix + "display", "", parent);	
 

@@ -57,7 +57,6 @@ imdi_environment.languages[0] = {
 	
 	languages: {
 		set_global_languages_of_content: "Set Global Languages of Content",
-		or_type_in_iso_code: "or type in ISO code",
 		language_search: "Language Search",
 		result: "result",
 		results: "results",
@@ -258,7 +257,6 @@ imdi_environment.languages[1] = {
 	
 	languages: {
 		set_global_languages_of_content: "Globale Content Language hinzufügen",
-		or_type_in_iso_code: "oder gib den ISO-Code ein",
 		language_search: "Sprachsuche",
 		result: "Ergebnis",
 		results: "Ergebnisse",

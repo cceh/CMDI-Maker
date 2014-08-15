@@ -433,14 +433,14 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 		if (field.name == "bundle_languages"){
 		
-			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, my.search, my.addByISO);
-			
+			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, function(input){my.search(input, element_id_prefix);},
+			function(input){ my.addByISO(input, element_id_prefix); }, false);
+	
 		}
 	
 		if (field.name == "actors"){
 		
-			dom.make("br","","",parent);
-			
+			dom.br(parent);
 			dom.make("div",element_id_prefix+"actors", "actors", parent);
 			dom.make("div",element_id_prefix+"addActors_div", "actors", parent);
 		
@@ -457,10 +457,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	
 	
-	my.search = function(input, element_id_prefix, bundle_id){
+	my.search = function(input, element_id_prefix){
 		var j;
 		console.log(element_id_prefix);
-
+		
+		//UGLY AND DIRTY
+		var bundle_id = element_id_prefix.slice(my.dom_element_prefix.length, element_id_prefix.indexOf("_", my.dom_element_prefix.length));
+		console.log("bundle id: " + bundle_id);
 		
 		if (input.length < 3){
 		
@@ -542,17 +545,21 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 
-	my.addByISO = function(input, element_prefix){
-		console.log(element_prefix);
+	my.addByISO = function(input, element_id_prefix){
+		console.log(element_id_prefix);
 		console.log("ADDING ISO LANGUAGE " + input);
+		
+		//UGLY AND DIRTY
+		var bundle_id = element_id_prefix.slice(my.dom_element_prefix.length, element_id_prefix.indexOf("_", my.dom_element_prefix.length));
+		console.log("bundle id: " + bundle_id);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
 		
 			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
 				
-				my.set(LanguageIndex[j]);
+				my.set(LanguageIndex[j], bundle_id, element_id_prefix);
 				
-				g(element_prefix + "iso_input").value = "";
+				g(element_id_prefix + "iso_input").value = "";
 				return;
 
 			}
