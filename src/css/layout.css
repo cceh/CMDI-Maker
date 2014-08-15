@@ -15,6 +15,15 @@
 
 }
 
+
+
+#about_img{
+	width: 128px;
+	height: 128px;
+	border-radius: 10px;
+	margin-bottom: 15px;
+}
+
 #VIEWLINK_start{
 
 	cursor: pointer;
@@ -442,3 +451,10 @@ body {
     margin: 30px;
 	font-size: small !important;
 }
+
+.language_iso_input{
+
+width: 30px !important;
+
+}
+

@@ -34,7 +34,7 @@ imdi_environment.workflow[0] = (function(){
 	
 	my.reset = function(){
 	
-		APP.forms.fill(corpus_form_template(), my.form_id_prefix);
+		APP.forms.fill(corpus_form_template, my.form_id_prefix);
 		my.content_languages.removeAll();
 	
 	};

@@ -41,52 +41,8 @@ imdi_environment.workflow[2].languages = (function (){
 	my.makeInputInForm = function(field, parent, element_id_prefix, element_class_prefix){
 
 		if (field.name == "actor_languages"){
-		
-			var p = dom.newElement("p","", "", parent);
-			var input = dom.newElement("input", element_id_prefix + "select","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = element_id_prefix + "select";
 			
-			dom.newElement("span","","",p," ");
-			input = dom.newElement("input", element_id_prefix + "search_button" ,"",p);
-			input.type = "button";
-			input.value = "Search";
-
-			dom.br(p);
-			dom.newElement("span","","",p,"or type in ISO code ");
-			
-			input = dom.newElement("input", element_id_prefix + "iso_input","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = element_id_prefix + "iso_input";
-			
-			dom.newElement("span","","",p," ");
-			
-			input = dom.newElement("input", element_id_prefix + "iso_ok","",p);
-			input.type = "button";
-			input.value = "OK";			
-			
-			dom.newElement("div",element_id_prefix + "display", "", parent);	
-
-
-			g(my.element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
-			g(my.element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO();    });
-
-			g(my.element_id_prefix + "select").onkeydown = function(event) {
-
-				if (event.keyCode == 13) {  //if enter is pressed
-					my.search();
-				}
-			};
-			
-			g(my.element_id_prefix + "iso_input").onkeydown = function(event) {
-
-				if (event.keyCode == 13) {  //if enter is pressed
-					my.addByISO();
-				}
-			};
-			
+			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, my.search, my.addByISO);
 			
 		}
 		
@@ -132,11 +88,9 @@ imdi_environment.workflow[2].languages = (function (){
 	};
 
 
-	my.search = function(){
+	my.search = function(input){
 		var j;
 
-		var input = g(my.element_id_prefix + "select").value;
-		
 		if (input.length < 3){
 		
 			g(my.element_id_prefix + "results_div").innerHTML = "";
@@ -257,9 +211,8 @@ imdi_environment.workflow[2].languages = (function (){
 	};
 
 
-	my.addByISO = function(){
+	my.addByISO = function(input){
 
-		var input = g(my.element_id_prefix + "iso_input").value;
 		console.log("ADDING ISO LANGUAGE " + input);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex

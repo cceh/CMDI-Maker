@@ -694,6 +694,11 @@ var APP = (function () {
 		location.reload(); //includes auto save before unload
 	
 	};
+
+	
+	document.addEventListener('DOMContentLoaded', function() {
+		my.init();
+	}, false);
 	
 	
 	return my;

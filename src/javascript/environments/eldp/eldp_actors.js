@@ -197,7 +197,7 @@ eldp_environment.workflow[1] = (function(){
 	my.element_id_prefix = "actor_";
 	
 	my.identity = {
-		id: "person",
+		id: "persons",
 		title: "Persons",
 		icon: "user"
 	};

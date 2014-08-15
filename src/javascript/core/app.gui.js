@@ -204,6 +204,53 @@ APP.GUI = (function() {
 	};
 	
 	
+	my.makeLanguageSearchForm = function(parent, element_id_prefix, on_search, on_add_ISO){
+		
+		var p = dom.make("p","", "", parent);
+		var input = dom.make("input", element_id_prefix + "input","language_input",p);
+		input.type = "text";
+		input.size = 1;
+		input.name = element_id_prefix + "input";
+		
+		dom.make("span","","",p," ");
+		var button = dom.make("input", element_id_prefix + "search_button" ,"language_search_button",p);
+		button.type = "button";
+		button.value = "Search";
+
+		dom.br(p);
+		dom.make("span","","",p,"or type in ISO code ");
+		
+		var iso_input = dom.make("input", element_id_prefix + "iso_input","language_iso_input",p);
+		iso_input.type = "text";
+		iso_input.size = 1;
+		iso_input.name = element_id_prefix + "iso_input";
+		
+		dom.make("span","","",p," ");
+		
+		var iso_button = dom.make("input", element_id_prefix + "iso_ok","language_iso_add_button",p);
+		iso_button.type = "button";
+		iso_button.value = "OK";			
+		
+		dom.make("div",element_id_prefix + "display", "", parent);	
+
+		button.addEventListener('click', function() {  on_search(input.value);   });
+		iso_button.addEventListener('click', function() {  on_add_ISO(iso_input.value);    });
+		
+		input.onkeydown = function(event) {
+			if (event.keyCode == 13) {  //if enter is pressed
+				on_search(input.value);
+			}
+		};
+		
+		iso_input.onkeydown = function(event) {
+			if (event.keyCode == 13) {  //if enter is pressed
+				on_add_ISO(iso_input.value);
+			}
+		};
+		
+	};
+	
+	
 	my.icon = function(parent,id,className,icon){
 	
 		var img = dom.make("img",id,className,parent);
@@ -510,9 +557,9 @@ APP.GUI = (function() {
 		var frame = dom.make("div",APP.CONF.select_frame_id,APP.CONF.select_frame_id,active_view,"");	
 		frame.style.display = "block";
 		
-		dom.newElement("h1","","",frame,title); 
+		dom.make("h1","","",frame,title); 
 		
-		var img = dom.newElement("img","","close_select_frame_icon",frame);
+		var img = dom.make("img","","close_select_frame_icon",frame);
 		img.src = APP.CONF.path_to_icons + "reset.png";
 		img.addEventListener('click', function() { 
 			my.closeSelectFrame(); 
@@ -529,7 +576,7 @@ APP.GUI = (function() {
 				};
 			}(options[j]));
 			
-			dom.newElement("div","",'SF_search_entry',a,titles[j]);
+			dom.make("div","",'SF_search_entry',a,titles[j]);
 
 		}
 	

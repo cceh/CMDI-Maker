@@ -433,53 +433,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 		if (field.name == "bundle_languages"){
 		
-			var p = dom.newElement("p","", "", parent);
-			var input = dom.newElement("input", element_id_prefix + "language_input","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = element_id_prefix + "select";
-			
-			dom.newElement("span","","",p," ");
-			input = dom.newElement("input", element_id_prefix + "language_search_button" ,"",p);
-			input.type = "button";
-			input.value = "Search";
-
-			dom.br(p);
-			dom.newElement("span","","",p,"or type in ISO code ");
-			
-			input = dom.newElement("input", element_id_prefix + "iso_input","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = element_id_prefix + "iso_input";
-			
-			dom.newElement("span","","",p," ");
-			
-			input = dom.newElement("input", element_id_prefix + "iso_ok","",p);
-			input.type = "button";
-			input.value = "OK";			
-			
-			dom.newElement("div",element_id_prefix + "display", "", parent);
-			
-			//BAD
-			var bundle_id = element_id_prefix.substring(7,8);
-			
-
-			g(element_id_prefix + "language_search_button").addEventListener('click', function() {  my.search(element_id_prefix, bundle_id);   });
-			g(element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO(element_id_prefix, bundle_id);    });
-
-			g(element_id_prefix + "language_input").onkeydown = function(event) {
-			
-				if (event.keyCode == 13) {  //if enter is pressed
-					my.search(element_id_prefix, bundle_id);
-				}
-			};
-			
-			g(element_id_prefix + "iso_input").onkeydown = function(event) {
-
-				if (event.keyCode == 13) {  //if enter is pressed
-					my.addByISO(element_id_prefix, bundle_id);
-				}
-			};
+			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, my.search, my.addByISO);
 			
 		}
 	
@@ -503,15 +457,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	
 	
-	my.search = function(element_id_prefix, bundle_id){
+	my.search = function(input, element_id_prefix, bundle_id){
 		var j;
 		console.log(element_id_prefix);
-		var input = g(element_id_prefix + "language_input").value;
+
 		
 		if (input.length < 3){
 		
-			g(my.dom_element_prefix + "results_div").innerHTML = "";
-			
 			APP.alert(l("languages", "specify_search_request_at_least_3_chars"));
 			
 			return;
@@ -564,7 +516,6 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		//LanguageObject is only a reference to the original array in the LanguageIndex.
 		// We have to clone our Language Object from the DB first.
 		// Otherwise we would overwrite the DB array which we do not want.
-		// More info: http://davidwalsh.name/javascript-clone-array
 		var LanguageObject = LanguageObject.slice(0);
 
 		LanguageObject.id = my.id_counter;
@@ -591,9 +542,8 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 
-	my.addByISO = function(element_prefix){
+	my.addByISO = function(input, element_prefix){
 		console.log(element_prefix);
-		var input = g(element_prefix + "iso_input").value;
 		console.log("ADDING ISO LANGUAGE " + input);
 		
 		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex

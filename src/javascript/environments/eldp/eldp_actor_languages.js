@@ -56,33 +56,7 @@ eldp_environment.workflow[1].languages = (function (){
 		
 		if (field.name == "actor_languages"){
 		
-			var p = dom.newElement("p","", "", parent);
-			var input = dom.newElement("input",element_id_prefix+"select","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = "actor_language_select";
-			
-			dom.newElement("span","","",p," ");
-
-			input = dom.newElement("input",element_id_prefix+"search_button","",p);
-			input.type = "button";
-			input.value = "Search";
-
-			dom.br(p);
-			dom.newElement("span","","",p,"or type in ISO code ");
-			
-			input = dom.newElement("input",element_id_prefix+"iso_input","",p);
-			input.type = "text";
-			input.size = 1;
-			input.name = "actor_language_iso_input";
-			
-			dom.newElement("span","","",p," ");
-			
-			input = dom.newElement("input",element_id_prefix+"iso_ok","",p);
-			input.type = "button";
-			input.value = "OK";			
-			
-			dom.newElement("div",element_id_prefix+"display", "", parent);									
+			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, my.search, my.addByISO);
 			
 		}
 		
@@ -195,19 +169,16 @@ eldp_environment.workflow[1].languages = (function (){
 		
 		my.languages_of_active_person.push(ActorLanguageObject);
 		
-		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "_entry",g(my.element_id_prefix + "_display"));
+		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "_entry", g(my.element_id_prefix + "_display"));
 		var img = APP.GUI.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
 		}(my.id_counter) );
 		
-		dom.span(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
-		dom.br(div);
-		dom.span(div,"","", "Name: " + LanguageObject[3]);
-		dom.br(div);
-		dom.span(div,"","", "Country ID: " + LanguageObject[1]);
-		dom.br(div);
+		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
+		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
+		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
 		
 		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
 		
