@@ -337,7 +337,7 @@ var dom = (function() {
 	};
 	
 	
-	my.setSelectOptions = function(select, options, first_option_empty){
+	my.setSelectOptions = function(select, options, text_key, value_key, first_option_empty){
 	
 		my.removeOptions(select);
 		
@@ -348,15 +348,37 @@ var dom = (function() {
 		
 		}
 		
-		
 		forEach(options, function(option){
+		
+			if (typeof text_key != "undefined"){
+				var text = option[text_key];
+			}
+			
+			else {
+				text = option;
+			}
+			
+			if (typeof value_key != "undefined"){
+				var value = option[value_key];
+			}
+			
+			else {
+				value = option;
+			}
 
-			NewOption = new Option(option.title, option.id, false, true);
-			select.options[select.options.length] = NewOption;
+			my.appendOption(select, text, value);
 			
 		});
 	
 		select.selectedIndex = 0;
+	
+	};
+	
+	
+	my.appendOption = function(select, text, value){
+	
+		var NewOption = new Option(text, value, false, true);
+		select.options[select.options.length] = NewOption;
 	
 	};
 	

@@ -46,8 +46,8 @@ APP.environments = (function () {
 		var select = g("profile_select");
 		var start_select = g("start_profile_select");
 		
-		dom.setSelectOptions(select, my.environments, true);
-		dom.setSelectOptions(start_select, my.environments, false);
+		dom.setSelectOptions(select, my.environments, "title", "id", true);
+		dom.setSelectOptions(start_select, my.environments, "title", "id", false);
 		
 		start_select.addEventListener("change", function(){my.change(start_select.selectedIndex);});
 		

@@ -342,16 +342,7 @@ var APP = (function () {
 	
 		var select = g("metadata_language_select");
 		
-		dom.removeOptions(select);
-
-		forEach(APP.CONF.MetadataLanguageIDs,function(ID){
-
-			var NewOption = new Option(ID[1], ID[0], false, true);
-			select.options[select.options.length] = NewOption;
-			
-		});
-	
-		select.selectedIndex = 0;
+		dom.setSelectOptions(select, APP.CONF.MetadataLanguageIDs, 1, 0, false);
 
 	};
 	
@@ -360,16 +351,7 @@ var APP = (function () {
 		
 		var select = g("language_select");
 		
-		dom.removeOptions(select);
-	
-		forEach(my.languages, function(language){
-
-			var NewOption = new Option(language.name, language.id, false, true);
-			select.options[select.options.length] = NewOption;
-			
-		});
-	
-		select.selectedIndex = 0;
+		dom.setSelectOptions(select, my.languages, "name", "id", false);
 
 	};
 	

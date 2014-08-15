@@ -149,11 +149,7 @@ APP.GUI = (function() {
 			select.title = hover;
 		}
 		
-		for (var o=0; o<options.length; o++){
-		
-			var NewOption = new Option(options[o], options[o], false, true);
-			select.options[select.options.length] = NewOption;
-		}
+		dom.setSelectOptions(select, options);
 		
 		if (typeof value != "undefined" && options.indexOf(value) != -1) {
 			select.selectedIndex = options.indexOf(value);
@@ -296,13 +292,7 @@ APP.GUI = (function() {
 			if (new_e.nodeName == "SELECT"){
 		
 			
-		
-				for (var o=0; o<options.length; o++){
-		
-					NewOption = new Option(options[o], options[o], false, true);
-					new_e.options[new_e.options.length] = NewOption;
-				}
-		
+				dom.setSelectOptions(new_e, options);		
 				new_e.selectedIndex = options.indexOf(value);
 		
 			}
@@ -341,16 +331,8 @@ APP.GUI = (function() {
 		
 			new_object = document.createElement("select");
 			
-			for (var o=0; o<options.length;o++){
+			dom.setSelectOptions(new_object, options);
 			
-				NewOption = new Option(options[o], options[o], false, true);
-				new_object.options[new_object.options.length] = NewOption;
-			
-			
-			}
-			
-			new_object.selectedIndex = 0;
-		
 		}
 		
 		new_object.id = object.id;
@@ -384,13 +366,9 @@ APP.GUI = (function() {
 		
 		parent.appendChild(select);
 		
-		parent.appendChild(document.createElement("br"));
-
-		for (var o=0; o<options.length; o++){
+		dom.br(parent);
 		
-			var NewOption = new Option(options[o], options[o], false, true);
-			select.options[select.options.length] = NewOption;
-		}
+		dom.setSelectOptions(select, options);
 
 		if (typeof value != "undefined" && options.indexOf(value) != -1){
 			select.selectedIndex = options.indexOf(value);
