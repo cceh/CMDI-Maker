@@ -27,23 +27,6 @@ color: #4D87C7;
 }
 
 
-
-#content_language_iso_input, #actor_languages_iso_input{
-
-width: 30px;
-
-}
-
-#lang_search_div{
-	background: darkturquoise;
-	padding: 15px;
-	border-radius: 15px;
-	width: 530px;
-	margin-bottom: 20px;
-}
-
-
-
 .generator_div select {
 
 	width: 153px;
@@ -51,12 +34,6 @@ width: 30px;
 
 }
 
-#about_img {
-	width: 128px;
-	height: 128px;
-	border-radius: 10px;
-	margin-bottom: 15px;
-}
 
 #cmdi_left_side{
 	
@@ -68,59 +45,11 @@ width: 30px;
 }
 
 
-/*--- Corpus ---*/
-
-#corpus_form{
-
-	padding: 17px;
-	background-color: #AABFFF;
-	border-radius: 15px;
-	float: left;
-	margin-right: 20px;
-
-}
-
-.content_language_entry{
-
-	background-color: tomato;
-	border-radius: 5px;
-	padding: 10px;
-	margin-top: 10px;
-	color: white;
-	font-size: 12pt;
-	width: 300px;
-	float: left;
-	margin-right: 10px;
-
-}
-
 #VIEW_corpus h1, #lang_search_div h1, #VIEW_elar_project h1{
 
 	margin: 0px;
 
 }
-
-#content_languages{
-
-	float: left;
-	position: absolute;
-	left: 250px;
-	right: 30px;
-
-}
-
-#content_language_select{
-
-	width: 135px;
-
-}
-
-#content_languages_display{
-
-	float: left;
-
-}
-
 
 
 /*--- Resources ---*/

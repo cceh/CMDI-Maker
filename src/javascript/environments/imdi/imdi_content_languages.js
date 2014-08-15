@@ -135,7 +135,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		
 		var subheading = "(ISO639-3 Code, Country ID, " + my.l("languages", "language_name") + ")";
 		
-		dom.showSelectFrame(results, titles, corpus.content_languages.choose, heading, subheading);
+		APP.GUI.showSelectFrame(results, titles, corpus.content_languages.choose, heading, subheading);
 		
 	};
 	

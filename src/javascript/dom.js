@@ -164,6 +164,17 @@ var dom = (function() {
 	};
 	
 	
+	my.spanBR = function(parent, id, className, innerHTML){
+	
+		var span = my.span(parent,id,className,innerHTML);
+		
+		my.br(parent);
+		
+		return span;
+	
+	}
+	
+	
 	my.p = function(parent, innerHTML, id, className){
 	
 		var p = my.newElement("p",id,className,parent,innerHTML);

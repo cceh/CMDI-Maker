@@ -523,7 +523,7 @@ APP.GUI = (function() {
 	
 		var active_view = g(APP.active_view);
 		
-		my.hideAllChildren(active_view);
+		dom.hideAllChildren(active_view);
 		
 		var frame = dom.make("div",APP.CONF.select_frame_id,APP.CONF.select_frame_id,active_view,"");	
 		frame.style.display = "block";
@@ -563,13 +563,13 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename){
+	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename, mockup){
 
 		var div = dom.make("div", "", "output_div", parent);
 		
 		var img = my.icon(div,"","download_icon", "save");
 		
-		dom.h1(div, title);
+		var h1 = dom.h1(div, title);
 		
 		var textarea = dom.textarea(div, textarea_id, APP.CONF.xml_textarea_class_name, 
 		APP.CONF.output_textarea_rows, APP.CONF.output_textarea_columns, value);
@@ -578,6 +578,19 @@ APP.GUI = (function() {
 		img.addEventListener("click", function(){
 			APP.save_file(textarea.value, filename, APP.CONF.file_download_header);
 		});
+		
+		if (mockup && mockup == true){
+			console.warn("Created invalid XML");
+			div.style.backgroundColor = "tomato";
+			h1.style.color = "#AA0000";
+			textarea.style.color = "red";
+			h1.innerHTML += " - INVALID XML!";
+			textarea.value = "############################################################################\n"+
+			"WARNING: THE FOLLOWING XML IS NOT VALID AND MEANT ONLY FOR TESTING PURPOSES!\n"+
+			"############################################################################\n"+
+			value;
+			dom.remove(img);
+		}
 
 	};
 	

@@ -36,6 +36,9 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	my.dom_element_prefix = "bundle_";
 	
 	my.reset = function(){ my.eraseAll(); };
+	
+	
+	var l = my.parent.l;
 
 	
 	my.init = function(){
@@ -333,13 +336,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		if ((!bundle_object.bundle) || (!bundle_object.bundle.name) || (bundle_object.bundle.name === "")){
 		
 			bundle_label.innerHTML = "<h1 class=\"bundle_heading\">Unnamed Bundle   </h1>";
-			my.bundles[my.getBundleIndexFromID(bundle_id)].bundle.name = "";
+			my.bundles[my.getBundleIndexByID(bundle_id)].bundle.name = "";
 			
 		}
 		
 		else {
 			bundle_label.innerHTML = "<h1 class=\"bundle_heading\">Bundle: " + bundle_object.bundle.name + "   </h1>";
-			my.bundles[my.getBundleIndexFromID(bundle_id)].bundle.name = bundle_object.bundle.name;
+			my.bundles[my.getBundleIndexByID(bundle_id)].bundle.name = bundle_object.bundle.name;
 		
 		}
 
@@ -410,13 +413,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		}
 		
-		my.refreshResources(my.getBundleIndexFromID(bundle_id));
+		my.refreshResources(my.getBundleIndexByID(bundle_id));
 		
 		var all_available_actor_ids = map(actor.actors, function(actor){
 			return actor.id;
 		});   // find a better place for that
 
-		my.refreshPersonListInBundle(my.getBundleIndexFromID(bundle_id),all_available_actor_ids);
+		my.refreshPersonListInBundle(my.getBundleIndexByID(bundle_id),all_available_actor_ids);
 		
 		if (bundle_expanded === false){
 			my.display(bundle_id);
@@ -431,13 +434,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		if (field.name == "bundle_languages"){
 		
 			var p = dom.newElement("p","", "", parent);
-			var input = dom.newElement("input", element_id_prefix + "select","",p);
+			var input = dom.newElement("input", element_id_prefix + "language_input","",p);
 			input.type = "text";
 			input.size = 1;
 			input.name = element_id_prefix + "select";
 			
 			dom.newElement("span","","",p," ");
-			input = dom.newElement("input", element_id_prefix + "search_button" ,"",p);
+			input = dom.newElement("input", element_id_prefix + "language_search_button" ,"",p);
 			input.type = "button";
 			input.value = "Search";
 
@@ -457,13 +460,13 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			
 			dom.newElement("div",element_id_prefix + "display", "", parent);
 
-			g(element_id_prefix + "search_button").addEventListener('click', function() {  my.search();   });
+			g(element_id_prefix + "language_search_button").addEventListener('click', function() {  my.search(element_id_prefix);   });
 			g(element_id_prefix + "iso_ok").addEventListener('click', function() {  my.addByISO(element_id_prefix);    });
 
-			g(element_id_prefix + "select").onkeydown = function(event) {
-
+			g(element_id_prefix + "language_input").onkeydown = function(event) {
+			
 				if (event.keyCode == 13) {  //if enter is pressed
-					my.search();
+					my.search(element_id_prefix);
 				}
 			};
 			
@@ -496,10 +499,10 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	
 	
-	my.search = function(){
+	my.search = function(element_id_prefix){
 		var j;
-
-		var input = g(my.dom_element_prefix + "select").value;
+		console.log(element_id_prefix);
+		var input = g(element_id_prefix + "language_input").value;
 		
 		if (input.length < 3){
 		
@@ -544,25 +547,25 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		});
 		
-		var heading = l("languages", "language_search") + ": " + results.length + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
+		var heading = l("languages", "language_search") + ": " + results.length + " " + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
 		
-		dom.showSelectFrame(results, titles, actor.languages.addFromForm, heading,
+		APP.GUI.showSelectFrame(results, titles, my.set, heading,
 		"(ISO639-3 Code, Country ID, " + l("languages", "language_name") + ")"); 
 
 	};
 
 
-	my.set = function(ActorLanguageObject, bundle_id){
+	my.set = function(LanguageObject, bundle_id){
 
 		//LanguageObject is only a reference to the original array in the LanguageIndex.
 		// We have to clone our Language Object from the DB first.
 		// Otherwise we would overwrite the DB array which we do not want.
 		// More info: http://davidwalsh.name/javascript-clone-array
-		var LanguageObject = ActorLanguageObject.LanguageObject.slice(0);
+		var LanguageObject = LanguageObject.slice(0);
 
-		ActorLanguageObject.id = my.id_counter;
+		LanguageObject.id = my.id_counter;
 		
-		my.languages_of_active_actor.push(ActorLanguageObject);
+		my.bundles[my.getBundleIndexByID(bundle_id)].push(LanguageObject);
 		
 		var div = dom.newElement("div", my.dom_element_prefix + my.id_counter+"_div",my.dom_element_prefix + "entry",g(my.dom_element_prefix + "display"));
 		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset");
@@ -572,55 +575,26 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			};
 		}(my.id_counter));
 		
-		dom.span(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
-		dom.br(div);
-		dom.span(div,"","", "Name: " + LanguageObject[3]);
-		dom.br(div);
-		dom.span(div,"","", "Country ID: " + LanguageObject[1]);
-		dom.br(div);
+		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
+		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
+		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
 		
 		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
 		
-		if (ActorLanguageObject.MotherTongue === true){
+		if (LanguageObject.MotherTongue === true){
 			input.checked = true;
 		}
 
 		dom.span(div,"","", l("languages", "mother_tongue") + "  ");
 		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
 		
-		if (ActorLanguageObject.PrimaryLanguage === true){
+		if (LanguageObject.PrimaryLanguage === true){
 			input.checked = true;
 		}
 		
 		dom.span(div,"","",l("languages", "primary_language"));
 
 		my.id_counter += 1;
-
-	};
-
-
-	my.addFromForm = function(LanguageObject, bundle_id){
-	//if actor language is added by user
-		var first_added_language;
-
-		if (my.languages_of_active_actor.length === 0){
-			first_added_language = true;
-		}
-		
-		else {
-			first_added_language = false;	
-		}			
-		
-		//Let's create a new ActorLanguageObject
-		var ActorLanguageObject = {
-		
-			LanguageObject: LanguageObject,
-			MotherTongue: first_added_language,
-			PrimaryLanguage: first_added_language
-
-		};
-
-		my.set(ActorLanguageObject, bundle_id);  
 
 	};
 
@@ -634,9 +608,9 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
 				
-				my.addFromForm(LanguageIndex[j]);
+				my.set(LanguageIndex[j]);
 				
-				g(my.dom_element_prefix + "iso_input").value = "";
+				g(element_prefix + "iso_input").value = "";
 				return;
 
 			}
@@ -675,17 +649,18 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 	
 	
-	my.getBundleIndexFromID = function(bundle_id){
+	my.getBundleIndexByID = function(bundle_id){
 
-		for(var i = 0; i < my.bundles.length; i++) {
-			if (my.bundles[i].id == bundle_id) {
-				return i;
-			}
+		var index = getIndex(my.bundles, "id", bundle_id);
+		
+		if (typeof index == "undefined"){
+		
+			alert("An error has occured.\nCould not find bundle index from bundle_id!\n\nbundle_id = " + bundle_id);
+			console.log(my.bundles);
+			
 		}
 		
-		alert("An error has occured.\nCould not find bundle index from bundle_id!\n\nbundle_id = " + bundle_id);
-		console.log(bundles);
-		
+		return index;		
 
 	};
 	
@@ -818,7 +793,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		dom.remove(my.dom_element_prefix+bundle_id);
 		
-		my.bundles.splice(my.getBundleIndexFromID(bundle_id),1);
+		my.bundles.splice(my.getBundleIndexByID(bundle_id),1);
 		
 		if (my.bundles.length === 0) {
 			my.displayNoBundleText();
@@ -917,11 +892,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 
 		//if bundle doesn't already contain this actor
-		if (my.bundles[my.getBundleIndexFromID(bundle_id)].actors.actors.indexOf(actor_id) == -1){
+		if (my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.indexOf(actor_id) == -1){
 		
 			if (actor.actors[actor.getActorsIndexFromID(actor_id)]){  //check if actor still exists before adding
 		
-				my.bundles[my.getBundleIndexFromID(bundle_id)].actors.actors.push(actor_id);
+				my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.push(actor_id);
 			
 				my.renderActor(bundle_id, actor_id);
 				
@@ -963,12 +938,12 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	my.removeActor = function(bundle_id, actor_id){
 
-		var position_in_array = my.bundles[my.getBundleIndexFromID(bundle_id)].actors.actors.indexOf(actor_id);
+		var position_in_array = my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.indexOf(actor_id);
 		
 		console.log("Removing actor. Position in array: " + position_in_array);
 
 		//remove actor_id in array
-		my.bundles[my.getBundleIndexFromID(bundle_id)].actors.actors.splice(position_in_array,1);
+		my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.splice(position_in_array,1);
 		
 		dom.remove(my.dom_element_prefix+bundle_id+"_actor_"+actor_id);
 		
@@ -996,7 +971,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			resource_type = "mf";
 		
-			my.bundles[my.getBundleIndexFromID(bundle_id)].resources.resources.mediaFiles.push({
+			my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.mediaFiles.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -1010,7 +985,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			resource_type = "wr";
 		
-			my.bundles[my.getBundleIndexFromID(bundle_id)].resources.resources.writtenResources.push({
+			my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -1030,7 +1005,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			
 			resource_type = "wr";
 			
-			my.bundles[my.getBundleIndexFromID(bundle_id)].resources.resources.writtenResources.push({
+			my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index][0],
 				size: resources.available_resources[resource_file_index][2],
 				id: my.resource_id_counter,
@@ -1153,29 +1128,29 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		var ids_of_bundles_media_files = [];
 		
-		for (m=0; m<my.bundles[my.getBundleIndexFromID(bundle_id)].resources.mediaFiles.length; m++){
+		for (m=0; m<my.bundles[my.getBundleIndexByID(bundle_id)].resources.mediaFiles.length; m++){
 		
-			ids_of_bundles_media_files.push(my.bundles[my.getBundleIndexFromID(bundle_id)].resources.mediaFiles[m].id);
+			ids_of_bundles_media_files.push(my.bundles[my.getBundleIndexByID(bundle_id)].resources.mediaFiles[m].id);
 		
 		}
 		
 		var ids_of_bundles_written_resources = [];
 		
-		for (m=0; m<my.bundles[my.getBundleIndexFromID(bundle_id)].resources.writtenResources.length; m++){
+		for (m=0; m<my.bundles[my.getBundleIndexByID(bundle_id)].resources.writtenResources.length; m++){
 		
-			ids_of_bundles_written_resources.push(my.bundles[my.getBundleIndexFromID(bundle_id)].resources.writtenResources[m].id);
+			ids_of_bundles_written_resources.push(my.bundles[my.getBundleIndexByID(bundle_id)].resources.writtenResources[m].id);
 		
 		}
 
 		if (ids_of_bundles_written_resources.indexOf(resource_id) != -1){
 
-			my.bundles[my.getBundleIndexFromID(bundle_id)].resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
+			my.bundles[my.getBundleIndexByID(bundle_id)].resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
 		if (ids_of_bundles_media_files.indexOf(resource_id) != -1){
 
-			my.bundles[my.getBundleIndexFromID(bundle_id)].resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
+			my.bundles[my.getBundleIndexByID(bundle_id)].resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
@@ -1238,11 +1213,12 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 	};
 
+	
 	my.removeAllActors = function(bundle_id){
 	//Remove all actors from respective bundle
 		
-		while (my.bundles[my.getBundleIndexFromID(bundle_id)].actors.actors.length > 0){
-			my.removeActor(bundle_id,my.bundles[my.getBundleIndexFromID(bundle_id)].actors.actors[0]);
+		while (my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.length > 0){
+			my.removeActor(bundle_id,my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors[0]);
 			//Remove always the first actor of this bundle because every actor is at some point the first	
 		}
 	};
@@ -1288,35 +1264,18 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 
-	my.doesEveryBundleHaveAProjectName = function(){
-
-		for (var i=0;i<my.bundles.length;i++){
-		
-			if (get(my.dom_element_prefix+my.bundles[i].id+"_project_name") === ""){
-			
-				return false;
-			
-			}
-			
-		}
-		
-		return true;
-
-	};
-	
-	
 	my.display = function(bundle_id){
 	
 		if (document.getElementById(my.dom_element_prefix+bundle_id+"_content").style.display != "none"){
 			document.getElementById(my.dom_element_prefix+bundle_id+"_content").style.display = "none";
 			document.getElementById(my.dom_element_prefix+bundle_id+"_expand_img").src=APP.CONF.path_to_icons+"up.png";
-			my.bundles[my.getBundleIndexFromID(bundle_id)].expanded = false;
+			my.bundles[my.getBundleIndexByID(bundle_id)].expanded = false;
 		}
 		
 		else {
 			document.getElementById(my.dom_element_prefix+bundle_id+"_content").style.display = "block";
 			document.getElementById(my.dom_element_prefix+bundle_id+"_expand_img").src=APP.CONF.path_to_icons+"down.png";
-			my.bundles[my.getBundleIndexFromID(bundle_id)].expanded = true;
+			my.bundles[my.getBundleIndexByID(bundle_id)].expanded = true;
 		}
 	};
 

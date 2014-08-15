@@ -180,9 +180,9 @@ imdi_environment.workflow[2].languages = (function (){
 
 		});
 		
-		var heading = l("languages", "language_search") + ": " + results.length + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
+		var heading = l("languages", "language_search") + ": " + results.length + " " + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
 		
-		dom.showSelectFrame(results, titles, actor.languages.addFromForm, heading,
+		APP.GUI.showSelectFrame(results, titles, actor.languages.addFromForm, heading,
 		"(ISO639-3 Code, Country ID, " + l("languages", "language_name") + ")"); 
 
 	};

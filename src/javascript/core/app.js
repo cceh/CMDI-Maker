@@ -192,7 +192,12 @@ var APP = (function () {
 		}
 		
 		//if there's no term at all, BAD!!!
-		console.error("LANGUAGE ERROR: " + arg1 + ", " + arg2 + ", " + arg3 + ", " + arg4);
+		console.error("LANGUAGE ERROR: " +
+		arg1 +
+		(arg2 ? ", " + arg2 : "") +
+		(arg3 ? ", " + arg3 : "") +
+		(arg4 ? ", " + arg4 : ""));
+		
 		return "###";
 
 	};
@@ -632,7 +637,7 @@ var APP = (function () {
 		
 			if (event.keyCode == 27)  {   //escape pressed
 			
-				dom.closeSelectFrame();
+				APP.GUI.closeSelectFrame();
 			
 			}
 		

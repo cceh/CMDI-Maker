@@ -51,20 +51,8 @@ eldp_environment.workflow[3] = (function (){
 		//corpus must have a proper name or no name at all
 		if (bundle.areAllBundlesProperlyNamed()){
 			
-			if (bundle.doesEveryBundleHaveAProjectName()){
+			my.generate();
 
-				my.generate();
-				
-			}
-			
-			else {
-				
-				APP.alert(l("output", "every_bundle_must_have_a_project_name"));
-			
-				APP.view(bundle);
-			
-			}
-			
 		}
 		
 		else {
@@ -93,14 +81,16 @@ eldp_environment.workflow[3] = (function (){
 		var xml_window = g('VIEW_xml_output');
 		
 		xml_window.innerHTML = "";
-		/*
+		
+		var xml_strings = new eldp_environment.eldp_generator();
+		
 		for (var s=0;s<bundle.bundles.length;s++){
-
-			filename = get(bundle.dom_element_prefix+bundle.bundles[s].id+"_bundle_name")+"."+file_ending;
-			dom.createXMLOutputDIV(xml_window, output_format + " Bundle " + (s+1), "textarea_bundle_"+s,
-			xml_strings.bundles[s],filename);
 			
-		}*/
+			filename = get(bundle.dom_element_prefix+bundle.bundles[s].id+"_bundle_name") + ".cmdi";
+			APP.GUI.createXMLOutputDIV(xml_window, "CMDI Bundle " + (s+1), "textarea_bundle_"+s,
+			xml_strings[s],filename, true);
+			
+		}
 		
 	};
 

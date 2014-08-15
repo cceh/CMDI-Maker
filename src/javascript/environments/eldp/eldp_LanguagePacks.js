@@ -21,10 +21,9 @@ eldp_environment.languages[0] = {
 	name: "English",
 	
 	workflow: {
-		corpus: "Corpus",
 		resources: "Resources",
 		persons: "persons",
-		session: "Sessions",
+		bundles: "Bundles",
 		xml_output: "XML Output"
 	},
 	
@@ -43,6 +42,25 @@ eldp_environment.languages[0] = {
 		import_persons_description: "Please import UTF-8 encoded files only!",
 		delete_persons_database: "Delete persons Database",
 		delete_persons_database_description: "CMDI Maker saves all your persons in a Web Storage browser database, so that they are kept, even if you close the browser window.",
+		
+	},
+	
+	languages: {
+		set_global_languages_of_content: "Set Global Languages of Content",
+		or_type_in_iso_code: "or type in ISO code",
+		language_search: "Language Search",
+		result: "result",
+		results: "results",
+		language_name: "Language Name",
+		is_new_global: "is a new Global Content Language",
+		iso_code: "ISO code",
+		not_found_in_db: "not found in database",
+		specify_search_request_at_least_3_chars: "Please specify your search request.\nType in at least 3 characters.",
+		primary_language: "Primary Language",
+		mother_tongue: "Mother Tongue",
+		current_content_languages: "Current Content Languages",
+		content_language_removed__before_lang: "Content Language \"",
+		content_language_removed__after_lang: "\" removed"
 		
 	},
 	
@@ -70,6 +88,10 @@ eldp_environment.languages[0] = {
 		person_deleted_after_name: " deleted",
 
 	},
+	
+	output: {
+		bundles_must_have_proper_name: "All bundles must have proper names! Not allowed chars are: <br>"
+	}
 };
 
 
