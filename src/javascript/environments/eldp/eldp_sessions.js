@@ -532,7 +532,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num){
 			return function(){
-				actor.languages.remove(num);  
+				my.removeLanguage(bundle_id, LanguageObject.id);   //TO DO!
 			};
 		}(my.id_counter));
 		
@@ -540,8 +540,31 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
 		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
 		
+		var input = dom.input(div, "subject_language_" + my.id_counter, "", "", "checkbox");
+		
+		dom.span(div,"","", "Subject Language  ");
+		input = dom.input(div, "working_language_" + my.id_counter, "", "", "checkbox");
+		dom.span(div,"","","Working Language");
+		
 		my.id_counter += 1;
 
+	};
+	
+	
+	my.removeLanguage = function(bundle_id, l_id){
+	/*
+		var index = my.getLanguageObjectIndexByID(cl_id);
+
+		APP.log(
+			my.l("languages", "content_language_removed__before_lang") +
+			my.content_languages[index][3] +
+			my.l("languages", "content_language_removed__after_lang")
+		);
+
+		my.content_languages.splice(index, 1);
+		
+		dom.remove("content_language_"+cl_id+"_div");
+	*/
 	};
 
 
@@ -576,7 +599,6 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		var div = g(my.dom_element_prefix + bundle_id + "_actor_" + actor_id + "_label");
 		div.innerHTML = "<h2 class='actor_name_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
 		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
-
 
 	};
 	
