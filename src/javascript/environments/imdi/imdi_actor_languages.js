@@ -55,9 +55,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 		my.languages_of_active_actor.splice(index,1);
 		
-		var child = g(my.element_id_prefix + al_id + "_div");
-		
-		g(my.element_id_prefix + "display").removeChild(child);
+		dom.remove(my.element_id_prefix + al_id + "_div");
 
 	};
 

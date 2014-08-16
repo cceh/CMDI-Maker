@@ -495,13 +495,11 @@ imdi_environment.workflow[2] = (function(){
 
 
 	my.save = function(actor_to_put, do_not_overwrite){
-
-		var actor_ids = [];
 		
 		//create array with all actor ids
-		for (var a=0; a<my.actors.length;a++){
-			actor_ids.push(my.actors[a].id);
-		}
+		var actor_ids = map(my.actors, function(actor){
+			return actor.id;
+		});
 
 		//if this actor does already exist and is to be overwritten, overwrite the object in the array
 		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite === false)) {

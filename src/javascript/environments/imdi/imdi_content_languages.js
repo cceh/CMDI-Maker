@@ -177,8 +177,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		}(id) );
 		
 		dom.br(div);
-		dom.span(div,"","","Name: " + LanguageObject[3]);
-		dom.br(div);
+		dom.spanBR(div,"","","Name: " + LanguageObject[3]);
 		dom.span(div,"","","Country ID: " + LanguageObject[1]);
 
 	};
@@ -236,14 +235,8 @@ imdi_environment.workflow[0].content_languages = (function() {
 	
 	
 	my.getLanguageObjectIndexByID = function(cl_id){
-
-		for (var l=0; l<my.content_languages.length; l++){
 		
-			if (my.content_languages[l][4] == cl_id){
-				return l;
-			}
-		
-		}
+		return getIndex(my.content_languages, 4, cl_id)
 
 	};
 	
