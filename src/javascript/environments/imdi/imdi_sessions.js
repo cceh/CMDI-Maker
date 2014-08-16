@@ -1038,7 +1038,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		for (var s=1;s<my.sessions.length;s++){   //important to not include the first session in this loop
 		
 			forEach(fields_to_copy, function(field_to_copy){
-				dom.copyField(
+				APP.GUI.copyField(
 					my.dom_element_prefix+my.sessions[s].id+"_"+field_to_copy,
 					my.dom_element_prefix+my.sessions[0].id+"_"+field_to_copy
 				);
