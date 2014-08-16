@@ -124,11 +124,9 @@ imdi_environment.workflow[2].languages = (function (){
 		
 		}
 		
-		var titles = [];
-		
-		forEach(results, function(result){
+		var titles = map(results, function(result){
 
-			titles.push(result[0] + ", " + result[1]+", " + result[3]);
+			return result[0] + ", " + result[1]+", " + result[3];
 
 		});
 		
@@ -153,8 +151,7 @@ imdi_environment.workflow[2].languages = (function (){
 		my.languages_of_active_actor.push(ActorLanguageObject);
 		
 		var div = dom.newElement("div", my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry",g(my.element_id_prefix + "display"));
-		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset");
-		img.addEventListener('click', function(num) {
+		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
 		}(my.id_counter) );

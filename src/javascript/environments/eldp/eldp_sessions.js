@@ -184,30 +184,18 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		var select = document.createElement("select");
 		
-		for (var i=0; i<resources.available_resources.length; i++){ 
-			
-			var NewOption = new Option( resources.available_resources[i][0], i, false, true);
-			select.options[select.options.length] = NewOption;		
-			
-		}
-
+		dom.setSelectOptions(select, resources.available_resources, 0, "take_index");
+		
 		if (resources.available_resources.length > 0){
 		
 			g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div").appendChild(select);
 		
-			select.selectedIndex = 0;	
-		
-			var add_button = document.createElement("input");
-			add_button.type = "button";
-			add_button.value = "Add to bundle";
+			dom.br(g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div"));
 			
-			g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div").appendChild(document.createElement("br"));
-			
-			g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div").appendChild(add_button);		
-			
-			add_button.addEventListener('click', function(num) { 
+			dom.button(g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div"),
+			"Add to bundle", function(num) {
 				return function(){ my.addResource(num, select.selectedIndex);  };
-			}(my.bundles[s].id) );
+			}(my.bundles[s].id));
 			
 		}
 
@@ -217,15 +205,9 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 			g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div").appendChild(p);
 			p.innerHTML = "No files have been added.<br>";
 		
-			var a = document.createElement("a");
-			a.href="#";
-			a.innerHTML = "Add some files.";
-		
-			p.appendChild(a);
-
-			a.addEventListener('click', function() { 
+			dom.a(p, "", "", "#", "Add some files.", function() {
 				APP.view(resources);
-			} );
+			});
 			
 		
 		}
@@ -529,8 +511,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		var div = dom.div(g(element_id_prefix + "display"), element_id_prefix + my.id_counter+"_div", "bundle_language_entry");
 		
-		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset");
-		img.addEventListener('click', function(num){
+		APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num){
 			return function(){
 				my.removeLanguage(bundle_id, LanguageObject.id);   //TO DO!
 			};

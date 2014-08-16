@@ -150,11 +150,10 @@ eldp_environment.workflow[1].languages = (function (){
 		my.languages_of_active_person.push(ActorLanguageObject);
 		
 		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "_entry", g(my.element_id_prefix + "_display"));
-		var img = APP.GUI.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset");
-		img.addEventListener('click', function(num) {
+		APP.GUI.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset", function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
-		}(my.id_counter) );
+		}(my.id_counter));
 		
 		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
 		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);

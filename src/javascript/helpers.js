@@ -70,6 +70,24 @@ var map = function(array, transform) {
 };
 
 
+var getArrayWithValuesByKey = function(array, key){
+
+	var new_array = map(array, function(item){
+		return item[key];
+	});
+
+	return new_array;
+
+}
+
+
+var getArrayWithIDs = function(array){
+
+	return getArrayWithValuesByKey(array, "id");
+
+}
+
+
 var filter = function(array, test) {
 	var passed = [];
 	for (var i = 0; i < array.length; i++) {
@@ -83,9 +101,9 @@ var filter = function(array, test) {
 };
 
 
-function forEach(array, action) {
+var forEach = function(array, action) {
 	for (var i = 0; i < array.length; i++){
-		action(array[i]);
+		action(array[i], i);
 	}
 }
 

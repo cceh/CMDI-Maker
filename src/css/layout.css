@@ -404,6 +404,10 @@ input[type="checkbox"], input[type="radio"]{
 	overflow: auto;
 	min-width: 1000px;
 	
+	/*At first, set every content view invisible. When everything is loaded, let the app make one content view visible beautifully. */
+	display: none;
+	
+	
 }
 
 #content_wrapper{

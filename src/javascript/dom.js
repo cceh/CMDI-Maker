@@ -244,6 +244,17 @@ var dom = (function() {
 	
 	};
 	
+	
+	my.button = function(parent, value, onclick){
+	
+		var input = my.input(parent, "", "", "", "button", value);
+		
+		input.addEventListener("click", onclick, false);
+	
+		return input;
+	
+	};
+	
 
 	my.textarea = function (parent, id, className, rows, cols, value){
 		
@@ -348,8 +359,8 @@ var dom = (function() {
 		
 		}
 		
-		forEach(options, function(option){
-		
+		forEach(options, function(option, index){
+
 			if (typeof text_key != "undefined"){
 				var text = option[text_key];
 			}
@@ -358,13 +369,22 @@ var dom = (function() {
 				text = option;
 			}
 			
+			if (text_key == "take_index"){
+				text = index;
+			}
+			
 			if (typeof value_key != "undefined"){
 				var value = option[value_key];
 			}
 			
 			else {
 				value = option;
+			}	
+			
+			if (value_key == "take_index"){
+				value = index;
 			}
+			
 
 			my.appendOption(select, text, value);
 			

@@ -107,7 +107,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		if (!sf.fields_to_copy){
 		
-			dom.make("span", "", "", div, l("function_currently_unavailable"));
+			dom.span(div, "", "", l("function_currently_unavailable"));
 			return;
 			
 		}
@@ -119,8 +119,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+option.name, "", "", "checkbox");
 			input.checked = true;
 			
-			dom.span(div, "", "", " "+option.label);
-			dom.br(div);
+			dom.spanBR(div, "", "", " "+option.label);
 		
 		});
 
@@ -189,27 +188,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var select = document.createElement("select");
 		
-		for (var i=0; i<resources.available_resources.length; i++){ 
-			
-			var NewOption = new Option( resources.available_resources[i].name, i, false, true);
-			select.options[select.options.length] = NewOption;	
-			
-		}
+		dom.setSelectOptions(select, resources.available_resources, "name", "take_index");
 
 		if (resources.available_resources.length > 0){
 		
 			add_resource_div.appendChild(select);
-		
-			select.selectedIndex = 0;	
-		
-			var add_button = document.createElement("input");
-			add_button.type = "button";
-			add_button.value = l("session", "add_to_session");
-			
 			dom.br(add_resource_div);
-			add_resource_div.appendChild(add_button);		
-			
-			add_button.addEventListener('click', function(num) { 
+			dom.button(add_resource_div, l("session", "add_to_session"), function(num) { 
 				return function(){ my.addResource(num, select.selectedIndex);  };
 			}(my.sessions[session_index].id) );
 			
@@ -217,11 +202,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		if (resources.available_resources.length === 0){
 		
-			var p = document.createElement("h5");
-			add_resource_div.appendChild(p);
-			p.innerHTML = l("session", "no_files_have_been_added") + "<br>";
-		
-			dom.a(p,"","","#",l("session", "add_some_files"), function(){APP.view(resources);});
+			var h5 = dom.h5(add_resource_div, l("session", "no_files_have_been_added") + "<br>");
+			dom.a(h5,"","","#",l("session", "add_some_files"), function(){APP.view(resources);});
 			
 		}
 		
@@ -506,14 +488,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var select = document.createElement("select");
 		
-		for (var a=0;a<actor.actors.length;a++){ 
+		forEach(actor.actors, function(actor, index){ 
 		
-			var value = actor.actors[a].name + " (" + actor.actors[a].role + ")";
+			var text = actor.name + " (" + actor.role + ")";
+			dom.appendOption(select, text, index);
 			
-			var NewOption = new Option( value, a, false, true);
-			select.options[select.options.length] = NewOption;		
-			
-		}
+		});
 
 		if (actor.actors.length > 0){
 		
@@ -523,8 +503,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			dom.br(aad);	
 			
-			var add_button = dom.input(aad,"","","","button", l("session", "add_to_session"));
-			add_button.addEventListener('click', function(num) { 
+			dom.button(aad, l("session", "add_to_session"), function(num) { 
 				return function(){ my.addActor(num, actor.actors[select.selectedIndex].id);  };
 			}(my.sessions[s].id) );
 			
@@ -760,9 +739,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		my.refreshActorName(session_id, actor_id);
 		
-		var img = APP.GUI.icon(g(my.dom_element_prefix+session_id+"_actor_" + actor_id),
-		"delete_actor_" + actor_id + "_icon", "delete_actor_icon", "reset");
-		img.addEventListener('click', function(num, num2) { 
+		APP.GUI.icon(g(my.dom_element_prefix+session_id+"_actor_" + actor_id),
+		"delete_actor_" + actor_id + "_icon", "delete_actor_icon", "reset", function(num, num2) { 
 			return function(){ my.removeActor(num, num2);  
 			};
 		}(session_id, actor_id));
@@ -924,11 +902,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			return;
 		}
 		
-		var img = APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
-		img.addEventListener('click', function(num, num2) { 
+		APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset", function(num, num2) { 
 			return function(){ my.removeResource(num, num2);  
 			};
-		}(session_id,resource_id) );
+		}(session_id,resource_id));
 		
 		dom.span(div, "", "resource_file_content_span",
 		"File Name<br><input type=\"text\" name=\""+my.dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
@@ -957,21 +934,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 
 	my.removeResource = function(session_id, resource_id){
-		var ids_of_sessions_media_files = [];
-		
-		forEach(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles, function(mediaFile){
-		
-			ids_of_sessions_media_files.push(mediaFile.id);
-		
-		});
-		
-		var ids_of_sessions_written_resources = [];
-		
-		forEach(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources, function(writtenResource){
-		
-			ids_of_sessions_written_resources.push(writtenResource.id);
-		
-		});
+	
+		var ids_of_sessions_media_files = getArrayWithIDs(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles);
+		var ids_of_sessions_written_resources = getArrayWithIDs(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources);
 
 		if (ids_of_sessions_written_resources.indexOf(resource_id) != -1){
 
@@ -985,9 +950,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		}
 		
-		var child = document.getElementById(my.dom_element_prefix+session_id+"_mediafile_"+resource_id);
-		
-		g(my.dom_element_prefix+session_id+"_resources_resources").removeChild(child);
+		dom.remove(my.dom_element_prefix+session_id+"_mediafile_"+resource_id);
 
 	};
 

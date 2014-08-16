@@ -256,10 +256,14 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.icon = function(parent,id,className,icon){
+	my.icon = function(parent, id, className, icon, onclick){
 	
 		var img = dom.make("img",id,className,parent);
 		my.setIcon(img, icon);
+		
+		if (onclick){
+			img.addEventListener("click", onclick, false);
+		}
 		
 		return img;	
 	

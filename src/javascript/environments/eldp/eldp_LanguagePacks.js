@@ -35,8 +35,6 @@ eldp_environment.languages[0] = {
 			"When an age can be calculated, it will appear in the output file.<br>"+
 			"(Age = Session Date - person's Birth Date)",
 		output_format: "Output Format",
-		imdi: "IMDI",
-		cmdi_with_imdi_profile: "CMDI with IMDI profile",
 		export_persons_as_json: "Export persons as JSON",
 		import_persons_from_json_or_imdi: "Import persons from JSON or IMDI",
 		import_persons_description: "Please import UTF-8 encoded files only!",
@@ -115,8 +113,6 @@ eldp_environment.languages[1] = {
 			"Wenn ein Alter berechnet werden kann, erscheint dieses in der generierten XML-Datei.<br>"+
 			"(Alter = Datum der Session - Geburtsdatum des persons)",
 		output_format: "Ausgabeformat",
-		imdi: "IMDI",
-		cmdi_with_imdi_profile: "CMDI mit IMDI-Profil",
 		export_persons_as_json: "persons als JSON exportieren",
 		import_persons_from_json_or_imdi: "persons von JSON oder IMDI importieren",
 		import_persons_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
