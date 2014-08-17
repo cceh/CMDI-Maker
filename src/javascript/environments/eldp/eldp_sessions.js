@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-eldp_environment.workflow[2] = (function(resources, actor) {
+eldp_environment.workflow[2] = (function() {
 	'use strict';
 
 	var my = {};
@@ -37,11 +37,16 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 	my.reset = function(){ my.eraseAll(); };
 	
+	var resources;
+	var person;
+	
 	
 	var l = my.parent.l;
 
-	
 	my.init = function(){
+	
+		resources = eldp_environment.workflow[0];
+		person = eldp_environment.workflow[1];
 	
 		my.displayNoBundleText();
 		
@@ -184,7 +189,7 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 		var select = document.createElement("select");
 		
-		dom.setSelectOptions(select, resources.available_resources, 0, "take_index");
+		dom.setSelectOptions(select, resources.available_resources, "name", "take_index");
 		
 		if (resources.available_resources.length > 0){
 		
@@ -364,11 +369,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		}(bundle_id) );
 		
 		
-		if (typeof(bundle_object.actors.actors) != "undefined"){
+		if (typeof(bundle_object.persons) != "undefined" && typeof(bundle_object.persons.persons) != "undefined"){
 		
-			forEach(bundle_object.actors.actors, function(actor){
+			forEach(bundle_object.persons.persons, function(person){
 		
-				my.renderActor(bundle_id, actor);
+				my.renderPerson(bundle_id, person);
 		
 			});
 		}
@@ -397,11 +402,10 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		my.refreshResources(my.getBundleIndexByID(bundle_id));
 		
-		var all_available_actor_ids = map(actor.actors, function(actor){
-			return actor.id;
-		});   // find a better place for that
+		var all_available_person_ids = getArrayWithIDs(person.persons);
+		// find a better place for that
 
-		my.refreshPersonListInBundle(my.getBundleIndexByID(bundle_id),all_available_actor_ids);
+		my.refreshPersonListInBundle(my.getBundleIndexByID(bundle_id), all_available_person_ids);
 		
 		if (bundle_expanded === false){
 			my.display(bundle_id);
@@ -420,11 +424,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	
 		}
 	
-		if (field.name == "actors"){
+		if (field.name == "persons"){
 		
 			dom.br(parent);
-			dom.make("div",element_id_prefix+"actors", "actors", parent);
-			dom.make("div",element_id_prefix+"addActors_div", "actors", parent);
+			dom.make("div",element_id_prefix+"persons", "persons", parent);
+			dom.make("div",element_id_prefix+"addPersons_div", "persons", parent);
 		
 		}
 		
@@ -575,11 +579,11 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 	
-	my.refreshPersonName = function(bundle_id, actor_id){
+	my.refreshPersonName = function(bundle_id, person_id){
 
-		var div = g(my.dom_element_prefix + bundle_id + "_actor_" + actor_id + "_label");
-		div.innerHTML = "<h2 class='actor_name_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
-		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
+		var div = g(my.dom_element_prefix + bundle_id + "_person_" + person_id + "_label");
+		div.innerHTML = "<h2 class='person_name_disp'>" + person.persons[person.getPersonIndexByID(person_id)].title + "</h2>";  //display name of person
+		//div.innerHTML += "<p class='person_role_disp'>" + person.persons[person.getPersonIndexByID(person_id)].role + "</p>";  //INPUT HERE
 
 	};
 	
@@ -617,62 +621,66 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 	
 	
-	my.refreshPersonListInBundle = function(s,all_available_actor_ids){
+	my.updatePersonNameInAllBundles = function(person_id){
+		forEach(my.bundles, function(bundle){
+	
+			//search for actor_id in this bundles' actors
+			if (bundle.persons.persons.indexOf(person_id) != -1){
+				
+				my.refreshPersonName(bundle.id, person_id);
+	
+			}
+			
+		});
+	};
+	
+	
+	my.refreshPersonListInBundle = function(s,all_available_person_ids){
 
-		var aad = g(my.dom_element_prefix+my.bundles[s].id+"_actors_addActors_div");
+		var aad = g(my.dom_element_prefix+my.bundles[s].id+"_persons_addPersons_div");
 		
 		aad.innerHTML = "";
 
 		var select = document.createElement("select");
 		
-		for (var a=0;a<actor.actors.length;a++){ 
-		
-			var value = actor.actors[a].name + " (" + actor.actors[a].role + ")";
-			
-			var NewOption = new Option( value, a, false, true);
-			select.options[select.options.length] = NewOption;		
-			
-		}
+		dom.setSelectOptions(select, person.persons, "title", "take_index");
 
-		if (actor.actors.length > 0){
+		if (person.persons.length > 0){
 		
 			aad.appendChild(select);
 		
-			select.selectedIndex = 0;	
-			
 			dom.br(aad);	
 			
-			var add_button = dom.input(aad,"","","","button", "Add to bundle");
-			add_button.addEventListener('click', function(num) { 
-				return function(){ my.addActor(num, actor.actors[select.selectedIndex].id);  };
-			}(my.bundles[s].id) );
+			dom.button(aad, "Add to bundle", function(num) { 
+				return function(){ my.addPerson(num, person.persons[select.selectedIndex].id);  };
+			}(my.bundles[s].id));
 			
 		}
 		
-		if (actor.actors.length === 0){
+		if (person.persons.length === 0){
 		
-			var h5 = dom.h5(aad, "There are no actors in the database yet.<br>");	
+			var h5 = dom.h5(aad, "There are no persons in the database yet.<br>");	
 			
-			dom.a(h5,"","","#","Create some actors.", function() { 
+			dom.a(h5,"","","#","Create some persons.", function() { 
 				APP.view("VIEW_persons");  
 			} );
 			
 		}
 		
 		
-		console.log("Refreshing Actor List of Bundle "+s);
+		console.log("Refreshing Person List of Bundle "+s);
 		
 		
-		//check if actor in bundle is part of actors[...].id(s)? if not, remove it immediately!
-		for (var k=0;k<my.bundles[s].actors.actors.length;k++){
+		//check if person in bundle is part of persons[...].id(s)? if not, remove it immediately!
+		for (var k=0;k<my.bundles[s].persons.persons.length;k++){
 			
-			console.log("Trying to find id " + my.bundles[s].actors.actors[k] + " in actors of bundle "+s);
+			console.log("Trying to find id " + my.bundles[s].persons.persons[k] + " in persons of bundle "+s);
 			
-			// if an actor k is not in all available actors, remove it in the bundle!
-			if (all_available_actor_ids.indexOf(my.bundles[s].actors.actors[k]) == -1){
+			// if an person k is not in all available persons, remove it in the bundle!
+			if (all_available_person_ids.indexOf(my.bundles[s].persons.persons[k]) == -1){
 				
-				console.log("There is an actor in bundle "+s+" that does not exist anymore. Deleting!");
-				my.removeActor(my.bundles[s].id,my.bundles[s].actors.actors[k]);
+				console.log("There is an person in bundle "+s+" that does not exist anymore. Deleting!");
+				my.removePerson(my.bundles[s].id,my.bundles[s].persons.persons[k]);
 			
 			}
 		
@@ -683,19 +691,19 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 
-	my.refreshPersonLists = function(actors){
-		//Offer possibility to add every available actor to all bundle
-		//refresh all bundles with available actors
+	my.refreshPersonLists = function(persons){
+		//Offer possibility to add every available person to all bundle
+		//refresh all bundles with available persons
 
-		var all_available_actor_ids = [];
+		var all_available_person_ids = [];
 		
-		forEach(actors, function(actor){
-			all_available_actor_ids.push(actor.id);
+		forEach(persons, function(person){
+			all_available_person_ids.push(person.id);
 		});
 		
 		for (var s=0;s<my.bundles.length;s++){   //for all existing bundles
 		
-			my.refreshPersonListInBundle(s,all_available_actor_ids);
+			my.refreshPersonListInBundle(s,all_available_person_ids);
 
 		}
 
@@ -838,25 +846,25 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 
-	my.addActor = function(bundle_id, actor_id){
-	//add existing actor to bundle
-	//new actors are only created in manage actors
+	my.addPerson = function(bundle_id, person_id){
+	//add existing person to bundle
+	//new persons are only created in manage persons
 
 
-		//if bundle doesn't already contain this actor
-		if (my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.indexOf(actor_id) == -1){
+		//if bundle doesn't already contain this person
+		if (my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.indexOf(person_id) == -1){
 		
-			if (actor.actors[actor.getActorsIndexFromID(actor_id)]){  //check if actor still exists before adding
+			if (person.persons[person.getPersonIndexByID(person_id)]){  //check if person still exists before adding
 		
-				my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.push(actor_id);
+				my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.push(person_id);
 			
-				my.renderActor(bundle_id, actor_id);
+				my.renderPerson(bundle_id, person_id);
 				
 			}
 			
 			else {
 			
-				console.log("Tried to add actor to bundle although this actor is not in the actors database. This is odd.");
+				console.log("Tried to add person to bundle although this person is not in the persons database. This is odd.");
 				return;
 			
 			}
@@ -865,39 +873,39 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 		else {
 		
-			alertify.log("This actor is already in the bundle.","error",5000);
+			alertify.log("This person is already in the bundle.","error",5000);
 		
 		}
 	};
 
 
-	my.renderActor = function(bundle_id, actor_id){
+	my.renderPerson = function(bundle_id, person_id){
 
-		dom.make("div", my.dom_element_prefix + bundle_id + "_actor_" + actor_id, "actor_in_bundle_wrap", g(my.dom_element_prefix+bundle_id+"_actors_actors"));
-		var div = dom.make("div", my.dom_element_prefix+bundle_id+"_actor_" + actor_id + "_label", "actor_in_bundle", g(my.dom_element_prefix+bundle_id+"_actor_" + actor_id));
+		dom.make("div", my.dom_element_prefix + bundle_id + "_person_" + person_id, "person_in_bundle_wrap", g(my.dom_element_prefix+bundle_id+"_persons_persons"));
+		var div = dom.make("div", my.dom_element_prefix+bundle_id+"_person_" + person_id + "_label", "person_in_bundle", g(my.dom_element_prefix+bundle_id+"_person_" + person_id));
 		
-		my.refreshPersonName(bundle_id, actor_id);
+		my.refreshPersonName(bundle_id, person_id);
 		
-		var img = dom.img(g(my.dom_element_prefix+bundle_id+"_actor_" + actor_id),
-		"delete_actor_"+actor_id+"_icon", "delete_actor_icon", APP.CONF.path_to_icons+"reset.png");
+		var img = dom.img(g(my.dom_element_prefix+bundle_id+"_person_" + person_id),
+		"delete_person_"+person_id+"_icon", "delete_person_icon", APP.CONF.path_to_icons+"reset.png");
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ my.removeActor(num, num2);  
+			return function(){ my.removePerson(num, num2);  
 			};
-		}(bundle_id, actor_id) );
+		}(bundle_id, person_id) );
 
 	};
 
 
-	my.removeActor = function(bundle_id, actor_id){
+	my.removePerson = function(bundle_id, person_id){
 
-		var position_in_array = my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.indexOf(actor_id);
+		var position_in_array = my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.indexOf(person_id);
 		
-		console.log("Removing actor. Position in array: " + position_in_array);
+		console.log("Removing person. Position in array: " + position_in_array);
 
-		//remove actor_id in array
-		my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.splice(position_in_array,1);
+		//remove person_id in array
+		my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.splice(position_in_array,1);
 		
-		dom.remove(my.dom_element_prefix+bundle_id+"_actor_"+actor_id);
+		dom.remove(my.dom_element_prefix+bundle_id+"_person_"+person_id);
 		
 		APP.save();
 		
@@ -1126,14 +1134,14 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 		
 			if (g(APP.CONF.copy_checkbox_element_prefix+bundle_form.fields_to_copy[i].name).checked){  //if checkbox is checked
 			
-				if (bundle_form.fields_to_copy[i].name == "actors"){  //special case: actors!
+				if (bundle_form.fields_to_copy[i].name == "persons"){  //special case: persons!
 				
 					for (var s=1; s<my.bundles.length; s++){
-						my.removeAllActors(my.bundles[s].id);
+						my.removeAllPersons(my.bundles[s].id);
 			
-						// copy actors from bundle 1 to bundle bundle
-						for (var a=0;a<my.bundles[0].actors.actors.length;a++){
-							my.addActor(my.bundles[s].id,my.bundles[0].actors.actors[a]);
+						// copy persons from bundle 1 to bundle bundle
+						for (var a=0;a<my.bundles[0].persons.persons.length;a++){
+							my.addPerson(my.bundles[s].id,my.bundles[0].persons.persons[a]);
 						}
 					
 					}
@@ -1166,12 +1174,12 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 	};
 
 	
-	my.removeAllActors = function(bundle_id){
-	//Remove all actors from respective bundle
+	my.removeAllPersons = function(bundle_id){
+	//Remove all persons from respective bundle
 		
-		while (my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors.length > 0){
-			my.removeActor(bundle_id,my.bundles[my.getBundleIndexByID(bundle_id)].actors.actors[0]);
-			//Remove always the first actor of this bundle because every actor is at some point the first	
+		while (my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.length > 0){
+			my.removePerson(bundle_id,my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons[0]);
+			//Remove always the first person of this bundle because every person is at some point the first	
 		}
 	};
 
@@ -1234,4 +1242,4 @@ eldp_environment.workflow[2] = (function(resources, actor) {
 
 	return my;
 
-})(imdi_environment.workflow[1],imdi_environment.workflow[2]);
+})();

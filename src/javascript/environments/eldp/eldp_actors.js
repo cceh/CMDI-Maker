@@ -184,7 +184,7 @@ eldp_environment.workflow[1] = (function(){
 
 	var my = {};
 	my.parent = eldp_environment;
-	var session;
+	var bundle;
 	
 	var l = function(arg1, arg2){
 		return my.parent.l("persons", arg1, arg2);
@@ -211,7 +211,7 @@ eldp_environment.workflow[1] = (function(){
 		my.id_counter = 0;
 		my.active_person = -1;
 		
-		session = my.parent.workflow[2];
+		bundle = my.parent.workflow[2];
 		
 		dom.make("div",my.element_id_prefix + "list","",view);
 		var ac_view = dom.make("div",my.element_id_prefix + "view","",view);
@@ -353,7 +353,7 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.getpersonsIndexFromID = function(person_id) {
+	my.getPersonIndexByID = function(person_id) {
 
 		for (var i = 0, len = my.persons.length; i < len; i++) {
 			if (my.persons[i].id == person_id){
@@ -499,10 +499,10 @@ eldp_environment.workflow[1] = (function(){
 		//if this person does already exist and is to be overwritten, overwrite the object in the array
 		if ((person_ids.indexOf(person_to_put.id ) != -1) && (do_not_overwrite === false)) {
 			
-			my.persons.splice(my.getpersonsIndexFromID(person_to_put.id),1,person_to_put);
+			my.persons.splice(my.getPersonIndexByID(person_to_put.id),1,person_to_put);
 			
-			//if the person does already exist, check if it is in a session and correct the person name in the session, if required
-			session.updatepersonNameInAllSessions(person_to_put.id);
+			//if the person does already exist, check if it is in a bundle and correct the person name in the bundle, if required
+			bundle.updatePersonNameInAllBundles(person_to_put.id);
 			
 		}
 		
@@ -552,18 +552,18 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.getAge = function (session_id, person_id){
+	my.getAge = function (bundle_id, person_id){
 
-		var i = my.getpersonsIndexFromID(person_id);
+		var i = my.getPersonIndexByID(person_id);
 		
 		if (my.persons[i].age === ""){   //at first, check, if person's age hasn't been specified yet
 		
 			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
 				var birthDate = my.persons[i].birth_date.year + "-" + my.persons[i].birth_date.month + "-" + my.persons[i].birth_date.day;
-				var sessionDate = get(session.dom_element_prefix+session_id+"_session_date_year") + "-" +
-				get(session.dom_element_prefix+session_id+"_session_date_month") + "-" + get(session.dom_element_prefix+session_id+"_session_date_day"); 
-				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
+				var bundleDate = get(bundle.dom_element_prefix+bundle_id+"_bundle_date_year") + "-" +
+				get(bundle.dom_element_prefix+bundle_id+"_bundle_date_month") + "-" + get(bundle.dom_element_prefix+bundle_id+"_bundle_date_day"); 
+				var age_calc_result = calcAgeAtDate(bundleDate,birthDate);
 				
 				if (age_calc_result !== 0){
 				
@@ -607,7 +607,7 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.refreshListDisplay = function(not_in_sessions){
+	my.refreshListDisplay = function(not_in_bundles){
 		var div;
 	
 		g(my.element_id_prefix + 'list').innerHTML = "";
@@ -628,8 +628,8 @@ eldp_environment.workflow[1] = (function(){
 		div = dom.make('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_person") + "</h2>");
 		div.addEventListener('click', function() { my.show(-1); } , false );
 
-		if ((session) && (!not_in_sessions)){
-			session.refreshPersonLists(my.persons);
+		if ((bundle) && (!not_in_bundles)){
+			bundle.refreshPersonLists(my.persons);
 		}
 
 		switch (my.persons.length){

@@ -122,7 +122,7 @@ eldp_environment.bundle_form = {
 		{
 			title: "Persons",
 			type: "column",
-			name: "actors",
+			name: "persons",
 			fields: [
 				{
 					heading: "Description of Persons",
@@ -132,7 +132,7 @@ eldp_environment.bundle_form = {
 				},
 				{
 					type: "special",
-					name: "actors",
+					name: "persons",
 					object_structure: "array"
 				}
 			]
@@ -174,7 +174,7 @@ eldp_environment.bundle_form = {
 			fields: ["content_genre","content_subgenre","content_task","content_description","content_communication_context_eventstructure","content_communication_context_planningtype","content_communication_context_interactivity","content_communication_context_socialcontext","content_communication_context_involvement"]
 		},
 		{
-			name: "actors",
+			name: "persons",
 			label: "Persons",
 			fields: ["actors_description"]
 			//since type of field actors is "special", there will be other stuff going on as well here!

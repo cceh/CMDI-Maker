@@ -1,6 +1,6 @@
 ﻿
 
-#actors{
+#persons{
 
 left: 0px;
 right: 0px;
@@ -244,9 +244,9 @@ color: #4D87C7;
 	color: blue;
 }
 
-/*--- Actors ---*/
+/*--- Persons ---*/
 
-.actor_languages_entry{
+.person_languages_entry{
 
 	background-color: tomato;
 	border-radius: 5px;
@@ -277,13 +277,13 @@ color: #4D87C7;
 
 }
 
-#actor_languages_td{
+#person_languages_td{
 
 	width: 350px;
 
 }
 
-#actor_list{
+#person_list{
 
 	width: 215px;
 	position: fixed;
@@ -306,7 +306,7 @@ color: #4D87C7;
 
 }
 
-.actor_list_entry h2{
+.person_list_entry h2{
 
 	line-height: 0em;
 	white-space: nowrap;
@@ -314,18 +314,18 @@ color: #4D87C7;
 
 }
 
-#actor_title_div{
+#person_title_div{
 
 	padding: 15px;
 
 }
 
-#actor_content_div{
+#person_content_div{
 
 	background-color: #AABFFF;
 }
 
-#actor_view{
+#person_view{
 
 	background-color: lightskyblue;
 	float: left;
@@ -338,7 +338,7 @@ color: #4D87C7;
 
 }
 
-.actor_list_entry{
+.person_list_entry{
 
 	background: rgb(255, 139, 199);
 	line-height: 0em;
@@ -351,11 +351,11 @@ color: #4D87C7;
 	margin-bottom: 10px;
 }
 
-#actor_options_div{
+#person_options_div{
 	width: 300px;
 }
 
-#actor_form_title{
+#person_form_title{
 
 	display: inline;
 
@@ -377,7 +377,7 @@ color: #4D87C7;
 
 }
 
-.bundle_table, .actor_table{
+.bundle_table, .person_table{
 	
 	border: none;
 	margin-top: 0px;
@@ -441,7 +441,7 @@ color: #FFFFFF;
 }
 
 
-.bundle_table tr td, .actor_table tr td{
+.bundle_table tr td, .person_table tr td{
 
 border-top: none;
 
@@ -478,20 +478,20 @@ white-space: nowrap;
 	
 }
 
-.actors{
+.persons{
 
 clear: both;
 
 }
 
-.actor_name_disp{
+.person_name_disp{
 
 line-height: 16pt;
 
 
 }
 
-.actor_role_disp{
+.person_role_disp{
 
 font-size: 10pt;
 margin: 0px;
@@ -507,7 +507,7 @@ width: 150px;
 
 }
 
-.actors select{
+.persons select{
 
 width: 240px;
 
@@ -524,7 +524,7 @@ cursor: pointer;
 
 }
 
-.delete_actor_icon{
+.delete_person_icon{
 
 height: 43px;
 float: left;
@@ -556,7 +556,7 @@ background-color: bisque;
 	
 }
 
-.actor{
+.person{
 	
 padding-top: 10px;
 	
@@ -569,7 +569,7 @@ min-width: 173px;
 width: 200px;
 }
 
-.bundle_actors_td{
+.bundle_persons_td{
 	
 background-color: 	#FFCCCC;
 overflow: hidden;
@@ -578,7 +578,7 @@ min-width: 250px;
 
 }
 
-.actor_in_bundle{
+.person_in_bundle{
 
 background: rgb(255, 139, 199);
 line-height: 0em;
@@ -593,7 +593,7 @@ white-space: nowrap;
 margin-bottom: 10px;
 }
 
-.actor_in_bundle_wrap{
+.person_in_bundle_wrap{
 
 width: 250px;
 
