@@ -197,7 +197,7 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.makeLanguageSearchForm = function(parent, element_id_prefix, on_search, on_add_ISO, no_br){
+	my.makeLanguageSearchForm = function(parent, element_id_prefix, on_search, on_add_ISO, no_br, no_display){
 		
 		var p = dom.make("p","", "", parent);
 		var input = dom.make("input", element_id_prefix + "input","language_input",p);
@@ -231,8 +231,11 @@ APP.GUI = (function() {
 		iso_button.type = "button";
 		iso_button.value = l("ok");			
 		
-		dom.make("div",element_id_prefix + "display", "", parent);	
+		if (!no_display){
+			dom.make("div",element_id_prefix + "display", "", parent);	
+		}
 
+		
 		button.addEventListener('click', function() {  on_search(input.value);   });
 		iso_button.addEventListener('click', function() {  on_add_ISO(iso_input.value);    });
 		
