@@ -110,16 +110,11 @@ APP.GUI = (function() {
 
 	my.makeCheckbox = function (parent,title,name,id,checked,hover){
 
-		var input = document.createElement("input");
-		input.type = "checkbox";
-		input.name = name;
-		input.id = id;
+		var input = dom.input(parent, id, "", name, "checkbox");
 		input.checked = checked;
 		if (hover){		
 			input.title = hover;
 		}
-		
-		parent.appendChild(input);
 		
 		var span = dom.spanBR(parent,"","",title);
 		

@@ -63,6 +63,7 @@ eldp_environment.bundle_form = {
 					type: "select",
 					size: 1,
 					vocabulary: ["Unknown","Unspecified","Africa","Asia","Europe","Australia","Oceania","North-America","Middle-America","South-America"],
+					default_value: "Unspecified",
 					comment: "If the document is about \"the languages of South-America\", only Continent is supposed to be specified.",
 				},					
 				{

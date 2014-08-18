@@ -194,7 +194,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	my.persons = [];
 	
-	my.element_id_prefix = "actor_";
+	my.element_id_prefix = "person_";
 	
 	my.identity = {
 		id: "persons",
@@ -364,6 +364,13 @@ eldp_environment.workflow[1] = (function(){
 		return alert("An error has occured.\nCould not find persons cache index from person id!\n\nperson_id = " + person_id);
 		
 	};
+	
+	
+	my.getPersonByID = function(person_id){
+	
+		return getObject(my.persons, "id", person_id);
+		
+	}
 	
 	
 	my.export_persons = function(){

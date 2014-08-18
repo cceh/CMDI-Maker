@@ -344,44 +344,31 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			};
 		}(session_id) );
 
-		var session_label = dom.make('a',my.dom_element_prefix+session_id+'_label','session_label',session_header);
+		var session_label = dom.make("h1", my.dom_element_prefix+session_id+'_label', 'session_heading', session_header);
 		
 		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name === "")){
-		
-			session_label.innerHTML = "<h1 class=\"session_heading\">" + l("session", "unnamed_session") + "</h1>";
+			session_label.innerHTML = l("session", "unnamed_session");
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = "";
-			
 		}
 		
 		else {
-			session_label.innerHTML = "<h1 class=\"session_heading\">" + l("session", "session") + ": " + session_object.session.name + "</h1>";
+			session_label.innerHTML = l("session", "session") + ": " + session_object.session.name;
 			my.sessions[my.getSessionIndexFromID(session_id)].session.name = session_object.session.name;
-		
 		}
 
-		session_label.href = "#";
-
 		//create icon for deleting the session
-		var session_delete_link = dom.make('a', my.dom_element_prefix + session_id + '_delete_link','session_delete_link', session_header);
-		session_delete_link.addEventListener('click', function(num) {
-
+		var icon = APP.GUI.icon(session_header, my.dom_element_prefix + session_id + '_delete_img','delete_img', "reset", function(num) {
 			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
 				event.stopPropagation();
 				my.userErase(num);  
 			};
-			
-		}(session_id) );
-		var icon = APP.GUI.icon(session_delete_link,my.dom_element_prefix+session_id+"_delete_img", "delete_img", "reset");
+		}(session_id));
 		icon.alt = l("session", "delete_session");
 		icon.title = l("session", "delete_session");
-		session_delete_link.href = "#";
 		
-		//create icon to expand/collapse the session
-		var session_display_link = dom.make('a',my.dom_element_prefix+session_id+'_display_link','session_display_link',session_header);
-		icon = APP.GUI.icon(session_display_link, my.dom_element_prefix+session_id+"_expand_img", "expand_img", "down");
+		icon = APP.GUI.icon(session_header, my.dom_element_prefix+session_id+"_expand_img", "expand_img", "down");
 		icon.alt = l("session", "expand_collapse_session");
 		icon.title = l("session", "expand_collapse_session");
-		session_display_link.href = "#";
 		
 		
 	};
@@ -921,12 +908,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.refreshSessionHeading = function(session_id){
 
 		if (get(my.dom_element_prefix+session_id+"_session_name") === ""){
-			g(my.dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">" + l("session", "unnamed_session") + "</h1>";
+			g(my.dom_element_prefix+session_id+"_label").innerHTML = l("session", "unnamed_session");
 		}
 		
 		else {
 		
-			g(my.dom_element_prefix+session_id+"_label").innerHTML = "<h1 class=\"session_heading\">" + l("session", "session") + ": "+get(my.dom_element_prefix+session_id+"_session_name")+"   </h1>";
+			g(my.dom_element_prefix+session_id+"_label").innerHTML = l("session", "session") + ": " + get(my.dom_element_prefix+session_id+"_session_name");
 
 		}
 

@@ -82,13 +82,15 @@ eldp_environment.workflow[3] = (function (){
 		
 		xml_window.innerHTML = "";
 		
-		var xml_strings = new eldp_environment.eldp_generator();
+		APP.save(); //BAD HERE. has to be there so that all values in objects are up-to-date. must happen before eldp_generator is called.
+		
+		var xml_strings = eldp_environment.eldp_generator();
 		
 		for (var s=0;s<bundle.bundles.length;s++){
 			
 			filename = get(bundle.dom_element_prefix+bundle.bundles[s].id+"_bundle_name") + ".cmdi";
 			APP.GUI.createXMLOutputDIV(xml_window, "CMDI Bundle " + (s+1), "textarea_bundle_"+s,
-			xml_strings[s],filename, true);
+			xml_strings.bundles[s],filename, true);
 			
 		}
 		

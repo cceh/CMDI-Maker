@@ -17,12 +17,103 @@ limitations under the License.
 	
 var xml = (function () {
 
-	var my = {};
-	my.header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-
-	my.last_mode = 0;
+	var createTag = function(name, mode, attributes){
+		
+		return_string = "<";
+		
+		//if it's a closing tag, add closing slash at the beginning
+		if (mode==1){
+			return_string+="/";
+		}
+		
+		return_string += name;
+		
+		//if tag is not closing tag, insert attributes
+		if ((mode === 0) || (mode == 2)){
+			return_string += addAttributes(attributes, name.length);
+		}
+		
+		if (mode==2){
+			return_string+="/";
+		}
 	
+		return_string+=">";
+		
+		return return_string;
+
+	};
+	
+	
+	var addAttributes = function(attributes, length_of_element_name){
+		
+		var return_string = "";
+		
+		for (var i=0;i<attributes.length;i++){
+			
+			/*
+			when this is not the first and only attribute to add,
+			start a new line and begin in the column where the attribute above began
+			that means after my.tab, <, length_of_element_name and
+			the space between element_name and the first attribute
+			*/
+			if (i !== 0){
+				return_string+="\n";
+				return_string += addTabs(my.tab);
+               
+				for (var j=0;j<length_of_element_name;j++){
+					return_string+=" ";
+				}
+				
+				return_string += "  ";
+				
+			}
+			
+			/*when this is the first attribute to add, just make a space and start*/
+			if (i === 0){
+				return_string+=" ";
+			}
+			
+			//attribute key
+			return_string += attributes[i][0];
+			
+			return_string += "=";
+			
+			//attribute value in quotation marks
+			return_string += "\"";
+			return_string += attributes[i][1];
+			return_string += "\"";
+			
+		}
+		
+		return return_string;
+	
+	
+	};
+	
+	
+	var addTabs = function(number){
+		return_string = "";
+		
+		for (var x=0;x<number;x++){
+			return_string += "   ";
+		}
+		
+		return return_string;
+	};
+
+	
+	var my = {};
+	my.header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+
+	my.last_mode = -1;
 	my.tab = 0;
+	
+	my.reset = function(){
+	
+		my.last_mode = -1;
+		my.tab = 0;
+	
+	};
 
 	my.tag = function(name,mode,keys){   //keys as array
 		//mode 0 = opening tag
@@ -35,65 +126,21 @@ var xml = (function () {
     
 		var return_string = "";
     
-		if (mode==1){
-			my.tab-=1;
+		if (mode == 1){
+			my.tab -= 1;
 		}
 		
-		if ((mode != 1) || (my.last_mode !== 0)){  
-			return_string+="\n";
-
-			for (var x=0;x<my.tab;x++){
-				return_string+="   ";
-			}
-		}	
-		
-		return_string+="<";
-    
-		if (mode==1){
-			return_string+="/";
+		//if this is NOT a closing tag just after an opening tag, 
+		//AND if this is not the beginning of all, then start a new line
+		if ((!(mode == 1 && my.last_mode == 0)) && my.last_mode != -1){
+			return_string += "\n";
+			return_string += addTabs(my.tab);
 		}
 		
-		return_string+=name;
-		
-		if ((mode === 0) || (mode == 2)){  //insert keys/arguments
-			
-			for (var i=0;i<keys.length;i++){
-				
-				if (i !== 0){
-					return_string+="\n";
-					
-					for (var y=0;y<my.tab;y++){
-						return_string+="   ";
-					}
-                
-					for (var j=0;j<name.length;j++){
-						return_string+=" ";
-					}
-					
-					return_string += "  ";  // because of < and space next to name
-					
-				}
-		
-				if (i === 0){
-					return_string+=" ";
-				}
-		
-				return_string+=keys[i][0];
-				return_string+="=\"";
-				return_string+=keys[i][1];
-				return_string+="\"";
-				
-			}
-		}
-		
-		if (mode==2){
-			return_string+="/";
-		}
-	
-		return_string+=">";
+		return_string += createTag(name, mode, keys);
 		
 		if (mode === 0){
-			my.tab+=1;
+			my.tab += 1;
 		}
 	
 		my.last_mode = mode;
@@ -101,16 +148,18 @@ var xml = (function () {
 		return return_string;
 		
 	};
-
+	
+	
 	my.element = function (name,value,keys){
 		
-		var return_string="";
-	
+		var return_string = "";
+		
+		//when there is a value, there must be opening and closing tags
 		if (value !== ""){
 		
-			return_string+=my.tag(name,0,keys);
-			return_string+=value;
-			return_string+=my.tag(name,1);
+			return_string += my.open(name, keys);
+			return_string += value;
+			return_string += my.close(name);
 		
 		}
 	
@@ -120,6 +169,14 @@ var xml = (function () {
 		
 		return return_string;
 		
+	};
+	
+	my.open = function(name, keys){
+		return my.tag(name, 0, keys);
+	};
+	
+	my.close = function(name){
+		return my.tag(name, 1);
 	};
 	
 	return my;

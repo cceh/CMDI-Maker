@@ -19,36 +19,85 @@ eldp_environment.eldp_generator = function(){
 "use strict";
 	
 	var resources = eldp_environment.workflow[0];
-	var actor = eldp_environment.workflow[1];
+	var person = eldp_environment.workflow[1];
 	var bundle = eldp_environment.workflow[2];
 
 
-	var create_cmdi_session = function(session_id){
+	var create_bundle = function(bundle){
 		
+		xml.reset();  //we're starting a new xml file here, so tabula rasa!
+	
 		var return_string = "";
-		return_string+=xml.header;
+		return_string += xml.header;
 		//return_string+=insert_cmdi_header("session");
 		//return_string+=insert_header(get("metadata_creator"),today()+"+01:00",imdi_session_profile);
 		
-		//in resources is nothing, as this is a session and no corpus. attached media files in a cmdi session are further down
-		return_string+=xml.tag("Resources",0);
-		return_string+=xml.tag("ResourceProxyList",2);
-		return_string+=xml.tag("JournalFileProxyList",2);
-		return_string+=xml.tag("ResourceRelationList",2);
-		return_string+=xml.tag("Resources",1);
+		return_string += xml.open("ELDP-Bundle")
 		
-		return_string += xml.tag("Components",0);
+		return_string += xml.element("Name", bundle.bundle.name);
+		return_string += xml.element("Title", bundle.bundle.title);
+		return_string += xml.element("Date", bundle.bundle.date.year + "-" + bundle.bundle.date.month + "-" + bundle.bundle.date.day);
+		return_string += xml.element("Description", bundle.bundle.description);
 		
-		//return_string += insert_cmdi_session_data(session_id);
+		return_string += xml.open("Location");
+		return_string += xml.element("Continent", bundle.location.continent);
+		return_string += xml.element("Country", bundle.location.country);
+		return_string += xml.element("Region", bundle.location.region);
+		return_string += xml.element("Address", bundle.location.address);
+		return_string += xml.close("Location")
 		
-		return_string += xml.tag("Components",1);
+		return_string += xml.open("Persons");
+		return_string += insert_persons(bundle.persons.persons);
+		return_string += xml.close("Persons");
 		
-		return_string += xml.tag("CMD",1);
+		return_string += xml.close("ELDP-Bundle");
 		
 		return return_string;
 		
+	};
+	
+	var insert_person_languages = function(languages){
+	
+		return_string = "";
+	
+		forEach(languages, function(lang){
+		
+			return_string += xml.open("Language");
+			return_string += xml.element("ID", lang.LanguageObject[0]);
+			return_string += xml.element("Name", lang.LanguageObject[3]);
+			return_string += xml.close("Language");
+		
+		});
+		
+		return return_string;
+	
+	
+	};
+	
+	
+	var insert_persons = function(person_in_bundles){
+	
+		var return_string = "";
+		
+		forEach(person_in_bundles, function(person_in_bundle){
+			var pers = person.getPersonByID(person_in_bundle.id);
+			
+			return_string += xml.open("Person")
+			return_string += xml.element("Title", pers.title);
+			return_string += xml.element("Role", person_in_bundle.role);
+			return_string += xml.element("Forenames", pers.forenames);
+			return_string += xml.element("Surname", pers.surname);
+			return_string += xml.open("Languages");
+			return_string += insert_person_languages(pers.languages);
+			return_string += xml.close("Languages");
+			return_string += xml.close("Person");
+		
+		});
+	
+		return return_string;
+	
+	
 	}
-
 
 	
 	var insert_content_languages = function (session_id) {
@@ -59,23 +108,23 @@ eldp_environment.eldp_generator = function(){
 	
 		for (var l=0;l<languages.length;l++){  //for all content languages // no session separate languages yet
 	
-			return_string += xml.tag("Content_Language",0);
+			return_string += xml.open("Content_Language");
 			return_string += xml.element("Id",APP.CONF.LanguageCodePrefix+languages[l][0]);
 			return_string += xml.element("Name",languages[l][3]);
-			return_string += xml.tag("Content_Language",1);
+			return_string += xml.close("Content_Language");
 	
 		}
 
 		return return_string;
 		
-	}
+	};
 	
 
-	var insert_cmdi_written_resource = function(link,size){
+	var insert_resource = function(link,size){
 
 		var return_string = "";
 		
-		return_string += xml.tag("WrittenResource",0);
+		return_string += xml.open("WrittenResource");
 
 		return_string += xml.element("ResourceLink",link);
 		return_string += xml.element("MediaResourceLink","");
@@ -88,12 +137,12 @@ eldp_environment.eldp_generator = function(){
 		return_string += xml.element("Format",resources.getFileType(link).mimetype);
 		return_string += xml.element("Size",size);
 		
-		return_string += xml.tag("Validation",0);
+		return_string += xml.open("Validation");
 		return_string += xml.element("Type","");
 		return_string += xml.element("Methodology","");
 		return_string += xml.element("Level","Unspecified");
 		return_string += xml.element("Description","");
-		return_string += xml.tag("Validation",1);
+		return_string += xml.close("Validation");
 
 		return_string += xml.element("Derivation","");
 
@@ -102,7 +151,7 @@ eldp_environment.eldp_generator = function(){
 		return_string += xml.element("LanguageId","");
 		return_string += xml.element("Anonymized","Unspecified");
 
-		return_string += xml.tag("Access",0);
+		return_string += xml.open("Access");
 	  
 		return_string += xml.tag("Availability",2);
 		return_string += xml.tag("Date",2);
@@ -126,57 +175,10 @@ eldp_environment.eldp_generator = function(){
 
 		return return_string;
 		
-	}
+	};
 
 
-	var insert_cmdi_mediafile = function(link,size){
-
-		var return_string = "";
-		return_string += xml.tag("MediaFile",0);
-		return_string += xml.element("ResourceLink",link);
-		return_string += xml.element("Type",resources.getFileType(link).type);
-		return_string += xml.element("Format",resources.getFileType(link).mimetype);
-		return_string += xml.element("Size",size);
-		
-		return_string += xml.element("Quality","Unspecified");
-		// no input yet
-		
-		return_string += xml.tag("RecordingConditions",2);
-		
-		return_string += xml.tag("TimePosition",0);
-		
-		return_string += xml.element("Start","Unspecified");
-		return_string += xml.element("End","Unspecified");
-		//no input yet
-		
-		return_string += xml.tag("TimePosition",1);
-		
-
-		return_string += xml.tag("Access",0);
-	  
-		return_string += xml.tag("Availability",2);
-		return_string += xml.tag("Date",2);
-		return_string += xml.tag("Owner",2);
-		return_string += xml.tag("Publisher",2);
-		
-		return_string += xml.tag("Contact",0);
-		return_string += xml.tag("Name",2);
-		return_string += xml.tag("Address",2);
-		return_string += xml.tag("Email",2);
-		return_string += xml.tag("Organisation",2);
-		return_string += xml.tag("Contact",1);
-
-		return_string += xml.tag("Access",1);
-
-		return_string += xml.element("Keys","");
-		
-		return_string += xml.tag("MediaFile",1);
-
-		return return_string;
-	}
-
-
-	var insert_cmdi_actor = function(session_id,actor_id){
+	var insert_actor = function(session_id,actor_id){
 
 		var i = actor.getActorsIndexFromID(actor_id);
 		var ac = actor.actors[i];
@@ -251,8 +253,9 @@ eldp_environment.eldp_generator = function(){
 	}
 	
 	var my = {};
+	
 	my.bundles = map(bundle.bundles, function (bundle){
-		return create_cmdi_session(bundle.id);
+		return create_bundle(bundle);
 	});
 
 	return my;

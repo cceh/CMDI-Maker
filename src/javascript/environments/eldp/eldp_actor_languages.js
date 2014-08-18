@@ -47,14 +47,11 @@ eldp_environment.workflow[1].languages = (function (){
 
 	my.remove = function (al_id){
 
-
 		var index = my.getActorLanguageObjectIndexFromID(al_id);
 
 		my.languages_of_active_person.splice(index,1);
 		
-		var child = g(my.element_id_prefix + al_id + "_div");
-		
-		g(my.element_id_prefix + "_display").removeChild(child);
+		dom.remove(my.element_id_prefix + al_id + "_div");
 
 	};
 
@@ -139,17 +136,27 @@ eldp_environment.workflow[1].languages = (function (){
 
 	my.set = function(ActorLanguageObject){
 
+		ActorLanguageObject.id = my.id_counter;
+		
+		my.languages_of_active_person.push(ActorLanguageObject);
+		
+		my.renderActorLanguage(g(my.element_id_prefix + "display"), ActorLanguageObject);
+
+		my.id_counter += 1;
+
+	};
+	
+	
+	my.renderActorLanguage = function(parent, ActorLanguageObject){
+	
 		//LanguageObject is only a reference to the original array in the LanguageIndex.
 		// We have to clone our Language Object from the DB first.
 		// Otherwise we would overwrite the DB array which we do not want.
 		// More info: http://davidwalsh.name/javascript-clone-array
 		var LanguageObject = ActorLanguageObject.LanguageObject.slice(0);
-
-		ActorLanguageObject.id = my.id_counter;
+	
+		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry", parent);
 		
-		my.languages_of_active_person.push(ActorLanguageObject);
-		
-		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "_entry", g(my.element_id_prefix + "_display"));
 		APP.GUI.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset", function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
@@ -173,9 +180,7 @@ eldp_environment.workflow[1].languages = (function (){
 		}
 		
 		dom.span(div,"","","Primary Language");
-
-		my.id_counter += 1;
-
+		
 	};
 
 

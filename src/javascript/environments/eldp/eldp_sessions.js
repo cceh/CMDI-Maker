@@ -90,14 +90,22 @@ eldp_environment.workflow[2] = (function() {
 	
 		var array = [];
 	
-		for (var s=0; s<my.bundles.length; s++){
+		forEach(my.bundles, function(bundle){
 		
-			var bundle_object = my.bundles[s];
+			var bundle_object = bundle;
 			
-			APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+my.bundles[s].id+"_", bundle_form);		
+			APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+bundle.id+"_", bundle_form);
+			
+			//Refresh persons' roles
+			forEach(bundle.persons.persons, function(person_in_bundle){
+			
+				person_in_bundle.role = g("person_in_bundle_" + person_in_bundle.id + "_role_input").value;
+			
+			});
 			
 			array.push(bundle_object);
-		}
+			
+		});
 		
 		my.bundles = array;	
 	
@@ -318,22 +326,17 @@ eldp_environment.workflow[2] = (function() {
 			};
 		}(bundle_id) );
 
-		var bundle_label = dom.make('a',my.dom_element_prefix+bundle_id+'_label','bundle_label',bundle_header);
+		var bundle_label = dom.make('h1',my.dom_element_prefix+bundle_id+'_label','bundle_heading',bundle_header);
 		
 		if ((!bundle_object.bundle) || (!bundle_object.bundle.name) || (bundle_object.bundle.name === "")){
-		
-			bundle_label.innerHTML = "<h1 class=\"bundle_heading\">Unnamed Bundle   </h1>";
+			bundle_label.innerHTML = "Unnamed Bundle";
 			my.bundles[my.getBundleIndexByID(bundle_id)].bundle.name = "";
-			
 		}
 		
 		else {
-			bundle_label.innerHTML = "<h1 class=\"bundle_heading\">Bundle: " + bundle_object.bundle.name + "   </h1>";
+			bundle_label.innerHTML = "Bundle: " + bundle_object.bundle.name;
 			my.bundles[my.getBundleIndexByID(bundle_id)].bundle.name = bundle_object.bundle.name;
-		
 		}
-
-		bundle_label.href = "#";
 
 		//create icon for deleting the bundle
 		var bundle_delete_link = dom.make('a',my.dom_element_prefix+bundle_id+'_delete_link','bundle_delete_link',bundle_header);
@@ -341,7 +344,7 @@ eldp_environment.workflow[2] = (function() {
 
 			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
 				event.stopPropagation();
-				my.userErase(num);  
+				my.userErase(num);
 			};
 			
 		}(bundle_id) );
@@ -350,18 +353,14 @@ eldp_environment.workflow[2] = (function() {
 		
 		//create icon to expand/collapse the bundle
 		var bundle_display_link = dom.make('a',my.dom_element_prefix+bundle_id+'_display_link','bundle_display_link',bundle_header);
-		bundle_display_link.innerHTML = "<img id=\""+my.dom_element_prefix+bundle_id+"_expand_img\" class=\"expand_img\" src=\""+APP.CONF.path_to_icons+"down.png\">";
-		bundle_display_link.href = "#";
-
+		APP.GUI.icon(bundle_display_link, my.dom_element_prefix+bundle_id+"_expand_img", "expand_img", "down");
 
 		var bundle_content = dom.make('div',my.dom_element_prefix+bundle_id+'_content','bundle_content',bundle_div);
 
 		//create the form
 		APP.forms.make(bundle_content, bundle_form, my.dom_element_prefix+bundle_id+"_", my.dom_element_prefix, bundle_object, my.makeSpecialFormInput);
 		
-		
 		g(my.dom_element_prefix+bundle_id+"_bundle_name").addEventListener("blur", function(num){
-		
 			return function(){
 			
 				my.refreshBundleHeading(num);
@@ -371,9 +370,9 @@ eldp_environment.workflow[2] = (function() {
 		
 		if (typeof(bundle_object.persons) != "undefined" && typeof(bundle_object.persons.persons) != "undefined"){
 		
-			forEach(bundle_object.persons.persons, function(person){
+			forEach(bundle_object.persons.persons, function(person_in_bundle){
 		
-				my.renderPerson(bundle_id, person);
+				my.renderPerson(bundle_id, person_in_bundle);
 		
 			});
 		}
@@ -582,8 +581,10 @@ eldp_environment.workflow[2] = (function() {
 	my.refreshPersonName = function(bundle_id, person_id){
 
 		var div = g(my.dom_element_prefix + bundle_id + "_person_" + person_id + "_label");
-		div.innerHTML = "<h2 class='person_name_disp'>" + person.persons[person.getPersonIndexByID(person_id)].title + "</h2>";  //display name of person
-		//div.innerHTML += "<p class='person_role_disp'>" + person.persons[person.getPersonIndexByID(person_id)].role + "</p>";  //INPUT HERE
+		
+		var h2 = div.getElementsByTagName("h2")[0];
+		h2.innerHTML = person.persons[person.getPersonIndexByID(person_id)].title;
+		//display name of person
 
 	};
 	
@@ -622,10 +623,13 @@ eldp_environment.workflow[2] = (function() {
 	
 	
 	my.updatePersonNameInAllBundles = function(person_id){
+	
 		forEach(my.bundles, function(bundle){
+		
+			var person_ids_in_bundle = getArrayWithIDs(bundle.persons.persons);
 	
 			//search for actor_id in this bundles' actors
-			if (bundle.persons.persons.indexOf(person_id) != -1){
+			if (person_ids_in_bundle.indexOf(person_id) != -1){
 				
 				my.refreshPersonName(bundle.id, person_id);
 	
@@ -672,20 +676,18 @@ eldp_environment.workflow[2] = (function() {
 		
 		
 		//check if person in bundle is part of persons[...].id(s)? if not, remove it immediately!
-		for (var k=0;k<my.bundles[s].persons.persons.length;k++){
+		forEach(my.bundles[s].persons.persons, function(person_in_bundle){
 			
-			console.log("Trying to find id " + my.bundles[s].persons.persons[k] + " in persons of bundle "+s);
-			
-			// if an person k is not in all available persons, remove it in the bundle!
-			if (all_available_person_ids.indexOf(my.bundles[s].persons.persons[k]) == -1){
+			// if a person is not in available persons, remove it from the bundle!
+			if (all_available_person_ids.indexOf(person_in_bundle.id) == -1){
 				
 				console.log("There is an person in bundle "+s+" that does not exist anymore. Deleting!");
-				my.removePerson(my.bundles[s].id,my.bundles[s].persons.persons[k]);
+				my.removePerson(my.bundles[s].id, person_in_bundle.id);
 			
 			}
 		
 		
-		}
+		});
 
 
 	};
@@ -848,17 +850,22 @@ eldp_environment.workflow[2] = (function() {
 
 	my.addPerson = function(bundle_id, person_id){
 	//add existing person to bundle
-	//new persons are only created in manage persons
-
+	
+		var person_ids_in_bundle = getArrayWithIDs(my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons);
 
 		//if bundle doesn't already contain this person
-		if (my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.indexOf(person_id) == -1){
+		if (person_ids_in_bundle.indexOf(person_id) == -1){
 		
 			if (person.persons[person.getPersonIndexByID(person_id)]){  //check if person still exists before adding
-		
-				my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.push(person_id);
+				
+				var person_in_bundle = {
+					id: person_id,
+					role: ""
+				};
+				
+				my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.push(person_in_bundle);
 			
-				my.renderPerson(bundle_id, person_id);
+				my.renderPerson(bundle_id, person_in_bundle);
 				
 			}
 			
@@ -879,19 +886,27 @@ eldp_environment.workflow[2] = (function() {
 	};
 
 
-	my.renderPerson = function(bundle_id, person_id){
+	my.renderPerson = function(bundle_id, person_in_bundle){
+	
+		var person_id = person_in_bundle.id;
+		var role_display = (person_in_bundle.role != "") ? person_in_bundle.role : "Role";
 
 		dom.make("div", my.dom_element_prefix + bundle_id + "_person_" + person_id, "person_in_bundle_wrap", g(my.dom_element_prefix+bundle_id+"_persons_persons"));
 		var div = dom.make("div", my.dom_element_prefix+bundle_id+"_person_" + person_id + "_label", "person_in_bundle", g(my.dom_element_prefix+bundle_id+"_person_" + person_id));
 		
+		var h2 = dom.h2(div);
+		h2.className = "person_name_disp";
+		
+		
 		my.refreshPersonName(bundle_id, person_id);
 		
-		var img = dom.img(g(my.dom_element_prefix+bundle_id+"_person_" + person_id),
-		"delete_person_"+person_id+"_icon", "delete_person_icon", APP.CONF.path_to_icons+"reset.png");
-		img.addEventListener('click', function(num, num2) { 
+		dom.input(div, "person_in_bundle_"+person_id+"_role_input", "person_role_input", "", "text", role_display);
+		
+		APP.GUI.icon(g(my.dom_element_prefix+bundle_id+"_person_" + person_id),
+		"delete_person_"+person_id+"_icon", "delete_person_icon", "reset", function(num, num2) { 
 			return function(){ my.removePerson(num, num2);  
 			};
-		}(bundle_id, person_id) );
+		}(bundle_id, person_id));
 
 	};
 
@@ -923,68 +938,22 @@ eldp_environment.workflow[2] = (function() {
 			return;
 		}
 		
+		var filename = resources.available_resources[resource_file_index].name;
+		var filesize = resources.available_resources[resource_file_index].size;
+		
 		var resource_id = my.resource_id_counter;
 
-		if ((resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) === 0)
-		|| (resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 2)){
-			//Media File
-		
-			resource_type = "mf";
-		
-			my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.mediaFiles.push({
-				name: resources.available_resources[resource_file_index][0],
-				size: resources.available_resources[resource_file_index][2],
-				id: my.resource_id_counter,
-				resource_file_index: resource_file_index
-			});
 
-		}
 		
-		else if ((resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 1)
-		|| (resources.getValidityOfFile(resources.available_resources[resource_file_index][0]) == 3)){
-		
-			resource_type = "wr";
-		
-			my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.writtenResources.push({
-				name: resources.available_resources[resource_file_index][0],
-				size: resources.available_resources[resource_file_index][2],
-				id: my.resource_id_counter,
-				resource_file_index: resource_file_index
-			});
-			
-		}
-		
-		else {
-		
-			if (!without_questions){
-			
-				APP.alert("We have a problem.<br>I don't know if this file is a Media File or a Written Resource:<br>" + resources.available_resources[resource_file_index][0] + 
-				"<br>As for now, I will handle it as a written resource. But you really shouldn't do that");
-			
-			}
-			
-			resource_type = "wr";
-			
-			my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.writtenResources.push({
-				name: resources.available_resources[resource_file_index][0],
-				size: resources.available_resources[resource_file_index][2],
-				id: my.resource_id_counter,
-				resource_file_index: resource_file_index
-			});
-			
-		}
-		
-		var filename;
-		var filesize;
-		
-		if (resource_file_index!=-1){
-		// if an existing media file is added, adopt its name and date to the input fields
-			filename = resources.available_resources[resource_file_index][0];	//name
-			filesize = resources.available_resources[resource_file_index][2];	//size
+		my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.push({
+			name: filename,
+			size: filesize,
+			id: my.resource_id_counter,
+			resource_file_index: resource_file_index
+		});
 
-		}
-		
-		else {
+
+		if (resource_file_index == -1){
 			filename = "";
 			filesize = "";
 		}	
@@ -993,7 +962,7 @@ eldp_environment.workflow[2] = (function() {
 		//Rename the bundle if an EAF file is added for the first time and bundle has no name yet
 		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+bundle_id+"_bundle_name") === "")){
 		
-			var name = removeEndingFromFilename(resources.available_resources[resource_file_index][0]);
+			var name = removeEndingFromFilename(filename);
 			
 			g(my.dom_element_prefix+bundle_id+"_bundle_name").value = name;
 			
@@ -1008,7 +977,7 @@ eldp_environment.workflow[2] = (function() {
 		//only, if bundle date is still YYYY
 		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+bundle_id+"_bundle_date_year") == "YYYY")){
 			
-			var date = parseDate(resources.available_resources[resource_file_index][0]);
+			var date = parseDate(filename);
 			
 			if (date !== null){
 			
@@ -1034,24 +1003,13 @@ eldp_environment.workflow[2] = (function() {
 
 	my.renderResource = function(resource_id, bundle_id, type, name, size){
 
-		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_mediafile_" + resource_id, type, g(my.dom_element_prefix+bundle_id+"_resources_resources"));
+		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_mediafile_" + resource_id, "mf", g(my.dom_element_prefix+bundle_id+"_resources_resources"));
 
 		var h3 = dom.h3(div);
-		
-		if (type == "wr"){
-			h3.innerHTML = "Written Resource";
-		}
-		
-		else if (type == "mf"){
-			h3.innerHTML = "Media File";	
-		}
-		
-		else {
-			console.log("ERROR: Strange File type!");
-			return;
-		}
-		
-		var img = dom.img(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon",APP.CONF.path_to_icons+"reset.png");
+
+		h3.innerHTML = "Resource";
+
+		var img = APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ my.removeResource(num, num2);  
 			};
@@ -1063,20 +1021,40 @@ eldp_environment.workflow[2] = (function() {
 		
 		div.getElementsByTagName("input")[0].value = name;
 		div.getElementsByTagName("input")[1].value = size;
+		
+		my.renderUCRS(div);
 
 
 	};
+	
+	
+	my.renderUCRS = function(parent){
+	
+		dom.input(parent, "", "", "", "checkbox", "u");
+		dom.span(parent, "", "", "U");
+		
+		dom.input(parent, "", "", "", "checkbox", "u");
+		dom.span(parent, "", "", "C");
+		
+		dom.input(parent, "", "", "", "checkbox", "u");
+		dom.span(parent, "", "", "R");
+		
+		dom.input(parent, "", "", "", "checkbox", "u");
+		dom.span(parent, "", "", "S");
+	
+	
+	}
 
 
 	my.refreshBundleHeading = function(bundle_id){
 
 		if (get(my.dom_element_prefix+bundle_id+"_bundle_name") === ""){
-			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = "<h1 class=\"bundle_heading\">Unnamed Bundle   </h1>";
+			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = "Unnamed Bundle";
 		}
 		
 		else {
 		
-			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = "<h1 class=\"bundle_heading\">Bundle: "+get(my.dom_element_prefix+bundle_id+"_bundle_name")+"   </h1>";
+			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = "Bundle: "+get(my.dom_element_prefix+bundle_id+"_bundle_name");
 
 		}
 

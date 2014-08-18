@@ -234,10 +234,10 @@ eldp_environment.workflow[0] = (function(){
 	
 		session = eldp_environment.workflow[2];
 	
-		var div = dom.newElement("div","files","",view);
+		var div = dom.make("div","files","",view);
 		
 		dom.h3(div, "Import Files");
-		var drop_zone = dom.newElement("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
+		var drop_zone = dom.make("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
 		
 		var input = dom.input(div,"files_input","","files_input","file");
 		input.multiple = true;
@@ -245,13 +245,13 @@ eldp_environment.workflow[0] = (function(){
 		dom.h3(div, "Import File List");
 		dom.input(div, "file_list_import_input", "", "", "file");
 
-		var usage_table = dom.newElement("div","","workspace-usageTable",div,
+		var usage_table = dom.make("div","","workspace-usageTable",div,
 		'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
 		'<h4>Shift</h4><p>Hold shift to select multiple resources</p>'+
 		'<h4>Escape</h4><p>Press escape to deselect all resources</p>');
 		
-		var file_list_div = dom.newElement("div","file_list_div","",view);
-		var list = dom.newElement("div","list","",file_list_div);
+		var file_list_div = dom.make("div","file_list_div","",view);
+		var list = dom.make("div","list","",file_list_div);
 		
 		// Setup the drag and drop listeners
 		var dropZone = g('drop_zone');
@@ -374,39 +374,22 @@ eldp_environment.workflow[0] = (function(){
 
 			
 			var file_size = my.available_resources[i].size;
+			
+			my.renderResource(
+				i,
+				my.available_resources[i].name,
+				my.available_resources[i].mime_type,
+				my.available_resources[i].size,
+				my.available_resources[i].last_change,
+				"file_entry_"+i,
+				"file_entry " + file_entry_class,
+				list,
+				compatibility_warning,
+				my.available_resources[i].stable,
+				my.available_resources[i].inProgress
+			);
 		
-			var div = dom.newElement("div", "file_entry_"+i, "file_entry " + file_entry_class, list);
-			var title = dom.newElement("h2", "", "file_entry_title", div, my.available_resources[i].name);
-			var p = dom.newElement("p", "", "", div, my.available_resources[i].mimeType +
-			'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
-			my.available_resources[i].lastModified + '</span>');
 			
-			var cb1 = dom.newElement("input","","",div);
-			cb1.type = "checkbox";
-			cb1.addEventListener("click",function(event){ event.stopPropagation(); return;});
-			var span1 = dom.newElement("span","","",div, " Stable");
-			//span1.addEventListener("click",function(event){ event.stopPropagation(); return;});
-			dom.br(div);
-			var cb2 = dom.newElement("input","","",div);
-			cb2.type = "checkbox";
-			cb2.addEventListener("click",function(event){ event.stopPropagation(); return;});
-			var span2 = dom.newElement("span","","",div, " In Progress");	
-			//span2.addEventListener("click",function(event){ event.stopPropagation(); return;});			
-			
-			/*
-			if (compatibility_warning){
-				my.addCompatibilityWarning(div, compatibility_warning);
-			}*/
-
-			div.addEventListener("click", function(i){
-				
-				return function(){
-					
-					my.clickedOnFile(i);
-				
-				};
-				
-			}(i), false);
 
 		}
 		
@@ -420,6 +403,68 @@ eldp_environment.workflow[0] = (function(){
 		
 		my.selected_files = [];
 		
+	};
+	
+	
+	my.refreshFileStateValues = function(file_index){
+	
+		my.available_resources[file_index].stable = g("f_stable_"+file_index).checked;
+		my.available_resources[file_index].inProgress = g("f_inProgress_"+file_index).checked;
+	
+	};
+	
+	
+	my.renderResource = function(number, title, mimeType, file_size, last_change, id, className, parent, compatibility_warning, stable, inProgress){
+	
+		var div = dom.make("div", id, className, parent);
+		var title = dom.make("h2", "", "file_entry_title", div, title);
+		var p = dom.make("p", "", "", div, mimeType +
+		'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
+		last_change + '</span>');
+		
+		var cb1 = dom.make("input","f_stable_"+number,"",div);
+		cb1.type = "checkbox";
+		cb1.addEventListener("click",function(event){ 
+			event.stopPropagation();
+			
+			my.refreshFileStateValues(number);
+			
+			return;
+		});
+		var span1 = dom.make("span","","",div, " Stable");
+		
+		if (stable == true){
+			cb1.checked = true;
+		}
+		
+		
+		dom.br(div);
+		
+		var cb2 = dom.make("input","f_inProgress_"+number,"",div);
+		cb2.type = "checkbox";
+		cb2.addEventListener("click",function(event){
+			event.stopPropagation();
+			my.refreshFileStateValues(number);
+			
+			return;
+		});
+		var span2 = dom.make("span","","",div, " In Progress");	
+		
+		if (inProgress == true){
+			cb2.checked = true;
+		}
+
+		div.addEventListener("click", function(num){
+			
+			return function(){
+				
+				my.clickedOnFile(num);
+			
+			};
+			
+		}(number), false);
+	
+	
 	};
   
   

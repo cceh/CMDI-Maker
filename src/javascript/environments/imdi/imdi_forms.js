@@ -65,6 +65,7 @@ imdi_environment.session_form = function () {
 								type: "select",
 								size: 1,
 								vocabulary: ["Unknown","Unspecified","Africa","Asia","Europe","Australia","Oceania","North-America","Middle-America","South-America"],
+								default_value: "Unspecified",
 								comment: l("session_form_comments", "location", "continent"),
 							},					
 							{

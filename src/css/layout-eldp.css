@@ -377,6 +377,14 @@ color: #4D87C7;
 
 }
 
+
+.person_role_input{
+
+	font-size: 7pt;
+	height: 12px !important;
+
+}
+
 .bundle_table, .person_table{
 	
 	border: none;
