@@ -197,6 +197,10 @@ imdi_environment.cmdi_generator = function(){
 		
 		return_string += xml.tag("Actors",0);
 		
+		return_string += xml.tag("descriptions", 0);
+			return_string += xml.element("Description", get(session.dom_element_prefix+session_id+"_actors_description"));
+		return_string += xml.tag("descriptions", 1);
+		
 		for (var a=0;a<session.sessions[session.getSessionIndexFromID(session_id)].actors.actors.length;a++){
 			return_string += insert_cmdi_actor(session_id,session.sessions[session.getSessionIndexFromID(session_id)].actors.actors[a]);
 		}

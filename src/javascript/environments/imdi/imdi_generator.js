@@ -110,6 +110,9 @@ imdi_environment.imdi_generator = function(){
 
 		//Actors
 		return_string+=xml.tag("Actors",0);
+		
+		//Actors Description
+		return_string+=xml.element("Description",get(session.dom_element_prefix+session_id+"_actors_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
     
 		forEach(session.sessions[session.getSessionIndexFromID(session_id)].actors.actors, function(actor){
 			return_string += insert_actor(session_id, actor);
