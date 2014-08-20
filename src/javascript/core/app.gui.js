@@ -656,8 +656,17 @@ APP.GUI = (function() {
 		};	
 		
 		my.draw = function(menu_elements){
-		
-			var menu = dom.div(document.body, APP.CONF.main_menu_div_id, "");
+			var menu;
+			
+			//if main menu already exists
+			if (g(APP.CONF.main_menu_div_id)){
+				menu = g(APP.CONF.main_menu_div_id);
+				menu.innerHTML = "";
+			}
+			
+			else {
+				menu = dom.div(document.body, APP.CONF.main_menu_div_id, "");
+			}
 			
 			forEach(menu_elements, function(element){ my.drawElement(element, menu); });
 			

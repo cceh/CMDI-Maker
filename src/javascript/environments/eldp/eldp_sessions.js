@@ -330,12 +330,12 @@ eldp_environment.workflow[2] = (function() {
 		
 		if ((!bundle_object.bundle) || (!bundle_object.bundle.name) || (bundle_object.bundle.name === "")){
 			bundle_label.innerHTML = "Unnamed Bundle";
-			my.bundles[my.getBundleIndexByID(bundle_id)].bundle.name = "";
+			my.bundles[my.getIndexByID(bundle_id)].bundle.name = "";
 		}
 		
 		else {
 			bundle_label.innerHTML = "Bundle: " + bundle_object.bundle.name;
-			my.bundles[my.getBundleIndexByID(bundle_id)].bundle.name = bundle_object.bundle.name;
+			my.bundles[my.getIndexByID(bundle_id)].bundle.name = bundle_object.bundle.name;
 		}
 
 		//create icon for deleting the bundle
@@ -365,9 +365,15 @@ eldp_environment.workflow[2] = (function() {
 			
 				my.refreshBundleHeading(num);
 			};
-		}(bundle_id) );
+		}(bundle_id));
+
 		
-		
+		var element_id_prefix = my.dom_element_prefix + bundle_id + "_content_languages_";
+
+		forEach(bundle_object.content.languages.bundle_languages, function(LanguageObject){
+			my.renderLanguage(LanguageObject, bundle_id, element_id_prefix);
+		});
+
 		if (typeof(bundle_object.persons) != "undefined" && typeof(bundle_object.persons.persons) != "undefined"){
 		
 			forEach(bundle_object.persons.persons, function(person_in_bundle){
@@ -399,12 +405,12 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 		
-		my.refreshResources(my.getBundleIndexByID(bundle_id));
+		my.refreshResources(my.getIndexByID(bundle_id));
 		
 		var all_available_person_ids = getArrayWithIDs(person.persons);
 		// find a better place for that
 
-		my.refreshPersonListInBundle(my.getBundleIndexByID(bundle_id), all_available_person_ids);
+		my.refreshPersonListInBundle(my.getIndexByID(bundle_id), all_available_person_ids);
 		
 		if (bundle_expanded === false){
 			my.display(bundle_id);
@@ -483,12 +489,8 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 		
-		var titles = [];
-		
-		forEach(results, function(result){
-
-			titles.push(result[0] + ", "+result[1]+", " + result[3]);
-
+		var titles = map(results, function(result){
+			return result[0] + ", " + result[1] + ", " + result[3];
 		});
 		
 		var heading = l("languages", "language_search") + ": " + results.length + " " + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
@@ -506,49 +508,67 @@ eldp_environment.workflow[2] = (function() {
 		// Otherwise we would overwrite the DB array which we do not want.
 		var LanguageObject = LanguageObject.slice(0);
 
-		LanguageObject.id = my.id_counter;
+		LanguageObject[4] = my.lang_id_counter;
 		
-		var bundle_index = my.getBundleIndexByID(bundle_id);
+		var bundle_index = my.getIndexByID(bundle_id);
 		
 		my.bundles[bundle_index].content.languages.bundle_languages.push(LanguageObject);
 		
-		var div = dom.div(g(element_id_prefix + "display"), element_id_prefix + my.id_counter+"_div", "bundle_language_entry");
+		my.renderLanguage(LanguageObject, bundle_id, element_id_prefix);
 		
-		APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num){
+		my.lang_id_counter += 1;
+
+	};
+	
+	
+	my.renderLanguage = function(LanguageObject, bundle_id, element_id_prefix){
+	
+		var lang_id = LanguageObject[4];
+		
+		//prevent chaos from happening
+		if (lang_id >= my.lang_id_counter){
+			my.lang_id_counter = lang_id + 1;
+		}
+		
+		var element_id = element_id_prefix + lang_id + "_div";
+	
+		var div = dom.div(g(element_id_prefix + "display"), element_id, "bundle_language_entry");
+		
+		APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num, num2, num3){
 			return function(){
-				my.removeLanguage(bundle_id, LanguageObject.id);   //TO DO!
+				my.removeLanguage(num, num2, num3);
 			};
-		}(my.id_counter));
+		}(bundle_id, lang_id, element_id));
 		
 		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
 		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
 		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
 		
-		var input = dom.input(div, "subject_language_" + my.id_counter, "", "", "checkbox");
-		
+		var input = dom.input(div, "subject_language_" + lang_id, "", "", "checkbox");
 		dom.span(div,"","", "Subject Language  ");
-		input = dom.input(div, "working_language_" + my.id_counter, "", "", "checkbox");
+		input = dom.input(div, "working_language_" + lang_id, "", "", "checkbox");
 		dom.span(div,"","","Working Language");
-		
-		my.id_counter += 1;
-
+	
 	};
 	
 	
-	my.removeLanguage = function(bundle_id, l_id){
-	/*
-		var index = my.getLanguageObjectIndexByID(cl_id);
+	my.removeLanguage = function(bundle_id, l_id, element_id){
+	
+		var bundle_index = my.getIndexByID(bundle_id);	
+		var language_index = my.getLanguageObjectIndexByID(bundle_index, l_id);
 
-		APP.log(
-			my.l("languages", "content_language_removed__before_lang") +
-			my.content_languages[index][3] +
-			my.l("languages", "content_language_removed__after_lang")
-		);
-
-		my.content_languages.splice(index, 1);
+		console.log(bundle_index + ", " + language_index);
+		my.bundles[bundle_index].content.languages.bundle_languages.splice(language_index, 1);
 		
-		dom.remove("content_language_"+cl_id+"_div");
-	*/
+		dom.remove(element_id);
+	
+	};
+	
+	
+	my.getLanguageObjectIndexByID = function(bundle_index, l_id){
+		
+		return getIndex(my.bundles[bundle_index].content.languages.bundle_languages, 4, l_id);
+
 	};
 
 
@@ -606,7 +626,7 @@ eldp_environment.workflow[2] = (function() {
 	};
 	
 	
-	my.getBundleIndexByID = function(bundle_id){
+	my.getIndexByID = function(bundle_id){
 
 		var index = getIndex(my.bundles, "id", bundle_id);
 		
@@ -755,7 +775,7 @@ eldp_environment.workflow[2] = (function() {
 
 		dom.remove(my.dom_element_prefix+bundle_id);
 		
-		my.bundles.splice(my.getBundleIndexByID(bundle_id),1);
+		my.bundles.splice(my.getIndexByID(bundle_id),1);
 		
 		if (my.bundles.length === 0) {
 			my.displayNoBundleText();
@@ -851,7 +871,7 @@ eldp_environment.workflow[2] = (function() {
 	my.addPerson = function(bundle_id, person_id){
 	//add existing person to bundle
 	
-		var person_ids_in_bundle = getArrayWithIDs(my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons);
+		var person_ids_in_bundle = getArrayWithIDs(my.bundles[my.getIndexByID(bundle_id)].persons.persons);
 
 		//if bundle doesn't already contain this person
 		if (person_ids_in_bundle.indexOf(person_id) == -1){
@@ -863,7 +883,7 @@ eldp_environment.workflow[2] = (function() {
 					role: ""
 				};
 				
-				my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.push(person_in_bundle);
+				my.bundles[my.getIndexByID(bundle_id)].persons.persons.push(person_in_bundle);
 			
 				my.renderPerson(bundle_id, person_in_bundle);
 				
@@ -913,12 +933,12 @@ eldp_environment.workflow[2] = (function() {
 
 	my.removePerson = function(bundle_id, person_id){
 
-		var position_in_array = my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.indexOf(person_id);
+		var position_in_array = my.bundles[my.getIndexByID(bundle_id)].persons.persons.indexOf(person_id);
 		
 		console.log("Removing person. Position in array: " + position_in_array);
 
 		//remove person_id in array
-		my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.splice(position_in_array,1);
+		my.bundles[my.getIndexByID(bundle_id)].persons.persons.splice(position_in_array,1);
 		
 		dom.remove(my.dom_element_prefix+bundle_id+"_person_"+person_id);
 		
@@ -945,7 +965,7 @@ eldp_environment.workflow[2] = (function() {
 
 
 		
-		my.bundles[my.getBundleIndexByID(bundle_id)].resources.resources.push({
+		my.bundles[my.getIndexByID(bundle_id)].resources.resources.push({
 			name: filename,
 			size: filesize,
 			id: my.resource_id_counter,
@@ -1066,29 +1086,29 @@ eldp_environment.workflow[2] = (function() {
 
 		var ids_of_bundles_media_files = [];
 		
-		for (m=0; m<my.bundles[my.getBundleIndexByID(bundle_id)].resources.mediaFiles.length; m++){
+		for (m=0; m<my.bundles[my.getIndexByID(bundle_id)].resources.mediaFiles.length; m++){
 		
-			ids_of_bundles_media_files.push(my.bundles[my.getBundleIndexByID(bundle_id)].resources.mediaFiles[m].id);
+			ids_of_bundles_media_files.push(my.bundles[my.getIndexByID(bundle_id)].resources.mediaFiles[m].id);
 		
 		}
 		
 		var ids_of_bundles_written_resources = [];
 		
-		for (m=0; m<my.bundles[my.getBundleIndexByID(bundle_id)].resources.writtenResources.length; m++){
+		for (m=0; m<my.bundles[my.getIndexByID(bundle_id)].resources.writtenResources.length; m++){
 		
-			ids_of_bundles_written_resources.push(my.bundles[my.getBundleIndexByID(bundle_id)].resources.writtenResources[m].id);
+			ids_of_bundles_written_resources.push(my.bundles[my.getIndexByID(bundle_id)].resources.writtenResources[m].id);
 		
 		}
 
 		if (ids_of_bundles_written_resources.indexOf(resource_id) != -1){
 
-			my.bundles[my.getBundleIndexByID(bundle_id)].resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
+			my.bundles[my.getIndexByID(bundle_id)].resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
 		if (ids_of_bundles_media_files.indexOf(resource_id) != -1){
 
-			my.bundles[my.getBundleIndexByID(bundle_id)].resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
+			my.bundles[my.getIndexByID(bundle_id)].resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
@@ -1155,8 +1175,8 @@ eldp_environment.workflow[2] = (function() {
 	my.removeAllPersons = function(bundle_id){
 	//Remove all persons from respective bundle
 		
-		while (my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons.length > 0){
-			my.removePerson(bundle_id,my.bundles[my.getBundleIndexByID(bundle_id)].persons.persons[0]);
+		while (my.bundles[my.getIndexByID(bundle_id)].persons.persons.length > 0){
+			my.removePerson(bundle_id,my.bundles[my.getIndexByID(bundle_id)].persons.persons[0]);
 			//Remove always the first person of this bundle because every person is at some point the first	
 		}
 	};
@@ -1207,13 +1227,13 @@ eldp_environment.workflow[2] = (function() {
 		if (document.getElementById(my.dom_element_prefix+bundle_id+"_content").style.display != "none"){
 			document.getElementById(my.dom_element_prefix+bundle_id+"_content").style.display = "none";
 			document.getElementById(my.dom_element_prefix+bundle_id+"_expand_img").src=APP.CONF.path_to_icons+"up.png";
-			my.bundles[my.getBundleIndexByID(bundle_id)].expanded = false;
+			my.bundles[my.getIndexByID(bundle_id)].expanded = false;
 		}
 		
 		else {
 			document.getElementById(my.dom_element_prefix+bundle_id+"_content").style.display = "block";
 			document.getElementById(my.dom_element_prefix+bundle_id+"_expand_img").src=APP.CONF.path_to_icons+"down.png";
-			my.bundles[my.getBundleIndexByID(bundle_id)].expanded = true;
+			my.bundles[my.getIndexByID(bundle_id)].expanded = true;
 		}
 	};
 

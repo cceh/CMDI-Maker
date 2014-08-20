@@ -64,7 +64,6 @@ imdi_environment.workflow[4] = (function (){
 	my.createOutputFormatSelect = function (formats){
 
 		var parent = g("output_format_select");
-
 		dom.makeRadios(parent, formats, "output_format", "output_format_radio_", "title", "name", 0, undefined);
 
 	};

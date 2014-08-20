@@ -158,7 +158,7 @@ APP.save_and_recall = (function () {
 	
 		var CMP_object = {};
 		
-		CMP_object.app = my.retrieveDataToSave();
+		CMP_object[APP.CONF.app_core_storage_key] = my.retrieveDataToSave();
 		
 		if (APP.environments.active_environment){
 			var environment_object = my.retrieveEnvironmentDataToSave();
@@ -211,7 +211,7 @@ APP.save_and_recall = (function () {
 	
 	my.importProjectData = function(data){
 		
-		if (data.app){
+		if (data[APP.CONF.app_core_storage_key]){
 			var environment_data;
 			
 			alertify.set({ labels: {
@@ -229,23 +229,28 @@ APP.save_and_recall = (function () {
 				else {
 					// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button
 					console.log("Importing CMDI Maker Project from file!");
+				
+					//CLEAR EVERYTHING
+					APP.environments.unloadActive();
+					APP.init(true);
+				
+					var environment_id = data[APP.CONF.app_core_storage_key].active_environment_id;
+					
+					console.log("Active Environment: " + environment_id);
+					
+					if (data.environments && data.environments[environment_id]){
+						console.log("importProjectData: Found environment data of environment: " + environment_id);
+						environment_data = data.environments[environment_id];
+					}
+				
+					APP.recall(data[APP.CONF.app_core_storage_key], environment_data);
+					
 				}
 			});
-			
-			//CLEAR EVERYTHING
-			APP.unloadActiveEnvironment();
-			APP.init(true);
+		}
 		
-			var environment_id = data.APP.environments.active_environment_id;
-			
-			console.log("Active Environment: " + environment_id);
-			
-			if (data.environments && data.environments[environment_id]){
-				environment_data = data.environments[environment_id];
-			}
-		
-			APP.recall(data.app, environment_data);
-		
+		else {
+			console.warn("Tried to import project data, but no APP.CONF.app_core_storage_key was found!");
 		}
 
 	};
