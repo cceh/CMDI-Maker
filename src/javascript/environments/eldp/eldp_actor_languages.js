@@ -128,7 +128,7 @@ eldp_environment.workflow[1].languages = (function (){
 
 		}		
 		
-		dom.showSelectFrame(results, titles, actor.languages.addFromForm, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
+		APP.GUI.showSelectFrame(results, titles, actor.languages.addFromForm, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
 		"(ISO639-3 Code, Country ID, Language Name)"); 
 
 	};

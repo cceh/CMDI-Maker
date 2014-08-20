@@ -22,7 +22,7 @@ imdi_environment.workflow[2].languages = (function (){
 	var my = {};
 	var actor = imdi_environment.workflow[2];
 
-	my.languages_of_active_actor = [];
+	my.languages_of_active_actor;
 	
 	my.parent = imdi_environment;
 	var l = my.parent.l;
@@ -31,9 +31,9 @@ imdi_environment.workflow[2].languages = (function (){
 	
 	my.id_counter = 0;
 	
-	my.init = function(){
+	my.init = function(view){
 
-		return;
+		my.languages_of_active_actor = [];
 		
 	};
 	
@@ -61,7 +61,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 
 	my.clearActiveActorLanguages = function(){
-
+		
 		while (my.languages_of_active_actor.length > 0){
 
 			my.remove(my.languages_of_active_actor[0].id);
@@ -75,13 +75,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.getActorLanguageObjectIndexFromID = function (al_id){
 
-		for (var l=0; l<my.languages_of_active_actor.length; l++){
-		
-			if (my.languages_of_active_actor[l].id == al_id){
-				return l;
-			}
-		
-		}
+		return getIndex(my.languages_of_active_actor, "id", al_id);
 
 	};
 

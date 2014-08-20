@@ -93,7 +93,7 @@ APP.environments = (function () {
 	my.unloadActive = function (){
 	
 		if (!my.active_environment){
-			console.log("WARNING: APP.environments.unloadActive called although there is no environment loaded!");
+			console.warn("APP.environments.unloadActive called although there is no environment loaded!");
 			return;
 		}
 	
@@ -106,7 +106,7 @@ APP.environments = (function () {
 		forEach(my.active_environment.workflow, function (module){
 		
 			//delete module view
-			dom.remove(APP.CONF.view_id_prefix+module.identity.id);
+			dom.remove(APP.CONF.view_id_prefix + module.identity.id);
 			
 		});
 		
