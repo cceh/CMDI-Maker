@@ -24,6 +24,15 @@
 	margin-bottom: 15px;
 }
 
+#about_info_main{
+	line-height: 1.2em;
+}
+
+#version_span{
+	font-size: 20pt;
+	line-height: 1.5em;
+}
+
 #VIEWLINK_start{
 
 	cursor: pointer;

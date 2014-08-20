@@ -790,26 +790,15 @@ eldp_environment.workflow[2] = (function() {
 
 		for (var s=0;s<my.bundles.length;s++){
 		
-			for (r=0; r<my.bundles[s].resources.writtenResources.length; r++){
+			for (r=0; r<my.bundles[s].resources.resources.length; r++){
 		
-				if (my.bundles[s].resources.writtenResources[r].id == resource_id){
+				if (my.bundles[s].resources.resources[r].id == resource_id){
 					return r;
 				}
 			
 			}
 			
-			for (r=0; r<my.bundles[s].resources.mediaFiles.length; r++){
-		
-				if (my.bundles[s].resources.mediaFiles[r].id == resource_id){
-					return r;
-				}
-			
-			}
-		
-		
-		
 		}
-
 
 	};
 	
@@ -1053,13 +1042,13 @@ eldp_environment.workflow[2] = (function() {
 		dom.input(parent, "", "", "", "checkbox", "u");
 		dom.span(parent, "", "", "U");
 		
-		dom.input(parent, "", "", "", "checkbox", "u");
-		dom.span(parent, "", "", "C");
-		
-		dom.input(parent, "", "", "", "checkbox", "u");
+		dom.input(parent, "", "", "", "checkbox", "r");
 		dom.span(parent, "", "", "R");
 		
-		dom.input(parent, "", "", "", "checkbox", "u");
+		dom.input(parent, "", "", "", "checkbox", "c");
+		dom.span(parent, "", "", "C");
+		
+		dom.input(parent, "", "", "", "checkbox", "s");
 		dom.span(parent, "", "", "S");
 	
 	
@@ -1084,37 +1073,15 @@ eldp_environment.workflow[2] = (function() {
 	my.removeResource = function(bundle_id, resource_id){
 		var m;
 
-		var ids_of_bundles_media_files = [];
+		var ids_of_bundle_resources = getArrayWithIDs(my.bundles[my.getIndexByID(bundle_id)].resources.resources);
 		
-		for (m=0; m<my.bundles[my.getIndexByID(bundle_id)].resources.mediaFiles.length; m++){
-		
-			ids_of_bundles_media_files.push(my.bundles[my.getIndexByID(bundle_id)].resources.mediaFiles[m].id);
-		
-		}
-		
-		var ids_of_bundles_written_resources = [];
-		
-		for (m=0; m<my.bundles[my.getIndexByID(bundle_id)].resources.writtenResources.length; m++){
-		
-			ids_of_bundles_written_resources.push(my.bundles[my.getIndexByID(bundle_id)].resources.writtenResources[m].id);
-		
-		}
+		if (ids_of_bundle_resources.indexOf(resource_id) != -1){
 
-		if (ids_of_bundles_written_resources.indexOf(resource_id) != -1){
-
-			my.bundles[my.getIndexByID(bundle_id)].resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
+			my.bundles[my.getIndexByID(bundle_id)].resources.resources.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
-		if (ids_of_bundles_media_files.indexOf(resource_id) != -1){
-
-			my.bundles[my.getIndexByID(bundle_id)].resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
-		
-		}
-		
-		var child = document.getElementById(my.dom_element_prefix+bundle_id+"_mediafile_"+resource_id);
-		
-		g(my.dom_element_prefix+bundle_id+"_resources_resources").removeChild(child);
+		dom.remove(my.dom_element_prefix+bundle_id+"_mediafile_"+resource_id);
 
 	};
 
