@@ -217,7 +217,6 @@ td{
 	background: cornflowerblue;
 	left: 0px;
 	right: 0px;
-	height: 44px;
 
 }
 
@@ -471,3 +470,91 @@ width: 30px !important;
 
 }
 
+
+
+/*--- Output ---*/
+
+.output_div{
+
+background-color: lightskyblue;
+border-radius: 15px;
+padding: 20px;
+margin-bottom: 30px;
+width: 935px;
+
+}
+
+.output_div h1{
+
+padding: 0px;
+margin: 0px;
+padding-bottom: 25px;
+
+}
+
+.xml_textarea{
+
+width: 930px;
+
+}
+
+.generator_div{
+
+overflow: hidden;
+display: inline;
+width: 200px;
+float: left;
+margin-right: 20px;
+
+}
+
+
+/*--- Settings ---*/
+
+#VIEW_settings p, #environment_settings p{
+
+margin: 0px;
+
+}
+
+/*--- About ---*/
+
+
+#license_info{
+
+font-size: smaller;
+
+}
+
+
+#logos a img{
+	height: 80px;
+}
+
+.supporters{
+	text-align: center;
+	margin-top: 30px;
+}
+
+.supporters a img{
+	height: 90px;
+	margin: 0px 10px;
+}
+
+.wizard_arrow{
+
+float: left;
+width: 32px;
+height: 38px;
+
+}
+
+.wizard_icon{
+
+height: 22px;
+width: 11px;
+padding-top: 15px;
+padding-left: 10px;
+padding-right: 10px;
+
+}

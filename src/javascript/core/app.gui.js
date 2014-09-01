@@ -441,10 +441,34 @@ APP.GUI = (function() {
 	my.makeAllFunctionsInvisible = function(){
 	
 		//make all functions invisible
-		var functions = g("functions").children;
+		var functions = g(APP.CONF.functions_div_id).children;
 		forEach(functions, dom.hideElement);
 	
 	};
+	
+	
+	my.hideFunctionsDIV = function(){
+	
+		g(APP.CONF.functions_div_id).style.height = "0px";
+		g(APP.CONF.content_wrapper_id).style.bottom = "0px";
+		
+		if (g(APP.CONF.log_section_id)){
+			g(APP.CONF.log_section_id).style.bottom = "10px";
+		}
+	
+	};
+	
+	
+	my.showFunctionsDIV = function(){
+	
+		g(APP.CONF.functions_div_id).style.height = APP.CONF.functions_div_height;
+		g(APP.CONF.content_wrapper_id).style.bottom = APP.CONF.functions_div_height;
+		
+		if (g(APP.CONF.log_section_id)){
+			g(APP.CONF.log_section_id).style.bottom = "50px";
+		}
+	
+	};	
 	
 	
 	my.showFunctionsForView = function (module){
@@ -453,37 +477,46 @@ APP.GUI = (function() {
 		
 		//If this view is not from a module, it wont have functions
 		if (!module){
+			my.hideFunctionsDIV();
 			return;
 		}
 
 		//if this module has functions, make them visible
 		if (module.functions){
+		
+			my.showFunctionsDIV();
 			
 			var functions = module.functions;
 			
 			if (typeof functions == "function"){
 				functions = functions();
 			}
-			
-			//make functions visible
-			forEach(functions, function(func){
-				if (func.type == "function_wrap"){
-					g(func.wrapper_id).style.display = "inline";
-					
-					//set the sub_div to same width and position as function_div
-					var rect = g(func.wrapper_id).children[0].getBoundingClientRect();
-					g(func.wrapper_id).children[1].style.left = rect.left + "px";
-					g(func.wrapper_id).children[1].style.width = (rect.width - 30) + "px";
-					//-30 because of the 15px border of sub_divs
 
-				}
-				
-				else {
-					g(func.id).style.display = "inline";
-				}
-			});
+			forEach(functions, my.renderFunction);
+			
 		}
 
+	};
+	
+	
+	my.renderFunction = function (func){
+	
+		if (func.type == "function_wrap"){
+		
+			g(func.wrapper_id).style.display = "inline";
+			
+			//set the sub_div to same width and position as function_div
+			var rect = g(func.wrapper_id).children[0].getBoundingClientRect();
+			g(func.wrapper_id).children[1].style.left = rect.left + "px";
+			g(func.wrapper_id).children[1].style.width = (rect.width - 30) + "px";
+			//-30 because of the 15px border of sub_divs
+
+		}
+		
+		else {
+			g(func.id).style.display = "inline";
+		}
+		
 	};
 	
 	
@@ -504,29 +537,29 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.onOffSwitch = function(input){
+	my.switchToggle = function(input){
 
 		if (input.on === false){
-			my.setOnOffSwitchValue(input, true);
+			my.setToggleValue(input, true);
 		}
 		
 		else {
-			my.setOnOffSwitchValue(input, false);
+			my.setToggleValue(input, false);
 		}		
 	};
 	
 	
-	my.setOnOffSwitchValue = function(input, value){
+	my.setToggleValue = function(input, value){
 	
 		if (value === true){
 			input.value = APP.l("on");
-			input.style.backgroundColor = "limegreen";
+			input.style.backgroundColor = APP.CONF.toggle_color_on;
 			input.on = true;
 		}
 		
 		else {
 			input.value = APP.l("off");
-			input.style.backgroundColor = "tomato";
+			input.style.backgroundColor = APP.CONF.toggle_color_off;
 			input.on = false;
 		}		
 	
@@ -556,7 +589,7 @@ APP.GUI = (function() {
 		
 		dom.h3(frame,subtitle);
 		
-		for (var j=0;j<options.length;j++){
+		for (var j=0; j<options.length; j++){
 		
 			var a = dom.a(frame,'cl_results_link_'+j,'cl_results_link',"#","",function(num) {
 				return function(){

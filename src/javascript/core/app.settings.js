@@ -42,13 +42,13 @@ APP.settings = (function () {
 			
 		},
 		
-		powerSwitch: function(setting, parent){
+		toggle: function(setting, parent){
 			
 			var input = dom.input(parent, setting.id, "on_off_switch", setting.name, "button");
 			input.on = false;
-			input.addEventListener("click", function(){APP.GUI.onOffSwitch(this);}, false);
+			input.addEventListener("click", function(){APP.GUI.switchToggle(this);}, false);
 			
-			APP.GUI.setOnOffSwitchValue(g(setting.id),setting.default_value);
+			APP.GUI.setToggleValue(g(setting.id),setting.default_value);
 			
 			dom.br(parent);
 			

@@ -24,7 +24,7 @@ var APP = (function () {
 	my.init = function (no_recall) {
 		var recall_object;
 		
-		my.active_language = my.languages[0];
+		my.active_language = my.getActiveLanguageByNavigatorLanguage();
 		
 		if (!no_recall){
 			recall_object = my.save_and_recall.getRecallDataForApp();
@@ -53,6 +53,22 @@ var APP = (function () {
 		
 		window.addEventListener("beforeunload", my.save, false);
 		
+	};
+	
+	
+	my.getActiveLanguageByNavigatorLanguage = function(){
+		//check if there is a LanguagePack whose code property is equal to the browser language
+		
+		var lang = getObject(my.languages, "code", navigator.language);
+		
+		if (typeof lang != "undefined"){
+			return lang;
+		}
+		
+		else {
+			my.languages[0];
+		}
+	
 	};
 
 	
@@ -95,11 +111,11 @@ var APP = (function () {
 		},
 		{
 			id: "settings",
-			icon: "gear2.png",
+			icon: "wrench",
 		},
 		{
 			id: "about",
-			icon: "about.png",
+			icon: "about",
 		}
 	];
 	
@@ -212,6 +228,12 @@ var APP = (function () {
 				onclick: function(){ my.save_and_recall.userSave(); }
 			},
 			{
+				title: my.l("export_to_file"),
+				id: "LINK_export_to_file",
+				icon:	"save",
+				onclick: function(){ my.save_and_recall.saveAllToFile(); }
+			},
+			{
 				title: my.l("settings", "settings"),
 				id: "VIEWLINK_settings",
 				icon:	"wrench",
@@ -287,12 +309,6 @@ var APP = (function () {
 				name: "metadata_creator",
 				id: "metadata_creator",
 				value: "CMDI Maker User"
-			},
-			{
-				title: my.l("settings","save_project"),
-				description: my.l("settings", "save_project_description"),
-				type: "link",
-				onclick: function () { my.save_and_recall.saveAllToFile(); }
 			},
 			{
 				title: my.l("settings","load_project"),
@@ -541,11 +557,9 @@ var APP = (function () {
 		//make all views invisible
 		forEach(views, dom.hide);
 		
-		var view_ids = map(views, function(view) {
-			return view.id;
-		});
+		var view_ids = getArrayWithIDs(views);
 		
-		//check if view exists, if not, throw error
+		//check if view exists
 		if (view_ids.indexOf(id) == -1){
 			console.warn("Warning: Unkown view requested (" + id +")!");
 			my.view("default");

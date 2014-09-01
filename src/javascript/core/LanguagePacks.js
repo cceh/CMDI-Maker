@@ -19,6 +19,7 @@ APP.languages[0] = {
 
 	id: "english",
 	name: "English",
+	code: "en",
 	
 	settings: {
 		settings: "Settings",
@@ -32,8 +33,6 @@ APP.languages[0] = {
 		global_language_of_metadata: "Global Language of Metadata",
 		cmdi_metadata_creator: "CMDI Metadata Creator",
 		cmdi_metadata_creator_description: "The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name.",
-		save_project: "Save Project",
-		save_project_description: "This saves all your data into one file. This file can be imported by CMDI Maker again.",
 		load_project: "Load Project",
 		load_project_description: "Loads a CMP file with CMDI Maker project data.",
 		delete_recall_data: "Delete Recall Data",
@@ -67,6 +66,7 @@ APP.languages[0] = {
 	welcome_back: "Welcome back!",
 	about: "About",
 	save: "Save",
+	export_to_file: "Export to File",
 	
 	start: {
 		greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
@@ -94,6 +94,7 @@ APP.languages[1] = {
 
 	id: "german",
 	name: "Deutsch",
+	code: "de",
 	
 	settings: {
 		settings: "Einstellungen",
@@ -107,8 +108,6 @@ APP.languages[1] = {
 		global_language_of_metadata: "Globale Metadaten-Sprache",
 		cmdi_metadata_creator: "CMDI: Urheber der Metadaten",
 		cmdi_metadata_creator_description: "Das CMDI-Metadatenformat setzt die Angabe eines Urhebers voraus. Das bist wahrscheinlich du! Gib in diesem Fall deinen Namen ein.",
-		save_project: "Projekt in Datei speichern",
-		save_project_description: "Diese Funktion speichert alle deine Daten in einer Datei. Diese kann wieder in den CMDI Maker importiert werden.",
 		load_project: "Projekt laden",
 		load_project_description: "Lädt eine CMP-Datei und importiert ihre Projektdaten.",
 		delete_recall_data: "Daten für den Rückruf löschen",
@@ -142,6 +141,7 @@ APP.languages[1] = {
 	welcome_back: "Willkommen zurück!",
 	about: "Über",
 	save: "Speichern",
+	export_to_file: "In Datei Exportieren",
 	
 	start: {
 		greeting_text: "Willkommen!<br>Dies ist eine Offline-Webanwendung. Du kannst sie fortan auch ohne Internetverbindung nutzen.<br>"+

@@ -41,7 +41,7 @@ var imdi_environment = (function(){
 				
 				title: my.l("settings","calculate_actors_age"),
 				description: my.l("settings","calculate_actors_age_description"),
-				type: "powerSwitch",
+				type: "toggle",
 				default_value: true,
 				name: "radio_age_calc",
 				id: "radio_age_calc"
@@ -72,7 +72,7 @@ var imdi_environment = (function(){
 	my.recall = function (settings){
 		
 		dom.setRadiosByValue(g("output_format"), settings.output_format);
-		APP.GUI.setOnOffSwitchValue(g("radio_age_calc"),settings.calc_actors_age);
+		APP.GUI.setToggleValue(g("radio_age_calc"),settings.calc_actors_age);
 		
 	};
 	

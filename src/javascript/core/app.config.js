@@ -18,7 +18,7 @@ limitations under the License.
 APP.CONF = {
 
 	originator: "CMDI Maker by CLASS - Cologne Language Archive Services",    
-	version: "v1.6.8",
+	version: "v1.6.9",
 	LanguageCodePrefix: "ISO639-3:",
 	path_to_images: "img/",
 	path_to_icons: "img/icons/",
@@ -36,6 +36,12 @@ APP.CONF = {
 	xml_textarea_class_name: "xml_textarea",
 	select_frame_id: "SF",
 	main_menu_div_id: "main_menu_div",
+	functions_div_id: "functions",
+	
+	functions_div_height: "44px",
+	
+	toggle_color_on: "limegreen",
+	toggle_color_off: "tomato",
 	
 	output_textarea_rows: 40,
 	output_textarea_columns: 130,
@@ -43,6 +49,7 @@ APP.CONF = {
 	form_textarea_columns: 18,
 	
 	log_message_period: 5000,  //ms
+	log_section_id: "alertify-logs",
 
 	MetadataLanguageIDs: [
 		["eng","English"],

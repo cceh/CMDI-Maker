@@ -18,11 +18,11 @@ var manifest = require('gulp-manifest');
  
 var source_scripts = [
 /* Dependencies */
-"./src/javascript/alertify.min.js",
+"./src/javascript/alertify.js",
 "./src/javascript/FileSaver.js",
 "./src/javascript/xml.js",
 "./src/javascript/helpers.js",
-"./src/javascript/dom.js",	
+"./src/javascript/dom.js",
 "./src/javascript/LanguageIndex.js",
 	
 	
