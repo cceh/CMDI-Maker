@@ -447,19 +447,6 @@ var APP = (function () {
 	};
 
 
-	my.saveAllOutputFiles = function(){
-	
-		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
-		
-		forEach(textareas, function(textarea){
-		
-			my.save_file(textarea.value, textarea.filename);
-			
-		});
-	
-	};
-	
-	
 	my.initFunctions = function(functions){
 	
 		var functions_div = g("functions");
@@ -534,7 +521,7 @@ var APP = (function () {
 	
 		my.GUI.closeSelectFrame();
 		my.GUI.mainMenu.close();
-	
+		
 		if (typeof module_or_id === 'string') {
 			
 			id = module_or_id;
@@ -604,6 +591,66 @@ var APP = (function () {
 		var blob = new Blob([text], {type: mime_type});
 		saveAs(blob, clean_filename);
 
+	};
+	
+	
+	my.zipAllOutputFiles = function(){
+	
+		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
+		
+		// use a BlobWriter to store the zip into a Blob object
+		zip.createWriter(new zip.BlobWriter(), function(writer) {
+			
+			
+			var asyncLoop = function(o){
+				var i=-1;
+
+				var loop = function(){
+					i++;
+					if(i==o.length){o.callback(); return;}
+					o.functionToLoop(loop, i);
+				}
+				
+				loop(); //init
+			}
+			
+			asyncLoop({
+				length : textareas.length,
+				functionToLoop : function(loop, i){
+				
+					// use a TextReader to read the String to add, onsuccess: loop!
+					writer.add(textareas[i].filename, new zip.TextReader(textareas[i].value), loop);
+				
+				},
+				callback : function(){
+					writer.close(function(blob) {
+					
+						// blob contains the zip file as a Blob object
+						console.log("GOT ZIP BLOB");
+						saveAs(blob, APP.CONF.zip_archive_file_name);
+
+					});
+				}    
+			});
+			
+			
+		}, function(error) {
+			// onerror callback
+		});
+	
+	};
+	
+	
+	my.saveAllOutputFiles = function(){
+	
+		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
+		
+		forEach(textareas, function(textarea){
+		
+			my.save_file(textarea.value, textarea.filename);
+			
+		});
+	
 	};
 	
 	

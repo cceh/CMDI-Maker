@@ -23,21 +23,23 @@ imdi_environment.workflow[2] = (function(){
 	
 	var showLanguagesOfActiveActor = function(){
 
-		forEach(my.actors[my.active_actor].languages, my.languages.set);
+		forEach(my.actors[my.active_actor_index].languages, my.languages.set);
 
 	};
 	
 	
-	var highlightActiveActorInList = function(actor_id){
-
-		for (var i=0;i<my.actors.length;i++){
-			g(my.element_id_prefix + "list_entry_"+i).style.background = "#FF8BC7";
+	var highlightActiveActorInList = function(actor_index){
+		
+		if (typeof actor_index == "undefined"){
+			console.warn("I shall highlight an actor with index = undefined!");
+			return;
 		}
-
-		g(my.element_id_prefix + "list_entry_-1").style.background = "#FF8BC7";
-		//make everything normal at first
-
-		g(my.element_id_prefix + "list_entry_"+actor_id).style.background = "lightskyblue";
+		
+		for (var i=0;i<my.actors.length;i++){
+			g(my.element_id_prefix + "list_entry_" + i).style.background = my.unhighlightColor;
+		}
+		
+		g(my.element_id_prefix + "list_entry_" + actor_index).style.background = my.highlightColor;
 
 	};
 	
@@ -71,20 +73,9 @@ imdi_environment.workflow[2] = (function(){
 		
 		object.languages = getLanguagesOfActiveActorFromForm();  //PRELIMINARY OVERWRITE!
 
-		//if we're not creating a new actor but updating an existing one, we also pass the id of active actor to the db
-		if (my.active_actor != -1) {
-			object.id = my.actors[my.active_actor].id;
-			console.log("Saving actor with id "+object.id);
-		}
+		object.id = my.actors[my.active_actor_index].id;
+		console.log("Saving actor with id "+object.id);
 		
-		else {
-		
-			object.id = my.id_counter;
-			console.log("Saving actor with id "+object.id);
-			my.id_counter++;
-			
-		}
-
 		return object;
 	 
 	};
@@ -92,7 +83,7 @@ imdi_environment.workflow[2] = (function(){
 	
 	var blankForm = function(){
 
-		g(my.element_id_prefix + "form_title").innerHTML = l("new_actor");
+		g(my.element_id_prefix + "form_title").innerHTML = l("new_actor");  //better unnamed actor?
 
 		APP.forms.fill(actor_form, my.element_id_prefix);
 
@@ -176,23 +167,49 @@ imdi_environment.workflow[2] = (function(){
 		return actors_in_json;
 
 	};
-
 	
-	//PUBLIC
-
-	var my = {};
-	my.parent = imdi_environment;
+	
+	var handleClickOnActorList = function(index){
+	
+		my.saveActiveActor();
+		
+		my.show(my.actors[index].id);
+	
+	};
+	
 	var session;
 	
 	var l = function(arg1, arg2){
 		return my.parent.l("actors", arg1, arg2);
 	}
 	
+
+	var isEveryActorNamed = function(){
+	
+		for (var i=0; i<my.actors.length; i++){
+			if (my.actors[i].name == ""){
+				return false;
+			}
+		}
+		
+		return true;
+	
+	};
+
+	
+	//PUBLIC
+
+	var my = {};
+	my.parent = imdi_environment;
+	
 	var actor_form = my.parent.actor_form;
 	
 	my.actors = [];
 	
 	my.element_id_prefix = "actor_";
+	
+	my.highlightColor = "#FF8BC7";
+	my.unhighlightColor = "lightskyblue";
 	
 	my.identity = {
 		id: "actor",
@@ -201,25 +218,21 @@ imdi_environment.workflow[2] = (function(){
 	};
 	
 	my.id_counter = 0;
-	my.active_actor = -1;
+	my.active_actor_index;
 	
-
+	my.module_view;
+	
 	my.init = function(view){
 	
 		my.actors = [];
 		my.id_counter = 0;
-		my.active_actor = -1;
+		
+		my.module_view = view;
 		
 		session = my.parent.workflow[3];
 		
-		dom.make("div",my.element_id_prefix + "list","",view);
+		my.createListDIV(view);
 		var ac_view = dom.make("div", my.element_id_prefix + "view","",view);
-		var title_div = dom.make("div", my.element_id_prefix + "title_div","",ac_view);
-		dom.make("h1", my.element_id_prefix + "form_title", "", title_div, l("new_actor"));
-		dom.make("div", my.element_id_prefix + "content_div","", ac_view);
-		dom.make("div", my.element_id_prefix + "language_results_div","",view);
-		
-		my.createForm();
 		
 		my.languages.init(view);
 		
@@ -228,23 +241,62 @@ imdi_environment.workflow[2] = (function(){
 	};
 	
 	
-	my.view = function(){
-	//has to be there, because of the functions that have to be hidden 
+	my.createListDIV = function(view){
 	
-		my.show(my.active_actor);
-	
+		dom.make("div",my.element_id_prefix + "list","",view);
+		
 	}
-
+	
 	
 	my.getSaveData = function(){
 	
 		var object = {};
 		
+		my.saveActiveActor();
+		
 		object.actors = my.actors;
 		object.id_counter = my.id_counter;
-		object.active_actor = my.active_actor;
+		object.active_actor_index = my.active_actor_index;
 		
 		return object;
+	
+	};
+	
+	/*
+	my.beforeViewChange = function(){
+	
+		if (!isEveryActorNamed()){
+			APP.alert("Every Actor must have a name!");
+			return false;
+		}
+		
+		else {
+			return true;
+		}
+	
+	};*/
+	
+	
+	my.showNoActorsMessage = function(){
+	
+		var view = my.module_view;
+	
+		view.innerHTML = "";
+		
+		var no_actors_message = dom.make("h2","no_actors_text","no_actors_text", view);
+		no_actors_message.innerHTML = l("there_are_no_actors_yet") + " " + 
+		l("why_not_create_one__before_link");
+
+		var new_actor_link = dom.make("a","new_actor_link","new_actor_link", no_actors_message);
+
+		new_actor_link.innerHTML = l("why_not_create_one__link");
+		new_actor_link.href = "#";
+
+		no_actors_message.innerHTML += l("why_not_create_one__after_link");
+
+		g("new_actor_link").addEventListener('click', function() {my.createNewActor(); });
+		//we have to use g here instead of no_sessions_link, because latter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
+		
 	
 	};
 	
@@ -253,9 +305,13 @@ imdi_environment.workflow[2] = (function(){
 	
 		my.actors = data.actors;
 		my.id_counter = data.id_counter;
-		my.active_actor = data.active_actor;
+		my.active_actor_index = data.active_actor_index;
 		
 		my.refreshListDisplay();
+		
+		if (typeof my.active_actor_index != "undefined"){
+			my.show(my.actors[my.active_actor_index].id);
+		}
 	
 	};
 	
@@ -263,16 +319,16 @@ imdi_environment.workflow[2] = (function(){
 	my.functions = function(){
 		return [
 			{
-				id: "link_save_active_actor",
-				icon: "save",
-				label_span_id: "save_actor_span",
-				onclick: function() { my.save_active_actor(); }
+				id: "link_new_actor",
+				icon: "plus",
+				label: l("new_actor"),
+				onclick: function() { my.createNewActor(); }
 			},
 			{
 				id: "link_delete_active_actor",
 				icon: "reset",
 				label: l("delete_this_actor"),
-				onclick: function() { my.delete_active_actor(); }
+				onclick: function() { my.handleClickOnDeleteActor(); }
 			},
 			{
 				id: "link_sort_actors_alphabetically",
@@ -283,7 +339,7 @@ imdi_environment.workflow[2] = (function(){
 			{
 				id: "link_duplicate_active_actor",
 				icon: "duplicate_user",
-				label: l("save_and_duplicate_this_actor"),
+				label: l("duplicate_this_actor"),
 				onclick: function() { my.duplicate_active_actor(); }
 			}
 		];
@@ -320,47 +376,49 @@ imdi_environment.workflow[2] = (function(){
 
 
 	my.show = function(actor_id){
-	// -1 = empty form to create a new actor
-
-		console.log("Showing actor " + actor_id);
+	
+		var actor_index = my.getIndexByID(actor_id);
 		
-		highlightActiveActorInList(actor_id);
+		if (typeof actor_index == "undefined"){
+			console.error("actor.show: Undefined actor_id!");
+			actor_index = 0;
+		}
+		
+		if (my.actors.length == 0){
+			console.info("actor.show: No actors to show!");
+			return;
+		}
+		
+		console.log("Showing actor " + actor_index);
+		
+		my.createFormIfNotExistent();
+		
+		highlightActiveActorInList(actor_index);
 		my.languages.clearActiveActorLanguages();
-
-		my.active_actor = actor_id;
-
-		if (actor_id != -1){
-			//show data of selected actor in form
-
-			g(my.element_id_prefix + "form_title").innerHTML = my.actors[actor_id].name;
-			
-			var actor_to_display = my.actors[actor_id];
-			
-			APP.forms.fill(actor_form, my.element_id_prefix, actor_to_display);
-			
-			showLanguagesOfActiveActor();
-			
-			g('link_delete_active_actor').style.display = "inline";
-			g('link_duplicate_active_actor').style.display = "inline";
-			g("save_actor_span").innerHTML = l("save_changes_to_this_actor");
-
+		
+		my.active_actor_index = actor_index;
+		
+		var form_title = g(my.element_id_prefix + "form_title");
+		var actor_name = my.actors[actor_index].name;
+		
+		if (actor_name == ""){
+			form_title.innerHTML = l("unnamed_actor");
 		}
-
+		
 		else {
-
-			blankForm();
-			
-			dom.hide(g('link_delete_active_actor'));
-			dom.hide(g('link_duplicate_active_actor'));
-			g("save_actor_span").innerHTML = l("save_actor");
-
+			form_title.innerHTML = actor_name;
 		}
-
-
+		
+		var actor_to_display = my.actors[actor_index];
+		
+		APP.forms.fill(actor_form, my.element_id_prefix, actor_to_display);
+		
+		showLanguagesOfActiveActor();
+		
 	};
 	
 	
-	my.getActorsIndexFromID = function(actor_id) {
+	my.getIndexByID = function(actor_id) {
 
 		var index = getIndex(my.actors, "id", actor_id);
 		
@@ -448,7 +506,21 @@ imdi_environment.workflow[2] = (function(){
 	};
 
 
-	my.createForm = function(){
+	my.createFormIfNotExistent = function(){
+	
+		var ac_view = g("actor_view");
+		
+		if (ac_view){
+			return;
+		};
+	
+		ac_view = dom.make("div", "actor_view", "actor_view", my.module_view);
+		
+		ac_view.innerHTML = "";
+		
+		var title_div = dom.make("div", my.element_id_prefix + "title_div","",ac_view);
+		dom.make("h1", my.element_id_prefix + "form_title", "", title_div, l("new_actor"));
+		dom.make("div", my.element_id_prefix + "content_div","", ac_view);
 
 		APP.forms.make(g(my.element_id_prefix + "content_div"), actor_form, my.element_id_prefix, my.element_id_prefix, undefined, my.languages.makeInputInForm);
 
@@ -458,78 +530,78 @@ imdi_environment.workflow[2] = (function(){
 	my.duplicate_active_actor = function(){
 
 		//first, save changes to the actor
-		var save = my.save_active_actor();
+		var save = my.saveActiveActor();
 		
 		//then create a duplicate
 		if (save === true){
-			my.save_active_actor(true);
+			my.saveActiveActor(true);
 			APP.log(l("actor_saved_and_duplicated"),"success");
 		}
 
 	};
 
 
-	my.save_active_actor = function(do_not_overwrite){
-	//do_not_overwrite can be true or false. if true, active actor will not be overwritten, but duplicated
-
-		if (get(my.element_id_prefix + "name") !== ""){
-
-			if (!do_not_overwrite){
-				do_not_overwrite = false;
-			}
-			
-			var actor_to_put = makeActorObjectFromFormInput();
-			
-			return my.save(actor_to_put, do_not_overwrite);
-			
+	my.saveActiveActor = function(){
+	
+		if (typeof my.active_actor_index == "undefined"){
+			console.info("Should save active actor but active actor is undefined!");
+			return;
 		}
+	
+		var actor_to_put = makeActorObjectFromFormInput();
 
-		else {
-		
-			APP.alert(l("give_your_actor_a_name_first"));
-			return false;
-			
-		}
+		my.save(actor_to_put);
 
+		my.refreshListDisplay();
+
+		//how do we require actor name?
 	};
-
-
-	my.save = function(actor_to_put, do_not_overwrite){
+	
+	
+	my.save = function(actor_to_put){
+	//this will always overwrite an existing actor
 		
 		//create array with all actor ids
 		var actor_ids = getArrayWithIDs(my.actors);
 
-		//if this actor does already exist and is to be overwritten, overwrite the object in the array
-		if ((actor_ids.indexOf(actor_to_put.id ) != -1) && (do_not_overwrite === false)) {
-			
-			my.actors.splice(my.getActorsIndexFromID(actor_to_put.id),1,actor_to_put);
-			
-			//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
-			session.updateActorNameInAllSessions(actor_to_put.id);
-			
-		}
+		my.actors.splice(my.getIndexByID(actor_to_put.id),1,actor_to_put);
 		
-		else {    //if actor shall not be overwritten, give the duplicate/new generated actor a new id
-			
-			actor_to_put.id = my.id_counter;
-			console.log("Saving actor with id " + actor_to_put.id);
-			my.id_counter++;
-			
-			my.actors.push(actor_to_put);
+		//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
+		session.updateActorNameInAllSessions(actor_to_put.id);
+		
+		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
+
+		return true;
+
+	};
+	
+	
+	my.createNewActor = function(){
+	
+		if (typeof my.active_actor_index != "undefined"){
+			my.saveActiveActor();
 		}
+	
+		var actor_to_put = APP.forms.createEmptyObjectFromTemplate(actor_form);
+		
+		actor_to_put.id = my.id_counter;
+		console.log("Saving actor with id " + actor_to_put.id);
+		my.id_counter++;
+		
+		my.actors.push(actor_to_put);
 	 
 		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
 
 		my.refreshListDisplay();
 		
-		return true;
-
+		//show this created actor
+		my.show(actor_to_put.id);
 	};
 
-
-	my.delete_active_actor = function(){
-
-		var name_of_actor = my.actors[my.active_actor].name;
+	
+	my.handleClickOnDeleteActor = function(){
+	
+		var name_of_actor = my.actors[my.active_actor_index].name;
 
 		alertify.set({ labels: {
 			ok     : l("no"),
@@ -545,19 +617,41 @@ imdi_environment.workflow[2] = (function(){
 			else {
 				// user clicked "cancel"
 				
-				my.actors.splice(my.active_actor,1);
-				my.refreshListDisplay();
+				my.deleteActiveActor();
 				
 				APP.log(l("actor_deleted_before_name") + name_of_actor + l("actor_deleted_after_name"));
 
 			}
-		});
+		});	
+	
+	};
+	
+
+	my.deleteActiveActor = function(){
+
+		my.actors.splice(my.active_actor_index,1);
+		
+		
+		if (my.actors.length == 0){
+			my.active_actor_index = undefined;
+		}		
+		
+		if (my.active_actor_index > 0){
+			my.show(my.actors[my.active_actor_index - 1].id);
+			console.log("deleted actor " + my.active_actor_index + ". showing actor " + my.active_actor_index - 1);
+		}
+		
+		else if (my.actors.length > 0){
+			my.show(my.actors[0].id)
+		}
+		
+		my.refreshListDisplay();
 	};
 	
 	
 	my.getAge = function (session_id, actor_id){
 
-		var i = my.getActorsIndexFromID(actor_id);
+		var i = my.getIndexByID(actor_id);
 		
 		if (my.actors[i].age === ""){   //at first, check, if actor's age hasn't been specified yet
 		
@@ -611,55 +705,45 @@ imdi_environment.workflow[2] = (function(){
 
 
 	my.refreshListDisplay = function(not_in_sessions){
-		var div;
-	
+		
+		if (!g(my.element_id_prefix + 'list')){
+			my.module_view.innerHTML = "";
+			my.createListDIV(my.module_view);
+		}
+		
+		
 		g(my.element_id_prefix + 'list').innerHTML = "";
 
-		for (var i=0;i<my.actors.length;i++){
-
-			div = dom.make('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
-			dom.h2(div, my.actors[i].name);
-			dom.p(div, my.actors[i].role);
+		forEach(my.actors, renderActorListEntry);
 		
-			div.addEventListener('click', function(num) { 
-				return function(){ my.show(num); }; 
-			}(i), false );
-			
+		if (my.actors.length == 0){
+			my.showNoActorsMessage();
 		}
-
-		//create field for new actor
-		div = dom.make('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_actor") + "</h2>");
-		div.addEventListener('click', function() { my.show(-1); } , false );
+		
+		else {
+			highlightActiveActorInList(my.active_actor_index);
+		}
 
 		if ((session) && (!not_in_sessions)){
 			session.refreshActorLists(my.actors);
 		}
-
-		switch (my.actors.length){
 		
-			case 0: {
-				my.show(-1);
-				break;
-			}
-			
-			case 1: {
-				my.show(0);
-				break;
-			}
-			
-			default: {
-			
-				if (my.active_actor >= my.actors.length){
-					my.show(my.actors.length-1);
-				}
-				
-				else {
-					my.show(my.active_actor);
-				}
-			
-				break;
-			}
-		}
+	};
+	
+	
+	var renderActorListEntry = function(actor, i){
+	
+		var div = dom.make('div', my.element_id_prefix + "list_entry_" + i, my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
+		
+		var name_display = (actor.name != "") ? actor.name : l("unnamed_actor");
+		
+		dom.h2(div, name_display);
+		dom.p(div, actor.role);
+		
+		div.addEventListener('click', function(num) { 
+			return function(){ handleClickOnActorList(num); }; 
+		}(i), false );
+	
 	};
 
 

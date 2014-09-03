@@ -492,10 +492,13 @@ imdi_environment.cmdi_generator = function(){
 	}
 	
 	var my = {};
-	my.sessions = [];           
+	my.sessions = [];
+	
+	xml.reset();
 	my.corpus = create_cmdi_corpus();
     
 	for (var s=0;s<session.sessions.length;s++){
+		xml.reset();
 		my.sessions.push(create_cmdi_session(session.sessions[s].id));
 	}
 

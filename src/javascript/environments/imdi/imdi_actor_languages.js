@@ -63,7 +63,9 @@ imdi_environment.workflow[2].languages = (function (){
 	my.clearActiveActorLanguages = function(){
 		
 		while (my.languages_of_active_actor.length > 0){
-
+			
+			console.log("removing " + my.languages_of_active_actor[0].id);
+			
 			my.remove(my.languages_of_active_actor[0].id);
 			
 		}

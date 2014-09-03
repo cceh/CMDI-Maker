@@ -255,6 +255,7 @@ eldp_environment.eldp_generator = function(){
 	var my = {};
 	
 	my.bundles = map(bundle.bundles, function (bundle){
+		xml.reset();
 		return create_bundle(bundle);
 	});
 

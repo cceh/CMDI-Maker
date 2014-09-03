@@ -15,10 +15,11 @@ var header = require('gulp-header');
 var manifest = require('gulp-manifest');
 //var imageResize = require('gulp-image-resize');
 
- 
+
 var source_scripts = [
 /* Dependencies */
 "./src/javascript/alertify.js",
+"./src/javascript/zip.js",
 "./src/javascript/FileSaver.js",
 "./src/javascript/xml.js",
 "./src/javascript/helpers.js",
@@ -127,13 +128,25 @@ var header_text = '/*\n'+
 '*/\n';
 
 
-// JS concat, strip debugging,minify, and add header
+// JS concat, strip debugging, minify, and add header
 gulp.task('scripts', function() {
   gulp.src(source_scripts)
     .pipe(concat('script.js'))
     //.pipe(stripDebug())
     .pipe(uglify())
 	.pipe(header(header_text))
+    .pipe(gulp.dest('./build/scripts/'));
+});
+
+
+var worker_scripts = [
+	"./src/javascript/deflate.js",
+	"./src/javascript/inflate.js"
+];
+
+
+gulp.task('script-workers', function() {
+  gulp.src(worker_scripts)
     .pipe(gulp.dest('./build/scripts/'));
 });
 
@@ -187,7 +200,7 @@ gulp.task('resize', function () {
 
 
 // default gulp task
-gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'styles', 'manifest'], function() {
+gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'script-workers', 'styles', 'manifest'], function() {
 });
 
 

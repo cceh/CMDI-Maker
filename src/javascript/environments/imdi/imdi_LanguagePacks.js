@@ -105,6 +105,7 @@ imdi_environment.languages[0] = {
 		sort_actors_alphabetically: "Sort Actors alphabetically",
 		actors_alphabetically_sorted: "Actors sorted",
 		save_and_duplicate_this_actor: "Save and duplicate this actor",
+		duplicate_this_actor: "Duplicate this actor",
 		yes_delete_all_actors: "Yes, delete all actors",
 		no: "No",
 		ok: "OK",
@@ -121,6 +122,10 @@ imdi_environment.languages[0] = {
 		really_erase_after_name: "?",
 		actor_deleted_before_name: "Actor ",
 		actor_deleted_after_name: " deleted",
+		there_are_no_actors_yet: "There are no actors yet.",
+		why_not_create_one__before_link: "Why not ",
+		why_not_create_one__link: "create one",
+		why_not_create_one__after_link: "?",
 
 	},
 	
@@ -168,6 +173,7 @@ imdi_environment.languages[0] = {
 		corpus_must_have_proper_name: "The corpus must have a proper name or no name at all.<br>Not allowed chars are: ",
 		sessions_must_have_proper_name: "Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: ",
 		download_corpus_including_all_sessions: "Download Corpus including all Sessions",
+		download_zip_archive: "Download ZIP archive"
 
 	},
 	
@@ -300,10 +306,12 @@ imdi_environment.languages[1] = {
 	
 	actors: {
 		new_actor: "Neuer Actor",
+		unnamed_actor: "Unbenannter Actor",
 		delete_this_actor: "Diesen Actor löschen",
 		sort_actors_alphabetically: "Alphabetisch sortieren",
 		actors_alphabetically_sorted: "Actors sortiert",
 		save_and_duplicate_this_actor: "Actor speichern und duplizieren",
+		duplicate_this_actor: "Actor duplizieren",
 		yes_delete_all_actors: "Ja, alle Actors löschen",
 		no: "Nein",
 		ok: "OK",
@@ -320,6 +328,10 @@ imdi_environment.languages[1] = {
 		really_erase_after_name: " löschen?",
 		actor_deleted_before_name: "Actor ",
 		actor_deleted_after_name: " gelöscht",
+		there_are_no_actors_yet: "Es gibt noch keine Actors.",
+		why_not_create_one__before_link: "Warum ",
+		why_not_create_one__link: "erstellst",
+		why_not_create_one__after_link: " du nicht einen?",
 	
 	},
 	
@@ -369,8 +381,49 @@ imdi_environment.languages[1] = {
 		corpus_must_have_proper_name: "Das Corpus muss einen validen oder garkeinen Namen haben.<br>Nicht erlaubt sind: ",
 		sessions_must_have_proper_name: "Jede Session muss einen validen Namen haben.<br>Unbenannte Sessions sind nicht erlaubt.<br>Nicht erlaubte Zeichen sind: ",
 		download_corpus_including_all_sessions: "Corpus inklusive aller Sessions herunterladen",
+		download_zip_archive: "ZIP-Archiv herunterladen"
 
 	},
+	
+	//Have to be translated!
+	session_form_comments: {
+		name: "A short name or abbreviation of one or two words. This identifier distinguishes the session from others in the same (sub-) corpus and is used for quick browsing.",
+		title: "The session title is the complete title of the session without any abbreviations.",
+		date: "In general the primary date of the session is audio or video date. If this session is about written resources only it indicates the creation date of the primary document.",
+		description: "Here a relevant description referring to the session as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.",
+		location: {
+			continent: "If the document is about \"the languages of South-America\", only Continent is supposed to be specified.",
+			region: "This element can also be used to describe sub-regions. Examples: europe, the netherlands, gelderland, achterhoek.",
+			address: "For instance if recording sessions took place at an institution, the address of the institute is meant."
+		},
+		project: {
+			main: "If the session was made within the context of a project, the project element contains information regarding this project. This information is typically reused for many sessions and corpus leafs when they all belong to the same project.",
+			name: "A short name or abbreviation of the project.",
+			title: "The full title of the project.",
+			id: "A unique identifier for the project.",
+			description: "An elaborate description of the scope and goals of the project.",
+			contact: "Contact information about the person or institution responsible for the project."
+		},
+		content: {
+			main: "The content group is used to describe the content of the session. This is done using four dimensions (communication context, genre, task and modalities).",
+			genre: "The conventionalized discourse types of the content of the session.",
+			sub_genre: "The conventionalized discourse sub-types of the content of the session.",
+			task: "In areas such as language engineering often typical tasks are carried out or typical situations are dealt with such as \"info kiosk task\" or \"frog story\".",
+			description: "In opposition to the elements prose text can be used here to describe the content.",
+			communication_context: {
+				main: "This group of elements is used to describe the communication context in which the recording took place.",
+				event_structure: "Indicates the structure of the communication event.",
+				planning_type: "Indicates in how far the consultant planned the linguistic event.",
+				interactivity: "Characterizes the degree of interactivity between all the Actors in the session.",
+				social_context: "Indicates the social context the event took place in.",
+				involvement: "Indicates in how far the researcher was involved in the linguistic event."
+			}
+		},
+		actors: {
+			description: "This description concerns all Actors and should be used to describe interactions and interrelations between Actors."
+		}
+	},
+	
 	
 	corpus_form_comments: {
 		name: "Ein kurzer, archivierbarer Name für dein Korpus.",

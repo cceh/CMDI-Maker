@@ -289,16 +289,22 @@ APP.forms = (function () {
 
 	};
 	
-	var setEmptyString = function(field, resulting_object){
-		resulting_object[field.name] = "";
+	var setString = function(field, resulting_object){
+		if (field.default_value){
+			resulting_object[field.name] = field.default_value;
+		}
+		
+		else {
+			resulting_object[field.name] = "";
+		}
 	};
 	
 	
 	var createEmptyObjectFunctions = {
-		select: setEmptyString,
-		open_vocabulary: setEmptyString,
-		textarea: setEmptyString,
-		text: setEmptyString,
+		select: setString,
+		open_vocabulary: setString,
+		textarea: setString,
+		text: setString,
 		check: function (field, resulting_object){
 			resulting_object[field.name] = false;
 		},

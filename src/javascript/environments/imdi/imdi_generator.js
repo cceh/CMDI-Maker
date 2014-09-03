@@ -368,10 +368,14 @@ imdi_environment.imdi_generator = function(){
 	}
 	
 	var my = {};
-	my.sessions = [];           
+	my.sessions = [];    
+
+	xml.reset();
+	
 	my.corpus = create_imdi_corpus();
-    
+	
 	forEach(session.sessions, function(session){   
+		xml.reset();
 		my.sessions.push(create_imdi_session(session.id));
 	});
 

@@ -428,10 +428,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	
 	my.refreshActorName = function(session_id, actor_id){
+	
+		var actor_index = actor.getIndexByID(actor_id);
 
 		var div = g(my.dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
-		div.innerHTML = "<h2 class='actor_name_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].name + "</h2>";  //display name of actor
-		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor.getActorsIndexFromID(actor_id)].role + "</p>";   //display role of actor
+		div.innerHTML = "<h2 class='actor_name_disp'>" + actor.actors[actor_index].name + "</h2>";  //display name of actor
+		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor_index].role + "</p>";   //display role of actor
 
 
 	};
@@ -694,7 +696,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//if session doesn't already contain this actor
 		if (my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id) == -1){
 		
-			if (actor.actors[actor.getActorsIndexFromID(actor_id)]){  //check if actor still exists before adding
+			if (actor.actors[actor.getIndexByID(actor_id)]){  //check if actor still exists before adding
 		
 				my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.push(actor_id);
 			

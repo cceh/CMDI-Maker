@@ -122,6 +122,12 @@ imdi_environment.workflow[4] = (function (){
 				icon: "download",
 				label: l("output", "download_corpus_including_all_sessions"),
 				onclick: function(){APP.saveAllOutputFiles();}
+			},
+			{
+				id: "link_export_corpus_as_zip",
+				icon: "download",
+				label: l("output", "download_zip_archive"),
+				onclick: function(){APP.zipAllOutputFiles();}
 			}
 		
 		];
