@@ -601,6 +601,11 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.handleClickOnDeleteActor = function(){
 	
+		if (typeof my.active_actor_index == "undefined"){
+			console.warn("Active Actor is undefined. Don't know what to delete!");
+			return;
+		}
+	
 		var name_of_actor = my.actors[my.active_actor_index].name;
 
 		alertify.set({ labels: {
