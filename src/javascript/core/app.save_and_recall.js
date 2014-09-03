@@ -271,6 +271,7 @@ APP.save_and_recall = (function () {
 		
 		object.active_view = APP.active_view;
 		object.scroll_top = g(APP.CONF.content_wrapper_id).scrollTop;
+		object.version = APP.CONF.version;
 		
 		if (APP.environments.active_environment){
 			object.active_environment_id = APP.environments.active_environment.id;
