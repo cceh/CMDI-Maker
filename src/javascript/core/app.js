@@ -32,11 +32,17 @@ var APP = (function () {
 			if (recall_object && recall_object.settings.active_language_id){
 				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
 			}
+			
+			if (recall_object && recall_object.version && recall_object.version != APP.CONF.version){
+				console.info("APP version is different than recall object version. "+
+				"APP version = " + APP.CONF.version +
+				" , Recall Object version = " + recall_object.version);
+			}
 		}
 		
 		my.checkIfFirstStart();
 		g("version_span").innerHTML = APP.CONF.version;
-		my.sayHello();
+		my.renderStartPage();
 		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.settings.init(my.coreSettings(), g("core_settings"));
 		my.displayMetadataLanguages();
@@ -135,7 +141,11 @@ var APP = (function () {
 	
 	
 	var getTermInLP = function(LP, arg1, arg2, arg3, arg4){
-
+		
+		if (!LP){
+			return undefined;
+		}
+		
 		if (typeof LP[arg1] == "undefined"){
 			return undefined;
 		}
@@ -192,14 +202,14 @@ var APP = (function () {
 			return termInLP;
 		}
 		
-		//try to get term in default language
-		console.info("Haven't found a term in " + LP.name + ": " +
+		console.info("Haven't found a term in " + my.active_language.name + ": " +
 		arg1 +
 		(arg2 ? ", " + arg2 : "") +
 		(arg3 ? ", " + arg3 : "") +
 		(arg4 ? ", " + arg4 : "") +
 		". Trying to get it in default language.");
 		
+		//try to get term in default language
 		var defaultLP = LanguagePacksArray[0];
 		var termInDefaultLP = getTermInLP(defaultLP,arg1,arg2,arg3,arg4);
 		
@@ -214,7 +224,7 @@ var APP = (function () {
 		(arg3 ? ", " + arg3 : "") +
 		(arg4 ? ", " + arg4 : ""));
 		
-		return "###";
+		return APP.CONF.language_error_placeholder;
 
 	};
 	
@@ -417,7 +427,7 @@ var APP = (function () {
 	};
 
 
-	my.sayHello = function (){
+	my.renderStartPage = function (){
 
 		var index = Math.floor(Math.random() * APP.CONF.hellos.length);
 
@@ -446,74 +456,6 @@ var APP = (function () {
 
 	};
 
-
-	my.initFunctions = function(functions){
-	
-		var functions_div = g("functions");
-		forEach(functions, function(func) { my.createFunction(functions_div, func); });
-		
-	};
-	
-	
-	my.createFunction = function(parent, func){
-		var function_div;
-		
-		if (func.type != "function_wrap"){
-		
-			function_div = dom.make("div", func.id, "function_icon", parent);
-			my.GUI.icon(function_div,"","function_img", func.icon);
-			var label = dom.h3(function_div, func.label);
-			
-			if (func.label_span_id){
-				dom.make("span", func.label_span_id, "", label);
-			}
-			
-			else if (func.label) {  //if label is there
-				label.innerHTML = func.label;
-			}
-			
-			function_div.addEventListener('click', func.onclick);
-
-		}
-
-		else {
-		
-			var function_wrap = dom.div(parent, func.wrapper_id, "function_wrap");
-			
-			function_div = dom.div(function_wrap, func.id, "function_icon");
-			APP.GUI.icon(function_div,"","function_img", func.icon);
-			dom.h3(function_div, func.label);
-			
-			function_div.addEventListener('click', func.onclick);
-
-			var sub_div = dom.make("div",func.sub_div,"",function_wrap);
-			
-			if (func.sub_div_innerHTML){
-				sub_div.innerHTML = func.sub_div_innerHTML;
-			}
-			
-			
-			//this cannot be done with css
-			function_div.addEventListener('mousedown', function(elem) {
-				return function(){
-					elem.style.backgroundColor = "black";
-				};
-			}(function_div));
-			
-			function_div.addEventListener('mouseup', function(elem) {
-				return function(){
-					elem.style.backgroundColor = "";
-				};
-			}(function_div));
-			
-		}
-		
-		if (func.after_that){
-			func.after_that();
-		}
-	
-	};
-
 	
 	my.view = function (module_or_id){
 		var module;
@@ -532,7 +474,6 @@ var APP = (function () {
 		else { //if argument is a module
 			module = module_or_id;
 			id = APP.CONF.view_id_prefix + module.identity.id;
-		
 		}
 		
 		if (id == "default"){

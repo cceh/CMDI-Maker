@@ -36,6 +36,8 @@ APP.environments = (function () {
 
 	var my = {};
 	
+	my.disabled_functions = [];
+	
 	my.environments = [imdi_environment, eldp_environment];
 	
 	my.active_environment = undefined;
@@ -183,11 +185,11 @@ APP.environments = (function () {
 		if (module.functions){
 		
 			if (typeof module.functions == "function"){
-				APP.initFunctions(module.functions());
+				my.initFunctions(module.functions());
 			}
 			
 			else {
-				APP.initFunctions(module.functions);
+				my.initFunctions(module.functions);
 			}
 			
 		}
@@ -279,6 +281,95 @@ APP.environments = (function () {
 		return index;
 	
 	};
+	
+	
+	my.initFunctions = function(functions){
+	
+		var functions_div = g("functions");
+		forEach(functions, function(func) { my.createFunction(functions_div, func); });
+		
+	};
+	
+	
+	my.disableFunction = function(id){
+		
+		my.disabled_functions.push(id);
+		dom.hide(g(id));
+	
+	};
+	
+	
+	my.enableFunction = function(id){
+		
+		if (my.disabled_functions.indexOf(id) != -1){
+			
+			my.disabled_functions.splice(my.disabled_functions.indexOf(id),1);
+			g(id).style.display = "inline";
+			
+		}		
+	
+	};
+	
+	
+	my.createFunction = function(parent, func){
+		var function_div;
+		
+		if (func.type != "function_wrap"){
+		
+			function_div = dom.make("div", func.id, "function_icon", parent);
+			APP.GUI.icon(function_div,"","function_img", func.icon);
+			var label = dom.h3(function_div, func.label);
+			
+			if (func.label_span_id){
+				dom.make("span", func.label_span_id, "", label);
+			}
+			
+			else if (func.label) {  //if label is there
+				label.innerHTML = func.label;
+			}
+			
+			function_div.addEventListener('click', func.onclick);
+
+		}
+
+		else {
+		
+			var function_wrap = dom.div(parent, func.wrapper_id, "function_wrap");
+			
+			function_div = dom.div(function_wrap, func.id, "function_icon");
+			APP.GUI.icon(function_div,"","function_img", func.icon);
+			dom.h3(function_div, func.label);
+			
+			function_div.addEventListener('click', func.onclick);
+
+			var sub_div = dom.make("div",func.sub_div,"",function_wrap);
+			
+			if (func.sub_div_innerHTML){
+				sub_div.innerHTML = func.sub_div_innerHTML;
+			}
+			
+			
+			//this cannot be done with css
+			function_div.addEventListener('mousedown', function(elem) {
+				return function(){
+					elem.style.backgroundColor = "black";
+				};
+			}(function_div));
+			
+			function_div.addEventListener('mouseup', function(elem) {
+				return function(){
+					elem.style.backgroundColor = "";
+				};
+			}(function_div));
+			
+		}
+		
+		if (func.after_that){
+			func.after_that();
+		}
+	
+	};
+	
 	
 	return my;
 	

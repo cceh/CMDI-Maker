@@ -126,6 +126,9 @@ imdi_environment.languages[0] = {
 		why_not_create_one__before_link: "Why not ",
 		why_not_create_one__link: "create one",
 		why_not_create_one__after_link: "?",
+		please_give_all_actors_a_name_before_creating_new_one: "Please give all your actors a name first, before creating a new one!",
+		really_erase_this_actor: "Really?<br>You want to erase this actor?",
+		unnamed_actor: "Unnamed actor"
 
 	},
 	
@@ -306,7 +309,6 @@ imdi_environment.languages[1] = {
 	
 	actors: {
 		new_actor: "Neuer Actor",
-		unnamed_actor: "Unbenannter Actor",
 		delete_this_actor: "Diesen Actor löschen",
 		sort_actors_alphabetically: "Alphabetisch sortieren",
 		actors_alphabetically_sorted: "Actors sortiert",
@@ -332,7 +334,9 @@ imdi_environment.languages[1] = {
 		why_not_create_one__before_link: "Warum ",
 		why_not_create_one__link: "erstellst",
 		why_not_create_one__after_link: " du nicht einen?",
-	
+		please_give_all_actors_a_name_before_creating_new_one: "Bitte gib all deinen Actors einen Namen, bevor du einen neuen erstellst!",
+		really_erase_this_actor: "Willst Du diesen Actor wirklich löschen?",
+		unnamed_actor: "Unbenannter Actor"
 	},
 	
 	

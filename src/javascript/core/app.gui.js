@@ -492,17 +492,41 @@ APP.GUI = (function() {
 				functions = functions();
 			}
 
-			forEach(functions, my.renderFunction);
+			forEach(functions, my.renderFunctionIfNotDisabled);
 			
 		}
 
 	};
 	
 	
+	my.renderFunctionIfNotDisabled = function(func){
+		var id;
+		
+		if (func.type == "function_wrap"){
+		
+			id = func.wrapper_id;
+		
+		}
+		
+		else {
+		
+			id = func.id;
+			
+		}
+		
+		if (APP.environments.disabled_functions.indexOf(id) != -1){
+			return;
+		}
+		
+		my.renderFunction(func);
+	
+	};
+	
+	
 	my.renderFunction = function (func){
 	
 		if (func.type == "function_wrap"){
-		
+			
 			g(func.wrapper_id).style.display = "inline";
 			
 			//set the sub_div to same width and position as function_div

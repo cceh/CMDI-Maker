@@ -18,7 +18,7 @@ limitations under the License.
 APP.CONF = {
 
 	originator: "CMDI Maker by CLASS - Cologne Language Archive Services",    
-	version: "v1.7",
+	version: "v1.7.1",
 	LanguageCodePrefix: "ISO639-3:",
 	path_to_images: "img/",
 	path_to_icons: "img/icons/",
@@ -51,6 +51,8 @@ APP.CONF = {
 	
 	log_message_period: 5000,  //ms
 	log_section_id: "alertify-logs",
+	
+	language_error_placeholder: "###",
 
 	MetadataLanguageIDs: [
 		["eng","English"],

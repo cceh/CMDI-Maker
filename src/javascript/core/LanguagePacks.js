@@ -163,3 +163,78 @@ APP.languages[1] = {
 	}
 	
 };
+
+
+
+
+
+APP.languages[2] = {
+
+	id: "spanish",
+	name: "Español",
+	code: "es",
+	
+	settings: {
+		settings: "Configuración",
+		profile: "Perfíl",
+		auto_save: "Guardar automáticamente",
+		off: "Apagado",
+		every_30_seconds: "Cada 30 segundos",
+		every_60_seconds: "Cada 60 segundos",
+		every_5_minutes: "Cada 5 minutos",
+		every_10_minutes: "Cada 10 minutos",
+		global_language_of_metadata: "Lenguaje Global de Metadatos",
+		cmdi_metadata_creator: "Creador de Metadatos CMDI",
+		cmdi_metadata_creator_description: "El formato de metadatos CMDI requiere el nombre de un creador de metadatos. Éste, probablemente, es usted. Si lo es, escriba su nombre.",
+		load_project: "Guardar proyecto",
+		load_project_description: "Esta opción carga un archivo CMP (CMDI Maker Project) junto con los datos del proyecto.",
+		//delete_recall_data: "",
+		delete_recall_data_description: "CMDI Maker guarda los datos que se introducen en la base de datos de un navegador, y los guardará aun cuando se cierre el navegador.<br>De todas formas, si la opción Guardar automáticamente está seleccionada, los nuevos datos serán guardados automáticamente.<br>¡Esta función elimina solamente los datos pertenecientes al perfil activo!",
+		hard_reset: "Reseteo completo",
+		hard_reset_description: "Esta opción elimina todos los datos que CMDI Maker ha almacenado en su ordenador.",
+		program_language: "Lenguaje del programa",
+		no_project_data_found_in_file: "¡No se encontró ningún dato para CMDI Maker en el archivo!"
+	},
+	
+	save_and_recall: {
+		active_profile_data_deleted: "",
+		no_data_found: "No se encontró ningún dato para el perfíl activo",
+		form_saved: "Formulario guardado"
+	},
+	
+	confirm: {
+		no: "No",
+		yes_delete_everything: "Sí, eliminar todo",
+		yes_overwrite_data: "Sí, sobrescribir los datos",
+		overwrite_data: "¿Quiere realmente sobrescribir todos los datos?",
+		hard_reset: "¿Quieres realmente resetear CMDI Maker por completo? ¡Todos los datos serán eliminados!",
+	},
+	
+	on: "Encendido",
+	off: "Apagado",
+	ok: "OK",
+	
+	welcome_back: "¡Bienvenido de nuevo!",
+	about: "Acerca de",
+	save: "Guardar",
+	export_to_file: "Exportar a archivo",
+	
+	start: {
+		greeting_text: "Bienvenidos al CMDI Maker!<br>Fígese, ésta es una aplicación que se puede utilizar también sin conexión.<br>Cuando cargue esta página, podrá reanudar su trabajo en el punto donde lo interrumpió.",
+		lets_go: "¡y vamos a empezar!",
+		is_supported_by: "CMDI Maker está financiado por",
+		need_help: "¿Necesita ayuda?",
+		help_pages_description: "En las páginas de ayuda encontrará videos tutoriales, una lista de correo electrónico y de personas para consultar en caso de necesidad, ¡y mucho más!",
+		select_your_profile: "Seleccione su perfíl",
+		this_is: {
+			before_language: "Esto es ",
+			after_language: "!"
+		}
+	},
+	
+	language_search: {
+		or_type_in_iso_code: "oder gib den ISO-Code ein",
+		search: "Suchen"		
+	}
+	
+};
