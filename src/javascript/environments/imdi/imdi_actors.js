@@ -303,9 +303,22 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.recall = function(data){
 	
-		my.actors = data.actors;
-		my.id_counter = data.id_counter;
-		my.active_actor_index = data.active_actor_index;
+		if (data.actors){
+			my.actors = data.actors;
+		}
+		
+		if (data.id_counter){
+			my.id_counter = data.id_counter;
+		}
+		
+		if (data.active_actor_index){
+			my.active_actor_index = data.active_actor_index;
+		}
+		
+		//if active_actor_index cannot be recalled but there are actors, set it to 0
+		else if (my.actors.length > 0){
+			my.active_actor_index = 0;
+		}
 		
 		my.refreshListDisplay();
 		
