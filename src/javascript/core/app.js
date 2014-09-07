@@ -72,7 +72,7 @@ var APP = (function () {
 		}
 		
 		else {
-			my.languages[0];
+			return my.languages[0];
 		}
 	
 	};
