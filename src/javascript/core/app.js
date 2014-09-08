@@ -24,7 +24,7 @@ var APP = (function () {
 	my.init = function (no_recall) {
 		var recall_object;
 		
-		my.active_language = my.getActiveLanguageByNavigatorLanguage();
+		my.active_language = my.getActiveLanguageByNavigatorLanguageOrTakeDefault();
 		
 		if (!no_recall){
 			recall_object = my.save_and_recall.getRecallDataForApp();
@@ -62,10 +62,19 @@ var APP = (function () {
 	};
 	
 	
-	my.getActiveLanguageByNavigatorLanguage = function(){
+	my.getActiveLanguageByNavigatorLanguageOrTakeDefault = function(){
 		//check if there is a LanguagePack whose code property is equal to the browser language
 		
-		var lang = getObject(my.languages, "code", navigator.language);
+		var navigator_language = navigator.language;
+		
+		var hyphen_position = navigator_language.indexOf("-");
+		
+		//extract the substring before the hyphen, e.g. take "en" from "en-US"
+		if (hyphen_position != -1){
+			navigator_language = navigator_language.substring(0, hyphen_pos); 
+		}
+		
+		var lang = getObject(my.languages, "code", navigator_language);
 		
 		if (typeof lang != "undefined"){
 			return lang;

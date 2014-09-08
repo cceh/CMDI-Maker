@@ -436,3 +436,205 @@ imdi_environment.languages[1] = {
 	
 	
 };
+
+
+
+imdi_environment.languages[2] = {
+
+	id: "spanish",
+	name: "Español",
+	code: "es",
+	
+	workflow: {
+		corpus: "Corpus",
+		resources: "Recursos",
+		actors: "Actores",
+		session: "Sesiones",
+		xml_output: "XML"
+	},
+	
+	settings: {
+		calculate_actors_age: "Calcular la edad del actor",
+		calculate_actors_age_description: "Cuando esta función está activada, CMDI Maker controla si la edad del actor (si ésta no ha sido especificada todavía) puede ser calculada a través de la fecha de nacimiento del actor y de la fecha de la sesión.<br>Si la edad puede ser calculada, ésta aparecerá en el archivo de salida.<br>(Edad = Fecha de la sesión - Fecha de nacimiento del actor)",
+		output_format: "Formato del archivo de salida",
+		imdi: "IMDI",
+		cmdi_with_imdi_profile: "CMDI con perfíl IMDI",
+		export_actors_as_json: "Exportar actores como JSON",
+		import_actors_from_json_or_imdi: "Importar actores desde JSON o IMDI",
+		import_actors_description: "¡Por favor importar solamente archivos codificados en UTF-8!",
+		delete_actors_database: "Eliminar actores",
+		delete_actors_database_description: "CMDI Maker guarda todos sus actores en una base de datos de Web Storage, así que éstos quedarán guardados aun si se cierra la ventana del navegador.",
+	},
+	
+	reset_form: "Resetear formulario",
+	yes_delete_form: "Sí, eliminar formulario",
+	no: "No",
+	really_reset_form: "¿Quieres realmente resetear el formulario y eliminar el corpus y todas sus sesiones?",
+	form_reset: "Reseteo del formulario",
+	search: "Buscar",
+	ok: "OK",
+	function_currently_unavailable: "¡Esta función no está actualmente disponible!",
+	
+	languages: {
+		set_global_languages_of_content: "Establecer Content Language global",
+		language_search: "Buscar lengua",
+		result: "resultado",
+		results: "resultados",
+		language_name: "Nombre de la lengua",
+		is_new_global: "es un nuevo Content Language global",
+		iso_code: "Código ISO",
+		not_found_in_db: "no se encontró en la base de datos",
+		specify_search_request_at_least_3_chars: "Por favor especifique su búsqueda.\nIngrese por lo menos 3 caracteres.",
+		primary_language: "Lengua principal",
+		mother_tongue: "Lengua materna",
+		current_content_languages: "Content Languages corrientes",
+		content_language_removed__before_lang: "Content Language \"",
+		content_language_removed__after_lang: "\" eliminada"
+	},
+	
+	resources: {
+		compatibility_warnings: {
+			general: 'Este archivo multimedia no es un archivo  de recursos válido para LAMUS. Por favor intente convertir su código.',
+			invalid_media_file: 'Este archivo multimedia no es un archivo  de recursos válido para LAMUS. Por favor intente convertir su código en formato WAV (audio) o en MP4 (video).',
+			invalid_written_resource: 'Este archivo multimedia no es un archivo  de recursos válido para LAMUS. Por favor intente convertir su código en formato PDF o en TXT.'
+		},
+		unknown: "Desconocido",
+		create_one_session_per_file: "Crear una sesión para cada archivo",
+		files: "Archivos",
+		selected_files: "Archivos seleccionados",
+		sort_alphabetically: "Ordenar los archivo alfabéticamente",
+		remove: "Eliminar",
+		clear_file_list: "Quitar lista de archivos",
+		drag_and_drop_files_here: "Arrastrar y soltar los archivos aquí",
+		usage: "Uso",
+		click: "Pulsar",
+		click_to_select: "Seleccionar recurso, pulsar otra vez para deseleccionar un solo recurso",
+		shift: "Shift",
+		shift_to_select_multiple: "Mantener pulsada la tecla Shift para seleccionar varios recursos",
+		escape: "Escape",
+		escape_to_deselect: "Pulsar escape para deseleccionar todos los recursos",
+		size: "Tamaño",
+		last_modified: "Modificado la última vez",
+		no_resource_files_imported: "No se importó ningún archivo de recursos."
+	},
+	
+	actors: {
+		new_actor: "Nuevo actor",
+		delete_this_actor: "Eliminar este actor",
+		sort_actors_alphabetically: "Ordenar actores alfabéticamente",
+		actors_alphabetically_sorted: "Actores ordenados",
+		save_and_duplicate_this_actor: "Guardar y duplicar este actor",
+		duplicate_this_actor: "Duplicar este actor",
+		yes_delete_all_actors: "Sí, eliminar todos los actores",
+		no: "No",
+		ok: "OK",
+		confirm_erasing_actors_db: "¿Quiere realmente eliminar la base de datos de los actores por completo?",
+		all_actors_deleted: "Se eliminaron todos los actores",
+		save_actor: "Guardar actor",
+		save_changes_to_this_actor: "Guardar los cambios hechos a este actor",
+		there_are_no_actors: "¡No hay actores!",
+		actors_imported: "se importaron los actores",
+		actor_saved_and_duplicated: "Actor guardado y duplicado.",
+		give_your_actor_a_name_first: "Por favor, primero dé un nombre a su actor.",
+		yes_delete_actor: "Sí, eliminar actor",
+		really_erase_before_name: "¿Quiere realmente eliminar ",
+		really_erase_after_name: " ?",
+		actor_deleted_before_name: "Actor ",
+		actor_deleted_after_name: " eliminado",
+	},
+	
+	
+	session: {
+		new_session: "Nueva sesión",
+		copy_session_1_metadata: "Copiar los metadatos de la Sesión 1 a todas las sesiones",
+		reset_form: "Resetear formulario",
+		sort_by_name: "Ordenar según el nombre",
+		add_to_session: "Añadir a la sesión",
+		no_files_have_been_added: "No se añadió ningún archivo.",
+		add_some_files: "Añadir unos archivos.",
+		new_session_has_been_created: "Se creó una nueva sesión.",
+		name: "Nombre",
+		unnamed_session: "Sesión sin nombre",
+		session: "Sesión",
+		delete_session: "Eliminar sesión",
+		expand_session: "Extender sesión",
+		collapse_session: "Doblar sesión",
+		expand_collapse_session: "Extender/doblar sesión",
+		no_actors_in_db_yet: "Todavía no hay actores en la base de datos.",
+		create_some_actors: "Crear unos actores.",
+		really_erase_session: "¿Quiere realmente eliminar una sesión entera? Está seguro?",
+		yes_delete_session: "Sí, eliminar sesión",
+		session_deleted: "Sesión eliminada",
+		this_corpus_contains_no_sessions_yet: "Todavía no hay sesiones en este corpus.",
+		why_not_create_one__before_link: "¿Porque no ",
+		why_not_create_one__link: "crear una",
+		why_not_create_one__after_link: "?",
+		this_actor_is_already_in_the_session: "Este actor ya está en la sesión.",
+		unknown_file_problem__before_filename: "Tenemos un problema.<br>No sé si este archivo es un archivo multimedia o un recurso escrito:",
+		unknown_file_problem__after_filename: "Por ahora lo voy a considerar un recurso escrito. Pero no deberías volver a hacerlo.",
+		session_name_taken_from_eaf: "El nombre de la sesión viene del nombre del archivo EAF, porque todavía no se le ha dado ningún nombre.",
+		session_date_extracted_from_eaf_file_name: "La fecha de la sesión viene del nombre del archivo EAF.",
+		at_least_2_sessions_to_assign_metadata: "Hay que haber por lo menos 2 sesiones para asignar los metadatos de una a otra.",
+		session_1_metadata_assigned_to_all_sessions: "Se asignaron los metadatos de la Sesión 1 a todas las sesiones.",
+		
+	},
+	
+	output: {
+		xml_output: "XML",
+		imdi: "IMDI",
+		cmdi_with_imdi_profile: "CMDI con perfíl IMDI",
+		you_must_create_some_sessions_first: "¡Primero debe crear unas sesiones!",
+		every_session_must_have_a_project_name: "¡Cada sesión debe tener un nombre de proyecto!",
+		corpus_must_have_proper_name: "El corpus debe tener un nombre adecuado, o no tener ningún nombre.<br>No se admiten: ",
+		sessions_must_have_proper_name: "Cada sesión debe tener un nombre adecuado.<br>Las sesiones sin nombre no están permitidas.<br>No se admiten: ",
+		download_corpus_including_all_sessions: "Bajar corpus junto con todas las sesiones"
+
+	},
+	
+	//Have to be translated!
+	session_form_comments: {
+		name: "Un nombre corto o la abreviatura de una o dos palabras. Este identificador permite distinguir una sesión de las otras en el mismo (sub-) corpus y se utiliza para facilitar la navegación.",
+		title: "El título de la sesión es el título completo de la sesión sin ninguna abreviatura.",
+		date: "En general, la fecha principal de la sesión es la fecha de un archivo audio o video. Si la sesión incluye solamente recursos escritos, ésta indicará la fecha de creación del documento principal.",
+		description: "Aquí se puede proporcionar una descripción relacionada con la sesión entera. Ejemplo: Conversación entre la madre, el padre y el hijo a la mesa desayunando.",
+		location: {
+			continent: "Si el documento está relacionado con \"las lenguas de Sur América\", se debe especificar solamente la voz Continent.",
+			region: "Este elemento se puede utilizar también para describir sub-regiones. Ejemplos: Europa, Paises Bajos, Gelderland, Achterhoek.",
+			address: "Por ejemplo si las sesiones de grabación ocurrieron en un instituto, entonces se requiere la dirección de ese instituto."
+		},
+		project: {
+			main: "Si una sesión se creó dentro de un proyecto, habrá unas informaciones relacionadas con este proyecto. Estas informaciones suelen ser recicladas para varias sesiones y varios corpora si estos pertenecen al mismo proyecto. ",
+			name: "Un nombre corto o una abreviatura del proyecto.",
+			title: "El título completo del proyecto.",
+			id: "Un identificador único para el proyecto.",
+			description: "Una descripción elaborada del ámbito y de los objetivos del proyecto.",
+			contact: "Informaciones de contacto de la persona o del instituto responsable del proyecto."
+		},
+		content: {
+			main: "El grupo de contenido se usa para describir el contenido de la sesión. Esto se hace a través de cuatro dimensiones (contexto de la comunicación, género, tarea y modalidades).",
+			genre: "Los tipos de discurso convencionalizados del contenido de la sesión.",
+			sub_genre: "Los sub-tipos de discurso convencionalizados del contenido de una sesión.",
+			task: "En áreas como ingeniería del lenguaje se suelen tener típicas tareas o situaciones como por ejemplo \"info kiosk task\" o bien \"frog story\".",
+			description: "Por el contrario, el texto en prosa se puede utilizar para describir el contenido.",
+			communication_context: {
+				main: "Este grupo de elementos se utiliza para describir el contexto de comunicación en el que se hizo la grabación.",
+				event_structure: "Indica la estructura del evento comunicativo.",
+				planning_type: "Indica cuanto el consultor planeó el evento lingüístico.",
+				interactivity: "Caracteriza el grado de interacción entre todos los actores de la sesión.",
+				social_context: "Indica el contexto social en el que ocurrió el evento.",
+				involvement: "Indica cuanto el investigador estaba involucrado en el evento lingüístico."
+			}
+		},
+		actors: {
+			description: "La descripción se refiere a todos los actores y debería utilizarse para describir las interacciones y las interrelaciones entre los actores."
+		}
+	},
+	
+	
+	corpus_form_comments: {
+		name: "Un nombre corto y archivable de su corpus.",
+		title: "El título completo y extenso de su corpus."
+	}
+	
+	
+};

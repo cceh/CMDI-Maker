@@ -188,7 +188,7 @@ APP.languages[2] = {
 		cmdi_metadata_creator_description: "El formato de metadatos CMDI requiere el nombre de un creador de metadatos. Éste, probablemente, es usted. Si lo es, escriba su nombre.",
 		load_project: "Guardar proyecto",
 		load_project_description: "Esta opción carga un archivo CMP (CMDI Maker Project) junto con los datos del proyecto.",
-		//delete_recall_data: "",
+		delete_recall_data: "Eliminar datos guardados",
 		delete_recall_data_description: "CMDI Maker guarda los datos que se introducen en la base de datos de un navegador, y los guardará aun cuando se cierre el navegador.<br>De todas formas, si la opción Guardar automáticamente está seleccionada, los nuevos datos serán guardados automáticamente.<br>¡Esta función elimina solamente los datos pertenecientes al perfil activo!",
 		hard_reset: "Reseteo completo",
 		hard_reset_description: "Esta opción elimina todos los datos que CMDI Maker ha almacenado en su ordenador.",
@@ -197,7 +197,7 @@ APP.languages[2] = {
 	},
 	
 	save_and_recall: {
-		active_profile_data_deleted: "",
+		active_profile_data_deleted: "Datos pertenecientes al perfíl activo eliminados",
 		no_data_found: "No se encontró ningún dato para el perfíl activo",
 		form_saved: "Formulario guardado"
 	},
@@ -233,8 +233,8 @@ APP.languages[2] = {
 	},
 	
 	language_search: {
-		or_type_in_iso_code: "oder gib den ISO-Code ein",
-		search: "Suchen"		
+		or_type_in_iso_code: "o bien ingresar un código ISO",
+		search: "Buscar"		
 	}
 	
 };

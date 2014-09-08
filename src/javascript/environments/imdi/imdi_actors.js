@@ -226,6 +226,7 @@ imdi_environment.workflow[2] = (function(){
 	
 		my.actors = [];
 		my.id_counter = 0;
+		my.active_actor_index = undefined;  //Necessary!
 		
 		my.module_view = view;
 		
