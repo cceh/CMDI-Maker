@@ -16,6 +16,12 @@
 }
 
 
+#lang_links{
+	float: right;
+	margin: 0px;
+	clear: both;
+}
+
 
 #about_img{
 	width: 128px;
@@ -78,6 +84,7 @@ input[type="button"], input[type="submit"]{
 
 	font-size: 55pt;
 	text-align: center;
+	clear: both;
 
 }
 

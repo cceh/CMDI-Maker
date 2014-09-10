@@ -437,23 +437,34 @@ var APP = (function () {
 
 
 	my.renderStartPage = function (){
+	
+		var view = g("VIEW_start");
 
-		var index = Math.floor(Math.random() * APP.CONF.hellos.length);
-
-		g("hello").innerHTML = APP.CONF.hellos[index][0];
-		
+		var random_index = Math.floor(Math.random() * APP.CONF.hellos.length);
+		g("hello").innerHTML = APP.CONF.hellos[random_index][0];
 		g("hello").addEventListener("click", function () {
 			my.log(my.l("start", "this_is","before_language") + APP.CONF.hellos[index][1] + my.l("start", "this_is","after_language"));
 		});
 
 		g("greeting_text").innerHTML = my.l("start","greeting_text");
-		
 		g("start_select_profile_span").innerHTML = my.l("start","select_your_profile");
-		
 		g("link_lets_go").innerHTML = my.l("start","lets_go");
 		g("supported_by_label").innerHTML = my.l("start","is_supported_by");
 		g("need_help_label").innerHTML = my.l("start","need_help");
 		g("help_pages_description").innerHTML = my.l("start","help_pages_description");
+		
+		var lang_links = g("lang_links");
+		
+		forEach(my.languages, function(language, counter){
+			
+			var a = dom.a(lang_links, "", "", "#", language.code.toUpperCase(), function(){
+				APP.changeLanguage(counter);
+			});
+			
+			dom.span(lang_links, "", "", "  ");
+		
+		});
+		
 	};
 	
 	
