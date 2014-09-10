@@ -49,40 +49,40 @@ eldp_environment.bundle_form = {
 					name: "description",
 					type: "textarea",
 					comment: "Here a relevant description referring to the session as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.", 
-				}
-			]
-		},
-		{
-			title: "Location",
-			name: "location",
-			type: "column",
-			fields: [
-				{
-					heading: "Continent",
-					name: "continent",
-					type: "select",
-					size: 1,
-					vocabulary: ["Unknown","Unspecified","Africa","Asia","Europe","Australia","Oceania","North-America","Middle-America","South-America"],
-					default_value: "Unspecified",
-					comment: "If the document is about \"the languages of South-America\", only Continent is supposed to be specified.",
-				},					
-				{
-					heading: "Country",
-					name: "country",
-					type: "text",
-					comment: "",
 				},
 				{
-					heading: "Region",
-					name: "region",
-					type: "text",
-					comment: "This element can also be used to describe sub-regions. Examples: europe, the netherlands, gelderland, achterhoek.",
-				},
-				{
-					heading: "Address",
-					name: "address",
-					type: "text",
-					comment: "For instance if recording sessions took place at an institution, the address of the institute is meant.",
+					heading: "Location",
+					name: "location",
+					type: "subarea",
+					fields: [
+						{
+							heading: "Continent",
+							name: "continent",
+							type: "select",
+							size: 1,
+							vocabulary: ["Unknown","Unspecified","Africa","Asia","Europe","Australia","Oceania","North-America","Middle-America","South-America"],
+							default_value: "Unspecified",
+							comment: "If the document is about \"the languages of South-America\", only Continent is supposed to be specified.",
+						},					
+						{
+							heading: "Country",
+							name: "country",
+							type: "text",
+							comment: "",
+						},
+						{
+							heading: "Region",
+							name: "region",
+							type: "text",
+							comment: "This element can also be used to describe sub-regions. Examples: europe, the netherlands, gelderland, achterhoek.",
+						},
+						{
+							heading: "Address",
+							name: "address",
+							type: "text",
+							comment: "For instance if recording sessions took place at an institution, the address of the institute is meant.",
+						}
+					]
 				}
 			]
 		},
@@ -165,11 +165,6 @@ eldp_environment.bundle_form = {
 			fields: ["session_location_continent","session_location_country","session_location_region","session_location_address"]
 		},
 		{
-			name: "project",
-			label: "Project",
-			fields: ["project_name","project_title","project_id","project_description","project_contact_name","project_contact_address","project_contact_email","project_contact_organisation"]
-		},
-		{
 			name: "content",
 			label: "Content",
 			fields: ["content_genre","content_subgenre","content_task","content_description","content_communication_context_eventstructure","content_communication_context_planningtype","content_communication_context_interactivity","content_communication_context_socialcontext","content_communication_context_involvement"]
@@ -207,6 +202,12 @@ eldp_environment.person_form = {
 					name: "surname",
 					type: "text",
 				},
+				{
+					heading: "Code",
+					name: "code",
+					type: "text",
+					comment: "Short unique code to identify the actor as used in the transcription"
+				},
    				{
 					heading: "Birth Date",
 					name: "birth_date",
@@ -216,6 +217,7 @@ eldp_environment.person_form = {
 					heading: "Death Year",
 					name: "death_year",
 					type: "text",
+					maxLength: 4
 				},
    				{
 					heading: "Age",
@@ -233,7 +235,20 @@ eldp_environment.person_form = {
 					heading: "Biographical Note",
 					name: "biographical_note",
 					type: "textarea",
-				}
+				},
+				{
+					heading: "Role",
+					name: "role",
+					type: "open_vocabulary",
+					vocabulary: [
+						"annotator","author","compiler","consultant","data_inputter","depositor",
+						"developer","editor","illustrator","interpreter","interviewee","interviewer",
+						"participant","performer","photographer","recorder","researcher","research_participant",
+						"responder","signer","singer","speaker","sponsor","transcriber","translator"
+					],
+					default_value: "Unspecified",
+					comment: "Functional role of the actor e.g. consultant, contributor, interviewer, researcher, publisher, collector, translator"
+				},   
 			]
 		},
 		{
@@ -270,6 +285,12 @@ eldp_environment.person_form = {
 					heading: "Additional Information (Person)",
 					name: "person_additional_information",
 					type: "textarea"
+				},
+				{
+					heading: "Anonymized",
+					name: "anonymized",
+					type: "check",
+					comment: "Indicates if real names or anonymized codes are used to identify the actor"
 				}
 			]
 		},	

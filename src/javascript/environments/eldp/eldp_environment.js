@@ -31,6 +31,31 @@ var eldp_environment = (function(){
 		return APP.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
 	};
 	
+	my.metadataLanguageIDs = [
+		["eng","English"],
+		["ger", "German"],
+		["spa","Spanish"],
+		["fra","French"],
+		["rus","Russian"],
+		["ind","Indonesian"],
+		["por","Portuguese"],
+		["arb","Standard Arabic"]
+	];
+	
+	my.init = function(){
+	
+		my.displayMetadataLanguages();
+	
+	};
+	
+	
+	my.displayMetadataLanguages = function (){
+	
+		var select = g("metadata_language_select");
+		dom.setSelectOptions(select, my.metadataLanguageIDs, 1, 0, false);
+
+	};
+	
 	
 	my.settings = function(){
 		return [
@@ -45,6 +70,21 @@ var eldp_environment = (function(){
 				default_value: true,
 				name: "radio_age_calc",
 				id: "radio_age_calc"
+			},
+			{
+				
+				title: "Global Language of Metadata",
+				type: "select",
+				name: "metadata_language",
+				id: "metadata_language_select"
+			},
+			{
+				title: "CMDI Metadata Creator",
+				description:"The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name.",
+				type: "text",
+				name: "metadata_creator",
+				id: "metadata_creator",
+				value: "CMDI Maker User"
 			}/*,
 			{
 				title: "Export Actors as JSON",

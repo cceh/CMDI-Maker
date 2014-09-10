@@ -95,7 +95,8 @@ APP.forms = (function () {
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				(data_object && data_object[field.name] ? data_object[field.name] : ""),
-				field.comment
+				field.comment,
+				field.maxLength
 			);
 			
 			return input;

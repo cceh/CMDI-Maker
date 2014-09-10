@@ -87,7 +87,7 @@ APP.GUI = (function() {
 	};
 
 
-	my.makeTextInput = function (parent,title,name,id,value,hover){
+	my.makeTextInput = function (parent,title,name,id,value,hover,maxLength){
 
 		var span = dom.spanBR(parent, "", "", title);
 		
@@ -99,6 +99,10 @@ APP.GUI = (function() {
 		
 		if (hover){		
 			input.title = hover;
+		}
+		
+		if (maxLength){		
+			input.maxLength = maxLength;
 		}
 		
 		dom.br(parent);
@@ -189,8 +193,7 @@ APP.GUI = (function() {
 				parent.insertBefore(select,img);
 			}
 		
-		} );
-
+		});
 
 		dom.br(parent);	
 
@@ -397,18 +400,21 @@ APP.GUI = (function() {
 		
 		var y_input = dom.input(parent, id_prefix+"_year", "YearInput", name_prefix+"_year", "text", (y_value !== "") ? y_value : "YYYY");
 		y_input.title = hover;
+		y_input.maxLength = 4;
 		
 		span = dom.span(parent, "", "", " ");
 		span.title = hover;
 		
 		var m_input = dom.input(parent, id_prefix+"_month", "MonthInput", name_prefix+"_month", "text", (m_value !== "") ? m_value : "MM");
 		m_input.title = hover;
+		m_input.maxLength = 2;
 		
 		span = dom.span(parent, "", "", " ");
 		span.title = hover;
 		
 		var d_input = dom.input(parent, id_prefix+"_day", "DayInput", name_prefix+"_day", "text", (d_value !== "") ? d_value : "DD");
 		d_input.title = hover;
+		d_input.maxLength = 2;
 		
 		dom.br(parent);
 		
@@ -770,6 +776,30 @@ APP.GUI = (function() {
 		return my;
 		
 	})();
+	
+	
+	my.showFileDialog = function(onchange){
+	
+		alertify.set({ labels: {
+			ok     : APP.l("abort")
+		} });
+		
+		var innerHTML = "<input type='file' id='generic_file_input'>";
+		
+		
+		alertify.alert(innerHTML);
+	
+		g("generic_file_input").addEventListener("change", function(evt){
+		
+			var file = evt.target.files[0];
+			
+			onchange(file);
+			
+			g("alertify-ok").click();  //dirty, but it works!
+			
+		});
+	
+	};
 	
 	
 	return my;

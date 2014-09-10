@@ -30,12 +30,54 @@ var imdi_environment = (function(){
 	};
 	
 	
+	my.metadataLanguageIDs = [
+		["eng","English"],
+		["ger", "German"],
+		["spa","Spanish"],
+		["fra","French"],
+		["rus","Russian"],
+		["ind","Indonesian"],
+		["por","Portuguese"],
+		["arb","Standard Arabic"]
+	];
+	
+	
+	my.init = function(){
+	
+		my.displayMetadataLanguages();
+	
+	};
+	
+	
+	my.displayMetadataLanguages = function (){
+	
+		var select = g("metadata_language_select");
+		dom.setSelectOptions(select, my.metadataLanguageIDs, 1, 0, false);
+
+	};
+	
+	
 	my.settings = function(){
 		return [
 			{
 				title: my.l("settings","output_format"),
 				id: "output_format_select",
 				type: "empty"
+			},
+			{
+				
+				title: my.l("settings","global_language_of_metadata"),
+				type: "select",
+				name: "metadata_language",
+				id: "metadata_language_select"
+			},
+			{
+				title: my.l("settings","cmdi_metadata_creator"),
+				description: my.l("settings","cmdi_metadata_creator_description"),
+				type: "text",
+				name: "metadata_creator",
+				id: "metadata_creator",
+				value: "CMDI Maker User"
 			},
 			{
 				
@@ -73,7 +115,17 @@ var imdi_environment = (function(){
 		
 		dom.setRadiosByValue(g("output_format"), settings.output_format);
 		APP.GUI.setToggleValue(g("radio_age_calc"),settings.calc_actors_age);
+		g("metadata_language_select").selectedIndex = settings.metadata_language;
+		g("metadata_creator").value = settings.metadata_creator;
+	
 		
+	};
+	
+	
+	my.getProjectName = function(){
+	
+		return get("corpus_name");
+	
 	};
 	
 	
@@ -83,6 +135,8 @@ var imdi_environment = (function(){
 
 		object.output_format = dom.getSelectedRadioValue(g("output_format"));
 		object.calc_actors_age = g("radio_age_calc").on;
+		object.metadata_creator = get("metadata_creator");
+		object.metadata_language = g("metadata_language_select").selectedIndex;
 	
 		return object;
 		

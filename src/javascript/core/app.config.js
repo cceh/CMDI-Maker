@@ -25,7 +25,8 @@ APP.CONF = {
 	file_download_header: "text/xml;charset=utf-8",
 	highlight_color: "skyblue",
 	local_storage_key: "CMDI-Maker",
-	project_file_name: "CMDI-Maker-Project.cmp",
+	project_file_name: "CMDI-Maker-Project",
+	project_file_extension: "cmp",
 	zip_archive_file_name: "archive.zip",
 	content_wrapper_id: "content_wrapper",
 	
@@ -53,17 +54,6 @@ APP.CONF = {
 	log_section_id: "alertify-logs",
 	
 	language_error_placeholder: "###",
-
-	MetadataLanguageIDs: [
-		["eng","English"],
-		["ger", "German"],
-		["spa","Spanish"],
-		["fra","French"],
-		["rus","Russian"],
-		["ind","Indonesian"],
-		["por","Portuguese"],
-		["arb","Standard Arabic"]
-	],
 
 	not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:",
 

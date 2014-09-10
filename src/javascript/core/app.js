@@ -45,7 +45,6 @@ var APP = (function () {
 		my.renderStartPage();
 		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.settings.init(my.coreSettings(), g("core_settings"));
-		my.displayMetadataLanguages();
 		my.displayLanguages();
 		my.addEventListeners();
 		
@@ -240,17 +239,25 @@ var APP = (function () {
 	
 	my.main_menu_elements = function(){
 		return [
-			{
+		/*	{
 				title: my.l("save"),
 				id: "LINK_save_form",
 				icon:	"save",
 				onclick: function(){ my.save_and_recall.userSave(); }
+			},*/
+		// This is completely unnecessary because Auto Save is on and data will be saved
+		// beforeUnload anyway.
+			{
+				title: my.l("open_file"),
+				id: "LINK_open_file",
+				icon:	"open",
+				onclick: function(){ my.GUI.showFileDialog(APP.save_and_recall.loadFromFile);}
 			},
 			{
 				title: my.l("export_to_file"),
 				id: "LINK_export_to_file",
 				icon:	"save",
-				onclick: function(){ my.save_and_recall.saveAllToFile(); }
+				onclick: function(){ my.save_and_recall.saveActiveEnvironmentStateToFile(); }
 			},
 			{
 				title: my.l("settings", "settings"),
@@ -314,29 +321,15 @@ var APP = (function () {
 				default_option: 2,
 				onchange: my.save_and_recall.setAutosaveInterval
 			},
-			{
-				
-				title: my.l("settings","global_language_of_metadata"),
-				type: "select",
-				name: "metadata_language",
-				id: "metadata_language_select"
-			},
-			{
-				title: my.l("settings","cmdi_metadata_creator"),
-				description: my.l("settings","cmdi_metadata_creator_description"),
-				type: "text",
-				name: "metadata_creator",
-				id: "metadata_creator",
-				value: "CMDI Maker User"
-			},
-			{
+			/*{
 				title: my.l("settings","load_project"),
 				description: my.l("settings","load_project_description"),
 				type: "file",
 				file_input_id: "project_file_input",
 				file_input_name: "project_file_input",
 				onchange: my.save_and_recall.handleProjectFileInputChange
-			},
+			},*/
+			//Unneccessary, as this function is already in main menu
 			{
 				title: my.l("settings","delete_recall_data"),
 				type: "link",
@@ -370,14 +363,6 @@ var APP = (function () {
 				}
 			}
 		];
-	};
-	
-	
-	my.displayMetadataLanguages = function (){
-	
-		var select = g("metadata_language_select");
-		dom.setSelectOptions(select, APP.CONF.MetadataLanguageIDs, 1, 0, false);
-
 	};
 	
 	
@@ -559,9 +544,18 @@ var APP = (function () {
 	
 		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
 		
+		var file_name;
+		
+		if (APP.environments.active_environment.getProjectName() != ""){
+			file_name = APP.environments.active_environment.getProjectName() + ".zip";
+		}
+		
+		else {
+			file_name = APP.CONF.zip_archive_file_name;
+		}
+		
 		// use a BlobWriter to store the zip into a Blob object
 		zip.createWriter(new zip.BlobWriter(), function(writer) {
-			
 			
 			var asyncLoop = function(o){
 				var i=-1;
@@ -588,7 +582,7 @@ var APP = (function () {
 					
 						// blob contains the zip file as a Blob object
 						console.log("GOT ZIP BLOB");
-						saveAs(blob, APP.CONF.zip_archive_file_name);
+						saveAs(blob, file_name);
 
 					});
 				}    
@@ -655,10 +649,7 @@ var APP = (function () {
 	//environment_data from local storage
 
 		console.log("Filling the form with recalled data");
-		
-		g("metadata_language_select").selectedIndex = recall_object.settings.metadata_language;
-		g("metadata_creator").value = recall_object.settings.metadata_creator;
-		
+	
 		if (recall_object.settings.active_language_id){
 		
 			var index = my.getIndexFromLPID(recall_object.settings.active_language_id);

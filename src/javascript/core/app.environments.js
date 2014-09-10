@@ -42,6 +42,17 @@ APP.environments = (function () {
 	
 	my.active_environment = undefined;
 
+	my.isAnEnvironmentLoaded = function(){
+	
+		if (typeof my.active_environment != "undefined"){
+			return true;
+		}
+		
+		else {
+			return false;
+		}
+	
+	}
 	
 	my.displayAllInSelect = function (){
 		
@@ -145,6 +156,10 @@ APP.environments = (function () {
 		console.log("Creating environment: " + environment.id);
 	
 		my.initSettings(environment.settings());
+		
+		if (environment.init){
+			environment.init();
+		}
 	
 		my.createWorkflow(environment.workflow);
 		
@@ -239,6 +254,14 @@ APP.environments = (function () {
 	my.get = function(index){
 	
 		return my.environments[index];
+	
+	};
+	
+	
+	my.changeByID = function(id){
+	
+		var index = my.getIndexFromID(id);
+		my.change(index);
 	
 	};
 

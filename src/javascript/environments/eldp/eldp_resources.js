@@ -192,7 +192,7 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.functions = [
 		{
-			label: "Create one session per file",
+			label: "Create one bundle per file",
 			icon: "plus",
 			id: "crps_icon",
 			wrapper_id: "crps_div",
@@ -340,41 +340,6 @@ eldp_environment.workflow[0] = (function(){
 
 		for (var i = 0; i < my.available_resources.length; i++) {
 		
-			switch (my.getValidityOfFile(my.available_resources[i].name)){
-			
-				case 0: {
-					file_entry_class = "media_file_entry";
-					break;
-				}
-			
-				case 1: {
-					file_entry_class = "written_resource_file_entry";
-					break;
-				}
-			
-				case 2: {
-					compatibility_warning = my.compatibility_warnings.invalid_media_file;
-					file_entry_class = "media_file_entry";
-					break;
-				}
-				
-				case 3: {
-					compatibility_warning = my.compatibility_warnings.invalid_written_resource;
-					file_entry_class = "written_resource_file_entry";
-					break;
-				}
-				
-				default: {
-					compatibility_warning = my.compatibility_warnings.general;
-					file_entry_class = "invalid_file_entry";
-					break;
-				}
-			
-			}
-
-			
-			var file_size = my.available_resources[i].size;
-			
 			my.renderResource(
 				i,
 				my.available_resources[i].name,
@@ -382,7 +347,7 @@ eldp_environment.workflow[0] = (function(){
 				my.available_resources[i].size,
 				my.available_resources[i].last_change,
 				"file_entry_"+i,
-				"file_entry " + file_entry_class,
+				"file_entry media_file_entry",
 				list,
 				compatibility_warning,
 				my.available_resources[i].stable,

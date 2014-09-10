@@ -85,6 +85,7 @@ input[type="button"], input[type="submit"]{
 	font-size: 55pt;
 	text-align: center;
 	clear: both;
+	padding: 0px;
 
 }
 
@@ -269,7 +270,7 @@ td{
 }
 
 .main_menu_entry_img{
-	width: 30px;
+	/*width: 30px;*/
 	height: 30px;
 	padding: 10px;
 	margin-right: 10px;

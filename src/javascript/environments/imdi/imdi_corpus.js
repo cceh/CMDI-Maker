@@ -19,14 +19,6 @@ imdi_environment.workflow[0] = (function(){
 
 	var my = {};
 	
-	my.corpus = {
-	
-		name: "",
-		title: "",
-		description: ""
-	
-	};
-	
 	my.parent = imdi_environment;
 	var corpus_form_template;
 	

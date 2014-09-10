@@ -171,6 +171,41 @@ APP.save_and_recall = (function () {
 	};
 	
 	
+	my.saveActiveEnvironmentStateToFile = function(){
+	
+		if (APP.environments.isAnEnvironmentLoaded()){	
+		
+			var file_name;
+			
+			if (APP.environments.active_environment.getProjectName() != ""){
+				file_name = APP.environments.active_environment.getProjectName() + "." + APP.CONF.project_file_extension;
+			}
+			
+			else {
+				file_name = APP.CONF.project_file_name + "." + APP.CONF.project_file_extension;
+			}
+	
+			var CMP_object = {};
+		
+			CMP_object["type"] = "environment_state";
+			CMP_object["environment_id"] = APP.environments.active_environment.id;
+		
+			var environment_object = my.retrieveEnvironmentDataToSave();
+			CMP_object.environments = {};
+			CMP_object.environments[APP.environments.active_environment.id] = environment_object;
+			
+			APP.save_file(JSON.stringify(CMP_object), file_name);
+			
+		}
+		
+		else {
+			APP.log("No environment loaded", "error");
+		}
+		
+	
+	};
+	
+	
 	my.handleProjectFileInputChange = function(event){
 
 		my.loadFromFile(event.target.files[0]);
@@ -212,6 +247,9 @@ APP.save_and_recall = (function () {
 	my.importProjectData = function(data){
 		
 		if (data[APP.CONF.app_core_storage_key]){
+			
+			console.log("data.app_storage_key = " + data[APP.CONF.app_core_storage_key]);
+			
 			var environment_data;
 			
 			alertify.set({ labels: {
@@ -247,11 +285,49 @@ APP.save_and_recall = (function () {
 					
 				}
 			});
+			
+			return;
 		}
 		
-		else {
-			console.warn("Tried to import project data, but no APP.CONF.app_core_storage_key was found!");
+		console.info("No app_storage_key found in file. looking for type=environment_state");
+		
+		if (data["type"] == "environment_state"){
+			
+			console.log("found environment_state");
+			
+			alertify.set({ labels: {
+				ok     : APP.l("confirm","no"),
+				cancel : APP.l("confirm","yes_overwrite_data")
+			} });
+
+			alertify.confirm(APP.l("confirm","overwrite_data"), function (e) {
+
+				if (e) {
+					// user clicked "ok"
+					return;
+				}
+				
+				else {
+			
+					var environment_id = data["environment_id"];
+					
+					APP.environments.changeByID(data["environment_id"])
+					
+					if (data.environments && data.environments[environment_id]){
+						console.log("importProjectData: Found environment data of environment: " + environment_id);
+						environment_data = data.environments[environment_id];
+					}
+					
+					my.recallEnvironmentData(environment_data);
+					
+					return;
+				
+				}
+				
+			});
 		}
+		
+		console.warn("Tried to import project data, but no vaild data was found!");
 
 	};
 	
@@ -261,8 +337,6 @@ APP.save_and_recall = (function () {
 		var object = {
 		
 			settings: {
-				metadata_creator: get("metadata_creator"),
-				metadata_language: g("metadata_language_select").selectedIndex,
 				save_interval_time: dom.getSelectedRadioValue(g("radio_auto_save")),
 				active_language_id: APP.active_language.id
 			}

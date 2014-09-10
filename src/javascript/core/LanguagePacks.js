@@ -30,9 +30,6 @@ APP.languages[0] = {
 		every_60_seconds: "Every 60 seconds",
 		every_5_minutes: "Every 5 minutes",
 		every_10_minutes: "Every 10 minutes",
-		global_language_of_metadata: "Global Language of Metadata",
-		cmdi_metadata_creator: "CMDI Metadata Creator",
-		cmdi_metadata_creator_description: "The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name.",
 		load_project: "Load Project",
 		load_project_description: "Loads a CMP file with CMDI Maker project data.",
 		delete_recall_data: "Delete Recall Data",
@@ -67,6 +64,8 @@ APP.languages[0] = {
 	about: "About",
 	save: "Save",
 	export_to_file: "Export to File",
+	open_file: "Open File",
+	abort: "Abort",
 	
 	start: {
 		greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
@@ -105,9 +104,6 @@ APP.languages[1] = {
 		every_60_seconds: "Alle 60 Sekunden",
 		every_5_minutes: "Alle 5 Minuten",
 		every_10_minutes: "Alle 10 Minuten",
-		global_language_of_metadata: "Globale Metadaten-Sprache",
-		cmdi_metadata_creator: "CMDI: Urheber der Metadaten",
-		cmdi_metadata_creator_description: "Das CMDI-Metadatenformat setzt die Angabe eines Urhebers voraus. Das bist wahrscheinlich du! Gib in diesem Fall deinen Namen ein.",
 		load_project: "Projekt laden",
 		load_project_description: "Lädt eine CMP-Datei und importiert ihre Projektdaten.",
 		delete_recall_data: "Daten für den Rückruf löschen",
@@ -142,6 +138,8 @@ APP.languages[1] = {
 	about: "Über",
 	save: "Speichern",
 	export_to_file: "In Datei Exportieren",
+	open_file: "Datei öffnen",
+	abort: "Abbrechen",
 	
 	start: {
 		greeting_text: "Willkommen!<br>Dies ist eine Offline-Webanwendung. Du kannst sie fortan auch ohne Internetverbindung nutzen.<br>"+
@@ -183,9 +181,6 @@ APP.languages[2] = {
 		every_60_seconds: "Cada 60 segundos",
 		every_5_minutes: "Cada 5 minutos",
 		every_10_minutes: "Cada 10 minutos",
-		global_language_of_metadata: "Lenguaje Global de Metadatos",
-		cmdi_metadata_creator: "Creador de Metadatos CMDI",
-		cmdi_metadata_creator_description: "El formato de metadatos CMDI requiere el nombre de un creador de metadatos. Éste, probablemente, es usted. Si lo es, escriba su nombre.",
 		load_project: "Guardar proyecto",
 		load_project_description: "Esta opción carga un archivo CMP (CMDI Maker Project) junto con los datos del proyecto.",
 		delete_recall_data: "Eliminar datos guardados",

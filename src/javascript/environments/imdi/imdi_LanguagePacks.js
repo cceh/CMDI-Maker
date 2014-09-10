@@ -42,7 +42,11 @@ imdi_environment.languages[0] = {
 		import_actors_from_json_or_imdi: "Import Actors from JSON or IMDI",
 		import_actors_description: "Please import UTF-8 encoded files only!",
 		delete_actors_database: "Delete Actors",
-		delete_actors_database_description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window."
+		delete_actors_database_description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window.",
+		
+		global_language_of_metadata: "Global Language of Metadata",
+		cmdi_metadata_creator: "CMDI Metadata Creator",
+		cmdi_metadata_creator_description: "The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name."
 		
 	},
 	
@@ -253,6 +257,11 @@ imdi_environment.languages[1] = {
 		import_actors_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
 		delete_actors_database: "Alle Actors löschen",
 		delete_actors_database_description: "CMDI Maker speichert all deine Actors in einer Browserdatenbank. Sie bleiben also erhalten, auch nachdem du den Browser geschlossen hast.",
+		
+		global_language_of_metadata: "Globale Metadaten-Sprache",
+		cmdi_metadata_creator: "CMDI: Urheber der Metadaten",
+		cmdi_metadata_creator_description: "Das CMDI-Metadatenformat setzt die Angabe eines Urhebers voraus. Das bist wahrscheinlich du! Gib in diesem Fall deinen Namen ein.",
+
 	},
 	
 	reset_form: "Formular zurücksetzen",
@@ -464,6 +473,11 @@ imdi_environment.languages[2] = {
 		import_actors_description: "¡Por favor importar solamente archivos codificados en UTF-8!",
 		delete_actors_database: "Eliminar actores",
 		delete_actors_database_description: "CMDI Maker guarda todos sus actores en una base de datos de Web Storage, así que éstos quedarán guardados aun si se cierra la ventana del navegador.",
+		
+		global_language_of_metadata: "Lenguaje Global de Metadatos",
+		cmdi_metadata_creator: "Creador de Metadatos CMDI",
+		cmdi_metadata_creator_description: "El formato de metadatos CMDI requiere el nombre de un creador de metadatos. Éste, probablemente, es usted. Si lo es, escriba su nombre.",
+
 	},
 	
 	reset_form: "Resetear formulario",
