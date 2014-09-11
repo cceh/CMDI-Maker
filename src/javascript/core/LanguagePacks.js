@@ -70,7 +70,9 @@ APP.languages[0] = {
 	start: {
 		greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
 		"When you load this page, you can pick up where you left off.",
-		lets_go: "and get started!",
+		and_lets_go__before_link: "and ",
+		and_lets_go__link: "get started",
+		and_lets_go__after_link: "!",
 		is_supported_by: "CMDI Maker is supported by",
 		need_help: "Need help?",
 		help_pages_description: "On the help pages you will find video tutorials in several languages, a mailing list, go-to persons and much more!",
@@ -144,7 +146,9 @@ APP.languages[1] = {
 	start: {
 		greeting_text: "Willkommen!<br>Dies ist eine Offline-Webanwendung. Du kannst sie fortan auch ohne Internetverbindung nutzen.<br>"+
 		"Wenn Du diese Seite lädst, kannst du genau dort weitermachen, wo du aufgehört hast.",
-		lets_go: "und leg los!",
+		and_lets_go__before_link: "und ",
+		and_lets_go__link: "leg los",
+		and_lets_go__after_link: "!",
 		is_supported_by: "CMDI Maker wird unterstützt von",
 		need_help: "Brauchst Du Hilfe?",
 		help_pages_description: "Auf den Hilfe-Seiten findest Du Video-Tutorials in verschiedenen Sprachen, eine Mailing-Liste, Ansprechpartner und vieles mehr!",
@@ -216,7 +220,9 @@ APP.languages[2] = {
 	
 	start: {
 		greeting_text: "Bienvenidos al CMDI Maker!<br>Fígese, ésta es una aplicación que se puede utilizar también sin conexión.<br>Cuando cargue esta página, podrá reanudar su trabajo en el punto donde lo interrumpió.",
-		lets_go: "¡y vamos a empezar!",
+		and_lets_go__before_link: "¡y ",
+		and_lets_go__link: "vamos a empezar",
+		and_lets_go__after_link: "!",
 		is_supported_by: "CMDI Maker está financiado por",
 		need_help: "¿Necesita ayuda?",
 		help_pages_description: "En las páginas de ayuda encontrará videos tutoriales, una lista de correo electrónico y de personas para consultar en caso de necesidad, ¡y mucho más!",

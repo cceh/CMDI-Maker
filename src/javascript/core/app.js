@@ -433,7 +433,11 @@ var APP = (function () {
 
 		g("greeting_text").innerHTML = my.l("start","greeting_text");
 		g("start_select_profile_span").innerHTML = my.l("start","select_your_profile");
-		g("link_lets_go").innerHTML = my.l("start","lets_go");
+		
+		g("before_lets_go").innerHTML = my.l("start","and_lets_go__before_link");
+		g("link_lets_go").innerHTML = my.l("start","and_lets_go__link");
+		g("after_lets_go").innerHTML = my.l("start","and_lets_go__after_link");
+		
 		g("supported_by_label").innerHTML = my.l("start","is_supported_by");
 		g("need_help_label").innerHTML = my.l("start","need_help");
 		g("help_pages_description").innerHTML = my.l("start","help_pages_description");
