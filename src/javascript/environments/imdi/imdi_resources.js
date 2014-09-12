@@ -229,10 +229,8 @@ imdi_environment.workflow[1] = (function(){
 		session = imdi_environment.workflow[3];
 	
 		var div = dom.make("div","files","",view);
-		var drop_zone = dom.make("div","drop_zone","",div,"<h2>" + l("resources", "drag_and_drop_files_here") + "</h2>");
 		
-		var input = dom.input(div,"files_input","","files_input", "file");
-		input.multiple = true;
+		var drop_zone = APP.GUI.FORMS.fileDropZone(div, "drop_zone", my.pushFileMetadata);
 
 		var usage_table = dom.make("div","","workspace-usageTable",div,
 		'<h3>' + l("resources", "usage") + '</h3>' +
@@ -245,13 +243,6 @@ imdi_environment.workflow[1] = (function(){
 		
 		var file_list_div = dom.make("div","file_list_div","",view);
 		var list = dom.make("div","list","",file_list_div);
-		
-		// Setup the drag and drop listeners
-		var dropZone = g('drop_zone');
-		dropZone.addEventListener('dragover', my.handleDragOver, false);
-		dropZone.addEventListener('drop', my.handleFileDrop, false);
-
-		g('files_input').addEventListener('change', my.handleFileInputChange, false);
 		
 		my.refreshFileListDisplay(true);
 		
@@ -423,15 +414,6 @@ imdi_environment.workflow[1] = (function(){
 	};
   
 
-	my.handleDragOver = function(evt) {
-
-		evt.stopPropagation();
-		evt.preventDefault();
-		evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-		
-	};
-
-
 	my.sortAlphabetically = function(){
 
 		my.available_resources = sortByKey(my.available_resources, "name");
@@ -547,24 +529,6 @@ imdi_environment.workflow[1] = (function(){
 		my.refreshFileListDisplay();
 
 	};
-
-	
-	my.handleFileDrop = function(evt){
-
-		evt.stopPropagation();
-		evt.preventDefault();
-	 
-		my.pushFileMetadata(evt.dataTransfer.files);
-		
-	};
-
-
-	my.handleFileInputChange = function(evt){
-	 
-		my.pushFileMetadata(evt.target.files);
-	 
-	};
-
 
 	/* File selection */
 

@@ -41,6 +41,23 @@ function ajax_get(url, success_callback){
 }
 
 
+function readFileAsText(file, onsuccess){
+
+	var reader = new FileReader();
+	
+	reader.onload = function(e){
+		
+		var result = e.target.result;
+		
+		onsuccess(result);
+		
+	};
+	
+	reader.readAsText(file);
+
+}
+
+
 function getFileTypeFromFilename(filename){
 
 	var pos_of_dot = filename.lastIndexOf(".");

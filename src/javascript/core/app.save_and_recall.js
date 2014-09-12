@@ -216,11 +216,7 @@ APP.save_and_recall = (function () {
 	my.loadFromFile = function(file){
 		var project_data;
 		
-		var reader = new FileReader();
-		
-		reader.onload = function(e){
-		
-			var result = e.target.result;
+		readFileAsText(file, function(result){
 		
 			try {
 				project_data = JSON.parse(result);
@@ -237,9 +233,7 @@ APP.save_and_recall = (function () {
 			
 			my.importProjectData(project_data);
 		
-		};
-		
-		reader.readAsText(file);
+		});
 		
 	};
 

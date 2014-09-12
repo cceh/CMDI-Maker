@@ -237,10 +237,7 @@ eldp_environment.workflow[0] = (function(){
 		var div = dom.make("div","files","",view);
 		
 		dom.h3(div, "Import Files");
-		var drop_zone = dom.make("div","drop_zone","",div,"<h2>Drag and drop media files here</h2>");
-		
-		var input = dom.input(div,"files_input","","files_input","file");
-		input.multiple = true;
+		var drop_zone = APP.GUI.FORMS.fileDropZone(div, "drop_zone", my.pushFileMetadata);
 		
 		dom.h3(div, "Import File List");
 		dom.input(div, "file_list_import_input", "", "", "file");
@@ -252,15 +249,6 @@ eldp_environment.workflow[0] = (function(){
 		
 		var file_list_div = dom.make("div","file_list_div","",view);
 		var list = dom.make("div","list","",file_list_div);
-		
-		// Setup the drag and drop listeners
-		var dropZone = g('drop_zone');
-		dropZone.addEventListener('dragover', my.handleDragOver, false);
-		dropZone.addEventListener('drop', my.handleFileDrop, false);
-
-		g('file_list_import_input').addEventListener('change', my.handleFileListInputChange, false);
-		g('files_input').addEventListener('change', my.handleFileInputChange, false);
-		
 		
 		my.refreshFileListDisplay(true);
 		
@@ -454,15 +442,6 @@ eldp_environment.workflow[0] = (function(){
 	};
   
 
-	my.handleDragOver = function(evt) {
-
-		evt.stopPropagation();
-		evt.preventDefault();
-		evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-		
-	};
-
-
 	my.sortAlphabetically = function(){
 
 		my.available_resources = sortByKey(my.available_resources,0);
@@ -594,23 +573,6 @@ eldp_environment.workflow[0] = (function(){
 	};
 
 	
-	my.handleFileDrop = function(evt){
-
-		evt.stopPropagation();
-		evt.preventDefault();
-	 
-		my.pushFileMetadata(evt.dataTransfer.files);
-		
-	};
-
-
-	my.handleFileInputChange = function(evt){
-	 
-		my.pushFileMetadata(evt.target.files);
-	 
-	};
-	
-
 	my.handleFileListInputChange = function(evt){
 	 
 		var file = evt.target.files[0]; // File object
@@ -619,10 +581,7 @@ eldp_environment.workflow[0] = (function(){
 		
 		console.log(file);
 		
-		var reader = new FileReader();
-		
-		reader.onload = function(e){
-			var result = e.target.result;
+		readFileAsText(file, function(result){
 		
 			//try {
 				file_list = linesToArray(result);
@@ -647,10 +606,8 @@ eldp_environment.workflow[0] = (function(){
 			console.log(file_list);
 			
 		
-		};
+		});
 		
-		reader.readAsText(file);
-	 
 	};
 
 

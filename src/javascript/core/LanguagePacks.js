@@ -88,6 +88,9 @@ APP.languages[0] = {
 		search: "Search"		
 	},
 
+	forms: {
+		drag_and_drop_files_here: "Drag and drop files here"
+	}
 };
 
 
@@ -162,6 +165,10 @@ APP.languages[1] = {
 	language_search: {
 		or_type_in_iso_code: "oder gib den ISO-Code ein",
 		search: "Suchen"		
+	},
+	
+	forms: {
+		drag_and_drop_files_here: "Ziehe Dateien in dieses Feld",
 	}
 	
 };
@@ -236,6 +243,10 @@ APP.languages[2] = {
 	language_search: {
 		or_type_in_iso_code: "o bien ingresar un código ISO",
 		search: "Buscar"		
+	},
+	
+	forms: {
+		drag_and_drop_files_here: "Arrastrar y soltar los archivos aquí"
 	}
 	
 };

@@ -483,12 +483,8 @@ imdi_environment.workflow[2] = (function(){
 		
 		console.log(file);
 		
-		var reader = new FileReader();
-		
-		reader.onload = function(e){
+		readFileAsText(file, function(result){
 			var imported_actors;
-		
-			var result = e.target.result;
 		
 			try {
 				imported_actors = JSON.parse(result);
@@ -521,9 +517,7 @@ imdi_environment.workflow[2] = (function(){
 			
 			APP.log(imported_actors.length + " " + l("actors_imported"));
 		
-		};
-		
-		reader.readAsText(file);
+		});
 		
 	};
 

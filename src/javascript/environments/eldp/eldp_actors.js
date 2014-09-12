@@ -403,12 +403,8 @@ eldp_environment.workflow[1] = (function(){
 		
 		console.log(file);
 		
-		var reader = new FileReader();
-		
-		reader.onload = function(e){
+		readFileAsText(file, function(result){
 			var imported_persons;
-		
-			var result = e.target.result;
 		
 			try {
 				imported_persons = JSON.parse(result);
@@ -441,10 +437,8 @@ eldp_environment.workflow[1] = (function(){
 			
 			alertify.log(imported_persons.length + " " + l("persons_imported"));
 		
-		};
-		
-		reader.readAsText(file);
-		
+		});
+
 	};
 
 
