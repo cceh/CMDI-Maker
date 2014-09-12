@@ -32,6 +32,8 @@ imdi_environment.workflow[4] = (function (){
 	};
 	
 	
+	my.not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:",
+	
 	my.init = function(){
 	
 		corpus = imdi_environment.workflow[0];
@@ -103,13 +105,17 @@ imdi_environment.workflow[4] = (function (){
 			//if corpus has a name, but an invalid one
 			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") !== ""){   //show corpus
 				APP.view(corpus);
-				APP.alert(l("output", "corpus_must_have_proper_name") + APP.CONF.not_allowed_chars);
+				APP.alert(l("output", "corpus_must_have_proper_name") + "<br>" +
+				l("output", "not_allowed_chars_are") + my.not_allowed_chars + "<br>" +
+				l("output", "spaces_are_not_allowed_either"));
 			
 			}
 			
 			else {  //show sessions
 				APP.view(session);
-				APP.alert(l("output", "sessions_must_have_proper_name") + APP.CONF.not_allowed_chars);
+				APP.alert(l("output", "sessions_must_have_proper_name") + "<br>" +
+				l("output", "not_allowed_chars_are") + my.not_allowed_chars + "<br>" +
+				l("output", "spaces_are_not_allowed_either"));
 			}
 		}
 	};

@@ -27,8 +27,8 @@ var source_scripts = [
 "./src/javascript/LanguageIndex.js",
 	
 	
-/*Environments */
-	/*IMDI */
+/* Environments */
+	/* IMDI */
 	"./src/javascript/environments/imdi/imdi_environment.js",
 	"./src/javascript/environments/imdi/imdi_LanguagePacks.js",
 	"./src/javascript/environments/imdi/imdi_generator.js",

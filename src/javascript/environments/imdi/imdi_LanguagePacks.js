@@ -177,10 +177,12 @@ imdi_environment.languages[0] = {
 		cmdi_with_imdi_profile: "CMDI with IMDI Profile",
 		you_must_create_some_sessions_first: "You must create some sessions first!",
 		every_session_must_have_a_project_name: "Every session must have a project name!",
-		corpus_must_have_proper_name: "The corpus must have a proper name or no name at all.<br>Not allowed chars are: ",
-		sessions_must_have_proper_name: "Every session must have a proper name.<br>Unnamed sessions are not allowed.<br>Not allowed chars are: ",
+		corpus_must_have_proper_name: "The corpus must have a proper name or no name at all.",
+		sessions_must_have_proper_name: "Every session must have a proper name.<br>Unnamed sessions are not allowed.",
 		download_corpus_including_all_sessions: "Download Corpus including all Sessions",
-		download_zip_archive: "Download ZIP archive"
+		download_zip_archive: "Download ZIP archive",
+		not_allowed_chars_are: "Not allowed chars are: ",
+		spaces_are_not_allowed_either: "Space characters are not allowed either."
 
 	},
 	
@@ -391,10 +393,12 @@ imdi_environment.languages[1] = {
 		cmdi_with_imdi_profile: "CMDI mit IMDI-Profil",
 		you_must_create_some_sessions_first: "Du musst zuerst Sessions erstellen!",
 		every_session_must_have_a_project_name: "Jede Session muss einen Project Name haben!",
-		corpus_must_have_proper_name: "Das Corpus muss einen validen oder garkeinen Namen haben.<br>Nicht erlaubt sind: ",
-		sessions_must_have_proper_name: "Jede Session muss einen validen Namen haben.<br>Unbenannte Sessions sind nicht erlaubt.<br>Nicht erlaubte Zeichen sind: ",
+		corpus_must_have_proper_name: "Das Corpus muss einen validen oder garkeinen Namen haben.",
+		sessions_must_have_proper_name: "Jede Session muss einen validen Namen haben.<br>Unbenannte Sessions sind nicht erlaubt.",
 		download_corpus_including_all_sessions: "Corpus inklusive aller Sessions herunterladen",
-		download_zip_archive: "ZIP-Archiv herunterladen"
+		download_zip_archive: "ZIP-Archiv herunterladen",
+		not_allowed_chars_are: "Nicht erlaubte Zeichen sind: ",
+		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt."
 
 	},
 	
@@ -599,9 +603,11 @@ imdi_environment.languages[2] = {
 		cmdi_with_imdi_profile: "CMDI con perfíl IMDI",
 		you_must_create_some_sessions_first: "¡Primero debe crear unas sesiones!",
 		every_session_must_have_a_project_name: "¡Cada sesión debe tener un nombre de proyecto!",
-		corpus_must_have_proper_name: "El corpus debe tener un nombre adecuado, o no tener ningún nombre.<br>No se admiten: ",
-		sessions_must_have_proper_name: "Cada sesión debe tener un nombre adecuado.<br>Las sesiones sin nombre no están permitidas.<br>No se admiten: ",
-		download_corpus_including_all_sessions: "Bajar corpus junto con todas las sesiones"
+		corpus_must_have_proper_name: "El corpus debe tener un nombre adecuado, o no tener ningún nombre.",
+		sessions_must_have_proper_name: "Cada sesión debe tener un nombre adecuado.<br>Las sesiones sin nombre no están permitidas.",
+		download_corpus_including_all_sessions: "Bajar corpus junto con todas las sesiones",
+		not_allowed_chars_are: "No se admiten: ",
+		spaces_are_not_allowed_either: undefined
 
 	},
 	

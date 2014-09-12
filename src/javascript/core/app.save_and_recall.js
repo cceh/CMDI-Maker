@@ -298,7 +298,7 @@ APP.save_and_recall = (function () {
 			alertify.set({ labels: {
 				ok     : APP.l("confirm","no"),
 				cancel : APP.l("confirm","yes_overwrite_data")
-			} });
+			}});
 
 			alertify.confirm(APP.l("confirm","overwrite_data"), function (e) {
 

@@ -24,6 +24,32 @@ function getFileTypeFromFilename(filename){
 }
 
 
+function getFilenameFromUNIXFilePath(path){
+
+	var pos_of_slash = path.lastIndexOf("/");
+	
+	if (pos_of_slash == -1){
+		return path;
+	}
+	
+	return path.substring(pos_of_slash+1);
+
+}
+
+
+function getDirectoryFromUNIXFilePath(path){
+
+	var pos_of_slash = path.lastIndexOf("/");
+	
+	if (pos_of_slash == -1){
+		return undefined;
+	}
+	
+	return path.substring(0, pos_of_slash+1);
+
+}
+
+
 var linesToArray = function(string){
 
 	return string.split("\n");

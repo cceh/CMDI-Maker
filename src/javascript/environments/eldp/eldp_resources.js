@@ -340,21 +340,20 @@ eldp_environment.workflow[0] = (function(){
 
 		for (var i = 0; i < my.available_resources.length; i++) {
 		
-			my.renderResource(
-				i,
-				my.available_resources[i].name,
-				my.available_resources[i].mime_type,
-				my.available_resources[i].size,
-				my.available_resources[i].last_change,
-				"file_entry_"+i,
-				"file_entry media_file_entry",
-				list,
-				compatibility_warning,
-				my.available_resources[i].stable,
-				my.available_resources[i].inProgress
-			);
-		
-			
+			my.renderResource({
+				number: i,
+				title: my.available_resources[i].name,
+				mime_type: my.available_resources[i].mime_type,
+				file_size: my.available_resources[i].size,
+				last_change: my.available_resources[i].last_change,
+				id: "file_entry_"+i,
+				className: "file_entry media_file_entry",
+				parent: list,
+				compatibility_warning: compatibility_warning,
+				stable: my.available_resources[i].stable,
+				inProgress: my.available_resources[i].inProgress,
+				path: my.available_resources[i].path
+			});
 
 		}
 		
@@ -379,15 +378,19 @@ eldp_environment.workflow[0] = (function(){
 	};
 	
 	
-	my.renderResource = function(number, title, mimeType, file_size, last_change, id, className, parent, compatibility_warning, stable, inProgress){
+	my.renderResource = function(options){
+		//possible options:
+		//number, title, mimeType, file_size, last_change, id, className, parent, compatibility_warning, stable, inProgress, path
 	
-		var div = dom.make("div", id, className, parent);
-		var title = dom.make("h2", "", "file_entry_title", div, title);
-		var p = dom.make("p", "", "", div, mimeType +
-		'<br><span class="size_span">Size: ' + file_size + '</span><br><span name="date_span" class="date_span">Last modified: ' +
-		last_change + '</span>');
+		var div = dom.make("div", options.id, options.className, options.parent);
+		var title = dom.make("h2", "", "file_entry_title", div, options.title);
+		var p = dom.make("p", "", "", div, options.mimeType +
+		'<br><span class="size_span">Size: ' + options.file_size + '</span><br>'+
+		'<span name="date_span" class="date_span">Last modified: ' + options.last_change + '</span><br>' +
+		'<span name="path_span" class="date_span">Path: ' + options.path + '</span>'
+		);
 		
-		var cb1 = dom.make("input","f_stable_"+number,"",div);
+		var cb1 = dom.make("input","f_stable_"+options.number,"",div);
 		cb1.type = "checkbox";
 		cb1.addEventListener("click",function(event){ 
 			event.stopPropagation();
@@ -398,24 +401,24 @@ eldp_environment.workflow[0] = (function(){
 		});
 		var span1 = dom.make("span","","",div, " Stable");
 		
-		if (stable == true){
+		if (options.stable == true){
 			cb1.checked = true;
 		}
 		
 		
 		dom.br(div);
 		
-		var cb2 = dom.make("input","f_inProgress_"+number,"",div);
+		var cb2 = dom.make("input","f_inProgress_"+options.number,"",div);
 		cb2.type = "checkbox";
 		cb2.addEventListener("click",function(event){
 			event.stopPropagation();
-			my.refreshFileStateValues(number);
+			my.refreshFileStateValues(options.number);
 			
 			return;
 		});
 		var span2 = dom.make("span","","",div, " In Progress");	
 		
-		if (inProgress == true){
+		if (options.inProgress == true){
 			cb2.checked = true;
 		}
 
@@ -427,7 +430,7 @@ eldp_environment.workflow[0] = (function(){
 			
 			};
 			
-		}(number), false);
+		}(options.number), false);
 	
 	
 	};
@@ -626,7 +629,8 @@ eldp_environment.workflow[0] = (function(){
 				
 				forEach(file_list, function(file_string){
 					my.available_resources.push({
-						name: file_string
+						name: getFilenameFromUNIXFilePath(file_string),
+						path: getDirectoryFromUNIXFilePath(file_string)
 					});
 				});
 				
