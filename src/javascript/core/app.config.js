@@ -55,7 +55,7 @@ APP.CONF = {
 	
 	language_error_placeholder: "###",
 	
-	url_for_version_check: "http://cmdi-maker.uni-koeln.de/get_version.php",
+	url_for_version_check: "get_version.php",
 
 	hellos: [
 		["Hello!","English"],

@@ -151,6 +151,12 @@ gulp.task('script-workers', function() {
 });
 
 
+gulp.task('copy-php-files', function() {
+  gulp.src(['./src/get_version.php'])
+    .pipe(gulp.dest('./build/'));
+});
+
+
 var style_sources = [
 "./src/css/yaml.css",
 "./src/css/layout.css",
@@ -176,7 +182,7 @@ gulp.task('manifest', function(){
     .pipe(manifest({
       hash: true,
       filename: 'cmdi_maker.appcache',
-	  network: [],
+	  network: ["*"],  //important, so that network stuff like version checker works
       exclude: ['cmdi_maker.appcache', 'img/logos/Thumbs.db']
      }))
     .pipe(gulp.dest('build'));
@@ -200,7 +206,8 @@ gulp.task('resize', function () {
 
 
 // default gulp task
-gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'script-workers', 'styles', 'manifest'], function() {
-});
+gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'script-workers', 'styles', 'manifest', 'copy-php-files'], function() {});
+//copy-php-files must come AFTER 'manifest', because 'manifest' must not include php files. they should always served from server,
+//not cached in APPCACHE
 
 

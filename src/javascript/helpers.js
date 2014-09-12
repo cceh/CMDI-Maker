@@ -24,13 +24,17 @@ function ajax_get(url, success_callback){
 	http.onreadystatechange = function() { //Call a function when the state changes.
 
 		if(http.readyState == 4 && http.status == 200) {
-		
-			var response = JSON.parse(http.responseText);
+			
+			console.log("AJAX successful!");
+			
+			var response = http.responseText;
 
 			success_callback(response);
 			
 		}
 	}
+	
+	console.log("Sending ajax request to: " + url);
 	
 	return http.send();
 	

@@ -40,9 +40,10 @@ var APP = (function () {
 			}
 		}
 		
+		my.renderStartPage();
 		my.checkIfFirstStart();
 		g("version_span").innerHTML = APP.CONF.version;
-		my.renderStartPage();
+		
 		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.settings.init(my.coreSettings(), g("core_settings"));
 		my.displayLanguages();
@@ -57,6 +58,10 @@ var APP = (function () {
 		my.GUI.mainMenu.draw(my.main_menu_elements());
 		
 		window.addEventListener("beforeunload", my.save, false);
+		
+		my.getVersionOnServer();
+		
+		
 		
 	};
 	
