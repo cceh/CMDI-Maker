@@ -101,6 +101,31 @@ var APP = (function () {
 	};
 	
 	
+	my.getVersionOnServer = function(){
+	
+		g("version_check_span").innerHTML = "Checking for new version...";
+	
+	    ajax_get(APP.CONF.url_for_version_check, function(response){
+			
+			console.log("AJAX CALL RESPONSE: " + response);
+			
+			if (response == APP.CONF.version){
+				g("version_check_span").innerHTML = "CMDI Maker is up to date!";
+			}
+			
+			else {
+			
+				g("version_check_span").innerHTML = "There is a newer version of CMDI Maker. Please refresh this site to get it.";
+			
+			}
+			
+			
+		
+		});
+
+	};
+	
+	
 	my.getIndexFromLPID = function(id){
 	
 		var index = getIndex(my.languages, "id", id);
@@ -616,6 +641,8 @@ var APP = (function () {
 	my.addEventListeners = function(){
 	
 		g("VIEWLINK_start").addEventListener("click", function() { my.view("VIEW_start"); });
+		
+		g("LINK_refresh_version").addEventListener("click", APP.getVersionOnServer);
 	
 		g('link_lets_go').addEventListener('click', function() {
 		

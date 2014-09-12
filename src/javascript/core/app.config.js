@@ -54,6 +54,8 @@ APP.CONF = {
 	log_section_id: "alertify-logs",
 	
 	language_error_placeholder: "###",
+	
+	url_for_version_check: "http://cmdi-maker.uni-koeln.de/get_version.php",
 
 	hellos: [
 		["Hello!","English"],

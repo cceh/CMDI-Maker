@@ -23,6 +23,13 @@
 }
 
 
+.icon{
+
+	height: 30px;
+	cursor: pointer;
+
+}
+
 #about_img{
 	width: 128px;
 	height: 128px;
