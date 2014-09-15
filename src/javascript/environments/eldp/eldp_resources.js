@@ -54,7 +54,7 @@ eldp_environment.workflow[0] = (function(){
 		var file_list_div = dom.make("div","file_list_div","",view);
 		var list = dom.make("div","list","",file_list_div);
 		
-		my.fileSelection = new APP.GUI.fileSelectionMechanism(
+		my.fileSelection = new APP.GUI.selectionMechanism(
 			"file_entry_", 
 			"selected_file",
 			function(event){
@@ -541,15 +541,6 @@ eldp_environment.workflow[0] = (function(){
 	};
 
 
-	my.clearFileList = function(){
-
-		my.available_resources = [];
-
-		my.refreshFileListDisplay();
-
-	};
-
-	
 	my.handleFileListInputChange = function(evt){
 	 
 		var file = evt.target.files[0]; // File object

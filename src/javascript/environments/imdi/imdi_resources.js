@@ -21,8 +21,6 @@ imdi_environment.workflow[1] = (function(){
 	var my = {};
 	var session;
 	
-	my.selected_files = [];
-	
 	my.available_resources = [];
 	// 0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
 	// this array only contains file metadata retrieved by file upload form / drag and drop
@@ -32,10 +30,6 @@ imdi_environment.workflow[1] = (function(){
 		title: "Resources",
 		icon: "blocks",
 	};
-	
-	my.last_selected_file = -1;
-	
-	my.shift = false;
 	
 	my.view_id = "VIEW_resources";
 	
@@ -244,33 +238,16 @@ imdi_environment.workflow[1] = (function(){
 		var file_list_div = dom.make("div","file_list_div","",view);
 		var list = dom.make("div","list","",file_list_div);
 		
+		
+		my.fileSelection = new APP.GUI.selectionMechanism(
+			"file_entry_", 
+			"selected_file",
+			function(event){
+				my.available_resources[event.index].selected = event.selected;
+			}
+		);
+		
 		my.refreshFileListDisplay(true);
-		
-		document.addEventListener("keydown", function(event) {
-		
-			if (event.keyCode == 16) {  //if shift is pressed
-				if (my.shift === false){
-					my.shift = true;
-					console.log("shift on");
-				}
-			}
-			
-			if (event.keyCode == 27)  {   //escape pressed
-			
-				my.deselectAllFiles();
-			
-			}
-		
-		});
-		
-		document.addEventListener("keyup", function(event) {
-		
-			if (event.keyCode == 16) {  //if shift is let go
-				my.shift = false;
-				console.log("shift off");
-			}
-			
-		});
 		
 	};
 
@@ -366,7 +343,7 @@ imdi_environment.workflow[1] = (function(){
 			session.refreshResourcesOfAllSessions();
 		}
 		
-		my.selected_files = [];
+		my.fileSelection.selected_files = [];
 		
 	};
 	
@@ -388,7 +365,7 @@ imdi_environment.workflow[1] = (function(){
 		
 			return function(){
 				
-				my.clickedOnFile(num);
+				my.fileSelection.clickedOnFile(num);
 			
 			};
 			
@@ -435,7 +412,7 @@ imdi_environment.workflow[1] = (function(){
 		
 		if (chosen_file_type == "selected"){
 		
-			forEach(my.selected_files, my.createSessionForResource);
+			forEach(my.fileSelection.selected_files, my.createSessionForResource);
 			return;
 		
 		}
@@ -461,9 +438,9 @@ imdi_environment.workflow[1] = (function(){
 	my.removeSelectedFiles = function(){
 		var f;
 		
-		for (f = 0; f<my.selected_files.length; f++){
+		for (f = 0; f<my.fileSelection.selected_files.length; f++){
 		
-			my.available_resources[my.selected_files[f]] = null;
+			my.available_resources[my.fileSelection.selected_files[f]] = null;
 		
 		
 		}
@@ -530,106 +507,7 @@ imdi_environment.workflow[1] = (function(){
 
 	};
 
-	/* File selection */
 
-
-	my.clickedOnFile = function(i){
-		var f;
-		
-		if (my.shift === true){
-			
-			if (i < my.last_selected_file){
-			
-				for (f = my.last_selected_file-1; f>=i; f--){
-			
-					my.selectFile(f);
-			
-				}		
-			
-			}
-			
-			if (i > my.last_selected_file){
-			
-				for (f = my.last_selected_file+1; f<=i; f++){
-			
-					my.selectFile(f);
-			
-				}
-			}
-			
-		}
-		
-		else {
-			my.selectFile(i);	
-		}
-
-
-		console.log(my.selected_files);
-
-
-	};
-
-
-	my.selectFile = function(i){
-
-		var pos = my.selected_files.indexOf(i);
-
-		if (pos == -1){
-			my.selected_files.push(i);
-			my.last_selected_file = i;
-			
-		}
-		
-		else {
-			my.selected_files.splice(pos,1);
-			my.last_selected_file = i;
-		}
-
-		my.markFileEntry(i);
-
-	};
-	
-
-	my.markFileEntry = function(i){
-
-		var pos = g("file_entry_"+i).className.indexOf(" selected_file");
-		
-		if (pos == -1) {
-			
-			g("file_entry_"+i).className = g("file_entry_"+i).className + " selected_file";
-			my.available_resources[i].selected = true;
-		
-		}
-		
-		else {
-		
-			g("file_entry_"+i).className = g("file_entry_"+i).className.slice(0,pos);
-			my.available_resources[i].selected = false;
-			
-		}
-
-	};
-
-	
-	my.deselectAllFiles = function(){
-
-		while (my.selected_files.length > 0){
-		
-			my.selectFile(my.selected_files[0]);
-		
-		}
-
-	};
-
-
-	my.clearFileList = function(){
-
-		my.available_resources = [];
-
-		my.refreshFileListDisplay();
-
-	};
-	
 	return my;
 
 })();

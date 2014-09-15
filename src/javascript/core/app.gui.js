@@ -802,30 +802,28 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.fileSelectionMechanism = function(file_entry_prefix, selected_flag_in_className, callback){
+	my.selectionMechanism = function (file_entry_prefix, selected_flag_in_className, callback){
+		var self = this;
 		
 		this.shift = false;
-		
 		this.last_selected_file = -1;
-		
 		this.selected_files = [];
 		
 		this.selectFile = function(i){
 
-			var pos = this.selected_files.indexOf(i);
+			var pos = self.selected_files.indexOf(i);
 
 			if (pos == -1){
-				this.selected_files.push(i);
-				this.last_selected_file = i;
-				
+				self.selected_files.push(i);
+				self.last_selected_file = i;
 			}
 			
 			else {
-				this.selected_files.splice(pos,1);
-				this.last_selected_file = i;
+				self.selected_files.splice(pos,1);
+				self.last_selected_file = i;
 			}
 
-			this.markFileEntry(i);
+			self.markFileEntry(i);
 
 		};
 		
@@ -863,9 +861,9 @@ APP.GUI = (function() {
 		
 		this.deselectAllFiles = function(){
 
-			while (this.selected_files.length > 0){
+			while (self.selected_files.length > 0){
 			
-				this.selectFile(this.selected_files[0]);
+				self.selectFile(self.selected_files[0]);
 			
 			}
 
@@ -877,23 +875,25 @@ APP.GUI = (function() {
 			
 			console.log("clicked on file: " + i);
 			
-			if (this.shift === true){
+			console.log("this.shift = " + self.shift);
+			
+			if (self.shift === true){
 				
-				if (i < this.last_selected_file){
+				if (i < self.last_selected_file){
 				
-					for (f = this.last_selected_file-1; f>=i; f--){
+					for (f = self.last_selected_file-1; f>=i; f--){
 				
-						this.selectFile(f);
+						self.selectFile(f);
 				
 					}		
 				
 				}
 				
-				if (i > this.last_selected_file){
+				if (i > self.last_selected_file){
 				
-					for (f = this.last_selected_file+1; f<=i; f++){
+					for (f = self.last_selected_file+1; f<=i; f++){
 				
-						this.selectFile(f);
+						self.selectFile(f);
 				
 					}
 				}
@@ -901,10 +901,10 @@ APP.GUI = (function() {
 			}
 			
 			else {
-				this.selectFile(i);	
+				self.selectFile(i);	
 			}
 
-			console.log(this.selected_files);
+			console.log(self.selected_files);
 
 		};
 		
@@ -912,15 +912,15 @@ APP.GUI = (function() {
 		document.onkeydown = function(event) {
 		
 			if (event.keyCode == 16) {  //if shift is pressed
-				if (this.shift === false){
-					this.shift = true;
+				if (self.shift === false){
+					self.shift = true;
 					console.log("shift on");
 				}
 			}
 			
 			if (event.keyCode == 27)  {   //escape pressed
 			
-				this.deselectAllFiles();
+				self.deselectAllFiles();
 			
 			}
 		
@@ -930,7 +930,7 @@ APP.GUI = (function() {
 		document.onkeyup = function(event) {
 		
 			if (event.keyCode == 16) {  //if shift is let go
-				this.shift = false;
+				self.shift = false;
 				console.log("shift off");
 			}
 			
