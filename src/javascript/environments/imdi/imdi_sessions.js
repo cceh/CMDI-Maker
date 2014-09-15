@@ -242,7 +242,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
 		var session_object = APP.forms.createEmptyObjectFromTemplate(session_form);
-		session_object.session.name = removeCharactersFromString(name, APP.CONF.not_allowed_chars);
+		session_object.session.name = removeCharactersFromString(name, my.parent.not_allowed_chars);
 		session_object.expanded = expanded;
 		session_object.id = my.getNewSessionID();
 		my.sessions.push(session_object);
@@ -1033,9 +1033,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			}
 			
-			for (var c=0; c<APP.CONF.not_allowed_chars.length; c++){
+			for (var c=0; c<my.parent.not_allowed_chars.length; c++){
 		
-				if (get(my.dom_element_prefix+my.sessions[i].id+"_session_name").indexOf(APP.CONF.not_allowed_chars[c]) != -1){
+				if (get(my.dom_element_prefix+my.sessions[i].id+"_session_name").indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				

@@ -34,7 +34,7 @@ imdi_environment.session_form = function () {
 						name: "name",
 						type: "text",
 						comment: l("session_form_comments", "name"),
-						not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:"
+						not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:áÁäÄàÀéÉîöÖóÓòÒüÜúÚùÙ"
 					},    
 					{
 						heading: "Title",

@@ -114,9 +114,9 @@ imdi_environment.workflow[0] = (function(){
 			
 		}
 		
-		for (var c=0; c<APP.CONF.not_allowed_chars.length; c++){
+		for (var c=0; c<my.parent.not_allowed_chars.length; c++){
 		
-			if (get(my.form_id_prefix + "name").indexOf(APP.CONF.not_allowed_chars[c]) != -1){
+			if (get(my.form_id_prefix + "name").indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 				return false;
 				

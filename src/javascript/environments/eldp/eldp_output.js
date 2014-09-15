@@ -57,7 +57,7 @@ eldp_environment.workflow[3] = (function (){
 		
 		else {
 			APP.view(bundle);
-			APP.alert(l("output", "bundles_must_have_proper_name") + APP.CONF.not_allowed_chars);
+			APP.alert(l("output", "bundles_must_have_proper_name") + my.parent.not_allowed_chars);
 		}
 	};
 	

@@ -1172,9 +1172,9 @@ eldp_environment.workflow[2] = (function() {
 			
 			}
 			
-			for (var c=0; c<APP.CONF.not_allowed_chars.length; c++){
+			for (var c=0; c<my.parent.not_allowed_chars.length; c++){
 		
-				if (get(my.dom_element_prefix+my.bundles[i].id+"_bundle_name").indexOf(APP.CONF.not_allowed_chars[c]) != -1){
+				if (get(my.dom_element_prefix+my.bundles[i].id+"_bundle_name").indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				

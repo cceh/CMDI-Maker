@@ -32,7 +32,7 @@ imdi_environment.workflow[4] = (function (){
 	};
 	
 	
-	my.not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:",
+	my.not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:";
 	
 	my.init = function(){
 	

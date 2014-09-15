@@ -803,6 +803,10 @@ APP.GUI = (function() {
 	
 	
 	my.selectionMechanism = function (file_entry_prefix, selected_flag_in_className, callback){
+	//This constructor function provides a selection mechanism for objects in the GUI.
+	//SHIFT = Select multiple resources
+	//ESCAPE = Deselect all resources
+	
 		var self = this;
 		
 		this.shift = false;
@@ -903,8 +907,6 @@ APP.GUI = (function() {
 			else {
 				self.selectFile(i);	
 			}
-
-			console.log(self.selected_files);
 
 		};
 		

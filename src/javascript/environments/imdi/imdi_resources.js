@@ -394,8 +394,8 @@ imdi_environment.workflow[1] = (function(){
 	my.sortAlphabetically = function(){
 
 		my.available_resources = sortByKey(my.available_resources, "name");
-
 		my.refreshFileListDisplay();
+		
 	};
   
 

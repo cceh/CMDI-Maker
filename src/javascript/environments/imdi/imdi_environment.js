@@ -30,6 +30,8 @@ var imdi_environment = (function(){
 	};
 	
 	
+	my.not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:áÁäÄàÀéÉîöÖóÓòÒüÜúÚùÙ";
+	
 	my.metadataLanguageIDs = [
 		["eng","English"],
 		["ger", "German"],

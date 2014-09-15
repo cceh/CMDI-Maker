@@ -26,6 +26,7 @@ var eldp_environment = (function(){
 	my.workflow = [];
 	my.languages = [];
 	
+	my.not_allowed_chars = " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:áÁäÄàÀéÉîöÖóÓòÒüÜúÚùÙ";
 	
 	my.l = function(arg1, arg2, arg3){
 		return APP.getTermInActiveLanguage(my.languages, arg1, arg2, arg3);
