@@ -802,6 +802,143 @@ APP.GUI = (function() {
 	};
 	
 	
+	my.fileSelectionMechanism = function(file_entry_prefix, selected_flag_in_className, callback){
+		
+		this.shift = false;
+		
+		this.last_selected_file = -1;
+		
+		this.selected_files = [];
+		
+		this.selectFile = function(i){
+
+			var pos = this.selected_files.indexOf(i);
+
+			if (pos == -1){
+				this.selected_files.push(i);
+				this.last_selected_file = i;
+				
+			}
+			
+			else {
+				this.selected_files.splice(pos,1);
+				this.last_selected_file = i;
+			}
+
+			this.markFileEntry(i);
+
+		};
+		
+		
+		this.markFileEntry = function(i){
+
+			var pos = g(file_entry_prefix + i).className.indexOf(" " + selected_flag_in_className);
+			
+			if (pos == -1) {
+				
+				g(file_entry_prefix + i).className = g(file_entry_prefix + i).className + " " + selected_flag_in_className;
+				
+				var event = {
+					index: i,
+					selected: true
+				};
+				
+			}
+			
+			else {
+			
+				g(file_entry_prefix + i).className = g(file_entry_prefix + i).className.slice(0,pos);
+				
+				var event = {
+					index: i,
+					selected: true
+				};
+				
+			}
+			
+			callback(event);
+
+		};
+		
+		
+		this.deselectAllFiles = function(){
+
+			while (this.selected_files.length > 0){
+			
+				this.selectFile(this.selected_files[0]);
+			
+			}
+
+		};
+		
+		
+		this.clickedOnFile = function(i){
+			var f;
+			
+			console.log("clicked on file: " + i);
+			
+			if (this.shift === true){
+				
+				if (i < this.last_selected_file){
+				
+					for (f = this.last_selected_file-1; f>=i; f--){
+				
+						this.selectFile(f);
+				
+					}		
+				
+				}
+				
+				if (i > this.last_selected_file){
+				
+					for (f = this.last_selected_file+1; f<=i; f++){
+				
+						this.selectFile(f);
+				
+					}
+				}
+				
+			}
+			
+			else {
+				this.selectFile(i);	
+			}
+
+			console.log(this.selected_files);
+
+		};
+		
+		
+		document.onkeydown = function(event) {
+		
+			if (event.keyCode == 16) {  //if shift is pressed
+				if (this.shift === false){
+					this.shift = true;
+					console.log("shift on");
+				}
+			}
+			
+			if (event.keyCode == 27)  {   //escape pressed
+			
+				this.deselectAllFiles();
+			
+			}
+		
+		};
+		
+		
+		document.onkeyup = function(event) {
+		
+			if (event.keyCode == 16) {  //if shift is let go
+				this.shift = false;
+				console.log("shift off");
+			}
+			
+		};
+	
+	};
+	
+	
 	return my;
 	
 })();
