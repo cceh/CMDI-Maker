@@ -563,7 +563,7 @@ imdi_environment.workflow[2] = (function(){
 	my.saveActiveActor = function(){
 	
 		if (typeof my.active_actor_index == "undefined"){
-			console.info("Shall save active actor but active actor is undefined!");
+			console.info("Shall save active actor but active actor is undefined! No problem!");
 			return;
 		}
 	

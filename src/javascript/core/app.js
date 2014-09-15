@@ -503,6 +503,11 @@ var APP = (function () {
 		my.GUI.closeSelectFrame();
 		my.GUI.mainMenu.close();
 		
+		if (typeof module_or_id == "undefined"){
+			console.warn("APP.view: module_or_id is undefined. Showing default view!");
+			module_or_id = "default";
+		}
+		
 		if (typeof module_or_id === 'string') {
 			
 			id = module_or_id;
@@ -510,9 +515,18 @@ var APP = (function () {
 			
 		}
 		
-		else { //if argument is a module
-			module = module_or_id;
-			id = APP.CONF.view_id_prefix + module.identity.id;
+		else { //if argument seems to be a module
+			
+			if (module_or_id.identity){
+				module = module_or_id;
+				id = APP.CONF.view_id_prefix + module.identity.id;
+			}
+			
+			else {
+				console.warn("APP.view: module to view is undefined!");
+				APP.view("default");
+				return;
+			}
 		}
 		
 		if (id == "default"){

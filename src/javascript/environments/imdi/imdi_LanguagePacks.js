@@ -400,42 +400,42 @@ imdi_environment.languages[1] = {
 
 	},
 	
-	//Have to be translated!
+	
 	session_form_comments: {
-		name: "A short name or abbreviation of one or two words. This identifier distinguishes the session from others in the same (sub-) corpus and is used for quick browsing.",
-		title: "The session title is the complete title of the session without any abbreviations.",
-		date: "In general the primary date of the session is audio or video date. If this session is about written resources only it indicates the creation date of the primary document.",
-		description: "Here a relevant description referring to the session as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.",
+		name: "Ein kurzer Name oder eine Abkürzung bestehend aus einem oder zwei Wörtern. Diese Kennung unterscheidet die Session von anderen im selben Korpus und wird beim schnellen Browsen genutzt.",
+		title: "Der \"Session Title\" ist der komplette Titel der Session ohne Abkürzungen.",
+		date: "Im Allgemeinen ist das primäre Datum der Session das Datum der Aufzeichnungen. Wenn diese Session Written Resources enthält, steht hier das Erstellungsdatum des primären Dokumentes.",
+		description: "Hier kann eine Beschreibung eingegeben werden, die die Session als Ganzes beschreibt: Beispiel: Eine Unterhaltung zwischen Mutter, Vater und Kind am Frühstückstisch.",
 		location: {
-			continent: "If the document is about \"the languages of South-America\", only Continent is supposed to be specified.",
-			region: "This element can also be used to describe sub-regions. Examples: europe, the netherlands, gelderland, achterhoek.",
-			address: "For instance if recording sessions took place at an institution, the address of the institute is meant."
+			continent: "Wenn es im Dokument um die \"Sprachen von Südamerika\" geht, sollte nur der Kontinent genannt werden.",
+			region: "Dieses Element kann auch genutzt werden, um Sub-Regionen zu beschreiben. Beispiele: Europa, die Niederlande, Achterhoek.",
+			address: "Falls die Aufnahmen beispielsweise in einem Institut gemacht worden sind, sollte hier die Adresse des Instituts eingegeben werden."
 		},
 		project: {
-			main: "If the session was made within the context of a project, the project element contains information regarding this project. This information is typically reused for many sessions and corpus leafs when they all belong to the same project.",
-			name: "A short name or abbreviation of the project.",
-			title: "The full title of the project.",
-			id: "A unique identifier for the project.",
-			description: "An elaborate description of the scope and goals of the project.",
-			contact: "Contact information about the person or institution responsible for the project."
+			main: "Wenn die Session innerhalb eines Projektes erstellt worden ist, enthält das Element \"Project\" Informationen über das Projekt. Diese Informationen werden typischerweise für viele Sessions wiederverwendet, wenn diese alle zum gleichen Projekt gehören.",
+			name: "Ein kurzer Name oder eine Abkürzung des Projektes.",
+			title: "Der komplette und ausführliche Titel des Projektes.",
+			id: "Eine eindeutige Kennung für das Projekt.",
+			description: "Eine ausführliche Beschreibung über den Umfang des Projektes und über seine Ziele.",
+			contact: "Kontaktinformationen der Person oder der Institution, die für das Projekt verantwortlich ist."
 		},
 		content: {
-			main: "The content group is used to describe the content of the session. This is done using four dimensions (communication context, genre, task and modalities).",
-			genre: "The conventionalized discourse types of the content of the session.",
-			sub_genre: "The conventionalized discourse sub-types of the content of the session.",
-			task: "In areas such as language engineering often typical tasks are carried out or typical situations are dealt with such as \"info kiosk task\" or \"frog story\".",
-			description: "In opposition to the elements prose text can be used here to describe the content.",
+			main: "Die \"Content\"-Spalte wird benutzt, um den Inhalt der Sessions zu beschreiben. Dies geschieht mit Hilfe der 4 Dimensionen \"Communication Context\", \"Genre\", \"Task\" und \"Modalities\".",
+			genre: "Der konventionalisierte Typ des Inhalts der Session.",
+			sub_genre: "Der konventionalisierte Sub-Typ des Inhalts der Session.",
+			task: "In Bereichen wie der Sprachdatenverarbeitung geht es oftmals um typische Aufgaben oder Situationen wie \"info kiosk task\" oder \"frog story\".",
+			description: "Im Gegensatz zu den anderen Elementen, kann hier Volltext benutzt werden, um den Inhalt zu beschreiben.",
 			communication_context: {
-				main: "This group of elements is used to describe the communication context in which the recording took place.",
-				event_structure: "Indicates the structure of the communication event.",
-				planning_type: "Indicates in how far the consultant planned the linguistic event.",
-				interactivity: "Characterizes the degree of interactivity between all the Actors in the session.",
-				social_context: "Indicates the social context the event took place in.",
-				involvement: "Indicates in how far the researcher was involved in the linguistic event."
+				main: "Diese Gruppe von Elementen wird benutzt, um den Kontext der Kommunikation zu beschreiben, in dem die Aufnahme stattgefunden hat.",
+				event_structure: "Struktur des Kontextes der Kommunikation.",
+				planning_type: "Weist darauf hin, in wie weit der Referent das linguistische Ereignis geplant hat.",
+				interactivity: "Beschreibt den Grad der Interaktivität zwischen allen Actors in der Session.",
+				social_context: "Beschreibt den sozialen Kontext, in dem das Ereignis stattgefunden hat.",
+				involvement: "Beschreibt, in wie weit der Forscher in das Ereignis involviert war."
 			}
 		},
 		actors: {
-			description: "This description concerns all Actors and should be used to describe interactions and interrelations between Actors."
+			description: "Diese Beschreibung betrifft alle Actors und sollte genutzt werden, um die Interaktionen und Beziehungen zwischen den Actors zu beschreiben."
 		}
 	},
 	

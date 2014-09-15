@@ -236,7 +236,7 @@ function randomString(length, chars) {
 }
 
 
-function remove_invalid_chars(string){
+function replaceAccentBearingLettersWithASCISubstitute(string){
 
 	var text = string;
 	text = text.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss");
@@ -261,6 +261,31 @@ var removeCharactersFromString = function (string, char_string){
 			pos = string.indexOf(character);
 		
 			string = string.slice(0, pos) + string.slice(pos+1, string.length);
+		
+		}
+
+	}
+	
+	return string;
+};
+
+
+var replaceCharactersInStringWithSubstitute = function (string, char_string, substitute){
+
+	var character;
+	var pos;
+	
+	for (var c=0; c< char_string.length; c++){
+
+		character = char_string[c];
+		
+		for (var i=0; i<string.length; i++){  //here it is important, that string.length gets evaluated anew each loop
+			
+			if (string[i] == character) {
+				
+				string = string.slice(0, i) + substitute + string.slice(i+1, string.length);
+		
+			}
 		
 		}
 

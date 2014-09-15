@@ -33,6 +33,8 @@ imdi_environment.workflow[1] = (function(){
 	
 	my.view_id = "VIEW_resources";
 	
+	my.substitute_for_bad_chars = "_";
+	
 	my.view = function(){
 	
 		APP.GUI.scrollTop();
@@ -473,7 +475,9 @@ imdi_environment.workflow[1] = (function(){
 
 	my.createSessionForResource = function(resource_index){
 
-		var name = remove_invalid_chars(removeEndingFromFilename(my.available_resources[resource_index].name));
+		var name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.available_resources[resource_index].name));
+		name = replaceCharactersInStringWithSubstitute(name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
+		
 		var expanded = false; //collapse automatically generated session
 		
 		var resources = [];
