@@ -22,6 +22,7 @@ APP.CONF = {
 	LanguageCodePrefix: "ISO639-3:",
 	path_to_images: "img/",
 	path_to_icons: "img/icons/",
+	path_to_scripts: "scripts/",
 	file_download_header: "text/xml;charset=utf-8",
 	highlight_color: "skyblue",
 	local_storage_key: "CMDI-Maker",

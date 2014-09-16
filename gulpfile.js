@@ -130,14 +130,15 @@ gulp.task('scripts', function() {
 });
 
 
-var worker_scripts = [
+var worker_and_dynamic_scripts = [
 	"./src/javascript/deflate.js",
-	"./src/javascript/inflate.js"
+	"./src/javascript/inflate.js",
+	"./src/javascript/LanguageIndex.js"
 ];
 
 
 gulp.task('script-workers', function() {
-  gulp.src(worker_scripts)
+  gulp.src(worker_and_dynamic_scripts)
     .pipe(gulp.dest('./build/scripts/'));
 });
 

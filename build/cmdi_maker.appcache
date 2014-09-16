@@ -6,6 +6,7 @@ get_version.php
 index.html
 img/favicon.ico
 img/logo-128.png
+scripts/LanguageIndex.js
 scripts/deflate.js
 scripts/inflate.js
 scripts/script.js
@@ -65,4 +66,4 @@ img/logos/LOGO_Uni_Koeln.png
 NETWORK:
 *
 
-# hash: c964271b6bee176686670400005c25fcb8599029c08b21bda5ee08e4eca586af
+# hash: 9a3c59c1fb189ab37bd8e31c4622040a87c24db17cc54d2b72a701cdbef6a6ab
