@@ -24,7 +24,7 @@ var source_scripts = [
 "./src/javascript/xml.js",
 "./src/javascript/helpers.js",
 "./src/javascript/dom.js",
-"./src/javascript/LanguageIndex.js",
+//"./src/javascript/LanguageIndex.js",  //is loaded dynamically
 	
 	
 /* Environments */

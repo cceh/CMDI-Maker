@@ -80,6 +80,19 @@ function getFilenameFromUNIXFilePath(path){
 }
 
 
+function addScript(url, onloaded){
+
+	console.log("adding script: " + url);
+
+	var script = document.createElement("script");
+	script.src = url;
+	script.addEventListener("load", onloaded, false);
+	
+	document.head.appendChild(script);
+
+}
+
+
 function getDirectoryFromUNIXFilePath(path){
 
 	var pos_of_slash = path.lastIndexOf("/");

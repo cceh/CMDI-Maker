@@ -59,9 +59,11 @@ var APP = (function () {
 		
 		window.addEventListener("beforeunload", my.save, false);
 		
-		my.getVersionOnServer();
+		//my.getVersionOnServer();
 		
-		
+		addScript("javascript/LanguageIndex.js", function(){
+			console.log("LanguageIndex ready!");
+		});
 		
 	};
 	
