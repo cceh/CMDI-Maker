@@ -41,6 +41,18 @@ var source_scripts = [
 		"./src/javascript/environments/imdi/imdi_actor_languages.js",
 	"./src/javascript/environments/imdi/imdi_sessions.js",
 	"./src/javascript/environments/imdi/imdi_output.js",
+	
+
+	/*ELDP */
+	"./src/javascript/environments/eldp/eldp_environment.js",
+	"./src/javascript/environments/eldp/eldp_LanguagePacks.js",			
+	"./src/javascript/environments/eldp/eldp_forms.js",
+	"./src/javascript/environments/eldp/eldp_resources.js",
+	"./src/javascript/environments/eldp/eldp_actors.js",
+	"./src/javascript/environments/eldp/eldp_actor_languages.js",
+	"./src/javascript/environments/eldp/eldp_sessions.js",
+	"./src/javascript/environments/eldp/eldp_output.js",
+	"./src/javascript/environments/eldp/eldp_generator.js",
 
 
 /*Core */
