@@ -47,7 +47,21 @@ var APP = (function () {
 		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.settings.init(my.coreSettings(), g("core_settings"));
 		my.displayLanguages();
-		my.addEventListeners();
+		
+
+		g("VIEWLINK_start").addEventListener("click", function() { my.view("VIEW_start"); });
+		
+		//g("LINK_refresh_version").addEventListener("click", APP.getVersionOnServer);
+	
+		document.addEventListener("keydown", function(event) {
+		
+			if (event.keyCode == 27)  {   //escape pressed
+			
+				APP.GUI.closeSelectFrame();
+			
+			}
+		
+		});
 		
 		my.environments.displayAllInSelect();
 		
@@ -108,6 +122,7 @@ var APP = (function () {
 	};
 	
 	
+	/*
 	my.getVersionOnServer = function(){
 	
 		g("version_check_span").innerHTML = "Checking for new version...";
@@ -131,6 +146,7 @@ var APP = (function () {
 		});
 
 	};
+	*/
 	
 	
 	my.getIndexFromLPID = function(id){
@@ -486,6 +502,25 @@ var APP = (function () {
 		
 		});
 		
+		
+		g('link_lets_go').addEventListener('click', function() {
+		
+			if (typeof my.environments.active_environment == "undefined"){
+				my.environments.create(my.environments.get(0));	
+			}
+			
+			if (my.environments.active_environment.workflow[0]){
+				my.view(my.environments.active_environment.workflow[0]);
+			}
+			
+			else {
+			
+				console.error("ERROR: The active profile does not have a workflow!");
+				
+			}
+			
+		});
+		
 	};
 	
 	
@@ -656,43 +691,6 @@ var APP = (function () {
 			
 		});
 	
-	};
-	
-	
-	my.addEventListeners = function(){
-	
-		g("VIEWLINK_start").addEventListener("click", function() { my.view("VIEW_start"); });
-		
-		g("LINK_refresh_version").addEventListener("click", APP.getVersionOnServer);
-	
-		g('link_lets_go').addEventListener('click', function() {
-		
-			if (typeof my.environments.active_environment == "undefined"){
-				my.environments.create(my.environments.get(0));	
-			}
-			
-			if (my.environments.active_environment.workflow[0]){
-				my.view(my.environments.active_environment.workflow[0]);
-			}
-			
-			else {
-			
-				console.error("ERROR: The active profile does not have a workflow!");
-				
-			}
-			
-		});
-		
-		document.addEventListener("keydown", function(event) {
-		
-			if (event.keyCode == 27)  {   //escape pressed
-			
-				APP.GUI.closeSelectFrame();
-			
-			}
-		
-		});
-		
 	};
 	
 	
