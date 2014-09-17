@@ -57,6 +57,7 @@ APP.CONF = {
 	language_error_placeholder: "###",
 	
 	url_for_version_check: "get_version.php",
+	languageIndex_filename: "LanguageIndex.js",
 
 	hellos: [
 		["Hello!","English"],

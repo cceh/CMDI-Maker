@@ -61,7 +61,7 @@ var APP = (function () {
 		
 		//my.getVersionOnServer();
 		
-		addScript(APP.CONF.path_to_scripts + "LanguageIndex.js", function(){
+		addScript(APP.CONF.path_to_scripts + APP.CONF.languageIndex_filename, function(){
 			console.log("LanguageIndex ready!");
 		});
 		
