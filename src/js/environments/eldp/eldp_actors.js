@@ -21,34 +21,34 @@ eldp_environment.workflow[1] = (function(){
 	
 	//PRIVATE
 	
-	var showLanguagesOfActiveperson = function(){
+	var showLanguagesOfActivePerson = function(){
 
-		forEach(my.persons[my.active_person].languages, my.languages.set);
+		forEach(my.persons[my.active_person_index].languages, my.languages.set);
 
 	};
 	
 	
-	var highlightActivepersonInList = function(person_id){
+	var highlightActivePersonInList = function(person_index){
 
+		if (typeof person_index == "undefined"){
+			console.warn("I shall highlight a person with index = undefined!");
+			return;
+		}
+	
 		for (var i=0;i<my.persons.length;i++){
-			g(my.element_id_prefix + "list_entry_"+i).style.background = "#FF8BC7";
+			g(my.element_id_prefix + "list_entry_"+i).style.background = "lightskyblue";
 		}
 
-		g(my.element_id_prefix + "list_entry_-1").style.background = "#FF8BC7";
-		//make everything normal at first
-
-		g(my.element_id_prefix + "list_entry_"+person_id).style.background = "lightskyblue";
+		g(my.element_id_prefix + "list_entry_"+person_index).style.background = "#FF8BC7";
 
 	};
 	
 	
-	var getLanguagesOfActivepersonFromForm = function(){
+	var getLanguagesOfActivePersonFromForm = function(){
 	
-		var array = []; 
+		var array = map(my.languages.languages_of_active_person, function(AL){
 		
-		forEach(my.languages.languages_of_active_person, function(AL){
-		
-			var personLanguageObject = {
+			var PersonLanguageObject = {
 				
 				LanguageObject: AL.LanguageObject,
 				MotherTongue: g("mothertongue_" + AL.id).checked,
@@ -56,7 +56,7 @@ eldp_environment.workflow[1] = (function(){
 				
 			};
 			
-			array.push(personLanguageObject);
+			return PersonLanguageObject;
 			
 		});
 		
@@ -65,27 +65,16 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	var makepersonObjectFromFormInput = function(){
+	var makePersonObjectFromFormInput = function(){
 
 		var object = APP.forms.createEmptyObjectFromTemplate(person_form);
 
 		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, person_form);
 		
-		object.languages = getLanguagesOfActivepersonFromForm();  //PRELIMINARY OVERWRITE!
+		object.languages = getLanguagesOfActivePersonFromForm();  //PRELIMINARY OVERWRITE!
 
-		//if we're not creating a new person but updating an existing one, we also pass the id of active person to the db
-		if (my.active_person != -1) {
-			object.id = my.persons[my.active_person].id;
-			console.log("Saving person with id "+object.id);
-		}
-		
-		else {
-		
-			object.id = my.id_counter;
-			console.log("Saving person with id "+object.id);
-			my.id_counter++;
-			
-		}
+		object.id = my.persons[my.active_person_index].id;
+		console.log("Saving person with id " + object.id);
 
 		return object;
 	 
@@ -103,82 +92,27 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	var parseIMDIForpersons = function(xml){
-
-		var persons_in_xml = xml.getElementsByTagName("person");
+	var handleClickOnPersonList = function(index){
+	
+		my.saveActivePerson();
 		
-		var persons_in_json = map(persons_in_xml, function(xml_person){
-		
-			console.log("person in IMDI found. Name: " + xml_person.querySelector("Name").textContent.trim());
-			
-			var person_object = {
-				name: xml_person.querySelector("Name").textContent.trim(),
-				role: xml_person.querySelector("Role").textContent.trim(),
-				full_name: xml_person.querySelector("FullName").textContent.trim(),
-				code: xml_person.querySelector("Code").textContent.trim(),		
-				age: xml_person.querySelector("Age").textContent.trim(),
-				sex: xml_person.querySelector("Sex").textContent.trim(),		
-				education: xml_person.querySelector("Education").textContent.trim(),
-				birth_date: parse_birth_date(xml_person.querySelector("BirthDate").textContent.trim()),
-				ethnic_group: xml_person.querySelector("EthnicGroup").textContent.trim(),
-				family_social_role: xml_person.querySelector("FamilySocialRole").textContent.trim(),
-				
-				description: xml_person.querySelector("Description").textContent.trim(),
-				
-				contact: {
-				
-					name: xml_person.querySelector("Contact").querySelector("Name").textContent.trim(),
-					address: xml_person.querySelector("Contact").querySelector("Address").textContent.trim(),
-					email: xml_person.querySelector("Contact").querySelector("Email").textContent.trim(),
-					organisation: xml_person.querySelector("Contact").querySelector("Organisation").textContent.trim(),
-				
-				
-				},
-				
-				anonymized: (xml_person.querySelector("Anonymized").textContent.trim() == "true") ? true : false,
-				
-				languages: []
-			
-			};
-			
-			var person_languages = xml_person.querySelector("Languages");
-			
-			forEach(person_languages.children, function(xml_AL){
-			
-				if (xml_AL.nodeName != "Language"){
-					return;
-				}
-			
-				var person_Language = {
-				
-					LanguageObject: [
-						xml_AL.querySelector("Id").textContent.trim().slice(9),
-						"?",
-						"?",
-						xml_AL.querySelector("Name").textContent.trim()
-					],
-					
-					MotherTongue: (xml_AL.querySelector("MotherTongue").textContent.trim() == "true") ? true : false,
-					PrimaryLanguage: (xml_AL.querySelector("PrimaryLanguage").textContent.trim() == "true") ? true : false
-				
-				
-				};
-				
-				
-				person_object.languages.push(person_Language);
-			
-			});
-			
-			return person_object;
-
-		});
-		
-		console.log(persons_in_xml);
-		
-		return persons_in_json;
-
+		my.show(my.persons[index].id);
+	
 	};
-
+	
+	
+	var isEveryPersonNamed = function(){
+	
+		for (var i=0; i<my.persons.length; i++){
+			if (my.persons[i].name == ""){
+				return false;
+			}
+		}
+		
+		return true;
+	
+	};
+	
 	
 	//PUBLIC
 
@@ -203,25 +137,23 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	my.id_counter = 0;
-	my.active_person = -1;
+	my.active_person_index;
+	
+	my.module_view;
 	
 	my.init = function(view){
 	
 		my.persons = [];
 		my.id_counter = 0;
-		my.active_person = -1;
+		my.active_person = undefined;  //Necessary!
+		
+		my.module_view = view;
 		
 		bundle = my.parent.workflow[2];
 		
-		dom.make("div",my.element_id_prefix + "list","",view);
-		var ac_view = dom.make("div",my.element_id_prefix + "view","",view);
-		var title_div = dom.make("div", my.element_id_prefix + "title_div","",ac_view);
-		dom.make("h1", my.element_id_prefix + "form_title", "", title_div, l("new_person"));
-		dom.make("div", my.element_id_prefix + "content_div","",ac_view);
-		dom.make("div", my.languages.element_id_prefix + "results_div","",view);
-		
-		my.createForm();
-		
+		my.createListDIV(view);
+		var ac_view = dom.make("div", my.element_id_prefix + "view","",view);
+	
 		my.languages.init();
 		
 		my.refreshListDisplay(true);
@@ -229,9 +161,18 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
+	my.createListDIV = function(view){
+	
+		dom.make("div",my.element_id_prefix + "list","",view);
+		
+	}
+	
+	
 	my.getSaveData = function(){
 	
 		var object = {};
+		
+		my.saveActivePerson();
 		
 		object.persons = my.persons;
 		object.id_counter = my.id_counter;
@@ -242,13 +183,54 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
+	my.showNoPersonsMessage = function(){
+	
+		var view = my.module_view;
+	
+		view.innerHTML = "";
+		
+		var no_persons_message = dom.make("h2","no_persons_text","no_persons_text", view);
+		no_persons_message.innerHTML = l("there_are_no_persons_yet") + " " + 
+		l("why_not_create_one__before_link");
+
+		var new_person_link = dom.make("a","new_person_link","new_person_link", no_persons_message);
+
+		new_person_link.innerHTML = l("why_not_create_one__link");
+		new_person_link.href = "#";
+
+		no_persons_message.innerHTML += l("why_not_create_one__after_link");
+
+		g("new_person_link").addEventListener('click', function() {my.createNewPerson(); });
+		//we have to use g here instead of no_bundles_link, because latter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
+		
+	
+	};
+	
+	
 	my.recall = function(data){
 	
-		my.persons = data.persons;
-		my.id_counter = data.id_counter;
-		my.active_person = data.active_person;
+		if (data.persons){
+			my.persons = data.persons;
+		}
+		
+		if (data.id_counter){
+			my.id_counter = data.id_counter;
+		}
+		
+		if (data.active_person_index){
+			my.active_person_index = data.active_person_index;
+		}
+		
+		//if active_person_index cannot be recalled but there are persons, set it to 0
+		else if (my.persons.length > 0){
+			my.active_person_index = 0;
+		}
 		
 		my.refreshListDisplay();
+		
+		if (typeof my.active_person_index != "undefined"){
+			my.show(my.persons[my.active_person_index].id);
+		}
 	
 	};
 	
@@ -256,16 +238,16 @@ eldp_environment.workflow[1] = (function(){
 	my.functions = function(){
 		return [
 			{
-				id: "link_save_active_person",
-				icon: "save",
-				label_span_id: "save_person_span",
-				onclick: function() { my.save_active_person(); }
+				id: "link_new_person",
+				icon: "plus",
+				label: l("new_person"),
+				onclick: function() { my.createNewPerson(); }
 			},
 			{
 				id: "link_delete_active_person",
 				icon: "reset",
 				label: l("delete_this_person"),
-				onclick: function() { my.delete_active_person(); }
+				onclick: function() { my.handleClickOnDeletePerson(); }
 			},
 			{
 				id: "link_sort_persons_alphabetically",
@@ -274,10 +256,10 @@ eldp_environment.workflow[1] = (function(){
 				onclick: function() { my.sortAlphabetically(); }
 			},
 			{
-				id: "link_duplicate_active_person",
+				id: "link_duplicateActivePerson",
 				icon: "duplicate_user",
-				label: l("save_and_duplicate_this_person"),
-				onclick: function() { my.duplicate_active_person(); }
+				label: l("duplicate_this_person"),
+				onclick: function() { my.duplicateActivePerson(); }
 			}
 		];
 	};
@@ -313,47 +295,57 @@ eldp_environment.workflow[1] = (function(){
 
 
 	my.show = function(person_id){
-	// -1 = empty form to create a new person
 
-		console.log("Showing person " + person_id);
+		var person_index = my.getIndexByID(person_id);
 		
-		highlightActivepersonInList(person_id);
+		if (typeof person_index == "undefined"){
+			console.error("person.show: Undefined person_id!");
+			person_index = 0;
+		}
+		
+		if (my.persons.length == 0){
+			console.info("person.show: No persons to show!");
+			return;
+		}
+		
+		console.log("Showing person " + person_index);
+		
+		my.createFormIfNotExistent();
+		
+		highlightActivePersonInList(person_index);
 		my.languages.clearActivePersonLanguages();
-
-		my.active_person = person_id;
-
-		if (person_id != -1){
-			//show data of selected person in form
-
-			g(my.element_id_prefix + "form_title").innerHTML = my.persons[person_id].title;
-			
-			var person_to_display = my.persons[person_id];
-			
-			APP.forms.fill(person_form, my.element_id_prefix, person_to_display);
-			
-			showLanguagesOfActiveperson();
-			
-			g('link_delete_active_person').style.display = "inline";
-			g('link_duplicate_active_person').style.display = "inline";
-			g("save_person_span").innerHTML = l("save_changes_to_this_person");
-
-		}
-
-		else {
-
-			blankForm();
-			
-			dom.hide(g('link_delete_active_person'));
-			dom.hide(g('link_duplicate_active_person'));
-			g("save_person_span").innerHTML = l("save_person");
-
-		}
-
+		
+		my.active_person_index = person_index;
+		
+		my.refreshFormTitle();
+		
+		var person_to_display = my.persons[person_index];
+		
+		APP.forms.fill(person_form, my.element_id_prefix, person_to_display);
+		
+		showLanguagesOfActivePerson();
 
 	};
 	
 	
-	my.getPersonIndexByID = function(person_id) {
+	my.refreshFormTitle = function(){
+	
+		var form_title = g(my.element_id_prefix + "form_title");
+		
+		var person_name = my.persons[my.active_person_index].name;
+		
+		if (person_name == ""){
+			form_title.innerHTML = l("unnamed_person");
+		}
+		
+		else {
+			form_title.innerHTML = person_name;
+		}
+	
+	};
+	
+	
+	my.getIndexByID = function(person_id) {
 
 		for (var i = 0, len = my.persons.length; i < len; i++) {
 			if (my.persons[i].id == person_id){
@@ -442,99 +434,142 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.createForm = function(){
+	my.createFormIfNotExistent = function(){
+	
+		var ac_view = g("person_view");
+		
+		if (ac_view){
+			return;
+		};
+	
+		ac_view = dom.make("div", "person_view", "person_view", my.module_view);
+		
+		ac_view.innerHTML = "";
+		
+		var title_div = dom.make("div", my.element_id_prefix + "title_div","",ac_view);
+		dom.make("h1", my.element_id_prefix + "form_title", "", title_div, l("new_person"));
+		dom.make("div", my.element_id_prefix + "content_div","", ac_view);
 
 		APP.forms.make(g(my.element_id_prefix + "content_div"), person_form, my.element_id_prefix, my.element_id_prefix, undefined, my.languages.makeInputInForm);
+		
+		//To refresh name and role in person list as soon as they are changed by the user
+		//g(my.element_id_prefix + "name").addEventListener("blur", my.saveActivePerson);
+		//g(my.element_id_prefix + "role").addEventListener("blur", my.saveActivePerson);
 
 	};
 
 
 	my.duplicate_active_person = function(){
 
-		//first, save changes to the person
-		var save = my.save_active_person();
+		//first, save changes to the current person
+		var person_object = my.saveActivePerson();
 		
-		//then create a duplicate
-		if (save === true){
-			my.save_active_person(true);
-			APP.log(l("person_saved_and_duplicated"),"success");
-		}
+		//then create a new person with this object
+		my.createNewPerson(person_object);
+		
+		APP.log(l("person_saved_and_duplicated"),"success");
 
 	};
 
 
-	my.save_active_person = function(do_not_overwrite){
-	//do_not_overwrite can be true or false. if true, active person will not be overwritten, but duplicated
-
-		if (get(my.element_id_prefix + "title") !== ""){
-
-			if (!do_not_overwrite){
-				do_not_overwrite = false;
-			}
-			
-			var person_to_put = makepersonObjectFromFormInput();
-			
-			return my.save(person_to_put, do_not_overwrite);
-			
+	my.saveActivePerson = function(){
+	
+		if (typeof my.active_person_index == "undefined"){
+			console.info("Shall save active person but active person is undefined! No problem!");
+			return;
 		}
+	
+		var person_to_put = makePersonObjectFromFormInput();
 
-		else {
+		my.save(person_to_put);
+
+		my.refreshListDisplay();
 		
-			APP.alert(l("give_your_person_a_name_first"));
-			return false;
-			
-		}
+		my.refreshFormTitle();
+		
+		return person_to_put;
 
+		//how do we require person name?
 	};
 
 
-	my.save = function(person_to_put, do_not_overwrite){
+	my.save = function(person_to_put){
+	//this will always overwrite an existing person
 
-		var person_ids = [];
-		
 		//create array with all person ids
-		for (var a=0; a<my.persons.length;a++){
-			person_ids.push(my.persons[a].id);
-		}
+		var person_ids = getArrayWithIDs(my.persons);
 
-		//if this person does already exist and is to be overwritten, overwrite the object in the array
-		if ((person_ids.indexOf(person_to_put.id ) != -1) && (do_not_overwrite === false)) {
-			
-			my.persons.splice(my.getPersonIndexByID(person_to_put.id),1,person_to_put);
-			
-			//if the person does already exist, check if it is in a bundle and correct the person name in the bundle, if required
-			bundle.updatePersonNameInAllBundles(person_to_put.id);
-			
+		my.persons.splice(my.getIndexByID(person_to_put.id),1,person_to_put);
+
+		//if the person does already exist, check if it is in a bundle and correct the person name in the bundle, if required
+		bundle.updatePersonNameInAllBundles(person_to_put.id);
+
+		return person_to_put;
+
+	};
+	
+	
+	my.createNewPerson = function(person_to_put){
+	
+		if (typeof my.active_person_index != "undefined"){
+			my.saveActivePerson();
+		}	
+		
+		//after the current person is saved, check, if all persons have a name
+		if (!isEveryPersonNamed()){
+			APP.alert(l("please_give_all_persons_a_name_before_creating_new_one"));
+			return;
 		}
 		
-		else {    //if person shall not be overwritten, give the duplicate/new generated person a new id
-			
-			person_to_put.id = my.id_counter;
-			console.log("Saving person with id " + person_to_put.id);
-			my.id_counter++;
-			
-			my.persons.push(person_to_put);
+		
+		//if no person object is given, get the form input
+		if (!person_to_put){
+			person_to_put = APP.forms.createEmptyObjectFromTemplate(person_form);
 		}
+		
+		person_to_put.id = my.id_counter;
+		console.log("Saving person with id " + person_to_put.id);
+		my.id_counter++;
+		
+		my.persons.push(person_to_put);
 	 
 		console.log('Yeah, dude inserted! insertId is: ' + person_to_put.id);
 
 		my.refreshListDisplay();
 		
-		return true;
-
+		//show this created person
+		my.show(person_to_put.id);
 	};
 
 
-	my.delete_active_person = function(){
-
-		var name_of_person = my.persons[my.active_person].title;
+	my.handleClickOnDeletePerson = function(){
+	
+		if (typeof my.active_person_index == "undefined"){
+			console.warn("Active Person is undefined. Don't know what to delete!");
+			return;
+		}
+	
+		var name_of_person = my.persons[my.active_person_index].name;
+		var confirm_message;
+		
+		if (name_of_person == ""){
+		
+			confirm_message = l("really_erase_this_person");
+		
+		}
+		
+		else {
+		
+			confirm_message = l("really_erase_before_name") + name_of_person + l("really_erase_after_name");
+		
+		}
 
 		alertify.set({ labels: {
 			ok     : l("no"),
 			cancel : l("yes_delete_person")
 		} });
 
-		alertify.confirm(l("really_erase_before_name") + name_of_person + l("really_erase_after_name"), function (e) {
+		alertify.confirm(confirm_message, function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -543,19 +578,39 @@ eldp_environment.workflow[1] = (function(){
 			else {
 				// user clicked "cancel"
 				
-				my.persons.splice(my.active_person,1);
-				my.refreshListDisplay();
+				my.deleteActivePerson();
 				
 				APP.log(l("person_deleted_before_name") + name_of_person + l("person_deleted_after_name"));
 
 			}
 		});
+	
+	};
+	
+
+	my.deleteActivePerson = function(){
+
+		my.persons.splice(my.active_person_index,1);
+		
+		if (my.persons.length == 0){
+			my.active_person_index = undefined;
+		}		
+		
+		if (my.active_person_index > 0){
+			my.show(my.persons[my.active_person_index - 1].id);
+		}
+		
+		else if (my.persons.length > 0){
+			my.show(my.persons[0].id)
+		}
+		
+		my.refreshListDisplay();
 	};
 	
 	
 	my.getAge = function (bundle_id, person_id){
 
-		var i = my.getPersonIndexByID(person_id);
+		var i = my.getIndexByID(person_id);
 		
 		if (my.persons[i].age === ""){   //at first, check, if person's age hasn't been specified yet
 		
@@ -609,55 +664,54 @@ eldp_environment.workflow[1] = (function(){
 
 
 	my.refreshListDisplay = function(not_in_bundles){
-		var div;
-	
+		
+		if (!g(my.element_id_prefix + 'list')){
+			my.module_view.innerHTML = "";
+			my.createListDIV(my.module_view);
+		}
+		
+		
 		g(my.element_id_prefix + 'list').innerHTML = "";
 
-		for (var i=0;i<my.persons.length;i++){
-
-			div = dom.make('div', my.element_id_prefix + "list_entry_"+(i), my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
-			dom.h2(div, my.persons[i].title);
-			dom.p(div, my.persons[i].role);
+		forEach(my.persons, renderPersonListEntry);
 		
-			div.addEventListener('click', function(num) { 
-				return function(){ my.show(num); }; 
-			}(i), false );
+		if (my.persons.length == 0){
+			my.showNoPersonsMessage();
+			
+			APP.environments.disableFunction("link_delete_active_person");
+			APP.environments.disableFunction("link_sort_persons_alphabetically");
+			APP.environments.disableFunction("link_duplicateActivePerson");
 			
 		}
-
-		//create field for new person
-		div = dom.make('div', my.element_id_prefix + "list_entry_-1", my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'), "<h2>" + l("new_person") + "</h2>");
-		div.addEventListener('click', function() { my.show(-1); } , false );
+		
+		else {
+			highlightActivePersonInList(my.active_person_index);
+			
+			APP.environments.enableFunction("link_delete_active_person");
+			APP.environments.enableFunction("link_sort_persons_alphabetically");
+			APP.environments.enableFunction("link_duplicateActivePerson");
+		}
 
 		if ((bundle) && (!not_in_bundles)){
 			bundle.refreshPersonLists(my.persons);
 		}
-
-		switch (my.persons.length){
 		
-			case 0: {
-				my.show(-1);
-				break;
-			}
-			
-			case 1: {
-				my.show(0);
-				break;
-			}
-			
-			default: {
-			
-				if (my.active_person >= my.persons.length){
-					my.show(my.persons.length-1);
-				}
-				
-				else {
-					my.show(my.active_person);
-				}
-			
-				break;
-			}
-		}
+	};
+	
+	
+	var renderPersonListEntry = function(person, i){
+	
+		var div = dom.make('div', my.element_id_prefix + "list_entry_" + i, my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
+		
+		var name_display = (person.name != "") ? person.name : l("unnamed_person");
+		
+		dom.h2(div, name_display);
+		dom.p(div, person.role);
+		
+		div.addEventListener('click', function(num) { 
+			return function(){ handleClickOnPersonList(num); }; 
+		}(i), false );
+	
 	};
 
 

@@ -194,6 +194,20 @@ function get(name){
 
 	var elem = document.getElementsByName(name)[0];
 	
+	if (typeof elem == "undefined"){
+	
+		elem = g(name);
+	
+	}
+	
+	if (typeof elem == "undefined"){
+	
+		console.error("get: Element is undefined!");
+		return;
+	
+	
+	}	
+	
 	switch (elem.nodeName){
 	
 		case "INPUT": return elem.value;

@@ -131,18 +131,21 @@ APP.GUI = (function() {
 	};
 
 
-	my.openVocabulary = function (parent, title, name, id, size, options, value, hover){
+	my.openVocabulary = function (parent, title, name, id, size, options, value, hover, className){
 
 		if (!hover){
 			hover = "";
 		}
-
-		var span = dom.spanBR(parent,"","",title);
-		span.title = hover;
+		
+		if (typeof title != "undefined"){
+			var span = dom.spanBR(parent,"","",title);
+			span.title = hover;
+		}
 
 		var select = document.createElement("select");
 		select.name = name;
 		select.id = id;
+		select.className = className;
 		select.size = size;
 		if (hover){		
 			select.title = hover;
@@ -162,6 +165,7 @@ APP.GUI = (function() {
 		var input = document.createElement("input");
 		input.name = name;
 		input.id = id;
+		input.className = className;
 		input.type = "text";
 		if (hover){		
 			input.title = hover;

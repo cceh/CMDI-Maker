@@ -361,6 +361,8 @@ color: #4D87C7;
 
 }
 
+
+
 /*--- Sessions ---*/
 
 .bundle_header{
@@ -382,6 +384,7 @@ color: #4D87C7;
 
 	font-size: 7pt;
 	height: 12px !important;
+	width: 130px !important;
 
 }
 
@@ -534,7 +537,7 @@ cursor: pointer;
 
 .delete_person_icon{
 
-height: 43px;
+height: 50px;
 float: left;
 cursor: pointer;
 
@@ -592,7 +595,7 @@ background: rgb(255, 139, 199);
 line-height: 0em;
 padding: 10px;
 padding-top: 6px;
-height: 27px;
+height: 35px;
 width: 180px;
 border-radius: 5px;
 float: left;

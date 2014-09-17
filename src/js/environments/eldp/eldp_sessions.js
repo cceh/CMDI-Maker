@@ -99,7 +99,7 @@ eldp_environment.workflow[2] = (function() {
 			//Refresh persons' roles
 			forEach(bundle.persons.persons, function(person_in_bundle){
 			
-				person_in_bundle.role = g("person_in_bundle_" + person_in_bundle.id + "_role_input").value;
+				person_in_bundle.role = get("person_in_bundle_" + person_in_bundle.id + "_role_input");
 			
 			});
 			
@@ -649,7 +649,7 @@ eldp_environment.workflow[2] = (function() {
 		
 			var person_ids_in_bundle = getArrayWithIDs(bundle.persons.persons);
 	
-			//search for actor_id in this bundles' actors
+			//search for person_id in this bundles' persons
 			if (person_ids_in_bundle.indexOf(person_id) != -1){
 				
 				my.refreshPersonName(bundle.id, person_id);
@@ -910,7 +910,17 @@ eldp_environment.workflow[2] = (function() {
 		
 		my.refreshPersonName(bundle_id, person_id);
 		
-		dom.input(div, "person_in_bundle_"+person_id+"_role_input", "person_role_input", "", "text", role_display);
+		//dom.input(div, "person_in_bundle_"+person_id+"_role_input", "person_role_input", "", "text", role_display);
+		APP.GUI.openVocabulary(div,
+			undefined, "", "person_in_bundle_"+person_id+"_role_input", 1,
+			[
+				"annotator","author","compiler","consultant","data_inputter","depositor",
+				"developer","editor","illustrator","interpreter","interviewee","interviewer",
+				"participant","performer","photographer","recorder","researcher","research_participant",
+				"responder","signer","singer","speaker","sponsor","transcriber","translator"
+			],
+			role_display, undefined, "person_role_input"
+		);
 		
 		APP.GUI.icon(g(my.dom_element_prefix+bundle_id+"_person_" + person_id),
 		"delete_person_"+person_id+"_icon", "delete_person_icon", "reset", function(num, num2) { 
@@ -1205,6 +1215,33 @@ eldp_environment.workflow[2] = (function() {
 		}
 	};
 
+	
+	my.updatePersonNameInAllBundles = function(person_id){
+
+		forEach(my.bundles, function(bundle){
+	
+			//search for person_id in this bundle's persons
+			if (bundle.persons.persons.indexOf(person_id) != -1){
+				
+				my.refreshPersonName(bundle.id, person_id);
+	
+			}
+			
+		});
+
+	};
+	
+	
+	my.refreshPersonName = function(bundle_id, person_id){
+	
+		var person_index = person.getIndexByID(person_id);
+
+		var div = g(my.dom_element_prefix + bundle_id + "_person_" + person_id + "_label");
+		div.innerHTML = "<h2 class='person_name_disp'>" + person.persons[person_index].name + "</h2>";  //display name of person
+		div.innerHTML += "<p class='person_role_disp'>" + person.persons[person_index].role + "</p>";   //display role of person
+
+
+	};
 
 	return my;
 

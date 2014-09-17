@@ -250,7 +250,7 @@ eldp_environment.person_form = {
 					heading: "Biographical Note",
 					name: "biographical_note",
 					type: "textarea",
-				},
+				}/*,  //Role gets specified in bundle
 				{
 					heading: "Role",
 					name: "role",
@@ -263,7 +263,7 @@ eldp_environment.person_form = {
 					],
 					default_value: "Unspecified",
 					comment: "Functional role of the actor e.g. consultant, contributor, interviewer, researcher, publisher, collector, translator"
-				},   
+				},*/   
 			]
 		},
 		{

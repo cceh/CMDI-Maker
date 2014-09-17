@@ -37,6 +37,12 @@ var APP = (function () {
 				console.info("APP version is different than recall object version. "+
 				"APP version = " + APP.CONF.version +
 				" , Recall Object version = " + recall_object.version);
+				
+				my.log(
+					my.l("start", "you_are_now_using_version__before_version_number")+
+					APP.CONF.version+
+					my.l("start", "you_are_now_using_version__after_version_number")
+				);
 			}
 		}
 		
