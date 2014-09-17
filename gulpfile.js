@@ -18,60 +18,60 @@ var manifest = require('gulp-manifest');
 
 var source_scripts = [
 /* Dependencies */
-"./src/javascript/alertify.js",
-"./src/javascript/zip.js",
-"./src/javascript/FileSaver.js",
-"./src/javascript/xml.js",
-"./src/javascript/helpers.js",
-"./src/javascript/dom.js",
-//"./src/javascript/LanguageIndex.js",  //is loaded dynamically
+"./src/js/alertify.js",
+"./src/js/zip.js",
+"./src/js/FileSaver.js",
+"./src/js/xml.js",
+"./src/js/helpers.js",
+"./src/js/dom.js",
+//"./src/js/LanguageIndex.js",  //is loaded dynamically
 	
 	
 /* Environments */
 	/* IMDI */
-	"./src/javascript/environments/imdi/imdi_environment.js",
-	"./src/javascript/environments/imdi/imdi_LanguagePacks.js",
-	"./src/javascript/environments/imdi/imdi_generator.js",
-	"./src/javascript/environments/imdi/cmdi_generator.js",
-	"./src/javascript/environments/imdi/imdi_forms.js",
-	"./src/javascript/environments/imdi/imdi_corpus.js",
-		"./src/javascript/environments/imdi/imdi_content_languages.js",
-	"./src/javascript/environments/imdi/imdi_resources.js",
-	"./src/javascript/environments/imdi/imdi_actors.js",
-		"./src/javascript/environments/imdi/imdi_actor_languages.js",
-	"./src/javascript/environments/imdi/imdi_sessions.js",
-	"./src/javascript/environments/imdi/imdi_output.js",
+	"./src/js/environments/imdi/imdi_environment.js",
+	"./src/js/environments/imdi/imdi_LanguagePacks.js",
+	"./src/js/environments/imdi/imdi_generator.js",
+	"./src/js/environments/imdi/cmdi_generator.js",
+	"./src/js/environments/imdi/imdi_forms.js",
+	"./src/js/environments/imdi/imdi_corpus.js",
+		"./src/js/environments/imdi/imdi_content_languages.js",
+	"./src/js/environments/imdi/imdi_resources.js",
+	"./src/js/environments/imdi/imdi_actors.js",
+		"./src/js/environments/imdi/imdi_actor_languages.js",
+	"./src/js/environments/imdi/imdi_sessions.js",
+	"./src/js/environments/imdi/imdi_output.js",
 	
 
 	/*ELDP */
-	"./src/javascript/environments/eldp/eldp_environment.js",
-	"./src/javascript/environments/eldp/eldp_LanguagePacks.js",			
-	"./src/javascript/environments/eldp/eldp_forms.js",
-	"./src/javascript/environments/eldp/eldp_resources.js",
-	"./src/javascript/environments/eldp/eldp_actors.js",
-	"./src/javascript/environments/eldp/eldp_actor_languages.js",
-	"./src/javascript/environments/eldp/eldp_sessions.js",
-	"./src/javascript/environments/eldp/eldp_output.js",
-	"./src/javascript/environments/eldp/eldp_generator.js",
+	"./src/js/environments/eldp/eldp_environment.js",
+	"./src/js/environments/eldp/eldp_LanguagePacks.js",			
+	"./src/js/environments/eldp/eldp_forms.js",
+	"./src/js/environments/eldp/eldp_resources.js",
+	"./src/js/environments/eldp/eldp_actors.js",
+	"./src/js/environments/eldp/eldp_actor_languages.js",
+	"./src/js/environments/eldp/eldp_sessions.js",
+	"./src/js/environments/eldp/eldp_output.js",
+	"./src/js/environments/eldp/eldp_generator.js",
 
 
 /*Core */
-"./src/javascript/core/app.js",
-"./src/javascript/core/LanguagePacks.js",
-"./src/javascript/core/app.environments.js",
-"./src/javascript/core/app.forms.js",
-"./src/javascript/core/app.gui.js",
-"./src/javascript/core/app.gui.forms.js",
-"./src/javascript/core/app.save_and_recall.js",
-"./src/javascript/core/app.settings.js",
-"./src/javascript/core/app.config.js"
+"./src/js/core/app.js",
+"./src/js/core/LanguagePacks.js",
+"./src/js/core/app.environments.js",
+"./src/js/core/app.forms.js",
+"./src/js/core/app.gui.js",
+"./src/js/core/app.gui.forms.js",
+"./src/js/core/app.save_and_recall.js",
+"./src/js/core/app.settings.js",
+"./src/js/core/app.config.js"
 
 ];
  
  
 // JS hint task
 gulp.task('jshint', function() {
-  gulp.src('./src/javascript/*.js')
+  gulp.src('./src/js/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
@@ -104,7 +104,7 @@ gulp.task('htmlminify', function() {
     .pipe(changed(htmlDst))
     .pipe(htmlreplace({
         'css': 'styles/styles.css',
-        'js': 'scripts/script.js'
+        'js': 'js/script.js'
     }))
     .pipe(minifyHTML())
     .pipe(gulp.dest(htmlDst));
@@ -138,20 +138,20 @@ gulp.task('scripts', function() {
     //.pipe(stripDebug())
     .pipe(uglify())
 	.pipe(header(header_text))
-    .pipe(gulp.dest('./build/scripts/'));
+    .pipe(gulp.dest('./build/js/'));
 });
 
 
 var worker_and_dynamic_scripts = [
-	"./src/javascript/deflate.js",
-	"./src/javascript/inflate.js",
-	"./src/javascript/LanguageIndex.js"
+	"./src/js/deflate.js",
+	"./src/js/inflate.js",
+	"./src/js/LanguageIndex.js"
 ];
 
 
 gulp.task('script-workers', function() {
   gulp.src(worker_and_dynamic_scripts)
-    .pipe(gulp.dest('./build/scripts/'));
+    .pipe(gulp.dest('./build/js/'));
 });
 
 

@@ -38,8 +38,8 @@
 	var ERR_DUPLICATED_NAME = "File already exists.";
 	var CHUNK_SIZE = 512 * 1024;
 
-	var INFLATE_JS = "scripts/inflate.js";
-	var DEFLATE_JS = "scripts/deflate.js";
+	var INFLATE_JS = "js/inflate.js";
+	var DEFLATE_JS = "js/deflate.js";
 	
 	var TEXT_PLAIN = "text/plain";
 	
