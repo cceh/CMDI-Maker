@@ -866,7 +866,7 @@ eldp_environment.workflow[2] = (function() {
 		//if bundle doesn't already contain this person
 		if (person_ids_in_bundle.indexOf(person_id) == -1){
 		
-			if (person.persons[person.getPersonIndexByID(person_id)]){  //check if person still exists before adding
+			if (person.persons[person.getIndexByID(person_id)]){  //check if person still exists before adding
 				
 				var person_in_bundle = {
 					id: person_id,
@@ -906,9 +906,8 @@ eldp_environment.workflow[2] = (function() {
 		
 		var h2 = dom.h2(div);
 		h2.className = "person_name_disp";
+		h2.id = my.dom_element_prefix+bundle_id+"_person_" + person_id + "_name_disp";
 		
-		
-		my.refreshPersonName(bundle_id, person_id);
 		
 		//dom.input(div, "person_in_bundle_"+person_id+"_role_input", "person_role_input", "", "text", role_display);
 		APP.GUI.openVocabulary(div,
@@ -921,6 +920,8 @@ eldp_environment.workflow[2] = (function() {
 			],
 			role_display, undefined, "person_role_input"
 		);
+		
+		my.refreshPersonName(bundle_id, person_id);
 		
 		APP.GUI.icon(g(my.dom_element_prefix+bundle_id+"_person_" + person_id),
 		"delete_person_"+person_id+"_icon", "delete_person_icon", "reset", function(num, num2) { 
@@ -1235,10 +1236,27 @@ eldp_environment.workflow[2] = (function() {
 	my.refreshPersonName = function(bundle_id, person_id){
 	
 		var person_index = person.getIndexByID(person_id);
+		
+		var this_bundle = my.bundles[my.getIndexByID(bundle_id)];
+		
+		var person_in_bundle = getObject(this_bundle.persons.persons, "id", person_id);
 
 		var div = g(my.dom_element_prefix + bundle_id + "_person_" + person_id + "_label");
-		div.innerHTML = "<h2 class='person_name_disp'>" + person.persons[person_index].name + "</h2>";  //display name of person
-		div.innerHTML += "<p class='person_role_disp'>" + person.persons[person_index].role + "</p>";   //display role of person
+		
+		//display name of person
+		g(my.dom_element_prefix+bundle_id+"_person_" + person_id + "_name_disp").innerHTML = person.persons[person_index].name;
+		
+		//display role of person
+		APP.GUI.setFormValue(
+			"person_in_bundle_"+person_id+"_role_input",
+			person_in_bundle.role,
+			[
+				"annotator","author","compiler","consultant","data_inputter","depositor",
+				"developer","editor","illustrator","interpreter","interviewee","interviewer",
+				"participant","performer","photographer","recorder","researcher","research_participant",
+				"responder","signer","singer","speaker","sponsor","transcriber","translator"
+			]
+		);
 
 
 	};

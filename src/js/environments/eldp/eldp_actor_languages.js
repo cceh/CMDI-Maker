@@ -181,6 +181,7 @@ eldp_environment.workflow[1].languages = (function (){
 		
 		dom.spanBR(div,"","","Primary Language");
 		
+		dom.br(div);
 		//NOW: Additional information
 		
 		APP.GUI.makeTextarea(18, 4, div, "Additional Information", my.element_id_prefix + my.id_counter+ "addInfo", my.element_id_prefix + my.id_counter+ "addInfo" , "className", ActorLanguageObject.additional_information, "");
