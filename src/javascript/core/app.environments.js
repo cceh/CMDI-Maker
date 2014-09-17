@@ -38,7 +38,7 @@ APP.environments = (function () {
 	
 	my.disabled_functions = [];
 	
-	my.environments = [imdi_environment];
+	my.environments = [imdi_environment, eldp_environment];
 	
 	my.active_environment = undefined;
 
