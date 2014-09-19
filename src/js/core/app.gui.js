@@ -264,7 +264,7 @@ APP.GUI = (function() {
 	
 	
 	my.addLanguageByISOCode = function(input_element, on_success){
-		var input = input_element.value;
+		var input = input_element.value.toLowerCase();
 
 		console.log("ADDING ISO LANGUAGE " + input);
 		
@@ -281,8 +281,40 @@ APP.GUI = (function() {
 
 		}
 		
+		// the iso codes qaa ... qtz are reserved for local use and aren't part of the LanguageIndex, check for them
+		if (my.isISOCodeReservedForLocalUse(input) == true){
+			on_success(
+				[input, "", "LOCAL", ""]
+			);
+			return;
+		}
+		
 		APP.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
 
+	};
+	
+	
+	my.isISOCodeReservedForLocalUse = function(code){
+		//check for codes between qaa ... qtz
+		
+		if (code.length != 3){
+			return false;
+		}
+		
+		if (code[0] != "q"){
+			return false;
+		}
+		
+		if ("abcdefghijklmnopqrst".indexOf(code[1]) == -1){
+			return false;
+		}
+		
+		if ("abcdefghijklmnopqrstuvwxyz".indexOf(code[2]) == -1){
+			return false;
+		}
+		
+		return true;
+	
 	};
 	
 	
