@@ -62,7 +62,7 @@ var eldp_environment = (function(){
 		return [
 			{
 				
-				title: "Calculate Actor's Age",
+				title: "Calculate Person's Age",
 				description: "When this feature is activated, CMDI Maker checks if the age of an actor (if it has not been specified already) "+
 					"can be calculated from the actor's birth date and the session date.<br>"+
 					"When an age can be calculated, it will appear in the output file.<br>"+

@@ -55,7 +55,8 @@ eldp_environment.workflow[0] = (function(){
 			'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
 			'<h4>Shift</h4><p>Hold shift to select multiple resources</p>'+
 			'<h4>Escape</h4><p>Press escape to deselect all resources</p>'+
-			'<h4>Fade</h4><p>Resources are faded down when they will be added to a bundle.</p>'
+			'<h4>Fade</h4><p>Resources are faded down when they will be included in bundles.<br>'+
+			'This is to prevent selecting them mistakenly.</p>'
 		
 		);
 		

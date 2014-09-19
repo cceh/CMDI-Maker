@@ -91,33 +91,3 @@ eldp_environment.languages[0] = {
 		bundles_must_have_proper_name: "All bundles must have proper names! Not allowed chars are: <br>"
 	}
 };
-
-
-eldp_environment.languages[1] = {
-
-	id: "german",
-	name: "Deutsch",
-	
-	workflow: {
-		corpus: "Corpus",
-		resources: "Resources",
-		persons: "persons",
-		session: "Sessions",
-		xml_output: "XML"
-	},
-	
-	settings: {
-		calculate_persons_age: "Automatische Altersberechnung von persons",
-		calculate_persons_age_description: "Wenn diese Funktion aktiviert ist, prüft CMDI Maker, ob das Alter eines persons (wenn es noch nicht angegeben worden ist) "+
-			"aus dem Geburtsdatum des persons und dem Datum der Session berechnet werden kann.<br>"+
-			"Wenn ein Alter berechnet werden kann, erscheint dieses in der generierten XML-Datei.<br>"+
-			"(Alter = Datum der Session - Geburtsdatum des persons)",
-		output_format: "Ausgabeformat",
-		export_persons_as_json: "persons als JSON exportieren",
-		import_persons_from_json_or_imdi: "persons von JSON oder IMDI importieren",
-		import_persons_description: "Bitte importiere nur Dateien mit der Zeichenkodierung UTF-8!",
-		delete_persons_database: "persons-Datenbank löschen",
-		delete_persons_database_description: "CMDI Maker speichert all deine persons in einer Browserdatenbank. Sie bleiben also erhalten, auch nachdem du den Browser geschlossen hast.",
-	}
-	
-};
