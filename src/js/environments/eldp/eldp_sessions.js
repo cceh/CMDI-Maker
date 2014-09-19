@@ -43,7 +43,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	var l = my.parent.l;
 
-	my.init = function(){
+	my.init = function(view){
 	
 		resources = eldp_environment.workflow[0];
 		person = eldp_environment.workflow[1];
@@ -394,17 +394,6 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 		
-		
-		if (typeof(bundle_object.resources.resources.mediaFiles) != "undefined"){
-			
-			forEach(bundle_object.resources.resources.mediaFiles, function(file){
-				file.id = my.resource_id_counter;
-				my.renderResource(file.id, bundle_id, "mf", file.name, file.size);
-				my.resource_id_counter += 1;
-			});
-		
-		}
-		
 		my.refreshResources(my.getIndexByID(bundle_id));
 		
 		var all_available_person_ids = getArrayWithIDs(person.persons);
@@ -465,22 +454,31 @@ eldp_environment.workflow[2] = (function() {
 		// Otherwise we would overwrite the DB array which we do not want.
 		var LanguageObject = LanguageObject.slice(0);
 
-		LanguageObject[4] = my.lang_id_counter;
+		var bundleLanguageObject = {
+			code: LanguageObject[0],
+			name: LanguageObject[3],
+			name_type: LanguageObject[2],
+			country_code: LanguageObject[1],
+			id: my.lang_id_counter,
+			working_language: false,
+			subject_language: false,
+		};
+		
 		
 		var bundle_index = my.getIndexByID(bundle_id);
 		
-		my.bundles[bundle_index].content.languages.bundle_languages.push(LanguageObject);
+		my.bundles[bundle_index].content.languages.bundle_languages.push(bundleLanguageObject);
 		
-		my.renderLanguage(LanguageObject, bundle_id, element_id_prefix);
+		my.renderLanguage(bundleLanguageObject, bundle_id, element_id_prefix);
 		
 		my.lang_id_counter += 1;
 
 	};
 	
 	
-	my.renderLanguage = function(LanguageObject, bundle_id, element_id_prefix){
+	my.renderLanguage = function(bundleLanguageObject, bundle_id, element_id_prefix){
 	
-		var lang_id = LanguageObject[4];
+		var lang_id = bundleLanguageObject.id;
 		
 		//prevent chaos from happening
 		if (lang_id >= my.lang_id_counter){
@@ -489,23 +487,50 @@ eldp_environment.workflow[2] = (function() {
 		
 		var element_id = element_id_prefix + lang_id + "_div";
 	
-		var div = dom.div(g(element_id_prefix + "display"), element_id, "bundle_language_entry");
+		var box_content = [];
+		box_content.push("ISO639-3 Code: " + bundleLanguageObject.code);
 		
-		APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num, num2, num3){
+		var line2 = [];
+		line2.push("Name: ");
+		
+		if (bundleLanguageObject.name_type == "LOCAL"){
+
+			line2.push(
+				dom.textInput(
+					undefined, element_id_prefix + lang_id + "_name_input", "eldp_bundle_lang_name_input", "",
+					"Specify local used language name"
+				)
+			);
+			
+		}
+		
+		else {
+			
+			line2.push(bundleLanguageObject.name);
+			
+		}
+		
+		//dom.spanBR(div,"","", "Country ID: " + bundleLanguageObject.country_code);
+		
+		var line3 = [];
+		
+		line3.push(
+			dom.input(undefined, "subject_language_" + lang_id, "", "", "checkbox")
+		);
+		line3.push("Subject Language  ");
+		
+		line3.push(
+			dom.input(undefined, "working_language_" + lang_id, "", "", "checkbox")
+		);
+		line3.push("Working Language");
+
+		box_content.push(line2, line3);
+	
+		APP.GUI.FORMS.redBox(g(element_id_prefix + "display"), element_id, "bundle_language_entry", box_content, function(num, num2, num3){
 			return function(){
 				my.removeLanguage(num, num2, num3);
 			};
 		}(bundle_id, lang_id, element_id));
-		
-		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
-		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
-		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
-		
-		var input = dom.input(div, "subject_language_" + lang_id, "", "", "checkbox");
-		dom.span(div,"","", "Subject Language  ");
-		input = dom.input(div, "working_language_" + lang_id, "", "", "checkbox");
-		dom.span(div,"","","Working Language");
-	
 	};
 	
 	

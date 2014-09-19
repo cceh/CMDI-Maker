@@ -20,6 +20,8 @@ eldp_environment.workflow[0] = (function(){
 	var my = {};
 	var bundle;
 	
+	my.parent = eldp_environment;
+	
 	my.fileSelection = undefined;
 	
 	my.available_resources = [];
@@ -34,6 +36,8 @@ eldp_environment.workflow[0] = (function(){
 	my.view_id = "VIEW_resources";
 	
 	
+	
+	
 	my.init = function(view){
 	
 		bundle = eldp_environment.workflow[2];
@@ -46,10 +50,14 @@ eldp_environment.workflow[0] = (function(){
 		dom.h3(div, "Import File List");
 		dom.input(div, "file_list_import_input", "", "", "file");
 
-		var usage_table = dom.make("div","","workspace-usageTable",div,
-		'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
-		'<h4>Shift</h4><p>Hold shift to select multiple resources</p>'+
-		'<h4>Escape</h4><p>Press escape to deselect all resources</p>');
+		var usage_table = dom.make(
+			"div","","workspace-usageTable",div,
+			'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
+			'<h4>Shift</h4><p>Hold shift to select multiple resources</p>'+
+			'<h4>Escape</h4><p>Press escape to deselect all resources</p>'+
+			'<h4>Fade</h4><p>Resources are faded down when they will be added to a bundle.</p>'
+		
+		);
 		
 		var file_list_div = dom.make("div","file_list_div","",view);
 		var list = dom.make("div","list","",file_list_div);
@@ -59,6 +67,9 @@ eldp_environment.workflow[0] = (function(){
 			"selected_file",
 			function(event){
 				my.available_resources[event.index].selected = event.selected;
+				
+				my.fadeFilesThatStartWithSameNameAsSelectedOnes();
+				
 			}
 		);
 		
@@ -233,7 +244,12 @@ eldp_environment.workflow[0] = (function(){
 						'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
 						'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
 						'<input type="radio" name="radio_file_type" value="mpg"> MPG<br>'+
-						'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>'
+						'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>',
+			after_that: function(){	
+				forEach(g("radio_file_type"), function(elem){
+					elem.addEventListener("click", my.handleFileTypeChange, false);
+				});
+			}
 		},
 		{
 			id: "link_sort_alphabetically",
@@ -257,6 +273,16 @@ eldp_environment.workflow[0] = (function(){
 	
 	
 	];
+	
+	
+	my.handleFileTypeChange = function(event){
+	
+		console.log("ftc");
+		console.log(event.target.value);
+		
+		//my.fadeFilesThatWouldBeAddedToBundle();
+	
+	}
 	
 	
 	my.getValidityOfFile = function(filename){
@@ -295,7 +321,7 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.refreshFileListDisplay = function(not_in_bundles) {
 		var file_entry_class;
-		var compatibility_warning;
+		//var compatibility_warning;
 
 		// files is a FileList of File objects. List some properties.
 		var output = [];
@@ -304,24 +330,25 @@ eldp_environment.workflow[0] = (function(){
 		
 		list.innerHTML = "";
 
-		for (var i = 0; i < my.available_resources.length; i++) {
+		forEach(my.available_resources, function(res, i) {
 		
 			my.renderResource({
 				number: i,
-				title: my.available_resources[i].name,
-				mime_type: my.available_resources[i].mime_type,
-				file_size: my.available_resources[i].size,
-				last_change: my.available_resources[i].last_change,
+				title: res.name,
+				mime_type: res.mime_type,
+				file_size: res.size,
+				last_change: res.last_change,
 				id: "file_entry_"+i,
 				className: "file_entry media_file_entry",
 				parent: list,
-				compatibility_warning: compatibility_warning,
-				stable: my.available_resources[i].stable,
-				inProgress: my.available_resources[i].inProgress,
-				path: my.available_resources[i].path
+				//compatibility_warning: compatibility_warning,
+				stable: res.stable,
+				inProgress: res.inProgress,
+				path: res.path
+				//opacity: 1
 			});
 
-		}
+		});
 		
 		if (my.available_resources.length === 0){
 			list.innerHTML = "<h2>No resource files imported.</h2>";
@@ -361,7 +388,7 @@ eldp_environment.workflow[0] = (function(){
 		cb1.addEventListener("click",function(event){ 
 			event.stopPropagation();
 			
-			my.refreshFileStateValues(number);
+			my.refreshFileStateValues(options.number);
 			
 			return;
 		});
@@ -450,7 +477,7 @@ eldp_environment.workflow[0] = (function(){
 			
 			for (f=0; f<my.fileSelection.selected_files.length; f++){
 		
-				my.createBundleForResource(my.fileSelection.selected_files[f]);
+				my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd(my.fileSelection.selected_files[f]);
 			
 			}
 			
@@ -466,7 +493,7 @@ eldp_environment.workflow[0] = (function(){
 				
 					console.log("Found a file of file type " + chosen_file_type);
 					
-					my.createBundleForResource(f);
+					my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd(f);
 				
 				}
 				
@@ -513,32 +540,90 @@ eldp_environment.workflow[0] = (function(){
 	};
 
 
-	my.createBundleForResource = function(resource_index){
+	my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd = function(resource_index){
 
-		var name = remove_invalid_chars(removeEndingFromFilename(my.available_resources[resource_index].name));
+		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.available_resources[resource_index].name));
+		session_name = replaceCharactersInStringWithSubstitute(session_name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
+		
 		var expanded = false; //collapse automatically generated bundle
 		
 		var resources = [];
+		
+		//of course, we add the resource that has been selected to the bundle 
 		resources.push(resource_index);
 		
 		//if another file's name of available_resources starts with the same name as this file, add it to the bundle, too!
-		for (var f2=0; f2<my.available_resources.length; f2++){
+		var additional_resources = my.getIndexesOfResourcesThatStartWithTheSameNameAsThis(resource_index);
 		
-			if (resource_index == f2){
+		//The .push method can take multiple arguments, so by using .apply to pass all the elements of the second array as arguments to .push,
+		resources.push.apply(resources, additional_resources);
+		
+		bundle.createNewBundleWithResources(session_name, expanded, resources);
+
+	};
+	
+	
+	my.getIndexesOfResourcesThatStartWithTheSameNameAsThis = function (resource_index){
+	
+		var resources = [];
+		
+		for (var i=0; i<my.available_resources.length; i++){
+			
+			//do not include the resource itself
+			if (resource_index == i){
 				continue;
 			}
 		
-			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[f2].name),
+			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[i].name),
 			removeEndingFromFilename(my.available_resources[resource_index].name))) {
 			
-				resources.push(f2);
+				resources.push(i);
 			
 			}
 		
-		}
+		}	
+	
+		return resources;
+	
+	};
+	
+	
+	my.fadeFilesThatStartWithSameNameAsSelectedOnes = function(){
+	
+		var element_prefix = "file_entry_";
 		
-		bundle.createNewBundleWithResources(name, expanded, resources);
+		var resources_to_fade = [];
+		var resources_to_fade_this_time;
+	
+		//First, check for all resources that have to be faded
+		for (var i = 0; i<my.available_resources.length; i++){
+		
+			g(element_prefix + i.toString()).style.opacity = "1";
+			console.log("OP 1: " + element_prefix + i.toString());
+			
+			if (my.available_resources[i].selected == true){
+				
+				resources_to_fade.push(i);
+				
+				resources_to_fade_this_time = my.getIndexesOfResourcesThatStartWithTheSameNameAsThis(i);
+			
+				resources_to_fade.push.apply(resources_to_fade, resources_to_fade_this_time);
+			
 
+			}
+		
+		};
+		
+		
+		//Then, fade them!
+		for (i=0; i<resources_to_fade.length; i++){
+			console.log("OP 0.5: " + element_prefix + i.toString());		
+			g(element_prefix+resources_to_fade[i].toString()).style.opacity = "0.5";
+
+		
+		}
+	
+	
 	};
 
 
@@ -552,7 +637,7 @@ eldp_environment.workflow[0] = (function(){
 		
 		readFileAsText(file, function(result){
 		
-			//try {
+			try {
 				file_list = linesToArray(result);
 				
 				forEach(file_list, function(file_string){
@@ -563,14 +648,13 @@ eldp_environment.workflow[0] = (function(){
 				});
 				
 				my.refreshFileListDisplay();
-			/*}
+			}
 			
 			catch (e) {
-			//if json parsing is not possible, try xml parsing
-
-				console.info("No files found!");
+			//if file list parsing is not possible
+				console.info("No files found! Maybe this file list is not valid!");
 				return;
-			}*/
+			}
 			
 			console.log(file_list);
 			

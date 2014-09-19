@@ -31,7 +31,7 @@ eldp_environment.workflow[1] = (function(){
 	var highlightActivePersonInList = function(person_index){
 
 		if (typeof person_index == "undefined"){
-			console.warn("I shall highlight a person with index = undefined!");
+			console.log("I shall highlight a person with index = undefined! Returning!");
 			return;
 		}
 	
@@ -46,17 +46,12 @@ eldp_environment.workflow[1] = (function(){
 	
 	var getLanguagesOfActivePersonFromForm = function(){
 	
-		var array = map(my.languages.languages_of_active_person, function(AL){
+		var array = map(my.languages.languages_of_active_person, function(ALO){
 		
-			var PersonLanguageObject = {
-				
-				LanguageObject: AL.LanguageObject,
-				MotherTongue: g("mothertongue_" + AL.id).checked,
-				PrimaryLanguage: g("primarylanguage_" + AL.id).checked
-				
-			};
+			ALO.MotherTongue = g("mothertongue_" + ALO.id).checked;
+			ALO.PrimaryLanguage = g("primarylanguage_" + ALO.id).checked;
 			
-			return PersonLanguageObject;
+			return ALO;
 			
 		});
 		

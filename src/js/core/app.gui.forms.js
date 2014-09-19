@@ -53,6 +53,30 @@ APP.GUI.FORMS = (function() {
 		
 	};
 	
+	
+	my.redBox = function(parent, element_id, additionalClassName, content, on_delete, width){
+	
+		var box = dom.div(parent, element_id, "redBox");
+		
+		if (typeof additionalClassName != "undefined"){
+			box.className += " ";
+			box.className += additionalClassName;			
+		}
+		
+		APP.GUI.icon(box,"","delete_lang_icon", "reset", on_delete);
+		
+		forEach(content, function(content_for_line){
+			var span = dom.spanBR(box,"","","");
+			dom.appendHTMLContent(span, content_for_line);
+		});
+		
+		box.style.width = width + "px";
+		
+		return box;
+
+	};
+	
+	
 	return my;
 	
 })();

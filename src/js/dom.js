@@ -245,6 +245,13 @@ var dom = (function() {
 	};
 	
 	
+	my.textInput = function(parent, id, className, name, value){
+	
+		return my.input(parent, id, className, name, "text", value);
+	
+	}
+	
+	
 	my.button = function(parent, value, onclick){
 	
 		var input = my.input(parent, "", "", "", "button", value);
@@ -279,7 +286,13 @@ var dom = (function() {
 			element.className = element_class;
 		}
 		
-		parent_to_append_to.appendChild(element);
+		if (typeof parent_to_append_to != "undefined"){
+			parent_to_append_to.appendChild(element);
+		}
+		
+		else {
+			console.info("Created element: " + element_id + " without appending it to parent!");
+		}
 
 		if (innerHTML){
 		
@@ -399,6 +412,33 @@ var dom = (function() {
 	
 		var NewOption = new Option(text, value, false, true);
 		select.options[select.options.length] = NewOption;
+	
+	};
+	
+	
+	my.appendHTMLContent = function(parent, content){
+	
+		if (typeof content == "string"){
+			
+			var span = my.span(parent, "", "", "");
+			span.innerHTML += content;
+			
+		}
+		
+		if (typeof content == "object" &&
+		Object.prototype.toString.call( content ) !== '[object Array]'){
+		
+			parent.appendChild(content);
+			
+		}
+
+		if( Object.prototype.toString.call( content ) === '[object Array]' ) {
+	
+			forEach(content, function(DOM_element){
+				my.appendHTMLContent(parent, DOM_element);
+			});
+		
+		}
 	
 	};
 	

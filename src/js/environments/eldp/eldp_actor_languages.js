@@ -88,48 +88,43 @@ eldp_environment.workflow[1].languages = (function (){
 	};
 
 
-	my.set = function(ActorLanguageObject){
+	my.set = function(ALO){
 
-		ActorLanguageObject.id = my.id_counter;
+		ALO.id = my.id_counter;
 		
-		my.languages_of_active_person.push(ActorLanguageObject);
+		my.languages_of_active_person.push(ALO);
 		
-		my.renderActorLanguage(g(my.element_id_prefix + "display"), ActorLanguageObject);
+		my.renderActorLanguage(g(my.element_id_prefix + "display"), ALO);
 
 		my.id_counter += 1;
 
 	};
 	
 	
-	my.renderActorLanguage = function(parent, ActorLanguageObject){
+	my.renderActorLanguage = function(parent, ALO){
+	//ALO = ActorLanguageObject
 	
-		//LanguageObject is only a reference to the original array in the LanguageIndex.
-		// We have to clone our Language Object from the DB first.
-		// Otherwise we would overwrite the DB array which we do not want.
-		// More info: http://davidwalsh.name/javascript-clone-array
-		var LanguageObject = ActorLanguageObject.LanguageObject.slice(0);
-	
-		var div = dom.newElement("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry", parent);
+		var div = dom.make("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry", parent);
 		
 		APP.GUI.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset", function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
 		}(my.id_counter));
 		
-		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
-		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
-		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
+		dom.spanBR(div,"","", "ISO639-3 Code: " + ALO.iso_code);
+		dom.spanBR(div,"","", "Name: " + ALO.name);
+		dom.spanBR(div,"","", "Country ID: " + ALO.country_code);
 		
 		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
 		
-		if (ActorLanguageObject.MotherTongue === true){
+		if (ALO.MotherTongue === true){
 			input.checked = true;
 		}
 
 		dom.span(div,"","", "Mother Tongue  ");
 		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
 		
-		if (ActorLanguageObject.PrimaryLanguage === true){
+		if (ALO.PrimaryLanguage === true){
 			input.checked = true;
 		}
 		
@@ -138,7 +133,7 @@ eldp_environment.workflow[1].languages = (function (){
 		dom.br(div);
 		//NOW: Additional information
 		
-		APP.GUI.makeTextarea(18, 4, div, "Additional Information", my.element_id_prefix + my.id_counter+ "addInfo", my.element_id_prefix + my.id_counter+ "addInfo" , "className", ActorLanguageObject.additional_information, "");
+		APP.GUI.makeTextarea(18, 4, div, "Additional Information", my.element_id_prefix + my.id_counter+ "addInfo", my.element_id_prefix + my.id_counter+ "addInfo" , "className", ALO.additional_information, "");
 		
 	};
 
@@ -156,7 +151,7 @@ eldp_environment.workflow[1].languages = (function (){
 		}			
 		
 		//Let's create a new ActorLanguageObject
-		var ActorLanguageObject = {
+		var ALO = {
 		
 			iso_code: LanguageObject[0],	
 			name: LanguageObject[3],
@@ -169,7 +164,7 @@ eldp_environment.workflow[1].languages = (function (){
 
 		};
 
-		my.set(ActorLanguageObject);  
+		my.set(ALO);  
 
 	};
 	

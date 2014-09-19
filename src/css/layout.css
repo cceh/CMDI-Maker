@@ -23,6 +23,21 @@
 }
 
 
+.redBox{
+
+	background-color: tomato;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: 10px;
+	color: white;
+	font-size: 12pt;
+	margin-right: 10px;
+	width: 320px;
+	overflow: hidden;
+
+}
+
+
 .icon{
 
 	height: 30px;

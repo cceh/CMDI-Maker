@@ -475,8 +475,8 @@ imdi_environment.workflow[1] = (function(){
 
 	my.createSessionForResource = function(resource_index){
 
-		var name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.available_resources[resource_index].name));
-		name = replaceCharactersInStringWithSubstitute(name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
+		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.available_resources[resource_index].name));
+		session_name = replaceCharactersInStringWithSubstitute(name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
 		
 		var expanded = false; //collapse automatically generated session
 		
@@ -498,7 +498,7 @@ imdi_environment.workflow[1] = (function(){
 		
 		}
 		
-		session.createNewSessionWithResources(name, expanded, resources);
+		session.createNewSessionWithResources(session_name, expanded, resources);
 
 	};
 

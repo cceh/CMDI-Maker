@@ -286,6 +286,9 @@ APP.GUI = (function() {
 			on_success(
 				[input, "", "LOCAL", ""]
 			);
+			
+			input_element.value = "";
+			
 			return;
 		}
 		
@@ -914,7 +917,7 @@ APP.GUI = (function() {
 				
 				var event = {
 					index: i,
-					selected: true
+					selected: false
 				};
 				
 			}
@@ -937,10 +940,6 @@ APP.GUI = (function() {
 		
 		this.clickedOnFile = function(i){
 			var f;
-			
-			console.log("clicked on file: " + i);
-			
-			console.log("this.shift = " + self.shift);
 			
 			if (self.shift === true){
 				
