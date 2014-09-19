@@ -42,7 +42,13 @@ imdi_environment.workflow[2].languages = (function (){
 
 		if (field.name == "actor_languages"){
 			
-			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, my.search, my.addByISO);
+			APP.GUI.makeLanguageSearchForm(
+				parent, 
+				element_id_prefix, 
+				false,
+				false,
+				my.addFromForm
+			);
 			
 		}
 		
@@ -78,58 +84,6 @@ imdi_environment.workflow[2].languages = (function (){
 	my.getActorLanguageObjectIndexFromID = function (al_id){
 
 		return getIndex(my.languages_of_active_actor, "id", al_id);
-
-	};
-
-
-	my.search = function(input){
-		var j;
-
-		if (input.length < 3){
-		
-			g(my.element_id_prefix + "results_div").innerHTML = "";
-			
-			APP.alert(l("languages", "specify_search_request_at_least_3_chars"));
-			
-			return;
-		}
-		
-		var name_hits = [];
-		
-		var results = [];
-
-		for (var i=0;i<LanguageIndex.length;i++){
-
-			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
-				
-				//get an array with all relevant IDs
-				name_hits.push(LanguageIndex[i][0]);
-			}
-
-		}
-		
-		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
-		
-		for (j=0;j<LanguageIndex.length;j++){
-		
-			if ( (name_hits.indexOf(LanguageIndex[j][0]) != -1)  &&  (LanguageIndex[j][2] == "L" )){		//look for their l-name entry
-			
-				results.push(LanguageIndex[j]);
-				
-			}
-		
-		}
-		
-		var titles = map(results, function(result){
-
-			return result[0] + ", " + result[1]+", " + result[3];
-
-		});
-		
-		var heading = l("languages", "language_search") + ": " + results.length + " " + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
-		
-		APP.GUI.showSelectFrame(results, titles, actor.languages.addFromForm, heading,
-		"(ISO639-3 Code, Country ID, " + l("languages", "language_name") + ")"); 
 
 	};
 
@@ -198,28 +152,6 @@ imdi_environment.workflow[2].languages = (function (){
 		};
 
 		my.set(ActorLanguageObject);  
-
-	};
-
-
-	my.addByISO = function(input){
-
-		console.log("ADDING ISO LANGUAGE " + input);
-		
-		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
-		
-			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
-				
-				my.addFromForm(LanguageIndex[j]);
-				
-				g(my.element_id_prefix + "iso_input").value = "";
-				return;
-
-			}
-
-		}
-		
-		APP.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
 
 	};
 	

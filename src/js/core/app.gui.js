@@ -204,7 +204,9 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.makeLanguageSearchForm = function(parent, element_id_prefix, on_search, on_add_ISO, no_br, no_display){
+	my.makeLanguageSearchForm = function(parent, element_id_prefix, no_br, no_display, on_select){
+		var on_search = APP.doStandardLanguageSearch;
+		var on_add_ISO = my.addLanguageByISOCode;
 		
 		var p = dom.make("p","", "", parent);
 		var input = dom.make("input", element_id_prefix + "input","language_input",p);
@@ -243,21 +245,44 @@ APP.GUI = (function() {
 		}
 
 		
-		button.addEventListener('click', function() {  on_search(input.value);   });
-		iso_button.addEventListener('click', function() {  on_add_ISO(iso_input.value);    });
+		button.addEventListener('click', function() {  on_search(input.value, on_select);   });
+		iso_button.addEventListener('click', function() {  on_add_ISO(iso_input, on_select);    });
 		
 		input.onkeydown = function(event) {
 			if (event.keyCode == 13) {  //if enter is pressed
-				on_search(input.value);
+				on_search(input.value, on_select);
 			}
 		};
 		
 		iso_input.onkeydown = function(event) {
 			if (event.keyCode == 13) {  //if enter is pressed
-				on_add_ISO(iso_input.value);
+				on_add_ISO(iso_input, on_select);
 			}
 		};
 		
+	};
+	
+	
+	my.addLanguageByISOCode = function(input_element, on_success){
+		var input = input_element.value;
+
+		console.log("ADDING ISO LANGUAGE " + input);
+		
+		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
+		
+			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
+				
+				on_success(LanguageIndex[j]);
+				
+				input_element.value = "";
+				return;
+
+			}
+
+		}
+		
+		APP.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
+
 	};
 	
 	

@@ -92,7 +92,26 @@ APP.languages[0] = {
 
 	forms: {
 		drag_and_drop_files_here: "Drag and drop files here"
+	},
+	
+	languages: {
+		set_global_languages_of_content: "Set Global Languages of Content",
+		language_search: "Language Search",
+		result: "result",
+		results: "results",
+		language_name: "Language Name",
+		is_new_global: "is a new Global Content Language",
+		iso_code: "ISO code",
+		not_found_in_db: "not found in database",
+		specify_search_request_at_least_3_chars: "Please specify your search request.\nType in at least 3 characters.",
+		primary_language: "Primary Language",
+		mother_tongue: "Mother Tongue",
+		current_content_languages: "Current Content Languages",
+		content_language_removed__before_lang: "Content Language \"",
+		content_language_removed__after_lang: "\" removed"
+		
 	}
+	
 };
 
 
@@ -173,6 +192,23 @@ APP.languages[1] = {
 	
 	forms: {
 		drag_and_drop_files_here: "Ziehe Dateien in dieses Feld",
+	},
+	
+	languages: {
+		set_global_languages_of_content: "Globale Content Language hinzufügen",
+		language_search: "Sprachsuche",
+		result: "Ergebnis",
+		results: "Ergebnisse",
+		language_name: "Sprachname",
+		is_new_global: "ist neue globale Content Language",
+		iso_code: "ISO-Code",
+		not_found_in_db: "wurde nicht gefunden",
+		specify_search_request_at_least_3_chars: "Bitte sei etwas genauer.\nGib mindestens 3 Zeichen ins Suchfeld ein.",
+		primary_language: "Primärsprache",
+		mother_tongue: "Muttersprache",
+		current_content_languages: "Derzeitige Content Languages",
+		content_language_removed__before_lang: "Content Language \"",
+		content_language_removed__after_lang: "\" entfernt"
 	}
 	
 };
@@ -253,6 +289,23 @@ APP.languages[2] = {
 	
 	forms: {
 		drag_and_drop_files_here: "Arrastrar y soltar los archivos aquí"
-	}
+	},
+	
+	languages: {
+		set_global_languages_of_content: "Establecer Content Language global",
+		language_search: "Buscar lengua",
+		result: "resultado",
+		results: "resultados",
+		language_name: "Nombre de la lengua",
+		is_new_global: "es un nuevo Content Language global",
+		iso_code: "Código ISO",
+		not_found_in_db: "no se encontró en la base de datos",
+		specify_search_request_at_least_3_chars: "Por favor especifique su búsqueda.\nIngrese por lo menos 3 caracteres.",
+		primary_language: "Lengua principal",
+		mother_tongue: "Lengua materna",
+		current_content_languages: "Content Languages corrientes",
+		content_language_removed__before_lang: "Content Language \"",
+		content_language_removed__after_lang: "\" eliminada"
+	},
 	
 };

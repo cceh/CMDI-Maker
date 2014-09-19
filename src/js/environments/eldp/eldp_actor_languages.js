@@ -38,7 +38,13 @@ eldp_environment.workflow[1].languages = (function (){
 		
 		if (field.name == "actor_languages"){
 		
-			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, my.search, my.addByISO);
+			APP.GUI.makeLanguageSearchForm(
+				parent,
+				element_id_prefix,
+				false,
+				false,
+				my.addFromForm
+			);
 			
 		}
 		
@@ -78,58 +84,6 @@ eldp_environment.workflow[1].languages = (function (){
 			}
 		
 		}
-
-	};
-
-
-	my.search = function(input){
-		var j;
-		
-		if (input.length < 3){
-		
-			g(my.element_id_prefix + "results_div").innerHTML = "";
-			
-			APP.alert("Please specify your search request.\nType in at least 3 characters.");
-			
-			return;
-		}
-		
-		var name_hits = [];
-		
-		var results = [];
-
-		for (var i=0;i<LanguageIndex.length;i++){
-
-			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
-				
-				//get an array with all relevant IDs
-				name_hits.push(LanguageIndex[i][0]);
-			}
-
-		}
-		
-		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
-		
-		for (j=0;j<LanguageIndex.length;j++){
-		
-			if ( (name_hits.indexOf(LanguageIndex[j][0]) != -1)  &&  (LanguageIndex[j][2] == "L" )){		//look for their l-name entry
-			
-				results.push(LanguageIndex[j]);
-				
-			}
-		
-		}
-		
-		var titles = [];
-		
-		for (j=0;j<results.length;j++){
-
-			titles.push(results[j][0] + ", "+results[j][1]+", " + results[j][3]);
-
-		}		
-		
-		APP.GUI.showSelectFrame(results, titles, actor.languages.addFromForm, "Language Search: " + results.length + " result" + ((results.length == 1) ? "" : "s"),
-		"(ISO639-3 Code, Country ID, Language Name)"); 
 
 	};
 
@@ -204,35 +158,18 @@ eldp_environment.workflow[1].languages = (function (){
 		//Let's create a new ActorLanguageObject
 		var ActorLanguageObject = {
 		
-			LanguageObject: LanguageObject,
+			iso_code: LanguageObject[0],	
+			name: LanguageObject[3],
+			country_code: LanguageObject[1],
+			
 			MotherTongue: first_added_language,
-			PrimaryLanguage: first_added_language
+			PrimaryLanguage: first_added_language,
+			
+			additional_information: ""
 
 		};
 
 		my.set(ActorLanguageObject);  
-
-	};
-
-
-	my.addByISO = function(input){
-
-		console.log("ADDING ISO LANGUAGE " + input);
-		
-		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
-		
-			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
-				
-				my.addFromForm(LanguageIndex[j]);
-				
-				g(my.element_id_prefix + "iso_input").value = "";
-				return;
-
-			}
-
-		}
-		
-		APP.alert("ISO code " + input + " not found in database.");
 
 	};
 	

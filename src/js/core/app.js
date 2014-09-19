@@ -745,6 +745,56 @@ var APP = (function () {
 		location.reload(); //includes auto save before unload
 	
 	};
+	
+	
+	my.doStandardLanguageSearch = function(input, on_select){
+		var j;
+		
+		if (input.length < 3){
+		
+			APP.alert(my.l("languages", "specify_search_request_at_least_3_chars"));
+			
+			return;
+		}
+		
+		var name_hits = [];
+		
+		var results = [];
+
+		for (var i=0;i<LanguageIndex.length;i++){
+
+			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
+				
+				//get an array with all relevant IDs
+				name_hits.push(LanguageIndex[i][0]);
+			}
+
+		}
+		
+		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
+		
+		forEach(LanguageIndex, function(LanguageObject){   //for all entries in LanguageIndex
+		
+			if ( (name_hits.indexOf(LanguageObject[0]) != -1)  &&  (LanguageObject[2] == "L" )){		//look for their l-name entry
+			
+				results.push(LanguageObject);
+			
+			}
+		
+		});
+		
+		var titles = map(results, function(result){
+
+			return result[0] + ", " + result[1]+", " + result[3];
+
+		});	
+
+		var heading = my.l("languages", "language_search") + ": " + results.length + " " + ((results.length == 1) ? my.l("languages", "result") : my.l("languages", "results"));
+		var subheading = "(ISO639-3 Code, Country ID, " + my.l("languages", "language_name") + ")";
+		
+		APP.GUI.showSelectFrame(results, titles, on_select, heading, subheading);		
+		
+	};
 
 	
 	document.addEventListener('DOMContentLoaded', function() {

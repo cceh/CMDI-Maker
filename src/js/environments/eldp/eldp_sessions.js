@@ -423,9 +423,19 @@ eldp_environment.workflow[2] = (function() {
 	my.makeSpecialFormInput = function (field, parent, element_id_prefix, element_class_prefix){
 	
 		if (field.name == "bundle_languages"){
+
+			//UGLY AND DIRTY
+			var bundle_id = element_id_prefix.slice(my.dom_element_prefix.length, element_id_prefix.indexOf("_", my.dom_element_prefix.length));
 		
-			APP.GUI.makeLanguageSearchForm(parent, element_id_prefix, function(input){my.search(input, element_id_prefix);},
-			function(input){ my.addByISO(input, element_id_prefix); }, false);
+			APP.GUI.makeLanguageSearchForm(
+				parent,
+				element_id_prefix,
+				false,
+				false,
+				function(LanguageObject){
+					my.set(LanguageObject, bundle_id, element_id_prefix);
+				}
+			);
 	
 		}
 	
@@ -445,60 +455,6 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 	
-	};
-	
-	
-	
-	my.search = function(input, element_id_prefix){
-		var j;
-		console.log(element_id_prefix);
-		
-		//UGLY AND DIRTY
-		var bundle_id = element_id_prefix.slice(my.dom_element_prefix.length, element_id_prefix.indexOf("_", my.dom_element_prefix.length));
-		console.log("bundle id: " + bundle_id);
-		
-		if (input.length < 3){
-		
-			APP.alert(l("languages", "specify_search_request_at_least_3_chars"));
-			
-			return;
-		}
-		
-		var name_hits = [];
-		
-		var results = [];
-
-		for (var i=0;i<LanguageIndex.length;i++){
-
-			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
-				
-				//get an array with all relevant IDs
-				name_hits.push(LanguageIndex[i][0]);
-			}
-
-		}
-		
-		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
-		
-		for (j=0;j<LanguageIndex.length;j++){
-		
-			if ( (name_hits.indexOf(LanguageIndex[j][0]) != -1)  &&  (LanguageIndex[j][2] == "L" )){		//look for their l-name entry
-			
-				results.push(LanguageIndex[j]);
-				
-			}
-		
-		}
-		
-		var titles = map(results, function(result){
-			return result[0] + ", " + result[1] + ", " + result[3];
-		});
-		
-		var heading = l("languages", "language_search") + ": " + results.length + " " + ((results.length == 1) ? l("languages", "result") : l("languages", "results"));
-		
-		APP.GUI.showSelectFrame(results, titles, function(result){ my.set(result, bundle_id, element_id_prefix); }, heading,
-		"(ISO639-3 Code, Country ID, " + l("languages", "language_name") + ")"); 
-
 	};
 
 
@@ -569,32 +525,6 @@ eldp_environment.workflow[2] = (function() {
 	my.getLanguageObjectIndexByID = function(bundle_index, l_id){
 		
 		return getIndex(my.bundles[bundle_index].content.languages.bundle_languages, 4, l_id);
-
-	};
-
-
-	my.addByISO = function(input, element_id_prefix){
-		console.log(element_id_prefix);
-		console.log("ADDING ISO LANGUAGE " + input);
-		
-		//UGLY AND DIRTY
-		var bundle_id = element_id_prefix.slice(my.dom_element_prefix.length, element_id_prefix.indexOf("_", my.dom_element_prefix.length));
-		console.log("bundle id: " + bundle_id);
-		
-		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
-		
-			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
-				
-				my.set(LanguageIndex[j], bundle_id, element_id_prefix);
-				
-				g(element_id_prefix + "iso_input").value = "";
-				return;
-
-			}
-
-		}
-		
-		APP.alert(l("languages", "iso_code") + " " + input + " " + l("languages", "not_found_in_db") + ".");
 
 	};
 

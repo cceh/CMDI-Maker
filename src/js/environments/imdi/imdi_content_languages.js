@@ -38,7 +38,13 @@ imdi_environment.workflow[0].content_languages = (function() {
 		var lsd = dom.div(cl, "lang_search_div", "");
 		dom.h1(lsd, my.l("languages", "set_global_languages_of_content"));
 		
-		APP.GUI.makeLanguageSearchForm(lsd, "content_language_", corpus.content_languages.search, corpus.content_languages.addByISO, true, true);
+		APP.GUI.makeLanguageSearchForm(
+			lsd, 
+			"content_language_", 
+			true, 
+			true,
+			my.choose
+		);
 		
 		var ccld = dom.div(cl, "content_languages_display", "");
 		dom.h1(ccld, my.l("languages", "current_content_languages"));
@@ -60,57 +66,6 @@ imdi_environment.workflow[0].content_languages = (function() {
 	};
 
 
-	my.search = function(input){
-
-		if (input.length < 3){
-	
-			APP.alert(my.l("languages", "specify_search_request_at_least_3_chars"));
-			
-			return;
-		}
-		
-		var name_hits = [];
-		
-		var results = [];
-
-		forEach(LanguageIndex, function(LanguageObject){
-			
-			if (isSubstringAStartOfAWordInString(LanguageObject[3],input)){
-				
-				//get an array with all relevant IDs
-				name_hits.push(LanguageObject[0]);
-			}
-
-		});
-		
-		//now we have all relevant languageIDs in name_hits. next-step: get the L-names of theses language IDs. i.e. get the respective entries with the l-names.
-		
-		forEach(LanguageIndex, function(LanguageObject){   //for all entries in LanguageIndex
-		
-			if ( (name_hits.indexOf(LanguageObject[0]) != -1)  &&  (LanguageObject[2] == "L" )){		//look for their l-name entry
-			
-				results.push(LanguageObject);
-			
-			}
-		
-		});
-		
-		var titles = map(results, function(result){
-
-			return result[0] + ", " + result[1] + ", " + result[3];
-
-		});
-		
-		var heading = my.l("languages", "language_search") + ": " + results.length + " " +
-		((results.length == 1) ? my.l("languages", "result") : my.l("languages", "results"));
-		
-		var subheading = "(ISO639-3 Code, Country ID, " + my.l("languages", "language_name") + ")";
-		
-		APP.GUI.showSelectFrame(results, titles, corpus.content_languages.choose, heading, subheading);
-		
-	};
-	
-	
 	my.choose = function(LanguageObject){
 	
 		if (my.set(LanguageObject)){
@@ -216,27 +171,6 @@ imdi_environment.workflow[0].content_languages = (function() {
 	};
 
 
-	my.addByISO = function(input){
-
-		console.log("ADDING ISO LANGUAGE " + input);
-		
-		for (var j=0;j<LanguageIndex.length;j++){   //for all entries in LanguageIndex
-		
-			if ( (LanguageIndex[j][0] == input)  &&  (LanguageIndex[j][2] == "L")){		//look for their l-name entry
-
-				my.choose(LanguageIndex[j]);
-				g("content_language_iso_input").value = "";
-				return;
-
-			}
-
-		}
-		
-		APP.alert(my.l("languages", "iso_code") + " " + input + " " + my.l("languages", "not_found_in_db") + ".");
-		
-	};
-	
-	
 	my.getLanguageObjectIndexByID = function(cl_id){
 		
 		return getIndex(my.content_languages, 4, cl_id)
