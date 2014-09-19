@@ -556,6 +556,13 @@ imdi_environment.languages[2] = {
 		really_erase_after_name: " ?",
 		actor_deleted_before_name: "Actor ",
 		actor_deleted_after_name: " eliminado",
+		there_are_no_actors_yet: "Todavía no hay actores.",
+		why_not_create_one__before_link: "¿Por qué no ",
+		why_not_create_one__link: "crear",
+		why_not_create_one__after_link: "uno?",
+		please_give_all_actors_a_name_before_creating_new_one: "Por favor dé un nombre a todos los actores antes de crear uno nuevo.",
+		really_erase_this_actor: "¿Quiere realmente eliminar este actor?",
+		unnamed_actor: "Actor sin nombre"
 	},
 	
 	
@@ -603,6 +610,7 @@ imdi_environment.languages[2] = {
 		corpus_must_have_proper_name: "El corpus debe tener un nombre adecuado, o no tener ningún nombre.",
 		sessions_must_have_proper_name: "Cada sesión debe tener un nombre adecuado.<br>Las sesiones sin nombre no están permitidas.",
 		download_corpus_including_all_sessions: "Bajar corpus junto con todas las sesiones",
+		download_zip_archive: "Bajar archivo ZIP",
 		not_allowed_chars_are: "No se admiten: ",
 		spaces_are_not_allowed_either: undefined
 

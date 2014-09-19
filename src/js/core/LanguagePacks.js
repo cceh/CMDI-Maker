@@ -228,6 +228,8 @@ APP.languages[2] = {
 	about: "Acerca de",
 	save: "Guardar",
 	export_to_file: "Exportar a archivo",
+	open_file: "Abrir archivo",
+	abort: "Annular",
 	
 	start: {
 		greeting_text: "Bienvenidos al CMDI Maker!<br>Fígese, ésta es una aplicación que se puede utilizar también sin conexión.<br>Cuando cargue esta página, podrá reanudar su trabajo en el punto donde lo interrumpió.",
