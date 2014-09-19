@@ -62,11 +62,8 @@ var eldp_environment = (function(){
 		return [
 			{
 				
-				title: "Calculate Person's Age",
-				description: "When this feature is activated, CMDI Maker checks if the age of an actor (if it has not been specified already) "+
-					"can be calculated from the actor's birth date and the session date.<br>"+
-					"When an age can be calculated, it will appear in the output file.<br>"+
-					"(Age = Session Date - Actor's Birth Date)",
+				title: my.l("settings", "calculate_persons_age"),
+				description: my.l("settings", "calculate_persons_age_description"),
 				type: "toggle",
 				default_value: true,
 				name: "radio_age_calc",
@@ -74,14 +71,14 @@ var eldp_environment = (function(){
 			},
 			{
 				
-				title: "Global Language of Metadata",
+				title: my.l("settings", "global_language_of_metadata"),
 				type: "select",
 				name: "metadata_language",
 				id: "metadata_language_select"
 			},
 			{
-				title: "CMDI Metadata Creator",
-				description:"The CMDI metadata format requires the name of a metadata creator. This is probably you. If so, please type in your name.",
+				title: my.l("settings", "cmdi_metadata_creator"),
+				description: my.l("settings", "cmdi_metadata_creator_description"),
 				type: "text",
 				name: "metadata_creator",
 				id: "metadata_creator",
@@ -99,12 +96,6 @@ var eldp_environment = (function(){
 				file_input_id: "actors_file_input",
 				file_input_name: "actors_file_input",
 				onchange: function () {actor.import_actors();}
-			},
-			{
-				title: "Delete Actors Database",
-				description: "CMDI Maker saves all your actors in a Web Storage browser database, so that they are kept, even if you close the browser window.",
-				type: "link",
-				onclick: function (){actor.erase_database();}
 			}*/
 		];
 	};

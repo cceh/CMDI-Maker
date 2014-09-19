@@ -21,6 +21,7 @@ eldp_environment.workflow[0] = (function(){
 	var bundle;
 	
 	my.parent = eldp_environment;
+	my.l = my.parent.l;
 	
 	my.fileSelection = undefined;
 	
@@ -29,14 +30,11 @@ eldp_environment.workflow[0] = (function(){
 
 	my.identity = {
 		id: "resources",
-		title: "Resources",
+		title: "Resources", //my.l("workflow", "resources"),
 		icon: "blocks",
 	};
 
 	my.view_id = "VIEW_resources";
-	
-	
-	
 	
 	my.init = function(view){
 	
@@ -52,12 +50,15 @@ eldp_environment.workflow[0] = (function(){
 
 		var usage_table = dom.make(
 			"div","","workspace-usageTable",div,
-			'<h3>Usage</h3><h4>Click</h4><p>Select resource, click again to deselect a single resource</p>'+
-			'<h4>Shift</h4><p>Hold shift to select multiple resources</p>'+
-			'<h4>Escape</h4><p>Press escape to deselect all resources</p>'+
-			'<h4>Fade</h4><p>Resources are faded down when they will be included in bundles.<br>'+
-			'This is to prevent selecting them mistakenly.</p>'
-		
+			'<h3>' + my.l("resources", "usage") + '</h3>' +
+			'<h4>' + my.l("resources", "click") + '</h4>'+
+			'<p>' + my.l("resources", "escape_to_deselect") + '</p>'+
+			'<h4>' + my.l("resources", "shift") + '</h4>'+
+			'<p>' + my.l("resources", "shift_to_select_multiple") + '</p>'+
+			'<h4>' + my.l("resources", "escape") + '</h4>'+
+			'<p>' + my.l("resources", "escape_to_deselect") + '</p>'+
+			'<h4>' + my.l("resources", "fade") + '</h4>'+
+			'<p>' + my.l("resources", "fade_explanation") + '</p>'
 		);
 		
 		var file_list_div = dom.make("div","file_list_div","",view);
@@ -85,16 +86,7 @@ eldp_environment.workflow[0] = (function(){
 	
 	};
 	
-	
-	my.compatibility_warnings = {
-	
-		general: 'This file does not seem to be a valid resource file for LAMUS. Please consider recoding it.',
-		invalid_media_file: 'This media file does not seem to be a valid file for LAMUS. Please consider recoding it to WAV (audio) or MP4 (video).',
-		invalid_written_resource: 'This file does not seem to be a valid written resource for LAMUS. Please consider recoding it to PDF or TXT.'
-	
-	};
-	
-	
+	/*
 	my.addCompatibilityWarning = function(parent, string){
 	
 		var warning_div = dom.div(parent,"","warning_div");
@@ -103,7 +95,7 @@ eldp_environment.workflow[0] = (function(){
 		
 		dom.div(warning_div,"","compatibility_warning", string);
 	
-	};
+	};*/
 	
 	
 	my.getFileType = function(filename){
@@ -115,8 +107,8 @@ eldp_environment.workflow[0] = (function(){
 		var fileending = filename.slice(index_of_dot+1);
 		
 		var fileinfo = {
-			type: "Unknown",
-			mimetype: "Unknown"
+			type: my.l("resources", "unknown"),
+			mimetype: my.l("resources", "unknown")
 		};
 		
 		var list = a(file_types.valid_lamus_written_resource_file_types,0);
@@ -231,49 +223,48 @@ eldp_environment.workflow[0] = (function(){
 	};
 	
 	
-	my.functions = [
-		{
-			label: "Create one bundle per file",
-			icon: "plus",
-			id: "crps_icon",
-			wrapper_id: "crps_div",
-			type: "function_wrap",
-			sub_div: "crps_filetype_select",
-			onclick: function() { my.createBundlePerResource();  APP.view(bundle); },
-			sub_div_innerHTML: '<h3 class="inner_function_h3">Files</h3>'+
-						'<input type="radio" name="radio_file_type" value="selected" checked> Selected Files<br>'+
-						'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
-						'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
-						'<input type="radio" name="radio_file_type" value="mpg"> MPG<br>'+
-						'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>',
-			after_that: function(){	
-				forEach(g("radio_file_type"), function(elem){
-					elem.addEventListener("click", my.handleFileTypeChange, false);
-				});
-			}
-		},
-		{
-			id: "link_sort_alphabetically",
-			icon: "az",
-			label: "Sort Files alphabetically",
-			onclick: function() { my.sortAlphabetically(); }
-		},
-		{
-			id: "link_remove_files",
-			icon: "reset",
-			label: "Remove",
-			onclick: function() { my.removeSelectedFiles(); }
-		},
-		{
-			id: "link_clear_file_list",
-			icon: "reset",
-			label: "Clear File List",
-			onclick: function() { my.clearFileList(); }
-		},
-	
-	
-	
-	];
+	my.functions = function(){
+		return [
+			{
+				label: my.l("resources", "create_one_bundle_per_file"),
+				icon: "plus",
+				id: "crps_icon",
+				wrapper_id: "crps_div",
+				type: "function_wrap",
+				sub_div: "crps_filetype_select",
+				onclick: function() { my.createBundlePerResource();  APP.view(bundle); },
+				sub_div_innerHTML: '<h3 class="inner_function_h3">' + my.l("resources", "files") + '</h3>'+
+							'<input type="radio" name="radio_file_type" value="selected" checked> ' + my.l("resources", "selected_files") + '<br>'+
+							'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
+							'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
+							'<input type="radio" name="radio_file_type" value="mpg"> MPG<br>'+
+							'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>',
+				after_that: function(){	
+					forEach(g("radio_file_type"), function(elem){
+						elem.addEventListener("click", my.handleFileTypeChange, false);
+					});
+				}
+			},
+			{
+				id: "link_sort_alphabetically",
+				icon: "az",
+				label: my.l("resources", "sort_alphabetically"),
+				onclick: function() { my.sortAlphabetically(); }
+			},
+			{
+				id: "link_remove_files",
+				icon: "reset",
+				label: my.l("resources", "remove"),
+				onclick: function() { my.removeSelectedFiles(); }
+			},
+			{
+				id: "link_clear_file_list",
+				icon: "reset",
+				label: my.l("resources", "clear_file_list"),
+				onclick: function() { my.clearFileList(); }
+			},
+		];
+	};
 	
 	
 	my.handleFileTypeChange = function(event){
@@ -352,7 +343,7 @@ eldp_environment.workflow[0] = (function(){
 		});
 		
 		if (my.available_resources.length === 0){
-			list.innerHTML = "<h2>No resource files imported.</h2>";
+			list.innerHTML = "<h2>" + my.l("resources", "no_resource_files_imported") + "</h2>";
 		}
 
 		if ((bundle) && (!not_in_bundles)){
@@ -379,9 +370,9 @@ eldp_environment.workflow[0] = (function(){
 		var div = dom.make("div", options.id, options.className, options.parent);
 		var title = dom.make("h2", "", "file_entry_title", div, options.title);
 		var p = dom.make("p", "", "", div, options.mimeType +
-		'<br><span class="size_span">Size: ' + options.file_size + '</span><br>'+
-		'<span name="date_span" class="date_span">Last modified: ' + options.last_change + '</span><br>' +
-		'<span name="path_span" class="date_span">Path: ' + options.path + '</span>'
+		'<br><span class="size_span">' + my.l("resources", "size") + ': ' + options.file_size + '</span><br>'+
+		'<span name="date_span" class="date_span">' + my.l("resources", "last_modified") + ': ' + options.last_change + '</span><br>' +
+		'<span name="path_span" class="date_span">' + my.l("resources", "path") + ': ' + options.path + '</span>'
 		);
 		
 		var cb1 = dom.make("input","f_stable_"+options.number,"",div);

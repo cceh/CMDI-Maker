@@ -185,6 +185,7 @@ imdi_environment.languages[0] = {
 
 	},
 	
+
 	session_form_comments: {
 		name: "A short name or abbreviation of one or two words. This identifier distinguishes the session from others in the same (sub-) corpus and is used for quick browsing.",
 		title: "The session title is the complete title of the session without any abbreviations.",
