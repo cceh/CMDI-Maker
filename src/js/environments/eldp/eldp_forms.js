@@ -29,26 +29,26 @@ eldp_environment.bundle_form = {
 					heading: "Name",
 					name: "name",
 					type: "text",
-					comment: "A short name or abbreviation of one or two words. This identifier distinguishes the session from others in the same (sub-) corpus and is used for quick browsing.",
+					comment: "A short name or abbreviation of one or two words. This identifier distinguishes the bundle from others in the same (sub-) corpus and is used for quick browsing.",
 					not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:"
 				},    
 				{
 					heading: "Title",
 					name: "title",
 					type: "text",
-					comment: "The session title is the complete title of the session without any abbreviations.",
+					comment: "The bundle title is the complete title of the bundle without any abbreviations.",
 				},
 				{
 					heading: "Date",
 					name: "date",
 					type: "date",
-					comment: "In general the primary date of the session is audio or video date. If this session is about written resources only it indicates the creation date of the primary document.",
+					comment: "In general the primary date of the bundle is audio or video date. If this bundle is about written resources only it indicates the creation date of the primary document.",
 				},	
 				{
 					heading: "Description",
 					name: "description",
 					type: "textarea",
-					comment: "Here a relevant description referring to the session as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.", 
+					comment: "Here a relevant description referring to the bundle as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.", 
 				},
 				{
 					heading: "Location",
@@ -80,7 +80,7 @@ eldp_environment.bundle_form = {
 							heading: "Address",
 							name: "address",
 							type: "text",
-							comment: "For instance if recording sessions took place at an institution, the address of the institute is meant.",
+							comment: "For instance if recording bundles took place at an institution, the address of the institute is meant.",
 						}
 					]
 				},
@@ -95,7 +95,7 @@ eldp_environment.bundle_form = {
 			title: "Content",
 			name: "content",
 			type: "column",
-			comment: "The content group is used to describe the content of the session. This is done using four dimensions (communication context, genre, task and modalities).",
+			comment: "The content group is used to describe the content of the bundle. This is done using four dimensions (communication context, genre, task and modalities).",
 			fields: [
 				{
 					heading: "Genre",
@@ -104,7 +104,7 @@ eldp_environment.bundle_form = {
 					size: 1,
 					vocabulary: ["Unknown","Unspecified","Discourse","Ritual/religious texts","Fiction","Newspaper article",
 					"Radio/TV feature","Drama","Singing","Instrumental music","Poetry","Literature","Secondary document","Personal notes","Stimuli"],
-					comment: "The conventionalized discourse types of the content of the session."
+					comment: "The conventionalized discourse types of the content of the bundle."
 				},
 				{
 					heading: "Keywords",
@@ -144,7 +144,7 @@ eldp_environment.bundle_form = {
 			]
 		},
 		{
-			title: "Resources",
+			title: "Objects",
 			name: "resources",
 			type: "column",
 			fields: [
@@ -167,17 +167,17 @@ eldp_environment.bundle_form = {
 		}
 	],
 	fields_to_copy: [ 
-	//fields_to_copy is important for the function "Copy session 1 metadata to all session" so that it knows, what can be copied 
+	//fields_to_copy is important for the function "Copy bundle 1 metadata to all bundle" so that it knows, what can be copied 
 	
 		{
 			name: "date",
 			label: "Date",
-			fields: ["session_date_year","session_date_month","session_date_day"]
+			fields: ["bundle_date_year","bundle_date_month","bundle_date_day"]
 		},
 		{
 			name: "location",
 			label: "Location",
-			fields: ["session_location_continent","session_location_country","session_location_region","session_location_address"]
+			fields: ["bundle_location_continent","bundle_location_country","bundle_location_region","bundle_location_address"]
 		},
 		{
 			name: "content",

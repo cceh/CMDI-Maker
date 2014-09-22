@@ -618,7 +618,7 @@ eldp_environment.workflow[1] = (function(){
 				
 				if (age_calc_result !== 0){
 				
-					console.log("person's age successfully calculated");			
+					console.info("person's age successfully calculated");			
 					return age_calc_result;
 			
 				}

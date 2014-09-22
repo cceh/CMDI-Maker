@@ -29,6 +29,8 @@ eldp_environment.workflow[1].languages = (function (){
 	
 	my.id_counter = 0;
 	
+	my.l = my.parent.l;
+	
 	my.init = function(){
 		return;
 	};
@@ -121,19 +123,19 @@ eldp_environment.workflow[1].languages = (function (){
 			input.checked = true;
 		}
 
-		dom.span(div,"","", "Mother Tongue  ");
+		dom.span(div,"","", my.l("languages", "mother_tongue") + "  ");
 		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
 		
 		if (ALO.PrimaryLanguage === true){
 			input.checked = true;
 		}
 		
-		dom.spanBR(div,"","","Primary Language");
+		dom.spanBR(div,"","", my.l("languages", "primary_language"));
 		
 		dom.br(div);
 		//NOW: Additional information
 		
-		APP.GUI.makeTextarea(18, 4, div, "Additional Information", my.element_id_prefix + my.id_counter+ "addInfo", my.element_id_prefix + my.id_counter+ "addInfo" , "className", ALO.additional_information, "");
+		APP.GUI.makeTextarea(18, 4, div, my.l("languages", "additional_information"), my.element_id_prefix + my.id_counter+ "addInfo", my.element_id_prefix + my.id_counter+ "addInfo" , "className", ALO.additional_information, "");
 		
 	};
 

@@ -90,18 +90,29 @@ eldp_environment.workflow[2] = (function() {
 	
 		var array = [];
 	
-		forEach(my.bundles, function(bundle){
+		forEach(my.bundles, function(bun){
 		
-			var bundle_object = bundle;
+			var bundle_object = bun;
 			
-			APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+bundle.id+"_", bundle_form);
+			APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+bun.id+"_", bundle_form);
 			
 			//Refresh persons' roles
-			forEach(bundle.persons.persons, function(person_in_bundle){
+			forEach(bun.persons.persons, function(person_in_bundle){
 			
 				person_in_bundle.role = get("person_in_bundle_" + person_in_bundle.id + "_role_input");
 			
 			});
+			
+			
+			forEach(bun.resources.resources, function(resource_in_bundle){
+
+				resource_in_bundle.urcs.u = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_u").checked;
+				resource_in_bundle.urcs.r = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_r").checked;
+				resource_in_bundle.urcs.c = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_c").checked;
+				resource_in_bundle.urcs.s = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_s").checked;
+			
+			});
+			
 			
 			array.push(bundle_object);
 			
@@ -118,7 +129,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		if (!bundle_form.fields_to_copy){
 		
-			dom.make("span", "", "", div, "This function is currently unavailable!");
+			dom.make("span", "", "", div, l("bundle", "this_function_is_currently_unavailable"));
 			return;
 			
 		}
@@ -139,61 +150,65 @@ eldp_environment.workflow[2] = (function() {
 	};
 	
 	
-	my.functions = [
-		{
-			label: "New Bundle",
-			icon: "plus",
-			id: "link_newBundle",
-			onclick: function() {my.newBundle(); }
-		},
-		{
-			label: "Copy Bundle 1 metadata to all bundles",
-			icon: "copy",
-			id: "link_copy_bundles",
-			wrapper_id: "copy_bundles_div",
-			type: "function_wrap",
-			sub_div: "copy_bundles_select",
-			onclick: function() { my.assignBundle1Metadata(); },
-			after_that: my.createCopyBundleOptions
-		},
-		{
-			label: "Reset Form",
-			icon: "reset",
-			id: "bundle_link_reset_form",
-			onclick: function() {       
+	my.functions = function(){
+		return [
+			{
+				label: l("bundle", "new_bundle"),
+				icon: "plus",
+				id: "link_newBundle",
+				onclick: function() {my.newBundle(); }
+			},
+			{
+				label: l("bundle", "copy_bundle_1_metadata"),
+				icon: "copy",
+				id: "link_copy_bundles",
+				wrapper_id: "copy_bundles_div",
+				type: "function_wrap",
+				sub_div: "copy_bundles_select",
+				onclick: function() { my.assignBundle1Metadata(); },
+				after_that: my.createCopyBundleOptions
+			},
+			{
+				label: l("bundle", "reset_form"),
+				icon: "reset",
+				id: "bundle_link_reset_form",
+				onclick: function() {       
 
-				alertify.set({ labels: {
-					ok     : "No",
-					cancel : "Yes, delete form"
-				} });
+					alertify.set({ labels: {
+						ok     : l("bundle", "no"),
+						cancel : l("bundle", "yes_delete_form")
+					} });
+					
+					alertify.confirm(l("bundle", "really_reset_form"), function (e) {
+						if (e) {
+							// user clicked "ok"
+						}
 				
-				alertify.confirm("Really?<br>You want to reset the form and delete corpus and all bundles?", function (e) {
-					if (e) {
-						// user clicked "ok"
-					}
-			
-					else {
-						// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-						APP.reset_form();
-						APP.log("Form reset");
-						
-					}
-				});
+						else {
+							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+							APP.reset_form();
+							APP.log(l("bundle", "form_reset"));
+							
+						}
+					});
+				}
+			},
+			{
+				label: l("bundle", "sort_by_name"),
+				icon: "az",
+				id: "bundle_link_sort_by_name",
+				onclick: function() { my.sortAlphabetically(); }
 			}
-		},
-		{
-			label: "Sort by Name",
-			icon: "az",
-			id: "bundle_link_sort_by_name",
-			onclick: function() { my.sortAlphabetically(); }
-		}
-	];
+		];
+	};
 	
 
 	my.refreshResources = function(s){
 	//refresh resources for one bundle
 
-		g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div").innerHTML = "";
+		var add_res_div = g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div");
+
+		add_res_div.innerHTML = "";
 
 		var select = document.createElement("select");
 		
@@ -201,12 +216,11 @@ eldp_environment.workflow[2] = (function() {
 		
 		if (resources.available_resources.length > 0){
 		
-			g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div").appendChild(select);
-		
-			dom.br(g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div"));
+			add_res_div.appendChild(select);
+			dom.br(add_res_div);
 			
-			dom.button(g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div"),
-			"Add to bundle", function(num) {
+			dom.button((add_res_div),
+			l("bundle", "add_to_bundle"), function(num) {
 				return function(){ my.addResource(num, select.selectedIndex);  };
 			}(my.bundles[s].id));
 			
@@ -215,10 +229,10 @@ eldp_environment.workflow[2] = (function() {
 		if (resources.available_resources.length === 0){
 		
 			var p = document.createElement("h5");
-			g(my.dom_element_prefix+my.bundles[s].id+"_resources_add_mf_div").appendChild(p);
-			p.innerHTML = "No files have been added.<br>";
+			add_res_div.appendChild(p);
+			p.innerHTML = l("bundle", "no_files_have_been_added") + "<br>";
 		
-			dom.a(p, "", "", "#", "Add some files.", function() {
+			dom.a(p, "", "", "#", l("bundle", "add_some_files"), function() {
 				APP.view(resources);
 			});
 			
@@ -273,7 +287,11 @@ eldp_environment.workflow[2] = (function() {
 			
 		}
 		
-		alertify.log("A new bundle has been created.<br>Name: " + name, "", "5000");
+		APP.log(
+			l("bundle", "new_bundle_has_been_created") +
+			"<br>" +
+			l("bundle", "name") + ": " + name
+		);
 		
 		return bundle_object.id;
 		
@@ -329,12 +347,12 @@ eldp_environment.workflow[2] = (function() {
 		var bundle_label = dom.make('h1',my.dom_element_prefix+bundle_id+'_label','bundle_heading',bundle_header);
 		
 		if ((!bundle_object.bundle) || (!bundle_object.bundle.name) || (bundle_object.bundle.name === "")){
-			bundle_label.innerHTML = "Unnamed Bundle";
+			bundle_label.innerHTML = l("bundle", "unnamed_bundle");
 			my.bundles[my.getIndexByID(bundle_id)].bundle.name = "";
 		}
 		
 		else {
-			bundle_label.innerHTML = "Bundle: " + bundle_object.bundle.name;
+			bundle_label.innerHTML = l("bundle", "bundle") + ": " + bundle_object.bundle.name;
 			my.bundles[my.getIndexByID(bundle_id)].bundle.name = bundle_object.bundle.name;
 		}
 
@@ -384,16 +402,17 @@ eldp_environment.workflow[2] = (function() {
 		}
 		
 		
-		if (typeof(bundle_object.resources.resources.writtenResources) != "undefined"){
+		if (typeof(bundle_object.resources.resources) != "undefined"){
 			
-			forEach(bundle_object.resources.resources.writtenResources, function (file){
+			forEach(bundle_object.resources.resources, function (file){
 				file.id = my.resource_id_counter;
-				my.renderResource(my.resource_id_counter, bundle_id, "wr", file.name, file.size);
+				my.renderResource(my.resource_id_counter, bundle_id, file.name, file.size, file.urcs);
 				my.resource_id_counter += 1;
 			});
 		
 		}
 		
+		//refreshes list of resources that are available
 		my.refreshResources(my.getIndexByID(bundle_id));
 		
 		var all_available_person_ids = getArrayWithIDs(person.persons);
@@ -440,7 +459,7 @@ eldp_environment.workflow[2] = (function() {
 		
 			dom.make("div",element_id_prefix+"resources", "mfs", parent);
 			dom.make("div",element_id_prefix+"add_mf_div", "", parent);
-			dom.p(parent,"");
+			dom.p(parent, "");
 		
 		}
 	
@@ -448,13 +467,9 @@ eldp_environment.workflow[2] = (function() {
 
 
 	my.set = function(LanguageObject, bundle_id, element_id_prefix){
-
-		//LanguageObject is only a reference to the original array in the LanguageIndex.
-		// We have to clone our Language Object from the DB first.
-		// Otherwise we would overwrite the DB array which we do not want.
-		var LanguageObject = LanguageObject.slice(0);
-
-		var bundleLanguageObject = {
+		
+		//BLO = bundle language object
+		var BLO = {
 			code: LanguageObject[0],
 			name: LanguageObject[3],
 			name_type: LanguageObject[2],
@@ -467,18 +482,18 @@ eldp_environment.workflow[2] = (function() {
 		
 		var bundle_index = my.getIndexByID(bundle_id);
 		
-		my.bundles[bundle_index].content.languages.bundle_languages.push(bundleLanguageObject);
+		my.bundles[bundle_index].content.languages.bundle_languages.push(BLO);
 		
-		my.renderLanguage(bundleLanguageObject, bundle_id, element_id_prefix);
+		my.renderLanguage(BLO, bundle_id, element_id_prefix);
 		
 		my.lang_id_counter += 1;
 
 	};
 	
 	
-	my.renderLanguage = function(bundleLanguageObject, bundle_id, element_id_prefix){
+	my.renderLanguage = function(BLO, bundle_id, element_id_prefix){
 	
-		var lang_id = bundleLanguageObject.id;
+		var lang_id = BLO.id;
 		
 		//prevent chaos from happening
 		if (lang_id >= my.lang_id_counter){
@@ -488,17 +503,17 @@ eldp_environment.workflow[2] = (function() {
 		var element_id = element_id_prefix + lang_id + "_div";
 	
 		var box_content = [];
-		box_content.push("ISO639-3 Code: " + bundleLanguageObject.code);
+		box_content.push("ISO639-3 Code: " + BLO.code);
 		
 		var line2 = [];
-		line2.push("Name: ");
+		line2.push(l("bundle", "name") + ": ");
 		
-		if (bundleLanguageObject.name_type == "LOCAL"){
+		if (BLO.name_type == "LOCAL"){
 
 			line2.push(
 				dom.textInput(
 					undefined, element_id_prefix + lang_id + "_name_input", "eldp_bundle_lang_name_input", "",
-					"Specify local used language name"
+					l("bundle", "specify_local_used_language_name")
 				)
 			);
 			
@@ -506,23 +521,23 @@ eldp_environment.workflow[2] = (function() {
 		
 		else {
 			
-			line2.push(bundleLanguageObject.name);
+			line2.push(BLO.name);
 			
 		}
 		
-		//dom.spanBR(div,"","", "Country ID: " + bundleLanguageObject.country_code);
+		//dom.spanBR(div,"","", "Country ID: " + BLO.country_code);
 		
 		var line3 = [];
 		
 		line3.push(
 			dom.input(undefined, "subject_language_" + lang_id, "", "", "checkbox")
 		);
-		line3.push("Subject Language  ");
+		line3.push(l("bundle", "subject_language") + "  ");
 		
 		line3.push(
 			dom.input(undefined, "working_language_" + lang_id, "", "", "checkbox")
 		);
-		line3.push("Working Language");
+		line3.push(l("bundle", "working_language"));
 
 		box_content.push(line2, line3);
 	
@@ -569,13 +584,13 @@ eldp_environment.workflow[2] = (function() {
 
 		if (my.bundles[bundle_index].name === ""){
 		
-			return "Unnamed Bundle";
+			return l("bundle", "unnamed_bundle");
 			
 		}
 		
 		else {
 		
-			return "Bundle: " + my.bundles[bundle_index].name;
+			return l("bundle", "bundle") + ": " + my.bundles[bundle_index].name;
 		
 		}
 		
@@ -588,7 +603,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		if (typeof index == "undefined"){
 		
-			console.error("ERROR: Could not find bundle index from bundle_id! bundle_id = " + bundle_id);
+			console.error("ERROR: ELDP.bundles: Could not find bundle index from bundle_id! bundle_id = " + bundle_id);
 			console.log(my.bundles);
 			
 		}
@@ -639,9 +654,9 @@ eldp_environment.workflow[2] = (function() {
 		
 		if (person.persons.length === 0){
 		
-			var h5 = dom.h5(aad, "There are no persons in the database yet.<br>");	
+			var h5 = dom.h5(aad, l("bundle", "no_persons_created_yet") + "<br>");	
 			
-			dom.a(h5,"","","#","Create some persons.", function() { 
+			dom.a(h5,"","","#", l("bundle", "create_some_persons"), function() { 
 				APP.view("VIEW_persons");  
 			} );
 			
@@ -704,11 +719,11 @@ eldp_environment.workflow[2] = (function() {
 	my.userErase = function(bundle_id){
 
 		alertify.set({ labels: {
-			ok     : "No",
-			cancel : "Yes, delete bundle"
+			ok     : l("bundle", "no"),
+			cancel : l("bundle", "yes_delete_bundle")
 		} });
 
-		alertify.confirm("Really?<br>You want to erase a whole bundle? Are you sure about that?", function (e) {
+		alertify.confirm(l("bundle", "really_erase_bundle"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -719,7 +734,7 @@ eldp_environment.workflow[2] = (function() {
 				// user clicked "cancel"
 				my.erase(bundle_id);
 
-				alertify.log("Bundle deleted", "", "5000");
+				APP.log(l("bundle", "bundle_deleted"));
 			}
 		});
 
@@ -768,14 +783,15 @@ eldp_environment.workflow[2] = (function() {
 		bundles_view.innerHTML = "";
 
 		var no_bundles_message = dom.make("h2","no_bundle_text","no_bundle_text",bundles_view);
-		no_bundles_message.innerHTML = "This corpus contains no bundles yet. Why not ";
+		no_bundles_message.innerHTML = l("bundle", "no_bundles_have_been_created_yet") +
+		" " + l("bundle", "why_not_create_one__before_link");
 
 		var new_bundle_link = dom.make("a","new_bundle_link","new_bundle_link",no_bundles_message);
 
-		new_bundle_link.innerHTML = "create one";
+		new_bundle_link.innerHTML = l("bundle", "why_not_create_one__link");
 		new_bundle_link.href = "#";
 
-		no_bundles_message.innerHTML += "?";
+		no_bundles_message.innerHTML += l("bundle", "why_not_create_one__after_link");
 
 		g("new_bundle_link").addEventListener('click', function() {my.newBundle(); });
 		//we have to use g here instead of no_bundles_link, because letter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
@@ -807,7 +823,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		else {
 		
-			alert("There is no bundle to be erased!\nTo erase one, you have to create one first.");
+			APP.log("There is no bundle to be erased!\nTo erase one, you have to create one first.", "error");
 		
 		}
 	};
@@ -845,7 +861,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		else {
 		
-			alertify.log("This person is already in the bundle.","error",5000);
+			APP.log(l("bundle", "this_person_is_already_in_the_bundle"), "error");
 		
 		}
 	};
@@ -908,8 +924,6 @@ eldp_environment.workflow[2] = (function() {
 	// if resource_file_index is -1, a new empty field with no available media file is created
 	//if without_questions == true, no alerts will be thrown (e.g. when resources are added at start up)
 	
-		var resource_type;
-
 		if (resource_file_index >= resources.available_resources.length){
 			return;
 		}
@@ -919,13 +933,19 @@ eldp_environment.workflow[2] = (function() {
 		
 		var resource_id = my.resource_id_counter;
 
-
+		var urcs = {
+			u: false,
+			r: false,
+			c: false,
+			s: false
+		};
 		
 		my.bundles[my.getIndexByID(bundle_id)].resources.resources.push({
 			name: filename,
 			size: filesize,
 			id: my.resource_id_counter,
-			resource_file_index: resource_file_index
+			resource_file_index: resource_file_index,
+			urcs: urcs
 		});
 
 
@@ -944,7 +964,7 @@ eldp_environment.workflow[2] = (function() {
 			
 			my.refreshBundleHeading(bundle_id);
 		
-			alertify.log("Bundle name has been taken from EAF file name, since bundle has not been manually named yet.","",8000);
+			APP.log(l("bundle", "bundle_name_taken_from_eaf"));
 		
 		}
 		
@@ -961,14 +981,14 @@ eldp_environment.workflow[2] = (function() {
 				g(my.dom_element_prefix+bundle_id+"_bundle_date_month").value = date.month;
 				g(my.dom_element_prefix+bundle_id+"_bundle_date_day").value = date.day;
 				
-				alertify.log("Bundle date has been extracted from EAF file name: " + date.year + "-" + date.month + "-" + date.day, "", 5000);
+				APP.log(l("bundle", "bundle_date_extracted_from_eaf_file_name") + ": " + date.year + "-" + date.month + "-" + date.day);
 			
 			}
 		
 		
 		}
 		
-		my.renderResource(resource_id, bundle_id, resource_type, filename, filesize);
+		my.renderResource(resource_id, bundle_id,filename, filesize, urcs);
 
 		my.resource_id_counter += 1;
 		
@@ -977,46 +997,61 @@ eldp_environment.workflow[2] = (function() {
 	};
 
 
-	my.renderResource = function(resource_id, bundle_id, type, name, size){
+	my.renderResource = function(resource_id, bundle_id, name, size, urcs){
 
-		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_mediafile_" + resource_id, "mf", g(my.dom_element_prefix+bundle_id+"_resources_resources"));
+		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_resource_" + resource_id, "mf", g(my.dom_element_prefix+bundle_id+"_resources_resources"));
 
 		var h3 = dom.h3(div);
 
-		h3.innerHTML = "Resource";
+		h3.innerHTML = l("bundle", "object");
 
 		var img = APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ my.removeResource(num, num2);  
+			return function(){ my.removeResource(num, num2);
 			};
 		}(bundle_id,resource_id) );
 		
 		dom.span(div, "", "resource_file_content_span",
-		"File Name<br><input type=\"text\" name=\""+my.dom_element_prefix+bundle_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
-		"Size<br><input type=\"text\" name=\""+my.dom_element_prefix+bundle_id+"_mediafile_" + resource_id + "_size\" value=\"\">");
+		l("bundle", "file_name") + 
+		"<br><input type=\"text\" name=\""+my.dom_element_prefix+bundle_id+"_resource_" + resource_id + "_name\" value=\"\"><br>");
 		
 		div.getElementsByTagName("input")[0].value = name;
-		div.getElementsByTagName("input")[1].value = size;
+		//div.getElementsByTagName("input")[1].value = size;
 		
-		my.renderUCRS(div);
+		my.renderUCRS(div, my.dom_element_prefix+bundle_id+"_resource_" + resource_id + "_", urcs);
 
 
 	};
 	
 	
-	my.renderUCRS = function(parent){
+	my.renderUCRS = function(parent, element_id_prefix, urcs){
 	
-		dom.input(parent, "", "", "", "checkbox", "u");
+	
+	
+		var cb_u = dom.input(parent, element_id_prefix+"u", "", "", "checkbox", "u");
 		dom.span(parent, "", "", "U");
+		if (urcs.u == true) {
+			cb_u.checked = true;
+		}
 		
-		dom.input(parent, "", "", "", "checkbox", "r");
+		
+		var cb_r = dom.input(parent, element_id_prefix+"r", "", "", "checkbox", "r");
 		dom.span(parent, "", "", "R");
+		if (urcs.r == true) {
+			cb_r.checked = true;
+		}
 		
-		dom.input(parent, "", "", "", "checkbox", "c");
+		var cb_c = dom.input(parent, element_id_prefix+"c", "", "", "checkbox", "c");
 		dom.span(parent, "", "", "C");
+		if (urcs.c == true) {
+			cb_c.checked = true;
+		}
 		
-		dom.input(parent, "", "", "", "checkbox", "s");
+		var cb_s = dom.input(parent, element_id_prefix+"s", "", "", "checkbox", "s");
 		dom.span(parent, "", "", "S");
+		if (urcs.s == true) {
+			cb_s.checked = true;
+		}
 	
 	
 	}
@@ -1025,12 +1060,12 @@ eldp_environment.workflow[2] = (function() {
 	my.refreshBundleHeading = function(bundle_id){
 
 		if (get(my.dom_element_prefix+bundle_id+"_bundle_name") === ""){
-			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = "Unnamed Bundle";
+			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = l("bundle", "unnamed_bundle");
 		}
 		
 		else {
 		
-			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = "Bundle: "+get(my.dom_element_prefix+bundle_id+"_bundle_name");
+			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = l("bundle", "bundle") + ": "+get(my.dom_element_prefix+bundle_id+"_bundle_name");
 
 		}
 
@@ -1048,7 +1083,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 		
-		dom.remove(my.dom_element_prefix+bundle_id+"_mediafile_"+resource_id);
+		dom.remove(my.dom_element_prefix+bundle_id+"_resource_"+resource_id);
 
 	};
 
@@ -1057,7 +1092,7 @@ eldp_environment.workflow[2] = (function() {
 
 		if (my.bundles.length < 2){
 		
-			alertify.log("There have to be at least 2 bundles to assign metadata from one to another.", "error", "5000");
+			APP.log(l("bundle", "at_least_2_bundles_to_assign_metadata"), "error");
 			return;
 			
 		}
@@ -1086,7 +1121,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 
-		alertify.log("Bundle 1 metadata assigned to all bundles.", "", "5000");
+		APP.log(l("bundle", "bundle_1_metadata_assigned_to_all_bundles"));
 
 	};
 

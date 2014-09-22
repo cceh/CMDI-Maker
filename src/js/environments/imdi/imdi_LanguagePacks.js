@@ -278,8 +278,6 @@ imdi_environment.languages[1] = {
 	languages: {
 		set_global_languages_of_content: "Globale Content Language hinzufügen",
 		language_search: "Sprachsuche",
-		result: "Ergebnis",
-		results: "Ergebnisse",
 		language_name: "Sprachname",
 		is_new_global: "ist neue globale Content Language",
 		iso_code: "ISO-Code",

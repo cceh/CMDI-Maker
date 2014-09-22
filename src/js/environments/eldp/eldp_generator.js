@@ -40,10 +40,10 @@ eldp_environment.eldp_generator = function(){
 		return_string += xml.element("Description", bundle.bundle.description);
 		
 		return_string += xml.open("Location");
-		return_string += xml.element("Continent", bundle.location.continent);
-		return_string += xml.element("Country", bundle.location.country);
-		return_string += xml.element("Region", bundle.location.region);
-		return_string += xml.element("Address", bundle.location.address);
+		return_string += xml.element("Continent", bundle.bundle.location.continent);
+		return_string += xml.element("Country", bundle.bundle.location.country);
+		return_string += xml.element("Region", bundle.bundle.location.region);
+		return_string += xml.element("Address", bundle.bundle.location.address);
 		return_string += xml.close("Location")
 		
 		return_string += xml.open("Persons");
@@ -233,8 +233,8 @@ eldp_environment.eldp_generator = function(){
 		for (var l=0; l<ac.languages.length; l++){
 		
 			return_string += xml.tag("Actor_Language",0);
-			return_string += xml.element("Id",APP.CONF.LanguageCodePrefix+ac.languages[l].LanguageObject[0]);
-			return_string += xml.element("Name",ac.languages[l].LanguageObject[3]);
+			return_string += xml.element("Id",APP.CONF.LanguageCodePrefix+ac.languages[l].iso_code);
+			return_string += xml.element("Name",ac.languages[l].name);
 			
 			return_string += xml.element("MotherTongue",(ac.languages[l].MotherTongue) ? "true" : "false");
 			return_string += xml.element("PrimaryLanguage",(ac.languages[l].PrimaryLanguage) ? "true" : "false");		
