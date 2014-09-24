@@ -245,6 +245,16 @@ var dom = (function() {
 	};
 	
 	
+	my.checkbox = function(parent, id, className, name, checked){
+	
+		var input = dom.input(parent, id, className, name, "checkbox");
+		input.checked = checked;
+		
+		return input;
+	
+	};
+	
+	
 	my.textInput = function(parent, id, className, name, value){
 	
 		return my.input(parent, id, className, name, "text", value);

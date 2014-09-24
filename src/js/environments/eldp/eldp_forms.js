@@ -51,6 +51,11 @@ eldp_environment.bundle_form = {
 					comment: "Here a relevant description referring to the bundle as a whole can be given. Example: A conversation of mother, father and child at the breakfast table.", 
 				},
 				{
+					heading: "Additional Information of Bundle",
+					name: "additional_information",
+					type: "textarea",
+				},
+				{
 					heading: "Location",
 					name: "location",
 					type: "subarea",
@@ -83,11 +88,6 @@ eldp_environment.bundle_form = {
 							comment: "For instance if recording bundles took place at an institution, the address of the institute is meant.",
 						}
 					]
-				},
-				{
-					heading: "Additional Information of Bundle",
-					name: "additional_information",
-					type: "textarea",
 				},
 			]
 		},

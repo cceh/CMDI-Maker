@@ -182,7 +182,8 @@ imdi_environment.languages[0] = {
 		download_corpus_including_all_sessions: "Download Corpus including all Sessions",
 		download_zip_archive: "Download ZIP archive",
 		not_allowed_chars_are: "Not allowed chars are: ",
-		spaces_are_not_allowed_either: "Space characters are not allowed either."
+		spaces_are_not_allowed_either: "Space characters are not allowed either.",
+		sessions_must_have_name: "Your corpus contains unnamed sessions. Every session must have a name!"
 
 	},
 	
@@ -397,7 +398,8 @@ imdi_environment.languages[1] = {
 		download_corpus_including_all_sessions: "Corpus inklusive aller Sessions herunterladen",
 		download_zip_archive: "ZIP-Archiv herunterladen",
 		not_allowed_chars_are: "Nicht erlaubte Zeichen sind: ",
-		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt."
+		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt.",
+		sessions_must_have_name: "Dein Korpus enthält unbenannte Sessions. Jede Session muss einen Namen haben!"
 
 	},
 	

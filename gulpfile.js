@@ -25,7 +25,19 @@ var source_scripts = [
 "./src/js/helpers.js",
 "./src/js/dom.js",
 //"./src/js/LanguageIndex.js",  //is loaded dynamically
-	
+
+
+/*Core */
+"./src/js/core/app.js",
+"./src/js/core/LanguagePacks.js",
+"./src/js/core/app.environments.js",
+"./src/js/core/app.forms.js",
+"./src/js/core/app.gui.js",
+"./src/js/core/app.gui.forms.js",
+"./src/js/core/app.save_and_recall.js",
+"./src/js/core/app.settings.js",
+"./src/js/core/app.config.js",
+
 	
 /* Environments */
 	/* IMDI */
@@ -55,16 +67,7 @@ var source_scripts = [
 	"./src/js/environments/eldp/eldp_generator.js",
 
 
-/*Core */
-"./src/js/core/app.js",
-"./src/js/core/LanguagePacks.js",
-"./src/js/core/app.environments.js",
-"./src/js/core/app.forms.js",
-"./src/js/core/app.gui.js",
-"./src/js/core/app.gui.forms.js",
-"./src/js/core/app.save_and_recall.js",
-"./src/js/core/app.settings.js",
-"./src/js/core/app.config.js"
+
 
 ];
  

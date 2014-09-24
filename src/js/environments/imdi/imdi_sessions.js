@@ -1014,6 +1014,23 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		}
 
 	};
+	
+	
+	my.areAllSessionsNamed = function(){
+	
+		for (var i=0;i<my.sessions.length;i++){
+		
+			if (get(my.dom_element_prefix+my.sessions[i].id+"_session_name") === ""){
+			
+				return false;
+			
+			}
+			
+		}
+		
+		return true;	
+	
+	}
 
 
 	my.areAllSessionsProperlyNamed = function(){

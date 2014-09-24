@@ -31,6 +31,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.bundles = [];
 	my.id_counter = 0;
+	my.lang_id_counter = 0;
 	my.resource_id_counter = 0;
 	
 	my.dom_element_prefix = "bundle_";
@@ -52,6 +53,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		my.bundles = [];
 		my.id_counter = 0;
+		my.lang_id_counter = 0;
 		my.resource_id_counter = 0;
 
 	};
@@ -97,14 +99,14 @@ eldp_environment.workflow[2] = (function() {
 			APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+bun.id+"_", bundle_form);
 			
 			//Refresh persons' roles
-			forEach(bun.persons.persons, function(person_in_bundle){
+			forEach(bundle_object.persons.persons, function(person_in_bundle){
 			
 				person_in_bundle.role = get("person_in_bundle_" + person_in_bundle.id + "_role_input");
 			
 			});
 			
 			
-			forEach(bun.resources.resources, function(resource_in_bundle){
+			forEach(bundle_object.resources.resources, function(resource_in_bundle){
 
 				resource_in_bundle.urcs.u = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_u").checked;
 				resource_in_bundle.urcs.r = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_r").checked;
@@ -113,6 +115,20 @@ eldp_environment.workflow[2] = (function() {
 			
 			});
 			
+			
+			forEach(bundle_object.content.languages.bundle_languages, function(BLO){
+				
+				BLO.subject_language = g(my.dom_element_prefix+bun.id+"_content_languages_" + BLO.id + "_subject_language").checked;
+				BLO.working_language = g(my.dom_element_prefix+bun.id+"_content_languages_" + BLO.id + "_working_language").checked;
+				
+				
+				if (BLO.name_type == "LOCAL"){
+				
+					BLO.name = g(my.dom_element_prefix+bun.id+"_content_languages_" + BLO.id + "_name_input").value;
+				
+				}
+			
+			});
 			
 			array.push(bundle_object);
 			
@@ -502,12 +518,16 @@ eldp_environment.workflow[2] = (function() {
 		var line2 = [];
 		line2.push(l("bundle", "name") + ": ");
 		
+		
+		//If lang type is local and name has not been specified yet, put a message there
 		if (BLO.name_type == "LOCAL"){
 
+			var textInputValue = (BLO.name != "") ? BLO.name : l("bundle", "specify_local_used_language_name");
+			
 			line2.push(
 				dom.textInput(
 					undefined, element_id_prefix + lang_id + "_name_input", "eldp_bundle_lang_name_input", "",
-					l("bundle", "specify_local_used_language_name")
+					textInputValue
 				)
 			);
 			
@@ -524,14 +544,16 @@ eldp_environment.workflow[2] = (function() {
 		var line3 = [];
 		
 		line3.push(
-			dom.input(undefined, "subject_language_" + lang_id, "", "", "checkbox")
+			dom.checkbox(undefined, element_id_prefix + lang_id + "_subject_language", "", "", BLO.subject_language)
 		);
 		line3.push(l("bundle", "subject_language") + "  ");
 		
 		line3.push(
-			dom.input(undefined, "working_language_" + lang_id, "", "", "checkbox")
+			dom.checkbox(undefined, element_id_prefix + lang_id + "_working_language", "", "", BLO.working_language)
 		);
 		line3.push(l("bundle", "working_language"));
+		
+		console.log(line3);
 
 		box_content.push(line2, line3);
 	
@@ -1120,7 +1142,10 @@ eldp_environment.workflow[2] = (function() {
 		for (var s=1;s<my.bundles.length;s++){   //important to not include the first bundle in this loop
 		
 			for (var k=0;k<fields_to_copy.length;k++){
-				dom.copyField(my.dom_element_prefix+my.bundles[s].id+"_"+fields_to_copy[k],my.dom_element_prefix+my.bundles[0].id+"_"+fields_to_copy[k]);
+				APP.GUI.copyField(
+					my.dom_element_prefix+my.bundles[s].id+"_"+fields_to_copy[k],
+					my.dom_element_prefix+my.bundles[0].id+"_"+fields_to_copy[k]
+				);
 			}
 		
 		}

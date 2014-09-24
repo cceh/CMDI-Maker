@@ -73,51 +73,61 @@ imdi_environment.workflow[4] = (function (){
 	
 	my.view = function(){
 	
-		//if there is nothing to be done, return
+		//when there is no corpus to be created and no sessions either, return
 		if ((get("corpus_name") === "") && (session.sessions.length === 0)){
 		
 			APP.alert(l("output", "you_must_create_some_sessions_first"));
 			APP.view(session);
 			return;
+			
 		}
 		
-		//corpus must have a proper name or no name at all
-		if ((corpus.isCorpusProperlyNamed() || get("corpus_name") === "") && (session.areAllSessionsProperlyNamed())){
+	
+		//if corpus has a name, but an invalid one, return
+		if (get("corpus_name") !== "" && (!corpus.isCorpusProperlyNamed())){   //show corpus
+			APP.view(corpus);
+			APP.alert(l("output", "corpus_must_have_proper_name") + "<br>" +
+			l("output", "not_allowed_chars_are") + my.not_allowed_chars + "<br>" +
+			l("output", "spaces_are_not_allowed_either"));
+			return;
+		}
+		
+		
+		//if there are unnamed sessions, return!
+		if (!session.areAllSessionsNamed()){
+		
+			APP.view(session);
+			APP.alert(l("output", "sessions_must_have_name"));
+			return;
+		
+		}
+		
+		
+		//if not all sessions are properly named, return
+		if (!session.areAllSessionsProperlyNamed()){
 			
-			if (session.doesEverySessionHaveAProjectName()){
+			APP.view(session);
+			APP.alert(l("output", "sessions_must_have_proper_name") + "<br>" +
+			l("output", "not_allowed_chars_are") + my.not_allowed_chars + "<br>" +
+			l("output", "spaces_are_not_allowed_either"));
+			return;
 
-				my.generate();
-				
-			}
-			
-			else {
-				
-				APP.alert(l("output", "every_session_must_have_a_project_name"));
-			
-				APP.view(session);
-			
-			}
+		}
+		
+		
+		//if not all sessions have a project name, return
+		if (!session.doesEverySessionHaveAProjectName()){
+
+			APP.alert(l("output", "every_session_must_have_a_project_name"));
+			APP.view(session);
+			return;
 			
 		}
 		
-		else {
-			
-			//if corpus has a name, but an invalid one
-			if (!corpus.isCorpusProperlyNamed() && get("corpus_name") !== ""){   //show corpus
-				APP.view(corpus);
-				APP.alert(l("output", "corpus_must_have_proper_name") + "<br>" +
-				l("output", "not_allowed_chars_are") + my.not_allowed_chars + "<br>" +
-				l("output", "spaces_are_not_allowed_either"));
-			
-			}
-			
-			else {  //show sessions
-				APP.view(session);
-				APP.alert(l("output", "sessions_must_have_proper_name") + "<br>" +
-				l("output", "not_allowed_chars_are") + my.not_allowed_chars + "<br>" +
-				l("output", "spaces_are_not_allowed_either"));
-			}
-		}
+		
+		my.generate();
+		
+		
 	};
 	
 

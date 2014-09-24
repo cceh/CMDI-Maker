@@ -52,7 +52,7 @@ eldp_environment.workflow[0] = (function(){
 			"div","","workspace-usageTable",div,
 			'<h3>' + my.l("resources", "usage") + '</h3>' +
 			'<h4>' + my.l("resources", "click") + '</h4>'+
-			'<p>' + my.l("resources", "escape_to_deselect") + '</p>'+
+			'<p>' + my.l("resources", "click_to_select") + '</p>'+
 			'<h4>' + my.l("resources", "shift") + '</h4>'+
 			'<p>' + my.l("resources", "shift_to_select_multiple") + '</p>'+
 			'<h4>' + my.l("resources", "escape") + '</h4>'+

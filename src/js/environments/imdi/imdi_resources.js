@@ -231,7 +231,7 @@ imdi_environment.workflow[1] = (function(){
 		var usage_table = dom.make("div","","workspace-usageTable",div,
 		'<h3>' + l("resources", "usage") + '</h3>' +
 		'<h4>' + l("resources", "click") + '</h4>'+
-		'<p>' + l("resources", "escape_to_deselect") + '</p>'+
+		'<p>' + l("resources", "click_to_select") + '</p>'+
 		'<h4>' + l("resources", "shift") + '</h4>'+
 		'<p>' + l("resources", "shift_to_select_multiple") + '</p>'+
 		'<h4>' + l("resources", "escape") + '</h4>'+
