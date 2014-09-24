@@ -278,6 +278,14 @@ imdi_environment.workflow[2] = (function(){
 	};*/
 	
 	
+	my.exists = function(actor_id){
+	
+		
+	
+	
+	};
+	
+	
 	my.showNoActorsMessage = function(){
 	
 		var view = my.module_view;
@@ -355,19 +363,20 @@ imdi_environment.workflow[2] = (function(){
 				icon: "duplicate_user",
 				label: l("duplicate_this_actor"),
 				onclick: function() { my.duplicateActiveActor(); }
+			},
+			{
+				id: "link_eraseAll",
+				icon: "reset",
+				label: l("delete_all_actors"),
+				onclick: function() { my.eraseAll(); }
 			}
 		];
 	};
 	
 
-	my.erase_database = function(){
+	my.eraseAll = function(){
 
-		alertify.set({ labels: {
-			ok     : l("no"),
-			cancel : l("yes_delete_all_actors")
-		} });
-
-		alertify.confirm(l("confirm_erasing_actors_db"), function (e) {
+		APP.confirm(l("confirm_erasing_actors_db"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -379,13 +388,15 @@ imdi_environment.workflow[2] = (function(){
 				
 				my.id_counter = 0;
 				my.actors = [];
+				
+				my.active_actor_index = undefined;
 
 				APP.log(l("all_actors_deleted"));
 				
 				my.refreshListDisplay();
 
 			}
-		});
+		}, l("no"), l("yes_delete_all_actors"));
 	};
 
 
@@ -445,7 +456,7 @@ imdi_environment.workflow[2] = (function(){
 		var index = getIndex(my.actors, "id", actor_id);
 		
 		if (typeof index == "undefined"){
-			alert("An error has occured.\nCould not find actors cache index from actor id!\n\nactor_id = " + actor_id);
+			console.warn("ERROR: Could not find actors cache index from actor id!\n\nactor_id = " + actor_id);
 		}
 		
 		return index;
@@ -651,12 +662,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		}
 
-		alertify.set({ labels: {
-			ok     : l("no"),
-			cancel : l("yes_delete_actor")
-		} });
-
-		alertify.confirm(confirm_message, function (e) {
+		APP.confirm(confirm_message, function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -670,14 +676,21 @@ imdi_environment.workflow[2] = (function(){
 				APP.log(l("actor_deleted_before_name") + name_of_actor + l("actor_deleted_after_name"));
 
 			}
-		});
+		}, l("no"), l("yes_delete_actor"));
 	
 	};
 	
 
 	my.deleteActiveActor = function(){
 
-		my.actors.splice(my.active_actor_index,1);
+		my.deleteActor(my.active_actor_index);
+
+	};
+	
+	
+	my.deleteActor = function(actor_index){
+	
+		my.actors.splice(actor_index,1);
 		
 		if (my.actors.length == 0){
 			my.active_actor_index = undefined;
@@ -691,8 +704,9 @@ imdi_environment.workflow[2] = (function(){
 			my.show(my.actors[0].id)
 		}
 		
-		my.refreshListDisplay();
-	};
+		my.refreshListDisplay();		
+	
+	}
 	
 	
 	my.getAge = function (session_id, actor_id){
@@ -756,7 +770,6 @@ imdi_environment.workflow[2] = (function(){
 			my.module_view.innerHTML = "";
 			my.createListDIV(my.module_view);
 		}
-		
 		
 		g(my.element_id_prefix + 'list').innerHTML = "";
 

@@ -202,7 +202,7 @@ function get(name){
 	
 	if (typeof elem == "undefined"){
 	
-		console.error("get: Element is undefined!");
+		console.error("get: Element " + name + " is undefined!");
 		return;
 	
 	

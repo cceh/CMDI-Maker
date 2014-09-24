@@ -148,14 +148,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				label: l("session", "reset_form"),
 				icon: "reset",
 				id: "session_link_reset_form",
-				onclick: function() {       
-
-					alertify.set({ labels: {
-						ok     : l("no"),
-						cancel : l("yes_delete_form")
-					} });
-					
-					alertify.confirm(l("really_reset_form"), function (e) {
+				onclick: function() {
+				
+					APP.confirm(l("really_reset_form"), function (e) {
 						if (e) {
 							// user clicked "ok"
 						}
@@ -163,10 +158,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 						else {
 							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
 							APP.environments.resetActive();
-							alertify.log(l("form_reset"),"",5000);
+							APP.log(l("form_reset"));
 							
 						}
-					});
+					}, l("no"), l("yes_delete_form"));
 				}
 			},
 			{
@@ -325,9 +320,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 		if (typeof(session_object.actors.actors) != "undefined"){
 		
-			forEach(session_object.actors.actors, function(actor){
-		
-				my.renderActor(session_id, actor);
+			forEach(session_object.actors.actors, function(actor_id){
+				
+				if (actor.getIndexByID(actor_id) == undefined){
+					return;
+				}
+				
+				my.renderActor(session_id, actor_id);
 		
 			});
 		}
@@ -430,9 +429,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.refreshActorName = function(session_id, actor_id){
 	
 		var actor_index = actor.getIndexByID(actor_id);
+		
+		var actor_name = (actor.actors[actor_index].name != "") ? actor.actors[actor_index].name : l("actors", "unnamed_actor");
 
 		var div = g(my.dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
-		div.innerHTML = "<h2 class='actor_name_disp'>" + actor.actors[actor_index].name + "</h2>";  //display name of actor
+		div.innerHTML = "<h2 class='actor_name_disp'>" + actor_name + "</h2>";  //display name of actor
 		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor_index].role + "</p>";   //display role of actor
 
 
@@ -477,9 +478,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var select = document.createElement("select");
 		
-		forEach(actor.actors, function(actor, index){ 
+		forEach(actor.actors, function(actor, index){
 		
-			var text = actor.name + " (" + actor.role + ")";
+			var actor_name = (actor.name != "") ? actor.name : l("actors", "unnamed_actor");
+		
+			var text = actor_name + " (" + actor.role + ")";
 			dom.appendOption(select, text, index);
 			
 		});
@@ -536,11 +539,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//Offer possibility to add every available actor to all session
 		//refresh all sessions with available actors
 
-		var all_available_actor_ids = [];
-		
-		forEach(actors, function(actor){
-			all_available_actor_ids.push(actor.id);
-		});
+		var all_available_actor_ids = getArrayWithIDs(actors);
 		
 		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
 		
@@ -566,12 +565,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.userErase = function(session_id){
 
-		alertify.set({ labels: {
-			ok     : l("no"),
-			cancel : l("session", "yes_delete_session")
-		} });
-
-		alertify.confirm(l("session", "really_erase_session"), function (e) {
+		APP.confirm(l("session", "really_erase_session"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -584,8 +578,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 				APP.log(l("session", "session_deleted"));
 			}
-		});
-
+		}, l("no"), l("session", "yes_delete_session"));
 
 	};
 

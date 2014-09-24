@@ -435,6 +435,18 @@ var APP = (function () {
 	};
 	
 	
+	my.confirm = function(message, callback, ok_label, cancel_label){
+	
+		alertify.set({ labels: {
+			ok     : ok_label,
+			cancel : cancel_label
+		} });
+		
+		alertify.confirm(message, callback);
+	
+	};
+	
+	
 	my.alert = function(message) {
 	
 		alertify.set({ labels: {

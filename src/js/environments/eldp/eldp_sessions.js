@@ -173,24 +173,18 @@ eldp_environment.workflow[2] = (function() {
 				icon: "reset",
 				id: "bundle_link_reset_form",
 				onclick: function() {       
-
-					alertify.set({ labels: {
-						ok     : l("bundle", "no"),
-						cancel : l("bundle", "yes_delete_form")
-					} });
-					
-					alertify.confirm(l("bundle", "really_reset_form"), function (e) {
+					APP.confirm(l("bundle", "really_reset_form"), function (e) {
 						if (e) {
 							// user clicked "ok"
 						}
 				
 						else {
 							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-							APP.reset_form();
+							APP.environments.resetActive();
 							APP.log(l("bundle", "form_reset"));
-							
 						}
-					});
+					},
+					l("bundle", "no"), l("bundle", "yes_delete_form"));
 				}
 			},
 			{
@@ -718,12 +712,7 @@ eldp_environment.workflow[2] = (function() {
 
 	my.userErase = function(bundle_id){
 
-		alertify.set({ labels: {
-			ok     : l("bundle", "no"),
-			cancel : l("bundle", "yes_delete_bundle")
-		} });
-
-		alertify.confirm(l("bundle", "really_erase_bundle"), function (e) {
+		APP.confirm(l("bundle", "really_erase_bundle"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -733,11 +722,9 @@ eldp_environment.workflow[2] = (function() {
 			else {
 				// user clicked "cancel"
 				my.erase(bundle_id);
-
 				APP.log(l("bundle", "bundle_deleted"));
 			}
-		});
-
+		}, l("bundle", "no"), l("bundle", "yes_delete_bundle"));
 
 	};
 

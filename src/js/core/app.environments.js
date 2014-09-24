@@ -38,7 +38,7 @@ APP.environments = (function () {
 	
 	my.disabled_functions = [];
 	
-	my.environments = [imdi_environment, eldp_environment];
+	my.environments = [];
 	
 	my.active_environment = undefined;
 
@@ -397,6 +397,13 @@ APP.environments = (function () {
 		}
 	
 	};
+	
+	
+	my.add = function(environment){
+	
+		my.environments.push(environment);
+	
+	}
 	
 	
 	return my;

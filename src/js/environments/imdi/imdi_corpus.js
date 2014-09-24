@@ -83,12 +83,7 @@ imdi_environment.workflow[0] = (function(){
 				id: "link_reset_form",
 				onclick: function() {     
 
-					alertify.set({ labels: {
-						ok     : my.l("no"),
-						cancel : my.l("yes_delete_form")
-					} });
-					
-					alertify.confirm(my.l("really_reset_form"), function (e) {
+					APP.confirm(my.l("really_reset_form"), function (e) {
 						if (e) {
 							// user clicked "ok"
 						}
@@ -99,7 +94,8 @@ imdi_environment.workflow[0] = (function(){
 							APP.log(my.l("form_reset"));
 							
 						}
-					});
+					}, my.l("no"), my.l("yes_delete_form"));
+					
 				}
 			}
 		];

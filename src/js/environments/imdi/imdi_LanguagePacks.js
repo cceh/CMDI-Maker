@@ -105,6 +105,7 @@ imdi_environment.languages[0] = {
 	actors: {
 		new_actor: "New Actor",
 		delete_this_actor: "Delete this actor",
+		delete_all_actors: "Delete all actors",
 		sort_actors_alphabetically: "Sort Actors alphabetically",
 		actors_alphabetically_sorted: "Actors sorted",
 		save_and_duplicate_this_actor: "Save and duplicate this actor",
@@ -318,6 +319,7 @@ imdi_environment.languages[1] = {
 	actors: {
 		new_actor: "Neuer Actor",
 		delete_this_actor: "Diesen Actor löschen",
+		delete_all_actors: "Alle Actors löschen",
 		sort_actors_alphabetically: "Alphabetisch sortieren",
 		actors_alphabetically_sorted: "Actors sortiert",
 		save_and_duplicate_this_actor: "Actor speichern und duplizieren",
@@ -535,6 +537,7 @@ imdi_environment.languages[2] = {
 	actors: {
 		new_actor: "Nuevo actor",
 		delete_this_actor: "Eliminar este actor",
+		delete_all_actors: "Eliminar todos los actores",
 		sort_actors_alphabetically: "Ordenar actores alfabéticamente",
 		actors_alphabetically_sorted: "Actores ordenados",
 		save_and_duplicate_this_actor: "Guardar y duplicar este actor",

@@ -103,12 +103,12 @@ var imdi_environment = (function(){
 				file_input_name: "actors_file_input",
 				onchange: my.workflow[2].handleImportFileInputChange
 			},
-			{
+			/*{
 				title: my.l("settings","delete_actors_database"),
 				description: my.l("settings","delete_actors_database_description"),
 				type: "link",
 				onclick: function (){my.workflow[2].erase_database();}
-			}
+			}*/
 		];
 	};
 	
@@ -151,6 +151,7 @@ var imdi_environment = (function(){
 		
 	};
 	
+	APP.environments.add(my);
 	
 	return my;
 	

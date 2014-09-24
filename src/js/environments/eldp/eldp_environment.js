@@ -123,6 +123,8 @@ var eldp_environment = (function(){
 	
 	};
 	
+	APP.environments.add(my);
+	
 	return my;
 	
 })();

@@ -262,12 +262,7 @@ eldp_environment.workflow[1] = (function(){
 
 	my.erase_database = function(){
 
-		alertify.set({ labels: {
-			ok     : l("no"),
-			cancel : l("yes_delete_all_persons")
-		} });
-
-		alertify.confirm(l("confirm_erasing_persons_db"), function (e) {
+		APP.confirm(l("confirm_erasing_persons_db"), function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -285,7 +280,7 @@ eldp_environment.workflow[1] = (function(){
 				my.refreshListDisplay();
 
 			}
-		});
+		}, l("no"), l("yes_delete_all_persons"));
 	};
 
 
@@ -422,7 +417,7 @@ eldp_environment.workflow[1] = (function(){
 			
 			my.refreshListDisplay();
 			
-			alertify.log(imported_persons.length + " " + l("persons_imported"));
+			APP.log(imported_persons.length + " " + l("persons_imported"));
 		
 		});
 
@@ -559,12 +554,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		}
 
-		alertify.set({ labels: {
-			ok     : l("no"),
-			cancel : l("yes_delete_person")
-		} });
-
-		alertify.confirm(confirm_message, function (e) {
+		APP.confirm(confirm_message, function (e) {
 
 			if (e) {
 				// user clicked "ok"
@@ -578,7 +568,7 @@ eldp_environment.workflow[1] = (function(){
 				APP.log(l("person_deleted_before_name") + name_of_person + l("person_deleted_after_name"));
 
 			}
-		});
+		}, l("no"), l("yes_delete_person"));
 	
 	};
 	
