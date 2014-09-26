@@ -17,6 +17,8 @@ limitations under the License.
 	
 var xml = (function () {
 
+	var element_prefix = undefined;
+
 	var createTag = function(name, mode, attributes){
 		
 		return_string = "<";
@@ -26,7 +28,15 @@ var xml = (function () {
 			return_string+="/";
 		}
 		
-		return_string += name;
+		
+		//if there is an element_prefix, add it with a colon!
+		if (element_prefix && element_prefix != ""){
+			return_string += element_prefix + ":" + name;
+		}
+		
+		else {
+			return_string += name;		
+		}
 		
 		//if tag is not closing tag, insert attributes
 		if ((mode === 0) || (mode == 2)){
@@ -112,8 +122,23 @@ var xml = (function () {
 	
 		my.last_mode = -1;
 		my.tab = 0;
+		my.element_prefix = undefined;
 	
 	};
+	
+	
+	my.setElementPrefix = function(string){
+		
+		if ((typeof string == "string") && (string != "")){
+			element_prefix = string;
+		}
+		
+		else {
+			element_prefix = undefined;
+		}
+	
+	};
+	
 
 	my.tag = function(name,mode,keys){   //keys as array
 		//mode 0 = opening tag

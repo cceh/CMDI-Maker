@@ -26,10 +26,25 @@ eldp_environment.eldp_generator = function(){
 	var create_bundle = function(bundle){
 		
 		xml.reset();  //we're starting a new xml file here, so tabula rasa!
-	
+		xml.setElementPrefix("cmd");
+
 		var return_string = "";
-		return_string += xml.header;
-		//return_string+=insert_cmdi_header("session");
+		return_string += xml.header;		
+		
+		return_string += xml.open("CMD",[
+			["xmlns:cmd","http://www.clarin.eu/cmd/"],
+			["xmlns:dcr","http://www.isocat.org/ns/dcr"],
+			["xmlns:ann","http://www.clarin.eu"],
+			["xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance"],
+			["xsi:schemaLocation","http://www.clarin.eu/cmd/ file:/C:/Users/Jan/Desktop/Arbeit/ELDP.xsd"],
+			["CMDVersion", "1.1"]
+		]);
+		
+
+		//CMDI Header
+		return_string += xml.open("Header");
+		return_string += xml.close("Header");
+		
 		//return_string+=insert_header(get("metadata_creator"),today()+"+01:00",imdi_session_profile);
 		
 		return_string += xml.open("ELDP-Bundle")

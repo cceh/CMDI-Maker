@@ -524,6 +524,8 @@ eldp_environment.workflow[1] = (function(){
 		my.persons.push(person_to_put);
 	 
 		console.log('Yeah, dude inserted! insertId is: ' + person_to_put.id);
+		
+		my.createFormIfNotExistent();
 
 		my.refreshListDisplay();
 		
