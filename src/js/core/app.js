@@ -602,7 +602,7 @@ var APP = (function () {
 	
 	my.save_file = function (text, filename, mime_type){
 
-		var clean_filename = remove_invalid_chars(filename);
+		var clean_filename = replaceAccentBearingLettersWithASCISubstitute(filename);
 		
 		if (!mime_type){
 			mime_type = APP.CONF.file_download_header;
@@ -805,7 +805,7 @@ var APP = (function () {
 			}
 			
 			else {
-				// Manifest didn't changed. Nothing new to serve.
+				// Manifest didn't change. Nothing new to serve.
 				console.log("Manifest file on server didn't change.")
 			}
 			
