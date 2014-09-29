@@ -38,6 +38,7 @@ APP.environments = (function () {
 	
 	my.disabled_functions = [];
 	
+	//Environments can integrate themselves in this array to get noticed by CMDI Maker
 	my.environments = [];
 	
 	my.active_environment = undefined;
@@ -52,7 +53,8 @@ APP.environments = (function () {
 			return false;
 		}
 	
-	}
+	};
+	
 	
 	my.displayAllInSelect = function (){
 		
@@ -403,7 +405,7 @@ APP.environments = (function () {
 	
 		my.environments.push(environment);
 	
-	}
+	};
 	
 	
 	return my;

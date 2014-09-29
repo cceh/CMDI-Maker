@@ -219,7 +219,7 @@ APP.GUI = (function() {
 		button.type = "button";
 		button.value = l("language_search", "search");
 
-		if (no_br && no_br == true){
+		if (no_br && no_br === true){
 			dom.make("span","","",p," ");
 		}
 		
@@ -282,7 +282,7 @@ APP.GUI = (function() {
 		}
 		
 		// the iso codes qaa ... qtz are reserved for local use and aren't part of the LanguageIndex, check for them
-		if (my.isISOCodeReservedForLocalUse(input) == true){
+		if (my.isISOCodeReservedForLocalUse(input) === true){
 			on_success(
 				[input, "", "LOCAL", ""]
 			);
@@ -724,7 +724,7 @@ APP.GUI = (function() {
 			APP.save_file(textarea.value, filename, APP.CONF.file_download_header);
 		});
 		
-		if (mockup && mockup == true){
+		if (mockup && mockup === true){
 			console.warn("Created invalid XML");
 			div.style.backgroundColor = "tomato";
 			h1.style.color = "#AA0000";
@@ -897,6 +897,7 @@ APP.GUI = (function() {
 		
 		
 		this.markFileEntry = function(i){
+			var event;
 
 			var pos = g(file_entry_prefix + i).className.indexOf(" " + selected_flag_in_className);
 			
@@ -904,7 +905,7 @@ APP.GUI = (function() {
 				
 				g(file_entry_prefix + i).className = g(file_entry_prefix + i).className + " " + selected_flag_in_className;
 				
-				var event = {
+				event = {
 					index: i,
 					selected: true
 				};
@@ -915,7 +916,7 @@ APP.GUI = (function() {
 			
 				g(file_entry_prefix + i).className = g(file_entry_prefix + i).className.slice(0,pos);
 				
-				var event = {
+				event = {
 					index: i,
 					selected: false
 				};

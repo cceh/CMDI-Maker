@@ -79,6 +79,8 @@ var APP = (function () {
 		
 		window.addEventListener("beforeunload", my.save, false);
 		
+		
+		//since this is a very big one, that would slow code parsing and executing, we add it async when everything else is done
 		addScript(APP.CONF.path_to_scripts + APP.CONF.languageIndex_filename, function(){
 			console.log("LanguageIndex ready!");
 		});
@@ -368,12 +370,7 @@ var APP = (function () {
 				description: my.l("settings","hard_reset_description"),
 				onclick: function() {    
 
-					alertify.set({ labels: {
-						ok     : my.l("confirm","no"),
-						cancel : my.l("confirm","yes_delete_everything")
-					} });
-
-					alertify.confirm(my.l("confirm","hard_reset"), function (e) {
+					APP.confirm(my.l("confirm","hard_reset"), function (e) {
 
 						if (e) {
 							// user clicked "ok"
@@ -383,7 +380,8 @@ var APP = (function () {
 							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
 							my.hard_reset();
 						}
-					});
+						
+					}, my.l("confirm","no"), my.l("confirm","yes_delete_everything"));
 
 				}
 			}
@@ -620,7 +618,7 @@ var APP = (function () {
 		
 		var file_name;
 		
-		if (APP.environments.active_environment.getProjectName() != ""){
+		if (APP.environments.active_environment.getProjectName() !== ""){
 			file_name = APP.environments.active_environment.getProjectName() + ".zip";
 		}
 		
@@ -638,10 +636,10 @@ var APP = (function () {
 					i++;
 					if(i==o.length){o.callback(); return;}
 					o.functionToLoop(loop, i);
-				}
+				};
 				
 				loop(); //init
-			}
+			};
 			
 			asyncLoop({
 				length : textareas.length,
@@ -806,7 +804,7 @@ var APP = (function () {
 			
 			else {
 				// Manifest didn't change. Nothing new to serve.
-				console.log("Manifest file on server didn't change.")
+				console.log("Manifest file on server didn't change.");
 			}
 			
 			

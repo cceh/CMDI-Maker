@@ -15,10 +15,8 @@ limitations under the License.
 */
 
 
-"use strict";
-
-
 imdi_environment.cmdi_generator = function(){
+	"use strict";
 	
 	var corpus = imdi_environment.workflow[0];
 	var resources = imdi_environment.workflow[1];
@@ -38,27 +36,28 @@ imdi_environment.cmdi_generator = function(){
 
 		return "res_"+rString1+"_"+rString2+"_"+rString3+"_"+rString4+"_"+rString5;
 
-	}
+	};
 
 
 	var insert_cmdi_header = function(corpus_or_session){
+		var profile_id;
 		
-		if ((corpus_or_session == 0) || (corpus_or_session == "corpus")){
-			var profile_id = imdi_corpus_profile;
+		if ((corpus_or_session === 0) || (corpus_or_session == "corpus")){
+			profile_id = imdi_corpus_profile;
 		}
 
 		else if ((corpus_or_session == 1) || (corpus_or_session == "session")){
-			var profile_id = imdi_session_profile;
+			profile_id = imdi_session_profile;
 		}
 		
 		else {
-			return alert("An error has occurred! Cannot insert CMDI header without knowing if session or corpus is wanted.");
+			return APP.error("An error has occurred! Cannot insert CMDI header without knowing if session or corpus is wanted.");
 		}
 		
 		return xml.tag("CMD",0,[["xmlns","http://www.clarin.eu/cmd/"],["xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance"],
 		["CMDVersion","1.1"],["xsi:schemaLocation","http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/"+profile_id+"/xsd "]]);
 
-	}
+	};
 
 
 	var create_cmdi_session = function(session_id){
@@ -91,7 +90,7 @@ imdi_environment.cmdi_generator = function(){
 		
 		return return_string;
 		
-	}
+	};
 
 
 	var insert_header = function(MdCreator,MdCreationDate,MdProfile){
@@ -105,7 +104,7 @@ imdi_environment.cmdi_generator = function(){
 		
 		return return_string;
 		
-	}
+	};
 
 
 	var insert_cmdi_session_data = function(session_id){
@@ -117,7 +116,7 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.element("Title",get(session.dom_element_prefix+session_id+"_session_title"));
 		
 		
-		if ((get(session.dom_element_prefix+session_id+"_session_date_year") != "") && (get(session.dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
+		if ((get(session.dom_element_prefix+session_id+"_session_date_year") !== "") && (get(session.dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
 		
 			return_string += xml.element("Date",get(session.dom_element_prefix+session_id+"_session_date_year")+"-"+get(session.dom_element_prefix+session_id+"_session_date_month")+"-"+get(session.dom_element_prefix+session_id+"_session_date_day"));
 			
@@ -210,16 +209,18 @@ imdi_environment.cmdi_generator = function(){
 		
 		return_string += xml.tag("Resources",0);
 		
+		var id;
+		
 		for (var r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.length;r++){  
 		
-			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles[r].id;
+			id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles[r].id;
 		
 			return_string += insert_cmdi_mediafile(get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}
 		
-		for (var r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources.length;r++){  
+		for (r=0;r<session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources.length;r++){  
 
-			var id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources[r].id;	
+			id = session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources[r].id;	
 
 			return_string += insert_cmdi_written_resource(get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_name"),get(session.dom_element_prefix+session_id+'_mediafile_'+id+"_size"));
 		}
@@ -228,10 +229,10 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.tag("Resources",1);
 		
 		return_string += xml.tag("Session",1);
-	   
+
 		return return_string;
 		
-	}
+	};
 
 	
 	var insert_content_languages = function (session_id) {
@@ -251,7 +252,7 @@ imdi_environment.cmdi_generator = function(){
 
 		return return_string;
 		
-	}
+	};
 	
 
 	var insert_cmdi_written_resource = function(link,size){
@@ -286,7 +287,7 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.element("Anonymized","Unspecified");
 
 		return_string += xml.tag("Access",0);
-	  
+
 		return_string += xml.tag("Availability",2);
 		return_string += xml.tag("Date",2);
 		return_string += xml.tag("Owner",2);
@@ -309,7 +310,7 @@ imdi_environment.cmdi_generator = function(){
 
 		return return_string;
 		
-	}
+	};
 
 
 	var insert_cmdi_mediafile = function(link,size){
@@ -336,7 +337,7 @@ imdi_environment.cmdi_generator = function(){
 		
 
 		return_string += xml.tag("Access",0);
-	  
+
 		return_string += xml.tag("Availability",2);
 		return_string += xml.tag("Date",2);
 		return_string += xml.tag("Owner",2);
@@ -356,7 +357,7 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.tag("MediaFile",1);
 
 		return return_string;
-	}
+	};
 
 
 	var insert_cmdi_actor = function(session_id,actor_id){
@@ -379,7 +380,7 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.tag("Age",1);	
 		//End of age field
 		
-		if ((ac.birth_date.year != "") && (ac.birth_date.year != "YYYY")){
+		if ((ac.birth_date.year !== "") && (ac.birth_date.year != "YYYY")){
 		
 			return_string += xml.element("BirthDate",ac.birth_date.year+"-"+ac.birth_date.month+"-"+ac.birth_date.day);
 			
@@ -392,7 +393,7 @@ imdi_environment.cmdi_generator = function(){
 		}
 		
 		return_string+=xml.element("Sex",ac.sex);
-		return_string+=xml.element("Education",(ac.education != "") ? ac.education : "Unspecified" );
+		return_string+=xml.element("Education",(ac.education !== "") ? ac.education : "Unspecified" );
 		return_string+=xml.element("Anonymized",(ac.anonymized) ? "true" : "false"); 
 		
 		return_string+=xml.tag("Contact",0);
@@ -428,10 +429,10 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.tag("Actor_Languages",1);
 		
 		return_string+=xml.tag("Actor",1);
-	  
+
 		return return_string;
 		
-	}
+	};
 
 
 	var create_cmdi_corpus = function(){
@@ -461,7 +462,7 @@ imdi_environment.cmdi_generator = function(){
 				return_string+=xml.tag("ResourceProxy",1);
 			}
 			
-			return_string+=xml.tag("ResourceProxyList",1)
+			return_string+=xml.tag("ResourceProxyList",1);
 		}
 		
 		else {
@@ -489,7 +490,7 @@ imdi_environment.cmdi_generator = function(){
 
 		return return_string;
 
-	}
+	};
 	
 	var my = {};
 	my.sessions = [];
@@ -504,4 +505,4 @@ imdi_environment.cmdi_generator = function(){
 
 	return my;
 
-}
+};

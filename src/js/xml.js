@@ -17,7 +17,7 @@ limitations under the License.
 	
 var xml = (function () {
 
-	var element_prefix = undefined;
+	var element_prefix;
 
 	var createTag = function(name, mode, attributes){
 		
@@ -30,7 +30,7 @@ var xml = (function () {
 		
 		
 		//if there is an element_prefix, add it with a colon!
-		if (element_prefix && element_prefix != ""){
+		if (element_prefix && element_prefix !== ""){
 			return_string += element_prefix + ":" + name;
 		}
 		
@@ -129,7 +129,7 @@ var xml = (function () {
 	
 	my.setElementPrefix = function(string){
 		
-		if ((typeof string == "string") && (string != "")){
+		if ((typeof string == "string") && (string !== "")){
 			element_prefix = string;
 		}
 		
@@ -157,7 +157,7 @@ var xml = (function () {
 		
 		//if this is NOT a closing tag just after an opening tag, 
 		//AND if this is not the beginning of all, then start a new line
-		if ((!(mode == 1 && my.last_mode == 0)) && my.last_mode != -1){
+		if ((!(mode == 1 && my.last_mode === 0)) && my.last_mode != -1){
 			return_string += "\n";
 			return_string += addTabs(my.tab);
 		}

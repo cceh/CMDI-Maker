@@ -150,7 +150,7 @@ APP.forms = (function () {
 			}
 			
 			if (field.fields){
-				if (field.name && field.name != ""){
+				if (field.name && field.name !== ""){
 					element_id_prefix += field.name + "_";
 				}
 				

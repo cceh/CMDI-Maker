@@ -177,7 +177,7 @@ APP.save_and_recall = (function () {
 		
 			var file_name;
 			
-			if (APP.environments.active_environment.getProjectName() != ""){
+			if (APP.environments.active_environment.getProjectName() !== ""){
 				file_name = APP.environments.active_environment.getProjectName() + "." + APP.CONF.project_file_extension;
 			}
 			
@@ -289,12 +289,7 @@ APP.save_and_recall = (function () {
 			
 			console.log("found environment_state");
 			
-			alertify.set({ labels: {
-				ok     : APP.l("confirm","no"),
-				cancel : APP.l("confirm","yes_overwrite_data")
-			}});
-
-			alertify.confirm(APP.l("confirm","overwrite_data"), function (e) {
+			APP.confirm(APP.l("confirm","overwrite_data"), function (e) {
 
 				if (e) {
 					// user clicked "ok"
@@ -305,7 +300,7 @@ APP.save_and_recall = (function () {
 			
 					var environment_id = data["environment_id"];
 					
-					APP.environments.changeByID(data["environment_id"])
+					APP.environments.changeByID(data["environment_id"]);
 					
 					if (data.environments && data.environments[environment_id]){
 						console.log("importProjectData: Found environment data of environment: " + environment_id);
@@ -318,7 +313,7 @@ APP.save_and_recall = (function () {
 				
 				}
 				
-			});
+			}, APP.l("confirm","no"), APP.l("confirm","yes_overwrite_data"));
 		}
 		
 		console.warn("Tried to import project data, but no vaild data was found!");

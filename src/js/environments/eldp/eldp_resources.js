@@ -16,6 +16,7 @@ limitations under the License.
 
 
 eldp_environment.workflow[0] = (function(){
+	'use strict';
 
 	var my = {};
 	var bundle;
@@ -566,8 +567,10 @@ eldp_environment.workflow[0] = (function(){
 				continue;
 			}
 		
-			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[i].name),
-			removeEndingFromFilename(my.available_resources[resource_index].name))) {
+			if (
+				isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[i].name),
+				removeEndingFromFilename(my.available_resources[resource_index].name))
+			){
 			
 				resources.push(i);
 			
@@ -611,8 +614,6 @@ eldp_environment.workflow[0] = (function(){
 		for (i=0; i<resources_to_fade.length; i++){
 			console.log("OP 0.5: " + element_prefix + i.toString());		
 			g(element_prefix+resources_to_fade[i].toString()).style.opacity = "0.5";
-
-		
 		}
 	
 	
@@ -659,7 +660,6 @@ eldp_environment.workflow[0] = (function(){
 	my.clearFileList = function(){
 
 		my.available_resources = [];
-
 		my.refreshFileListDisplay();
 
 	};

@@ -49,21 +49,21 @@ var dom = (function() {
 		
 		for (var f=0; f<array.length; f++){
 		
-			input = dom.input(parent, id_prefix+f, "", name, "radio", array[f][value_key]);
+			input = my.input(parent, id_prefix+f, "", name, "radio", array[f][value_key]);
 			
-			dom.span(parent, "","", " " + array[f][title_key]);
+			my.span(parent, "","", " " + array[f][title_key]);
 			
 			if (f === start_value){
 				input.checked = true;
 			}
 			
-			dom.br(parent);
+			my.br(parent);
 			
 			if (on_change) {
 				input.addEventListener("click", function (num) {
 					return function () {
 						on_change(array[num].value);
-					}
+					};
 				}(f), false);
 			}
 			
@@ -94,11 +94,11 @@ var dom = (function() {
 				
 			}
 		
-		}		
+		}
 	
 		console.error("dom.setRadioByValue: Value " + value + " not available in radios!");
 	
-	}
+	};
 	
 
 	my.setRadioIndex = function (radios, index){
@@ -172,7 +172,7 @@ var dom = (function() {
 		
 		return span;
 	
-	}
+	};
 	
 	
 	my.p = function(parent, innerHTML, id, className){
@@ -186,7 +186,7 @@ var dom = (function() {
 	
 	my.a = function(parent, id, className, href, innerHTML, onclick){
 	
-		var a = dom.newElement("a","","",parent,innerHTML);
+		var a = my.newElement("a",id,className,parent,innerHTML);
 		a.href = href;
 		
 		if (typeof onclick != "undefined"){
@@ -232,7 +232,7 @@ var dom = (function() {
 	
 	my.input = function(parent, id, className, name, type, value){
 	
-		var input = dom.newElement("input",id,className,parent);
+		var input = my.newElement("input",id,className,parent);
 		input.type = type;
 		input.name = name;
 		
@@ -247,7 +247,7 @@ var dom = (function() {
 	
 	my.checkbox = function(parent, id, className, name, checked){
 	
-		var input = dom.input(parent, id, className, name, "checkbox");
+		var input = my.input(parent, id, className, name, "checkbox");
 		input.checked = checked;
 		
 		return input;
@@ -259,7 +259,7 @@ var dom = (function() {
 	
 		return my.input(parent, id, className, name, "text", value);
 	
-	}
+	};
 	
 	
 	my.button = function(parent, value, onclick){
@@ -372,7 +372,8 @@ var dom = (function() {
 	
 	
 	my.setSelectOptions = function(select, options, text_key, value_key, first_option_empty){
-	
+		var text;
+		
 		my.removeOptions(select);
 		
 		if (first_option_empty === true){
@@ -383,9 +384,10 @@ var dom = (function() {
 		}
 		
 		forEach(options, function(option, index){
-
+			var value;
+			
 			if (typeof text_key != "undefined"){
-				var text = option[text_key];
+				text = option[text_key];
 			}
 			
 			else {
@@ -397,7 +399,7 @@ var dom = (function() {
 			}
 			
 			if (typeof value_key != "undefined"){
-				var value = option[value_key];
+				value = option[value_key];
 			}
 			
 			else {

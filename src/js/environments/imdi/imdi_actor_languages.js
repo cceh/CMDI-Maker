@@ -22,7 +22,7 @@ imdi_environment.workflow[2].languages = (function (){
 	var my = {};
 	var actor = imdi_environment.workflow[2];
 
-	my.languages_of_active_actor;
+	my.languages_of_active_actor = undefined;
 	
 	my.parent = imdi_environment;
 	var l = my.parent.l;
@@ -101,7 +101,7 @@ imdi_environment.workflow[2].languages = (function (){
 		my.languages_of_active_actor.push(ActorLanguageObject);
 		
 		var div = dom.newElement("div", my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry",g(my.element_id_prefix + "display"));
-		var img = APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num) {
+		APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
 		}(my.id_counter) );
