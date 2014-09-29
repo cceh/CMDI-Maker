@@ -45,7 +45,8 @@ APP.languages[0] = {
 	save_and_recall: {
 		active_profile_data_deleted: "Recall data for active profile deleted",
 		no_data_found: "No data for active profile found",
-		form_saved: "Form saved"
+		form_saved: "Form saved",
+		no_data_to_save_no_profile_loaded: "There is no data to save because no profile is loaded."
 	},
 	
 	confirm: {
@@ -145,7 +146,8 @@ APP.languages[1] = {
 	save_and_recall: {
 		active_profile_data_deleted: "Daten des aktiven Profils gelöscht",
 		no_data_found: "Keine Daten für das aktive Profil gefunden!",
-		form_saved: "Eingaben gespeichert"
+		form_saved: "Eingaben gespeichert",
+		no_data_to_save_no_profile_loaded: "Es gibt keine Daten zum Speichern, da kein Profil geladen ist."
 	},
 	
 	confirm: {

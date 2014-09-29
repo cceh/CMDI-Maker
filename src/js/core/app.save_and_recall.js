@@ -199,7 +199,7 @@ APP.save_and_recall = (function () {
 		}
 		
 		else {
-			APP.log("No environment loaded", "error");
+			APP.log(APP.l("save_and_recall", "no_data_to_save_no_profile_loaded"), "error");
 		}
 		
 	
