@@ -254,7 +254,6 @@ eldp_environment.eldp_generator = function(){
 			return_string += xml.element("MotherTongue",(ac.languages[l].MotherTongue) ? "true" : "false");
 			return_string += xml.element("PrimaryLanguage",(ac.languages[l].PrimaryLanguage) ? "true" : "false");		
 
-			
 			return_string += xml.tag("Actor_Language",1);
 		
 		}

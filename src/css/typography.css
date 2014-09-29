@@ -36,12 +36,8 @@
 	/* (de) Basis-Layout erhält Standardschriftgröße von 14 Pixeln */
 	body {
 		font-family: "PT Sans", Arial, Helvetica, Sans, sans-serif;
-		font-size:87.5%; /* base: 12px */
 		color:#444;
-
-		/* (en) Prevent auto-scaling of text in mobile webkit browsers */
-		/* (de) Automatische Schriftvergrößerung in mobilen Webkit-Browsern vermeiden */
-		-webkit-text-size-adjust:100%;
+		text-align:left;
 	}
 
 	/*--- Headings | Überschriften ------------------------------------------------------------------------*/
@@ -263,19 +259,6 @@
 		height: auto;
 	}
 
-	* html .flexible {	/* IE6 support */
-		width: 98%;		/* 2% space for borders */
-	}
-
-	.bordered {
-		margin-top: 1.5em;
-		border: 2px #eee solid;
-		border: 2px rgba(255,255,255,1) solid;
-		-webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
-		-moz-box-shadow: 0 0 3px rgba(0,0,0,.25);
-		box-shadow: 0 0 3px rgba(0,0,0,.25);
-	}
-
 	/**
 	* ----------------------------------------------------------------------- #
 	*
@@ -286,7 +269,7 @@
 	*
 	* @section content-generic-classes
 	*/
-	.highlight {
+	/*.highlight {
 		color:#c30;
 	}
 
@@ -355,7 +338,7 @@
 		float:right;
 		display:inline;
 		margin: 1.5em 0 0 1em;
-	}
+	}*/
 
 	.center {
 		display:block;

@@ -228,12 +228,6 @@ input[type="button"], input[type="submit"]{
 
 }
 
-body {
-
-	overflow: hidden;
-
-}
-
 td{
 
 	white-space: nowrap;

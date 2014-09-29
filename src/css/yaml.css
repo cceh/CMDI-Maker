@@ -25,7 +25,7 @@
 
 	/* (en) Global reset of paddings and margins for all HTML elements */
 	/* (de) Globales Zurücksetzen der Innen- und Außenabstände für alle HTML-Elemente */
-	* /*{ margin:0; padding:0; } */
+	/* * { margin:0; padding:0; } */
 
 	/* (en) Correction:margin/padding reset caused too small select boxes. */
 	/* (de) Korrektur:Das Zurücksetzen der Abstände verursacht zu kleine Selectboxen. */
@@ -42,18 +42,6 @@
 	* @valid      yes
 	*/
 	* html body * { overflow:visible; }
-
-	body {
-		/* (en) Fix for rounding errors when scaling font sizes in older versions of Opera browser */
-		/* (de) Beseitigung von Rundungsfehler beim Skalieren von Schriftgrößen in älteren Opera Versionen */
-		font-size:100%;
-
-		/* (en) Standard values for colors and text alignment */
-		/* (de) Vorgabe der Standardfarben und Textausrichtung */
-		background:#fff;
-		color:#000;
-		text-align:left; /* LTR */
-	}
 
 	/* (en) avoid visible outlines on DIV containers in Webkit browsers */
 	/* (de) Vermeidung sichtbarer Outline-Rahmen in Webkit-Browsern */
@@ -77,12 +65,6 @@
 	/* (en) HTML5 - don't show <audio> element if there aren't controls */
 	/* (de) HTML5 - <audio> ohne Kontrollelemente sollten nicht angezeigt werden */
 	audio:not([controls]) {
-		display: none;
-	}
-
-	/* (en) HTML5 - add missing styling in IE & old FF for hidden attribute  */
-	/* (de) HTML5 - Eigenschaften für das hidden-Attribut in älteren IEs und FF nachrüsten */
-	[hidden] {
 		display: none;
 	}
 
