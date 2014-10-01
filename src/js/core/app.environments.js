@@ -141,7 +141,7 @@ APP.environments = (function () {
 	my.create = function (environment){
 		
 		if (typeof environment == "undefined"){
-			console.error("APP.environments.create: Environment parameter is undefined!");
+			console.warn("APP.environments.create: Environment parameter is undefined!");
 			return;
 		}
 		
