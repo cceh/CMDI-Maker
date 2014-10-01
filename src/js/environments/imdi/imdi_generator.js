@@ -73,7 +73,7 @@ imdi_environment.imdi_generator = function(){
 		if ((get(session.dom_element_prefix+session_id+"_session_date_year") != "") && (get(session.dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
 	
 			return_string += xml.tag("Date",0);
-			return_string += get(session.dom_element_prefix+session_id+"_session_date_year") + "-" + get(session.dom_element_prefix+session_id+"_session_date_month") + "-" + get(session.dom_element_prefix+session_id+"_session_date_day");
+			return_string += APP.forms.getDateByDateInput(session.dom_element_prefix+session_id+"_session_date") || "Unspecified";
 			return_string += xml.tag("Date",1);
 		
 		}	

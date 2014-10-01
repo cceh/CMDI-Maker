@@ -21,7 +21,9 @@ var xml = (function () {
 
 	var createTag = function(name, mode, attributes){
 		
-		return_string = "<";
+		name = my.escapeIllegalCharacters(name);
+		
+		var return_string = "<";
 		
 		//if it's a closing tag, add closing slash at the beginning
 		if (mode==1){
@@ -80,17 +82,17 @@ var xml = (function () {
 			
 			/*when this is the first attribute to add, just make a space and start*/
 			if (i === 0){
-				return_string+=" ";
+				return_string += " ";
 			}
 			
 			//attribute key
-			return_string += attributes[i][0];
+			return_string += my.escapeIllegalCharacters(attributes[i][0]);
 			
 			return_string += "=";
 			
 			//attribute value in quotation marks
 			return_string += "\"";
-			return_string += attributes[i][1];
+			return_string += my.escapeIllegalCharacters(attributes[i][1]);
 			return_string += "\"";
 			
 		}
@@ -122,7 +124,33 @@ var xml = (function () {
 	
 		my.last_mode = -1;
 		my.tab = 0;
-		my.element_prefix = undefined;
+		element_prefix = undefined;
+	
+	};
+	
+	
+	my.escapeIllegalCharacters = function(string){
+		var illegal_char;
+		var entity_reference;
+		
+		var illegal_chars = [
+			["&amp;",	"&"],			//ampersand
+			//ampersand HAS TO BE FIRST in this array, so that the ampersands of the other entity references wont get escaped too.
+			["&lt;",	"<"],			//less than
+			["&gt;",	">"], 			//greater than
+			["&apos;",	"'"],			//apostrophe
+			["&quot;",	"\""]			//quotation mark
+		];
+	
+		for (var i=0; i<illegal_chars.length; i++){
+			
+			illegal_char = illegal_chars[i][1];
+			entity_reference = illegal_chars[i][0];
+			string = replaceCharactersInStringWithSubstitute(string, illegal_char, entity_reference);
+			
+		}
+	
+		return string;
 	
 	};
 	
@@ -178,6 +206,8 @@ var xml = (function () {
 	my.element = function (name,value,keys){
 		
 		var return_string = "";
+		
+		value = my.escapeIllegalCharacters(value);
 		
 		//when there is a value, there must be opening and closing tags
 		if (value !== ""){

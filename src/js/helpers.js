@@ -300,19 +300,24 @@ var removeCharactersFromString = function (string, char_string){
 var replaceCharactersInStringWithSubstitute = function (string, char_string, substitute){
 
 	var character;
-	var pos;
 	
+	//for each char in char_string, i. e. for each char, that is to be replaced
 	for (var c=0; c< char_string.length; c++){
 
 		character = char_string[c];
 		
-		for (var i=0; i<string.length; i++){  //here it is important, that string.length gets evaluated anew each loop
+		for (var i=0; i<string.length;){  //here it is important, that string.length gets evaluated anew each loop
 			
 			if (string[i] == character) {
 				
-				string = string.slice(0, i) + substitute + string.slice(i+1, string.length);
-		
+				string = string.slice(0, i) + substitute + string.slice(i+1);
+				
+				//move the pointer to the point after the substitute and continue
+				i += substitute.length;
+				continue;
 			}
+			
+			i += 1;
 		
 		}
 
@@ -331,9 +336,12 @@ function calcAgeAtDate(dateString,birthDate) {
 
 
 function isSubstringAStartOfAWordInString(string, substring){
-
+	
+	string = string.toLowerCase();
+	substring = substring.toLowerCase();
+	
 	//check if there is no letter in front of the substring
-	switch (string.toLowerCase().indexOf(substring.toLowerCase())){
+	switch (string.indexOf(substring)){
 	
 		case -1: {   //if substring is not part of string
 			return false;
@@ -341,7 +349,6 @@ function isSubstringAStartOfAWordInString(string, substring){
 
 		case 0: {  //if substring is at the beginning of the string
 			return true;
-		
 		}
 		
 		default: { //if substring is somewhere in string, check if the character before substring is a letter
@@ -355,6 +362,7 @@ function isSubstringAStartOfAWordInString(string, substring){
 			}
 			
 			else {
+			
 				return false;
 			
 			}
@@ -562,3 +570,18 @@ var parse_birth_date = function(string){
 	return object;
 
 };
+
+
+var areOnlyTheseCharsInString = function(string, chars){
+
+	for (var i=0; i<string.length; i++){
+
+		if (chars.indexOf(string[i]) == -1){
+			return false;
+		}
+		
+	}
+
+	return true;
+
+}

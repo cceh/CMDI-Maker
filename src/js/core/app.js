@@ -729,8 +729,11 @@ var APP = (function () {
 	
 	
 	my.doStandardLanguageSearch = function(input, on_select){
+	//input = input string
+
 		var j;
 		
+		//if input string is shorter than 3 chars, return error
 		if (input.length < 3){
 		
 			APP.alert(my.l("languages", "specify_search_request_at_least_3_chars"));
@@ -742,11 +745,13 @@ var APP = (function () {
 		
 		var results = [];
 
+		//look through the whole LanguageIndex file
 		for (var i=0;i<LanguageIndex.length;i++){
-
-			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3],input)){
+			
+			//if input is start of a word in string, add it to name_hits
+			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3], input)){
 				
-				//get an array with all relevant IDs
+				//get an array with all relevant ISO codes
 				name_hits.push(LanguageIndex[i][0]);
 			}
 
@@ -754,9 +759,11 @@ var APP = (function () {
 		
 		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
 		
-		forEach(LanguageIndex, function(LanguageObject){   //for all entries in LanguageIndex
-		
-			if ( (name_hits.indexOf(LanguageObject[0]) != -1)  &&  (LanguageObject[2] == "L" )){		//look for their l-name entry
+		//iterate again through the whole LanguageIndex file
+		forEach(LanguageIndex, function(LanguageObject){
+			
+			//if an entry of LanguageIndex is an L language AND its ISO code is part of name_hits, we have a result!
+			if ( (name_hits.indexOf(LanguageObject[0]) != -1)  &&  (LanguageObject[2] == "L" )){
 			
 				results.push(LanguageObject);
 			

@@ -600,6 +600,31 @@ APP.forms = (function () {
 	};
 	
 	
+	var getDateByDateInput = function(element_prefix){
+	
+		var year = g(element_prefix + "_year").value;
+		var month = g(element_prefix + "_month").value;	
+		var day = g(element_prefix + "_day").value;
+
+		var valid_chars = "0123456789";
+	
+		if (year.length != 4 || !areOnlyTheseCharsInString(year, valid_chars)){
+			return undefined;
+		}
+
+		if (day.length != 2 || !areOnlyTheseCharsInString(month, valid_chars)){
+			return undefined;
+		}
+
+		if (day.length != 2 || !areOnlyTheseCharsInString(day, valid_chars)){
+			return undefined;
+		}		
+	
+		return year + "-" + month + "-" + day;
+		
+	}
+	
+	
 	var my = {};
 	
 	my.make = make;
@@ -607,6 +632,8 @@ APP.forms = (function () {
 	my.makeObjectWithFormData = makeObjectWithFormData;
 	my.fillObjectWithFormData = fillObjectWithFormData;
 	my.createEmptyObjectFromTemplate = createEmptyObjectFromTemplate;
+	my.getDateByDateInput = getDateByDateInput;
+	//my.getDateByDateInputOrReturnValue = getDateByDateInput;
 	
 	return my;
 	
