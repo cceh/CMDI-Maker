@@ -773,7 +773,7 @@ var APP = (function () {
 		
 		var titles = map(results, function(result){
 
-			return result[0] + ", " + result[1]+", " + result[3];
+			return result[0] + ", " + result[1] + ", " + result[3];
 
 		});	
 
