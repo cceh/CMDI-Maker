@@ -757,7 +757,7 @@ var APP = (function () {
 
 		}
 		
-		//now we have all relevant languageIDs in name_hits. next step: get the L-names of theses language IDs.
+		//now we have all relevant ISO codes in name_hits. next step: get the entries with the L-names of these ISO codes.
 		
 		//iterate again through the whole LanguageIndex file
 		forEach(LanguageIndex, function(LanguageObject){
