@@ -44,6 +44,11 @@ APP.save_and_recall = (function () {
 	
 	
 	my.getRecallDataForEnvironment = function(environment){
+	
+		if (typeof environment == "undefined"){
+			console.warn("getRecallDataForEnvironment: environment is undefined!");
+			return;
+		}
 
 		var form = localStorage.getItem(environment.id);
 
