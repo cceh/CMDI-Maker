@@ -307,7 +307,7 @@ imdi_environment.imdi_generator = function(){
 
 	var insert_actor = function (session_id, actor_id) {
 
-		var i = actor.getActorsIndexFromID(actor_id);
+		var i = actor.getIndexByID(actor_id);
 
 		var return_string = "";
 		return_string += xml.tag("Actor",0);
