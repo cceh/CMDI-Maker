@@ -97,7 +97,7 @@ var APP = (function () {
 		
 		//extract the substring before the hyphen, e.g. take "en" from "en-US"
 		if (hyphen_position != -1){
-			navigator_language = navigator_language.substring(0, hyphen_pos); 
+			navigator_language = navigator_language.substring(0, hyphen_position); 
 		}
 		
 		var lang = getObject(my.languages, "code", navigator_language);
@@ -743,8 +743,6 @@ var APP = (function () {
 		
 		var name_hits = [];
 		
-		var results = [];
-
 		//look through the whole LanguageIndex file
 		for (var i=0;i<LanguageIndex.length;i++){
 			
@@ -759,16 +757,12 @@ var APP = (function () {
 		
 		//now we have all relevant ISO codes in name_hits. next step: get the entries with the L-names of these ISO codes.
 		
-		//iterate again through the whole LanguageIndex file
-		forEach(LanguageIndex, function(LanguageObject){
+		//iterate again through the whole LanguageIndex file and filter it for the results
+		var results = LanguageIndex.filter(function(LanguageObject){
 			
 			//if an entry of LanguageIndex is an L language AND its ISO code is part of name_hits, we have a result!
-			if ( (name_hits.indexOf(LanguageObject[0]) != -1)  &&  (LanguageObject[2] == "L" )){
+			return ((name_hits.indexOf(LanguageObject[0]) != -1) && (LanguageObject[2] == "L" ));
 			
-				results.push(LanguageObject);
-			
-			}
-		
 		});
 		
 		var titles = map(results, function(result){
