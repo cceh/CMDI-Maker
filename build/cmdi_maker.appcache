@@ -5,11 +5,11 @@ CACHE:
 index.html
 img/favicon.ico
 img/logo-128.png
-styles/styles.css
 js/LanguageIndex.js
 js/deflate.js
 js/inflate.js
 js/script.js
+styles/styles.css
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -65,4 +65,4 @@ img/logos/LOGO_Uni_Koeln.png
 NETWORK:
 *
 
-# hash: 81af7c2975a75c1bd88cf707413b0ecf1a82872a2590f437e0637d86946cd551
+# hash: e6697ea962b2e31729645159d7a4a31de6a7072b82495bd378cfa9946da669d5
