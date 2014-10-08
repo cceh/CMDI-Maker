@@ -70,18 +70,10 @@ imdi_environment.imdi_generator = function(){
 		return_string+=xml.element("Title",get(session.dom_element_prefix+session_id+"_session_title"));
 
 
-		if ((get(session.dom_element_prefix+session_id+"_session_date_year") != "") && (get(session.dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
-	
-			return_string += xml.tag("Date",0);
-			return_string += APP.forms.getDateByDateInput(session.dom_element_prefix+session_id+"_session_date") || "Unspecified";
-			return_string += xml.tag("Date",1);
+		return_string += xml.open("Date");
+		return_string += APP.forms.getDateStringByDateInput(session.dom_element_prefix+session_id+"_session_date") || "Unspecified";
+		return_string += xml.close("Date");
 		
-		}	
-
-		else {
-			return_string+=xml.element("Date","Unspecified");
-		}
-   
 		return_string+=xml.element("Description",get(session.dom_element_prefix+session_id+"_session_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
    
 		return_string+=xml.tag("MDGroup",0);
@@ -340,17 +332,10 @@ imdi_environment.imdi_generator = function(){
 		return_string += xml.tag("Age",1);	
 		//End of age field
 	
-		return_string+=xml.tag("BirthDate",0);
-	
-		if ((actor.actors[i].birth_date.year != "") && (actor.actors[i].birth_date.year != "YYYY")){
-			return_string += actor.actors[i].birth_date.year + "-" + actor.actors[i].birth_date.month + "-" + actor.actors[i].birth_date.day;
-		}	
-	
-		else {
-			return_string += "Unspecified";
-		}
-	
-		return_string += xml.tag("BirthDate",1);	
+		return_string += xml.open("BirthDate");
+		return_string += APP.forms.getDateStringByDateObject(actor.actors[i].birth_date) || "Unspecified";
+		return_string += xml.open("BirthDate");
+		
 		return_string += xml.element("Sex",actor.actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
 		return_string += xml.element("Education",(actor.actors[i].education != "") ? actor.actors[i].education : "Unspecified" );
 		return_string += xml.element("Anonymized",(actor.actors[i].anonymized) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]); 

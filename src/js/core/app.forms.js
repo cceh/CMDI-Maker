@@ -461,9 +461,9 @@ APP.forms = (function () {
 		
 			target = checkForValueOrTakeDefault(data_object, field);
 		
-			g(element_id_prefix+field.name+"_year").value = target.year;
-			g(element_id_prefix+field.name+"_month").value = target.month;
-			g(element_id_prefix+field.name+"_day").value = target.day;
+			g(element_id_prefix+field.name+"_year").value = (target.year != "") ? target.year : "YYYY";
+			g(element_id_prefix+field.name+"_month").value = (target.month != "") ? target.month : "MM";
+			g(element_id_prefix+field.name+"_day").value = (target.day != "") ? target.day : "DD";
 			
 		}
 		
@@ -600,28 +600,41 @@ APP.forms = (function () {
 	};
 	
 	
-	var getDateByDateInput = function(element_prefix){
+	var getDateStringByDateInput = function(element_prefix){
 	
-		var year = g(element_prefix + "_year").value;
-		var month = g(element_prefix + "_month").value;	
-		var day = g(element_prefix + "_day").value;
+		var date_object = {};
+	
+		date_object.year = g(element_prefix + "_year").value;
+		date_object.month = g(element_prefix + "_month").value;	
+		date_object.day = g(element_prefix + "_day").value;
 
+		return getDateStringByDateObject(date_object);
+		
+	}
+	
+	
+	var getDateStringByDateObject = function(date_object){
+	
+		if (!date_object || !date_object.month || !date_object.day){
+			return undefined;
+		}
+	
 		var valid_chars = "0123456789";
 	
-		if (year.length != 4 || !areOnlyTheseCharsInString(year, valid_chars)){
+		if (date_object.year.length != 4 || !areOnlyTheseCharsInString(date_object.year, valid_chars)){
 			return undefined;
 		}
 
-		if (day.length != 2 || !areOnlyTheseCharsInString(month, valid_chars)){
+		if (date_object.month.length != 2 || !areOnlyTheseCharsInString(date_object.month, valid_chars)){
 			return undefined;
 		}
 
-		if (day.length != 2 || !areOnlyTheseCharsInString(day, valid_chars)){
+		if (date_object.day.length != 2 || !areOnlyTheseCharsInString(date_object.day, valid_chars)){
 			return undefined;
 		}		
 	
-		return year + "-" + month + "-" + day;
-		
+		return year + "-" + month + "-" + day;	
+	
 	}
 	
 	
@@ -632,7 +645,8 @@ APP.forms = (function () {
 	my.makeObjectWithFormData = makeObjectWithFormData;
 	my.fillObjectWithFormData = fillObjectWithFormData;
 	my.createEmptyObjectFromTemplate = createEmptyObjectFromTemplate;
-	my.getDateByDateInput = getDateByDateInput;
+	my.getDateStringByDateInput = getDateStringByDateInput;
+	my.getDateStringByDateObject = getDateStringByDateObject;
 	//my.getDateByDateInputOrReturnValue = getDateByDateInput;
 	
 	return my;

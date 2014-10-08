@@ -115,19 +115,10 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.element("Name",get(session.dom_element_prefix+session_id+"_session_name"));
 		return_string += xml.element("Title",get(session.dom_element_prefix+session_id+"_session_title"));
 		
-		
-		if ((get(session.dom_element_prefix+session_id+"_session_date_year") !== "") && (get(session.dom_element_prefix+session_id+"_session_date_year") != "YYYY")){
-		
-			return_string += xml.element("Date",get(session.dom_element_prefix+session_id+"_session_date_year")+"-"+get(session.dom_element_prefix+session_id+"_session_date_month")+"-"+get(session.dom_element_prefix+session_id+"_session_date_day"));
-			
-		}
-		
-		else {
-		
-			return_string += xml.element("Date","Unspecified");
-		
-		}
-		
+		return_string += xml.open("Date");
+		return_string += APP.forms.getDateStringByDateInput(session.dom_element_prefix+session_id+"_session_date") || "Unspecified";
+		return_string += xml.close("Date");
+
 		
 		return_string += xml.tag("MDGroup",0);
 		return_string += xml.tag("Location",0);
@@ -380,17 +371,7 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.tag("Age",1);	
 		//End of age field
 		
-		if ((ac.birth_date.year !== "") && (ac.birth_date.year != "YYYY")){
-		
-			return_string += xml.element("BirthDate",ac.birth_date.year+"-"+ac.birth_date.month+"-"+ac.birth_date.day);
-			
-		}
-		
-		else {
-		
-			return_string += xml.element("BirthDate","Unspecified");
-		
-		}
+		return_string += xml.element("BirthDate", APP.forms.getDateStringByDateObject(ac.birth_date) || "Unspecified");
 		
 		return_string+=xml.element("Sex",ac.sex);
 		return_string+=xml.element("Education",(ac.education !== "") ? ac.education : "Unspecified" );
