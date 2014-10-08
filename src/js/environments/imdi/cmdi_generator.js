@@ -119,7 +119,6 @@ imdi_environment.cmdi_generator = function(){
 		return_string += APP.forms.getDateStringByDateInput(session.dom_element_prefix+session_id+"_session_date") || "Unspecified";
 		return_string += xml.close("Date");
 
-		
 		return_string += xml.tag("MDGroup",0);
 		return_string += xml.tag("Location",0);
 		return_string += xml.element("Continent",get(session.dom_element_prefix+session_id+"_session_location_continent"));

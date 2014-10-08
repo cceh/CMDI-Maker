@@ -633,7 +633,7 @@ APP.forms = (function () {
 			return undefined;
 		}		
 	
-		return year + "-" + month + "-" + day;	
+		return date_object.year + "-" + date_object.month + "-" + date_object.day;	
 	
 	}
 	
