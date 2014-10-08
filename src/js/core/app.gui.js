@@ -685,7 +685,7 @@ APP.GUI = (function() {
 		
 		for (var j=0; j<options.length; j++){
 		
-			var a = dom.a(frame,'cl_results_link_'+j,'cl_results_link',"#","",function(num) {
+			var a = dom.link(frame,'cl_results_link_'+j,'cl_results_link',"",function(num) {
 				return function(){
 					my.closeSelectFrame();
 					callback(num);

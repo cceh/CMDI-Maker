@@ -233,6 +233,7 @@
 		color:#4D87C7;
 		background:transparent;
 		text-decoration:none;
+		cursor: pointer;
 	}
 
 	a:active { outline: none; }

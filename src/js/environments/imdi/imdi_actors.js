@@ -299,7 +299,6 @@ imdi_environment.workflow[2] = (function(){
 		var new_actor_link = dom.make("a","new_actor_link","new_actor_link", no_actors_message);
 
 		new_actor_link.innerHTML = l("why_not_create_one__link");
-		new_actor_link.href = "#";
 
 		no_actors_message.innerHTML += l("why_not_create_one__after_link");
 

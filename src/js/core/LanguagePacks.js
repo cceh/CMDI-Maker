@@ -64,8 +64,8 @@ APP.languages[0] = {
 	welcome_back: "Welcome back!",
 	about: "About",
 	save: "Save",
-	export_to_file: "Export to File",
-	open_file: "Open File",
+	export_to_file: "Export Project to File",
+	open_file: "Open Project File",
 	abort: "Abort",
 	
 	start: {
@@ -165,8 +165,8 @@ APP.languages[1] = {
 	welcome_back: "Willkommen zurück!",
 	about: "Über",
 	save: "Speichern",
-	export_to_file: "In Datei Exportieren",
-	open_file: "Datei öffnen",
+	export_to_file: "Projekt in Datei exportieren",
+	open_file: "Projektdatei öffnen",
 	abort: "Abbrechen",
 	
 	start: {

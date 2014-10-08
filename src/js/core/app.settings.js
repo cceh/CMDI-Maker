@@ -99,7 +99,7 @@ APP.settings = (function () {
 		}
 		
 		if (setting.onclick){
-			var a = dom.a(h2,"","","#",setting.title, setting.onclick);
+			var a = dom.link(h2,"","",setting.title, setting.onclick);
 			
 			if ((setting.importance) && (setting.importance == "high")){
 				a.style.color = "red";

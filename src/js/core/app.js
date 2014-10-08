@@ -481,7 +481,7 @@ var APP = (function () {
 		
 		forEach(my.languages, function(language, counter){
 			
-			var a = dom.a(lang_links, "", "", "#", language.code.toUpperCase(), function(){
+			dom.link(lang_links, "", "", language.code.toUpperCase(), function(){
 				APP.changeLanguage(counter);
 			});
 			
@@ -731,8 +731,6 @@ var APP = (function () {
 	my.doStandardLanguageSearch = function(input, on_select){
 	//input = input string
 
-		var j;
-		
 		//if input string is shorter than 3 chars, return error
 		if (input.length < 3){
 		
@@ -758,7 +756,7 @@ var APP = (function () {
 		//now we have all relevant ISO codes in name_hits. next step: get the entries with the L-names of these ISO codes.
 		
 		//iterate again through the whole LanguageIndex file and filter it for the results
-		var results = LanguageIndex.filter(function(LanguageObject){
+		var results = LanguageIndex.filter( function(LanguageObject){
 			
 			//if an entry of LanguageIndex is an L language AND its ISO code is part of name_hits, we have a result!
 			return ((name_hits.indexOf(LanguageObject[0]) != -1) && (LanguageObject[2] == "L" ));

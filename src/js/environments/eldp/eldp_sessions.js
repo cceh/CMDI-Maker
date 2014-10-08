@@ -242,7 +242,7 @@ eldp_environment.workflow[2] = (function() {
 			add_res_div.appendChild(p);
 			p.innerHTML = l("bundle", "no_files_have_been_added") + "<br>";
 		
-			dom.a(p, "", "", "#", l("bundle", "add_some_files"), function() {
+			dom.link(p, "", "", l("bundle", "add_some_files"), function() {
 				APP.view(resources);
 			});
 			
@@ -377,7 +377,6 @@ eldp_environment.workflow[2] = (function() {
 			
 		}(bundle_id) );
 		bundle_delete_link.innerHTML = "<img id=\""+my.dom_element_prefix+bundle_id+"_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Bundle\">";
-		bundle_delete_link.href = "#";
 		
 		//create icon to expand/collapse the bundle
 		var bundle_display_link = dom.make('a',my.dom_element_prefix+bundle_id+'_display_link','bundle_display_link',bundle_header);
@@ -672,7 +671,7 @@ eldp_environment.workflow[2] = (function() {
 		
 			var h5 = dom.h5(aad, l("bundle", "no_persons_created_yet") + "<br>");	
 			
-			dom.a(h5,"","","#", l("bundle", "create_some_persons"), function() { 
+			dom.link(h5,"","", l("bundle", "create_some_persons"), function() { 
 				APP.view("VIEW_persons");  
 			} );
 			
@@ -798,7 +797,6 @@ eldp_environment.workflow[2] = (function() {
 		var new_bundle_link = dom.make("a","new_bundle_link","new_bundle_link",no_bundles_message);
 
 		new_bundle_link.innerHTML = l("bundle", "why_not_create_one__link");
-		new_bundle_link.href = "#";
 
 		no_bundles_message.innerHTML += l("bundle", "why_not_create_one__after_link");
 

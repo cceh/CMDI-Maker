@@ -187,12 +187,24 @@ var dom = (function() {
 	my.a = function(parent, id, className, href, innerHTML, onclick){
 	
 		var a = my.newElement("a",id,className,parent,innerHTML);
-		a.href = href;
+		
+		if (href){
+			a.href = href;
+		}
 		
 		if (typeof onclick != "undefined"){
 			a.addEventListener("click", onclick);
 		}
 		
+		return a;
+	
+	};
+	
+	
+	my.link = function(parent, id, className, innerHTML, onclick){
+	
+		var a = my.a(parent, id, className, undefined, innerHTML, onclick);
+	
 		return a;
 	
 	};

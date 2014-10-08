@@ -198,7 +198,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		if (resources.available_resources.length === 0){
 		
 			var h5 = dom.h5(add_resource_div, l("session", "no_files_have_been_added") + "<br>");
-			dom.a(h5,"","","#",l("session", "add_some_files"), function(){APP.view(resources);});
+			dom.link(h5,"","",l("session", "add_some_files"), function(){APP.view(resources);});
 			
 		}
 		
@@ -505,7 +505,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			var h5 = dom.h5(aad, l("session", "no_actors_in_db_yet") + "<br>");	
 			
-			dom.a(h5,"","","#",l("session", "create_some_actors"), function() { 
+			dom.link(h5,"","",l("session", "create_some_actors"), function() { 
 				APP.view(actor);  
 			} );
 			
@@ -641,7 +641,6 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		var new_session_link = dom.make("a","new_session_link","new_session_link",no_sessions_message);
 
 		new_session_link.innerHTML = l("session", "why_not_create_one__link");
-		new_session_link.href = "#";
 
 		no_sessions_message.innerHTML += l("session", "why_not_create_one__after_link");
 

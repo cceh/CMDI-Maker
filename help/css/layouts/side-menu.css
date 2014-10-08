@@ -236,3 +236,13 @@ Hides the menu at `48em`, but modify this based on your app's needs.
         left: 150px;
     }
 }
+
+
+/* Customizations */
+
+.content-img{
+
+	max-width:100%;
+	max-height:100%;
+	
+}

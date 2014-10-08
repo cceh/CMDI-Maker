@@ -261,7 +261,8 @@ td{
 	position: fixed;
 	top: 50px;
 	right: 0px;
-	width: 300px;
+	min-width: 300px;
+	max-width: 450px;
 
 }
 
@@ -296,6 +297,7 @@ td{
 	font-size: 16pt;
 	position: relative;
 	top: -16px;
+	padding-right: 20px;
 }
 
 input, textarea, select{

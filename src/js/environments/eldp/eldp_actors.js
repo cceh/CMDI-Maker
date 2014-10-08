@@ -191,7 +191,6 @@ eldp_environment.workflow[1] = (function(){
 		var new_person_link = dom.make("a","new_person_link","new_person_link", no_persons_message);
 
 		new_person_link.innerHTML = l("why_not_create_one__link");
-		new_person_link.href = "#";
 
 		no_persons_message.innerHTML += l("why_not_create_one__after_link");
 
