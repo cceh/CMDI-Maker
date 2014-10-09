@@ -334,7 +334,7 @@ imdi_environment.imdi_generator = function(){
 	
 		return_string += xml.open("BirthDate");
 		return_string += APP.forms.getDateStringByDateObject(actor.actors[i].birth_date) || "Unspecified";
-		return_string += xml.open("BirthDate");
+		return_string += xml.close("BirthDate");
 		
 		return_string += xml.element("Sex",actor.actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
 		return_string += xml.element("Education",(actor.actors[i].education != "") ? actor.actors[i].education : "Unspecified" );

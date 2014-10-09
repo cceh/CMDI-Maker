@@ -3,12 +3,12 @@ CACHE MANIFEST
 
 CACHE:
 index.html
-img/favicon.ico
-img/logo-128.png
 js/LanguageIndex.js
 js/deflate.js
 js/inflate.js
 js/script.js
+img/favicon.ico
+img/logo-128.png
 styles/styles.css
 img/icons/about.png
 img/icons/addir.png
@@ -65,4 +65,4 @@ img/logos/LOGO_Uni_Koeln.png
 NETWORK:
 *
 
-# hash: e6697ea962b2e31729645159d7a4a31de6a7072b82495bd378cfa9946da669d5
+# hash: 77e6bf4613bdf03d43147db469ad4cac2c5b269fc121c556f41b3c7d3cf57f11
