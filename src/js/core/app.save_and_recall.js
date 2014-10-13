@@ -182,7 +182,7 @@ APP.save_and_recall = (function () {
 		
 			var file_name;
 			
-			if (APP.environments.active_environment.getProjectName() !== ""){
+			if (APP.environments.active_environment.getProjectName && APP.environments.active_environment.getProjectName() !== ""){
 				file_name = APP.environments.active_environment.getProjectName() + "." + APP.CONF.project_file_extension;
 			}
 			

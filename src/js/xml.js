@@ -203,9 +203,14 @@ var xml = (function () {
 	};
 	
 	
-	my.element = function (name,value,keys){
+	my.element = function (name, value, keys){
 		
 		var return_string = "";
+		
+		if (typeof value == "undefined"){
+			value = "undefined";
+			console.warn("XML.Element: Value of " + name + " is undefined!");
+		}
 		
 		value = my.escapeIllegalCharacters(value);
 		

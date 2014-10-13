@@ -406,6 +406,7 @@ var dom = (function() {
 				text = option;
 			}
 			
+			
 			if (text_key == "take_index"){
 				text = index;
 			}
@@ -417,6 +418,7 @@ var dom = (function() {
 			else {
 				value = option;
 			}	
+			
 			
 			if (value_key == "take_index"){
 				value = index;

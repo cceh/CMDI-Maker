@@ -321,7 +321,7 @@ eldp_environment.workflow[1] = (function(){
 	
 		var form_title = g(my.element_id_prefix + "form_title");
 		
-		var person_name = my.persons[my.active_person_index].name;
+		var person_name = my.getDisplayName(my.persons[my.active_person_index].id);
 		
 		if (person_name == ""){
 			form_title.innerHTML = l("unnamed_person");
@@ -442,8 +442,9 @@ eldp_environment.workflow[1] = (function(){
 		APP.forms.make(g(my.element_id_prefix + "content_div"), person_form, my.element_id_prefix, my.element_id_prefix, undefined, my.languages.makeInputInForm);
 		
 		//To refresh name and role in person list as soon as they are changed by the user
-		//g(my.element_id_prefix + "name").addEventListener("blur", my.saveActivePerson);
-		//g(my.element_id_prefix + "role").addEventListener("blur", my.saveActivePerson);
+		g(my.element_id_prefix + "nameKnownAs").addEventListener("blur", my.saveActivePerson);
+		g(my.element_id_prefix + "fullName").addEventListener("blur", my.saveActivePerson);
+		g(my.element_id_prefix + "nameSortBy").addEventListener("blur", my.saveActivePerson);
 
 	};
 
@@ -470,6 +471,8 @@ eldp_environment.workflow[1] = (function(){
 	
 		var person_to_put = makePersonObjectFromFormInput();
 
+		person_to_put.display_name = my.getDisplayName(person_to_put);
+		
 		my.save(person_to_put);
 
 		my.refreshListDisplay();
@@ -685,11 +688,45 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
+	my.getDisplayName = function(person_or_person_id){
+	
+		var person;
+	
+		if (typeof person_or_person_id == "object"){
+			person = person_or_person_id;
+		}
+		
+		else {		
+			person = my.persons[my.getIndexByID(person_or_person_id)];
+		}
+		
+		
+		if (!person){
+			return console.error("Person undefined! Person_id = " + person_id);
+		}
+		
+		if (person.nameSortBy && person.nameSortBy != ""){
+			return person.nameSortBy;
+		}
+		
+		if (person.nameKnownAs && person.nameKnownAs != ""){
+			return person.nameKnownAs;
+		}
+
+		if (person.fullName && person.fullName != ""){
+			return person.fullName;
+		}
+		
+		return l("unnamed_person");
+	
+	};
+	
+	
 	var renderPersonListEntry = function(person, i){
 	
 		var div = dom.make('div', my.element_id_prefix + "list_entry_" + i, my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
 		
-		var name_display = (person.name != "") ? person.name : l("unnamed_person");
+		var name_display = my.getDisplayName(person.id);
 		
 		dom.h2(div, name_display);
 		dom.p(div, person.role);

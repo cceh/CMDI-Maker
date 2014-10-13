@@ -589,7 +589,7 @@ eldp_environment.workflow[2] = (function() {
 		var div = g(my.dom_element_prefix + bundle_id + "_person_" + person_id + "_label");
 		
 		var h2 = div.getElementsByTagName("h2")[0];
-		h2.innerHTML = person.persons[person.getPersonIndexByID(person_id)].title;
+		h2.innerHTML = person.getDisplayName(person_id);
 		//display name of person
 
 	};
@@ -653,7 +653,7 @@ eldp_environment.workflow[2] = (function() {
 
 		var select = document.createElement("select");
 		
-		dom.setSelectOptions(select, person.persons, "title", "take_index");
+		dom.setSelectOptions(select, person.persons, "display_name", "take_index");
 
 		if (person.persons.length > 0){
 		
@@ -1214,24 +1214,9 @@ eldp_environment.workflow[2] = (function() {
 			document.getElementById(my.dom_element_prefix+bundle_id+"_expand_img").src=APP.CONF.path_to_icons+"down.png";
 			my.bundles[my.getIndexByID(bundle_id)].expanded = true;
 		}
+		
 	};
 
-	
-	my.updatePersonNameInAllBundles = function(person_id){
-
-		forEach(my.bundles, function(bundle){
-	
-			//search for person_id in this bundle's persons
-			if (bundle.persons.persons.indexOf(person_id) != -1){
-				
-				my.refreshPersonName(bundle.id, person_id);
-	
-			}
-			
-		});
-
-	};
-	
 	
 	my.refreshPersonName = function(bundle_id, person_id){
 	
@@ -1244,7 +1229,7 @@ eldp_environment.workflow[2] = (function() {
 		var div = g(my.dom_element_prefix + bundle_id + "_person_" + person_id + "_label");
 		
 		//display name of person
-		g(my.dom_element_prefix+bundle_id+"_person_" + person_id + "_name_disp").innerHTML = person.persons[person_index].name;
+		g(my.dom_element_prefix+bundle_id+"_person_" + person_id + "_name_disp").innerHTML = person.getDisplayName(person.persons[person_index].id);
 		
 		//display role of person
 		APP.GUI.setFormValue(

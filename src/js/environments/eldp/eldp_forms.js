@@ -208,13 +208,18 @@ eldp_environment.person_form = {
 					type: "text",
 				},    
 				{
-					heading: "Forenames",
-					name: "forenames",
+					heading: "Name (known as)",
+					name: "nameKnownAs",
 					type: "text",
 				},
    				{
-					heading: "Surname",
-					name: "surname",
+					heading: "Name (Full Name)",
+					name: "fullName",
+					type: "text",
+				},
+   				{
+					heading: "Name (Sort By)",
+					name: "nameSortBy",
 					type: "text",
 				},
 				{

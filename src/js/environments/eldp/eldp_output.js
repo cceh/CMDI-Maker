@@ -24,6 +24,8 @@ eldp_environment.workflow[3] = (function (){
 	my.parent = eldp_environment;
 	var l = my.parent.l;
 	
+	my.view_element;
+	
 	my.identity = {
 		id: "xml_output",
 		title: "XML Output",
@@ -31,9 +33,14 @@ eldp_environment.workflow[3] = (function (){
 	};
 	
 	
-	my.init = function(){
+	my.init = function(view_element){
 	
 		bundle = eldp_environment.workflow[2];
+		
+		my.view_element = view_element;
+		
+		var h2 = dom.h2(my.view_element, "", "", "");
+		dom.link(h2, "", "", "Download JSON of this project", APP.save_and_recall.saveActiveEnvironmentStateToFile);
 	
 	};
 	
@@ -46,19 +53,20 @@ eldp_environment.workflow[3] = (function (){
 			APP.alert(l("output", "you_must_create_some_bundles_first"));
 			APP.view(bundle);
 			return;
+			
 		}
 		
 		//corpus must have a proper name or no name at all
-		if (bundle.areAllBundlesProperlyNamed()){
+		if (!bundle.areAllBundlesProperlyNamed()){
 			
-			my.generate();
-
-		}
-		
-		else {
 			APP.view(bundle);
 			APP.alert(l("output", "bundles_must_have_proper_name") + my.parent.not_allowed_chars);
+			return;
+			
 		}
+		
+		//my.generate();
+		
 	};
 	
 
@@ -95,8 +103,8 @@ eldp_environment.workflow[3] = (function (){
 		}
 		
 	};
-
-
+	
+	
 	return my;
 	
 })();

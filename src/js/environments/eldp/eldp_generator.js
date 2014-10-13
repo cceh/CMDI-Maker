@@ -71,6 +71,7 @@ eldp_environment.eldp_generator = function(){
 		
 	};
 	
+	
 	var insert_person_languages = function(languages){
 	
 		return_string = "";
@@ -78,8 +79,8 @@ eldp_environment.eldp_generator = function(){
 		forEach(languages, function(lang){
 		
 			return_string += xml.open("Language");
-			return_string += xml.element("ID", lang.LanguageObject[0]);
-			return_string += xml.element("Name", lang.LanguageObject[3]);
+			return_string += xml.element("ID", lang.iso_code);
+			return_string += xml.element("Name", lang.name);
 			return_string += xml.close("Language");
 		
 		});
@@ -100,8 +101,10 @@ eldp_environment.eldp_generator = function(){
 			return_string += xml.open("Person")
 			return_string += xml.element("Title", pers.title);
 			return_string += xml.element("Role", person_in_bundle.role);
-			return_string += xml.element("Forenames", pers.forenames);
-			return_string += xml.element("Surname", pers.surname);
+			//return_string += xml.element("Forenames", pers.forenames);
+			//return_string += xml.element("Surname", pers.surname);
+			
+			
 			return_string += xml.open("Languages");
 			return_string += insert_person_languages(pers.languages);
 			return_string += xml.close("Languages");
