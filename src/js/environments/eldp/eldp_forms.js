@@ -182,7 +182,7 @@ eldp_environment.bundle_form = {
 		{
 			name: "content",
 			label: "Content",
-			fields: ["content_genre","content_subgenre","content_task","content_description","content_communication_context_eventstructure","content_communication_context_planningtype","content_communication_context_interactivity","content_communication_context_socialcontext","content_communication_context_involvement"]
+			fields: ["content_genre","content_keywords", "content_languages"]
 		},
 		{
 			name: "persons",
