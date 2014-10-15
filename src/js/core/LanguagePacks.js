@@ -92,7 +92,8 @@ APP.languages[0] = {
 	},
 
 	forms: {
-		drag_and_drop_files_here: "Drag and drop files here"
+		drag_and_drop_files_here: "Drag and drop files here",
+		this_character_is_not_allowed_here: "This character is not allowed here."
 	},
 	
 	languages: {
@@ -194,6 +195,7 @@ APP.languages[1] = {
 	
 	forms: {
 		drag_and_drop_files_here: "Ziehe Dateien in dieses Feld",
+		this_character_is_not_allowed_here: "Dieses Zeichen ist hier nicht erlaubt."
 	},
 	
 	languages: {

@@ -415,7 +415,7 @@ APP.forms = (function () {
 				var chr = String.fromCharCode(e.which);
 				
 				if (field.not_allowed_chars.indexOf(chr) >= 0){
-					APP.log("This character is not allowed here.","error");
+					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
 					return false;
 				}
 			};
