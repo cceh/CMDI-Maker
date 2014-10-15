@@ -58,6 +58,7 @@ imdi_environment.languages[0] = {
 	search: "Search",
 	ok: "OK",
 	function_currently_unavailable: "This function is currently unavailable!",
+	warning: "WARNING:<br>",
 	
 	languages: {
 		set_global_languages_of_content: "Set Global Languages of Content",
@@ -183,7 +184,12 @@ imdi_environment.languages[0] = {
 		download_zip_archive: "Download ZIP archive",
 		not_allowed_chars_are: "Not allowed chars are: ",
 		spaces_are_not_allowed_either: "Space characters are not allowed either.",
-		sessions_must_have_name: "Your corpus contains unnamed sessions. Every session must have a name!"
+		sessions_must_have_name: "Your corpus contains unnamed sessions. Every session must have a name!",
+		invalid_date_entered_in_session: "You have entered an invalid date in a session (something like 2005-MM-DD). "+
+		"The corresponding XML element will contain the string \"Unspecified\".",
+		invalid_birth_date_entered: "You have entered an invalid birth date for an actor (something like 2005-MM-DD). "+
+		"The corresponding XML element will contain the string \"Unspecified\".",
+		correct_or_ignore_warning: "Maybe you want to correct this. If not, ignore this warning."
 
 	},
 	
@@ -276,6 +282,7 @@ imdi_environment.languages[1] = {
 	search: "Suchen",
 	ok: "OK",
 	function_currently_unavailable: "Diese Funktion ist derzeit nicht verfügbar!",
+	warning: "WARNUNG:<br>",
 	
 	languages: {
 		set_global_languages_of_content: "Globale Content Language hinzufügen",
@@ -399,7 +406,12 @@ imdi_environment.languages[1] = {
 		download_zip_archive: "ZIP-Archiv herunterladen",
 		not_allowed_chars_are: "Nicht erlaubte Zeichen sind: ",
 		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt.",
-		sessions_must_have_name: "Dein Korpus enthält unbenannte Sessions. Jede Session muss einen Namen haben!"
+		sessions_must_have_name: "Dein Korpus enthält unbenannte Sessions. Jede Session muss einen Namen haben!",
+		invalid_date_entered_in_session: "Eine oder mehrere Sessions enthalten ein invalides Datum (sowas wie 2005-MM-DD). "+
+		"Das entsprechende XML-Element wird den String \"Unspecified\" enthalten.",
+		invalid_birth_date_entered: "Eine oder mehrere Actors enthalten ein invalides BirthDate (sowas wie 2005-MM-DD). "+
+		"Das entsprechende XML-Element wird den String \"Unspecified\" enthalten.",
+		correct_or_ignore_warning: "Vielleicht möchtest du das korrigieren. Falls nicht, ignoriere diese Warnung."
 
 	},
 	

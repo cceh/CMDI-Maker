@@ -22,6 +22,11 @@ imdi_environment.cmdi_generator = function(){
 	var resources = imdi_environment.workflow[1];
 	var actor = imdi_environment.workflow[2];
 	var session = imdi_environment.workflow[3];
+	
+	var parent = imdi_environment;
+	
+	var already_warned_for_invalid_dates = false;
+	var already_warned_for_invalid_birth_dates = false;
 
 	var imdi_corpus_profile="clarin.eu:cr1:p_1274880881885";
 	var imdi_session_profile="clarin.eu:cr1:p_1271859438204";
@@ -118,6 +123,24 @@ imdi_environment.cmdi_generator = function(){
 		return_string += xml.open("Date");
 		return_string += APP.forms.getDateStringByDateInput(session.dom_element_prefix+session_id+"_session_date") || "Unspecified";
 		return_string += xml.close("Date");
+		
+		
+		// if a valid session date cannot be parsed from the form BUT there has been some input by the user
+		// AND the user has not been warned before about that, warn him or her
+		if (
+			APP.forms.isUserDefinedDateInvalid(session.dom_element_prefix+session_id+"_session_date")
+			&& (already_warned_for_invalid_dates == false)
+		){
+		
+			APP.alert(
+				parent.l("warning") +
+				parent.l("output", "invalid_date_entered_in_session") + "<br>" +
+				parent.l("output", "correct_or_ignore_warning")
+			);
+			
+			already_warned_for_invalid_dates = true;
+		}
+		
 
 		return_string += xml.tag("MDGroup",0);
 		return_string += xml.tag("Location",0);
@@ -371,6 +394,22 @@ imdi_environment.cmdi_generator = function(){
 		//End of age field
 		
 		return_string += xml.element("BirthDate", APP.forms.getDateStringByDateObject(ac.birth_date) || "Unspecified");
+		
+
+		if (
+			APP.forms.isUserDefinedDateInvalid(ac.birth_date)
+			&& (already_warned_for_invalid_birth_dates == false)
+		){
+
+			APP.alert(
+				parent.l("warning") +
+				parent.l("output", "invalid_birth_date_entered") + "<br>" +
+				parent.l("output", "correct_or_ignore_warning")
+			);
+			
+			already_warned_for_invalid_birth_dates = true;
+		}
+		
 		
 		return_string+=xml.element("Sex",ac.sex);
 		return_string+=xml.element("Education",(ac.education !== "") ? ac.education : "Unspecified" );

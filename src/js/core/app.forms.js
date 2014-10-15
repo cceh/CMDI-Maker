@@ -610,7 +610,7 @@ APP.forms = (function () {
 
 		return getDateStringByDateObject(date_object);
 		
-	}
+	};
 	
 	
 	var getDateStringByDateObject = function(date_object){
@@ -635,7 +635,48 @@ APP.forms = (function () {
 	
 		return date_object.year + "-" + date_object.month + "-" + date_object.day;	
 	
-	}
+	};
+	
+	
+	var isUserDefinedDateInvalid = function(element_prefix_or_date_object){
+		
+		var year, month, day;
+		var typeOfDate;
+		
+		if (typeof element_prefix_or_date_object == "string"){
+			var element_prefix = element_prefix_or_date_object;
+			
+			year = get(element_prefix+"_year");
+			month = get(element_prefix+"_month");
+			day = get(element_prefix+"_day");
+			
+			typeOfDate = typeof my.getDateStringByDateInput(element_prefix);
+		}
+		
+		else {
+			var date_object = element_prefix_or_date_object;
+			
+			year = date_object.year;
+			month = date_object.month;
+			day = date_object.day;
+			
+			typeOfDate = typeof my.getDateStringByDateObject(date_object);
+		}
+	
+	
+		if (typeOfDate == "undefined" && (year != "YYYY" || month != "MM" || day != "DD" )) {
+		
+			return true;
+			
+		}
+		
+		else {
+		
+			return false;
+		
+		}
+	
+	};
 	
 	
 	var my = {};
@@ -647,7 +688,7 @@ APP.forms = (function () {
 	my.createEmptyObjectFromTemplate = createEmptyObjectFromTemplate;
 	my.getDateStringByDateInput = getDateStringByDateInput;
 	my.getDateStringByDateObject = getDateStringByDateObject;
-	//my.getDateByDateInputOrReturnValue = getDateByDateInput;
+	my.isUserDefinedDateInvalid = isUserDefinedDateInvalid;
 	
 	return my;
 	
