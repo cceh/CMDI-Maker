@@ -34,13 +34,14 @@ imdi_environment.session_form = function () {
 						name: "name",
 						type: "text",
 						comment: l("session_form_comments", "name"),
-						not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:áÁäÄàÀéÉîöÖóÓòÒüÜúÚùÙ"
+						allowed_chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_",
+						replace_accent_bearing_letters_with_asci_substitute: true
 					},    
 					{
 						heading: "Title",
 						name: "title",
 						type: "text",
-						comment: l("session_form_comments", "title"),
+						comment: l("session_form_comments", "title")
 					},
 					{
 						heading: "Date",

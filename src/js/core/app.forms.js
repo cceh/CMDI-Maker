@@ -446,8 +446,44 @@ APP.forms = (function () {
 					return false;
 				}
 			};
+			
+			input.addEventListener("blur", function(e){
+				var string = removeCharactersFromString(e.target.value, field.not_allowed_chars);
+				input.value = string;
+			});
+			
+		}
+		
+		
+		if (field.allowed_chars){
+		
+			input.onkeypress = function(e) {
+				var chr = String.fromCharCode(e.which);
+				
+				if (field.allowed_chars.indexOf(chr) == -1){
+					APP.log("This character is not allowed here.","error");
+					return false;
+				}
+			};
+			
+			input.addEventListener("blur", function(e){
+			
+				var string = e.target.value;
+				
+				if (
+					field.replace_accent_bearing_letters_with_asci_substitute &&
+					field.replace_accent_bearing_letters_with_asci_substitute == true
+				){
+					string = replaceAccentBearingLettersWithASCISubstitute(string);
+				}
+				
+				string = removeAllCharactersFromStringExcept(string, field.allowed_chars);
+				
+				input.value = string;
+			});
 
 		}
+		
 
 	};
 	

@@ -484,7 +484,7 @@ eldp_environment.workflow[0] = (function(){
 		
 			for (f=0; f<my.available_resources.length; f++){
 			
-				if (GetFileTypeFromFilename(my.available_resources[f].name) == chosen_file_type){
+				if (getFileTypeFromFilename(my.available_resources[f].name) == chosen_file_type){
 				
 					console.log("Found a file of file type " + chosen_file_type);
 					

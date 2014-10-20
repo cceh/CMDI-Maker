@@ -127,6 +127,13 @@ var getIndex = function(array, key, value){
 };
 
 
+var getIndexByID = function(array, id){
+
+	return getIndex(array, "id", id);
+
+};
+
+
 var getObject = function(array, key, value){
 
 	for (var i=0; i < array.length; i++){
@@ -137,6 +144,13 @@ var getObject = function(array, key, value){
 	}
 	
 	return undefined;
+
+};
+
+
+var getObjectByID = function(array, id){
+
+	return getObject(array, "id", id);
 
 };
 
@@ -266,9 +280,32 @@ function randomString(length, chars) {
 function replaceAccentBearingLettersWithASCISubstitute(string){
 
 	var text = string;
-	text = text.replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/Ä/g,"Ae").replace(/Ö/g,"Oe").replace(/Ü/g,"Ue").replace(/ß/g,"ss");
-	text = text.replace(/á/g,"a").replace(/à/g,"a").replace(/Á/g,"A").replace(/À/g,"A");
+	
+	//A
+	text = text.replace(/á/g,"a").replace(/à/g,"a").replace(/Á/g,"A").replace(/À/g,"A").replace(/ä/g,"ae").replace(/Ä/g,"Ae");
+	
+	//C
+	text = text.replace(/Ç/g,"C").replace(/Ĉ/g,"C").replace(/ĉ/g,"c").replace(/ć/g,"c").replace(/č/g,"c").replace(/Ć/g,"C").replace(/Č/g,"C")
+	.replace(/ï/g,"c").replace(/Ï/g,"C").replace(/ċ/g,"c").replace(/Ċ/g,"C");
+	
+	//E
 	text = text.replace(/é/g,"e").replace(/è/g,"e").replace(/É/g,"E").replace(/È/g,"E");
+	
+	//I
+	text = text.replace(/î/g,"i").replace(/Î/g,"I").replace(/í/g,"i").replace(/ì/g,"i").replace(/Í/g,"I").replace(/Ì/g,"I")
+	.replace(/ï/g,"i").replace(/Ï/g,"I");
+	
+	//O
+	text = text.replace(/ö/g,"oe").replace(/Ö/g,"Oe").replace(/ó/g,"o").replace(/ò/g,"o").replace(/Ó/g,"O").replace(/Ò/g,"O")
+	.replace(/Ô/g,"O").replace(/ô/g,"o").replace(/õ/g,"o");
+	
+	//U
+	text.replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/ü/g,"ue");
+	
+	//Y
+	text.replace(/ÿ/g,"y").replace(/Ý/g,"Y");
+	
+	//ß
 	text = text.replace(/\s+/g, '_');
 
 	return text;
@@ -295,6 +332,38 @@ var removeCharactersFromString = function (string, char_string){
 	
 	return string;
 };
+
+
+var removeAllCharactersFromStringExcept = function(string, valid_chars){
+
+	var character;
+	var pos;
+	
+	for (var c = 0; c < string.length;){
+
+		character = string[c];
+	
+		if (valid_chars.indexOf(character) == -1){
+		
+			pos = string.indexOf(character);
+		
+			string = string.slice(0, pos) + string.slice(pos+1, string.length);
+		
+		}
+		
+		else {
+		
+			c++;
+		
+		}
+
+	}
+	
+	return string;	
+
+
+
+}
 
 
 var replaceCharactersInStringWithSubstitute = function (string, char_string, substitute){
