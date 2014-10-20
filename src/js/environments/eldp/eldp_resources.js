@@ -47,7 +47,9 @@ eldp_environment.workflow[0] = (function(){
 		var drop_zone = APP.GUI.FORMS.fileDropZone(div, "drop_zone", my.pushFileMetadata);
 		
 		dom.h3(div, "Import File List");
-		dom.input(div, "file_list_import_input", "", "", "file");
+		var listInput = dom.input(div, "file_list_import_input", "", "", "file");
+		
+		listInput.addEventListener("change", my.handleFileListInputChange, false);
 
 		var usage_table = dom.make(
 			"div","","workspace-usageTable",div,
@@ -441,10 +443,10 @@ eldp_environment.workflow[0] = (function(){
   
 
 	my.sortAlphabetically = function(){
-
+	
 		my.available_resources = sortByKey(my.available_resources, "name");
-
 		my.refreshFileListDisplay();
+		
 	};
   
 
@@ -568,8 +570,10 @@ eldp_environment.workflow[0] = (function(){
 			}
 		
 			if (
-				isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[i].name),
-				removeEndingFromFilename(my.available_resources[resource_index].name))
+				isSubstringAStartOfAWordInString(
+					removeEndingFromFilename(my.available_resources[i].name),
+					removeEndingFromFilename(my.available_resources[resource_index].name)
+				)
 			){
 			
 				resources.push(i);
@@ -588,31 +592,44 @@ eldp_environment.workflow[0] = (function(){
 		var element_prefix = "file_entry_";
 		
 		var resources_to_fade = [];
-		var resources_to_fade_this_time;
+		var resources_to_fade_for_file;
 	
-		//First, check for all resources that have to be faded
+		//First, unfade all files
 		for (var i = 0; i<my.available_resources.length; i++){
 		
 			g(element_prefix + i.toString()).style.opacity = "1";
-			console.log("OP 1: " + element_prefix + i.toString());
 			
-			if (my.available_resources[i].selected == true){
-				
-				resources_to_fade.push(i);
-				
-				resources_to_fade_this_time = my.getIndexesOfResourcesThatStartWithTheSameNameAsThis(i);
-			
-				resources_to_fade.push.apply(resources_to_fade, resources_to_fade_this_time);
-			
+		}
 
-			}
+
+		console.log("SELECTED FILES:");
+		console.log(my.fileSelection.selected_files);
+
 		
+		//Then check for all resources that have to be faded
+		for (var k=0; k<my.fileSelection.selected_files.length; k++){
+			
+			resources_to_fade.push(my.fileSelection.selected_files[k]);   //fade the resource that is selected
+			
+			//get resources that start with the same name as this
+			resources_to_fade_for_file = my.getIndexesOfResourcesThatStartWithTheSameNameAsThis(my.fileSelection.selected_files[k]);
+			
+			console.log("RESOURCS TO FADE FOR FILE:");
+			console.log(resources_to_fade_for_file);
+			
+			//fade them too
+			for (var j = 0; j < resources_to_fade_for_file.length; j++){
+				resources_to_fade.push(resources_to_fade_for_file[j]);
+			}
+			
+			console.log("RESOURCES TO FADE:");
+			console.log(resources_to_fade);
+			
 		};
 		
 		
-		//Then, fade them!
+		//Then fade them!
 		for (i=0; i<resources_to_fade.length; i++){
-			console.log("OP 0.5: " + element_prefix + i.toString());		
 			g(element_prefix+resources_to_fade[i].toString()).style.opacity = "0.5";
 		}
 	

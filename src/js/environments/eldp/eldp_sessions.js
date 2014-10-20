@@ -33,6 +33,7 @@ eldp_environment.workflow[2] = (function() {
 	my.id_counter = 0;
 	my.lang_id_counter = 0;
 	my.resource_id_counter = 0;
+	my.person_id_counter = 0;
 	
 	my.dom_element_prefix = "bundle_";
 	
@@ -55,6 +56,7 @@ eldp_environment.workflow[2] = (function() {
 		my.id_counter = 0;
 		my.lang_id_counter = 0;
 		my.resource_id_counter = 0;
+		my.person_id_counter = 0;
 
 	};
 	
@@ -68,10 +70,24 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.recall = function(data){
 		
-		for (var s=0; s<data.length; s++){
+		if (!data.bundles){
+			return;
+		}
 		
-			my.bundles.push(data[s]);
+		
+		for (var s=0; s<data.bundles.length; s++){
+		
+			my.bundles.push(data.bundles[s]);
 			my.bundles[s].id = my.getNewBundleID();
+			
+		}
+		
+		if (data.lang_id_counter){
+			my.lang_id_counter = data.lang_id_counter;
+		}
+		
+		if (data.person_id_counter){
+			my.person_id_counter = data.person_id_counter;
 		}
 		
 		my.refreshBundlesDisplay();
@@ -80,10 +96,16 @@ eldp_environment.workflow[2] = (function() {
 	
 	
 	my.getSaveData = function(){
-	
+
 		my.refreshBundlesArray();
 	
-		return my.bundles;
+		var object = {
+			bundles: my.bundles,
+			lang_id_counter: my.lang_id_counter,
+			person_id_counter: my.person_id_counter
+		};
+	
+		return object;
 	
 	};
 	
@@ -116,15 +138,15 @@ eldp_environment.workflow[2] = (function() {
 			});
 			
 			
-			forEach(bundle_object.content.languages.bundle_languages, function(BLO){
-				
-				BLO.subject_language = g(my.dom_element_prefix+bun.id+"_content_languages_" + BLO.id + "_subject_language").checked;
-				BLO.working_language = g(my.dom_element_prefix+bun.id+"_content_languages_" + BLO.id + "_working_language").checked;
+			forEach(bundle_object.languages.bundle_languages, function(BLO){
+			
+				BLO.content_language = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_content_language").checked;
+				BLO.working_language = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_working_language").checked;
 				
 				
 				if (BLO.name_type == "LOCAL"){
 				
-					BLO.name = g(my.dom_element_prefix+bun.id+"_content_languages_" + BLO.id + "_name_input").value;
+					BLO.name = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_name_input").value;
 				
 				}
 			
@@ -395,9 +417,14 @@ eldp_environment.workflow[2] = (function() {
 		}(bundle_id));
 
 		
-		var element_id_prefix = my.dom_element_prefix + bundle_id + "_content_languages_";
-
-		forEach(bundle_object.content.languages.bundle_languages, function(LanguageObject){
+		//Render languages
+		var element_id_prefix = my.dom_element_prefix + bundle_id + "_languages_";
+		console.log("rendering langs by");
+		console.log(bundle_object.languages.bundle_languages);
+		
+		forEach(bundle_object.languages.bundle_languages, function(LanguageObject){
+			console.log("RENDERING LANG : ");
+			console.log(LanguageObject, bundle_id, element_id_prefix);
 			my.renderLanguage(LanguageObject, bundle_id, element_id_prefix);
 		});
 
@@ -485,13 +512,13 @@ eldp_environment.workflow[2] = (function() {
 			country_code: LanguageObject[1],
 			id: my.lang_id_counter,
 			working_language: false,
-			subject_language: false,
+			content_language: false,
 		};
 		
 		
 		var bundle_index = my.getIndexByID(bundle_id);
 		
-		my.bundles[bundle_index].content.languages.bundle_languages.push(BLO);
+		my.bundles[bundle_index].languages.bundle_languages.push(BLO);
 		
 		my.renderLanguage(BLO, bundle_id, element_id_prefix);
 		
@@ -508,6 +535,8 @@ eldp_environment.workflow[2] = (function() {
 		if (lang_id >= my.lang_id_counter){
 			my.lang_id_counter = lang_id + 1;
 		}
+		
+		console.log("Rendering lang with id " + lang_id);
 		
 		var element_id = element_id_prefix + lang_id + "_div";
 	
@@ -543,9 +572,9 @@ eldp_environment.workflow[2] = (function() {
 		var line3 = [];
 		
 		line3.push(
-			dom.checkbox(undefined, element_id_prefix + lang_id + "_subject_language", "", "", BLO.subject_language)
+			dom.checkbox(undefined, element_id_prefix + lang_id + "_content_language", "", "", BLO.content_language)
 		);
-		line3.push(l("bundle", "subject_language") + "  ");
+		line3.push(l("bundle", "content_language") + "  ");
 		
 		line3.push(
 			dom.checkbox(undefined, element_id_prefix + lang_id + "_working_language", "", "", BLO.working_language)
@@ -555,7 +584,10 @@ eldp_environment.workflow[2] = (function() {
 		console.log(line3);
 
 		box_content.push(line2, line3);
-	
+		
+		console.log("Doing red box to ");
+		console.log(element_id_prefix + "display");
+		
 		APP.GUI.FORMS.redBox(g(element_id_prefix + "display"), element_id, "bundle_language_entry", box_content, function(num, num2, num3){
 			return function(){
 				my.removeLanguage(num, num2, num3);
@@ -570,7 +602,7 @@ eldp_environment.workflow[2] = (function() {
 		var language_index = my.getLanguageObjectIndexByID(bundle_index, l_id);
 
 		console.log(bundle_index + ", " + language_index);
-		my.bundles[bundle_index].content.languages.bundle_languages.splice(language_index, 1);
+		my.bundles[bundle_index].languages.bundle_languages.splice(language_index, 1);
 		
 		dom.remove(element_id);
 	
@@ -579,17 +611,22 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.getLanguageObjectIndexByID = function(bundle_index, l_id){
 		
-		return getIndex(my.bundles[bundle_index].content.languages.bundle_languages, 4, l_id);
+		return getIndex(my.bundles[bundle_index].languages.bundle_languages, 4, l_id);
 
 	};
 
 	
-	my.refreshPersonName = function(bundle_id, person_id){
+	my.refreshPersonName = function(bundle_id, id){
 
-		var div = g(my.dom_element_prefix + bundle_id + "_person_" + person_id + "_label");
+		var div = g(my.dom_element_prefix + bundle_id + "_person_" + id + "_label");
 		
 		var h2 = div.getElementsByTagName("h2")[0];
-		h2.innerHTML = person.getDisplayName(person_id);
+		
+		var bundle = getObjectByID(my.bundles, bundle_id);
+		
+		var person_in_bundle = getObjectByID(bundle.persons.persons, id);
+		
+		h2.innerHTML = person.getDisplayName(person_in_bundle.person_id);
 		//display name of person
 
 	};
@@ -645,7 +682,7 @@ eldp_environment.workflow[2] = (function() {
 	};
 	
 	
-	my.refreshPersonListInBundle = function(s,all_available_person_ids){
+	my.refreshPersonListInBundle = function(s, all_available_person_ids){
 
 		var aad = g(my.dom_element_prefix+my.bundles[s].id+"_persons_addPersons_div");
 		
@@ -685,7 +722,7 @@ eldp_environment.workflow[2] = (function() {
 		forEach(my.bundles[s].persons.persons, function(person_in_bundle){
 			
 			// if a person is not in available persons, remove it from the bundle!
-			if (all_available_person_ids.indexOf(person_in_bundle.id) == -1){
+			if (all_available_person_ids.indexOf(person_in_bundle.person_id) == -1){
 				
 				console.log("There is an person in bundle "+s+" that does not exist anymore. Deleting!");
 				my.removePerson(my.bundles[s].id, person_in_bundle.id);
@@ -703,15 +740,11 @@ eldp_environment.workflow[2] = (function() {
 		//Offer possibility to add every available person to all bundle
 		//refresh all bundles with available persons
 
-		var all_available_person_ids = [];
+		var all_available_person_ids = getArrayWithIDs(persons);
 		
-		forEach(persons, function(person){
-			all_available_person_ids.push(person.id);
-		});
+		for (var s=0; s<my.bundles.length; s++){   //for all existing bundles
 		
-		for (var s=0;s<my.bundles.length;s++){   //for all existing bundles
-		
-			my.refreshPersonListInBundle(s,all_available_person_ids);
+			my.refreshPersonListInBundle(s, all_available_person_ids);
 
 		}
 
@@ -839,21 +872,24 @@ eldp_environment.workflow[2] = (function() {
 	my.addPerson = function(bundle_id, person_id){
 	//add existing person to bundle
 	
-		var person_ids_in_bundle = getArrayWithIDs(my.bundles[my.getIndexByID(bundle_id)].persons.persons);
+		//var person_ids_in_bundle = getArrayWithIDs(my.bundles[my.getIndexByID(bundle_id)].persons.persons);
 
 		//if bundle doesn't already contain this person
-		if (person_ids_in_bundle.indexOf(person_id) == -1){
+		//if (person_ids_in_bundle.indexOf(person_id) == -1){
 		
 			if (person.persons[person.getIndexByID(person_id)]){  //check if person still exists before adding
 				
 				var person_in_bundle = {
-					id: person_id,
+					id: my.person_id_counter,
+					person_id: person_id,
 					role: ""
 				};
 				
 				my.bundles[my.getIndexByID(bundle_id)].persons.persons.push(person_in_bundle);
 			
 				my.renderPerson(bundle_id, person_in_bundle);
+				
+				my.person_id_counter++;
 				
 			}
 			
@@ -863,33 +899,33 @@ eldp_environment.workflow[2] = (function() {
 				return;
 			
 			}
-
+/*
 		}
 		
 		else {
 		
 			APP.log(l("bundle", "this_person_is_already_in_the_bundle"), "error");
 		
-		}
+		}*/
 	};
 
 
 	my.renderPerson = function(bundle_id, person_in_bundle){
 	
-		var person_id = person_in_bundle.id;
+		var id = person_in_bundle.id;
 		var role_display = (person_in_bundle.role != "") ? person_in_bundle.role : "Role";
 
-		dom.make("div", my.dom_element_prefix + bundle_id + "_person_" + person_id, "person_in_bundle_wrap", g(my.dom_element_prefix+bundle_id+"_persons_persons"));
-		var div = dom.make("div", my.dom_element_prefix+bundle_id+"_person_" + person_id + "_label", "person_in_bundle", g(my.dom_element_prefix+bundle_id+"_person_" + person_id));
+		dom.make("div", my.dom_element_prefix + bundle_id + "_person_" + id, "person_in_bundle_wrap", g(my.dom_element_prefix+bundle_id+"_persons_persons"));
+		var div = dom.make("div", my.dom_element_prefix+bundle_id+"_person_" + id + "_label", "person_in_bundle", g(my.dom_element_prefix+bundle_id+"_person_" + id));
 		
 		var h2 = dom.h2(div);
 		h2.className = "person_name_disp";
-		h2.id = my.dom_element_prefix+bundle_id+"_person_" + person_id + "_name_disp";
+		h2.id = my.dom_element_prefix+bundle_id+"_person_" + id + "_name_disp";
 		
 		
-		//dom.input(div, "person_in_bundle_"+person_id+"_role_input", "person_role_input", "", "text", role_display);
+		//dom.input(div, "person_in_bundle_"+id+"_role_input", "person_role_input", "", "text", role_display);
 		APP.GUI.openVocabulary(div,
-			undefined, "", "person_in_bundle_"+person_id+"_role_input", 1,
+			undefined, "", "person_in_bundle_"+id+"_role_input", 1,
 			[
 				"annotator","author","compiler","consultant","data_inputter","depositor",
 				"developer","editor","illustrator","interpreter","interviewee","interviewer",
@@ -899,27 +935,29 @@ eldp_environment.workflow[2] = (function() {
 			role_display, undefined, "person_role_input"
 		);
 		
-		my.refreshPersonName(bundle_id, person_id);
+		my.refreshPersonName(bundle_id, id);
 		
-		APP.GUI.icon(g(my.dom_element_prefix+bundle_id+"_person_" + person_id),
-		"delete_person_"+person_id+"_icon", "delete_person_icon", "reset", function(num, num2) { 
+		APP.GUI.icon(g(my.dom_element_prefix+bundle_id+"_person_" + id),
+		"delete_person_"+id+"_icon", "delete_person_icon", "reset", function(num, num2) { 
 			return function(){ my.removePerson(num, num2);  
 			};
-		}(bundle_id, person_id));
+		}(bundle_id, id));
 
 	};
 
 
-	my.removePerson = function(bundle_id, person_id){
+	my.removePerson = function(bundle_id, id){
+	
+		var bundle = my.bundles[my.getIndexByID(bundle_id)];
 
-		var position_in_array = my.bundles[my.getIndexByID(bundle_id)].persons.persons.indexOf(person_id);
+		var persons_in_bundle = bundle.persons.persons;
 		
-		console.log("Removing person. Position in array: " + position_in_array);
-
-		//remove person_id in array
-		my.bundles[my.getIndexByID(bundle_id)].persons.persons.splice(position_in_array,1);
+		var person_index = getIndexByID(persons_in_bundle, id);
 		
-		dom.remove(my.dom_element_prefix+bundle_id+"_person_"+person_id);
+		//remove id in array
+		persons_in_bundle.splice(person_index,1);
+		
+		dom.remove(my.dom_element_prefix+bundle_id+"_person_"+id);
 		
 		APP.save();
 		
@@ -1217,7 +1255,7 @@ eldp_environment.workflow[2] = (function() {
 		
 	};
 
-	
+	/*
 	my.refreshPersonName = function(bundle_id, person_id){
 	
 		var person_index = person.getIndexByID(person_id);
@@ -1244,7 +1282,7 @@ eldp_environment.workflow[2] = (function() {
 		);
 
 
-	};
+	};*/
 
 	return my;
 

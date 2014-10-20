@@ -165,6 +165,7 @@ eldp_environment.languages[0] = {
 		form_reset: "Form reset",
 		specify_local_used_language_name: "Specify local used language name",
 		subject_language: "Subject Language",
+		content_language: "Content Language",
 		working_language: "Working Language",
 		really_erase_bundle: "Really?<br>You want to erase a whole bundle? Are you sure about that?",
 		object: "Object",
@@ -321,6 +322,7 @@ eldp_environment.languages[1] = {
 		form_reset: "Formular zurückgesetzt",
 		specify_local_used_language_name: "Gib den lokal benutzten Sprachnamen ein",
 		subject_language: "Subject Language",
+		content_language: "Content Language",
 		working_language: "Working Language",
 		object: "Object",
 		file_name: "Dateiname"

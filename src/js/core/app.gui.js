@@ -110,6 +110,29 @@ APP.GUI = (function() {
 		return input;	
 		
 	};
+	
+	
+	my.makeYearInput = function (parent,title,name,id,value,hover,maxLength){
+
+		var span = dom.spanBR(parent, "", "", title);
+		
+		if (hover){		
+			span.title = hover;
+		}
+
+		var input = dom.input(parent, id, "YearInput", name, "text", (value !== "") ? value : "YYYY");
+		
+		if (hover){		
+			input.title = hover;
+		}
+		
+		input.maxLength = 4;  //MaxLength of Year = 4
+		
+		dom.br(parent);
+
+		return input;	
+		
+	};
 
 
 	my.makeCheckbox = function (parent,title,name,id,checked,hover){

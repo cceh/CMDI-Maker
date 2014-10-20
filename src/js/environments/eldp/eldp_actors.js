@@ -48,9 +48,6 @@ eldp_environment.workflow[1] = (function(){
 	
 		var array = map(my.languages.languages_of_active_person, function(ALO){
 		
-			ALO.MotherTongue = g("mothertongue_" + ALO.id).checked;
-			ALO.PrimaryLanguage = g("primarylanguage_" + ALO.id).checked;
-			
 			return ALO;
 			
 		});
@@ -705,6 +702,11 @@ eldp_environment.workflow[1] = (function(){
 			return console.error("Person undefined! Person_id = " + person_id);
 		}
 		
+		
+		if (person.fullName && person.fullName != ""){
+			return person.fullName;
+		}
+		
 		if (person.nameSortBy && person.nameSortBy != ""){
 			return person.nameSortBy;
 		}
@@ -713,10 +715,6 @@ eldp_environment.workflow[1] = (function(){
 			return person.nameKnownAs;
 		}
 
-		if (person.fullName && person.fullName != ""){
-			return person.fullName;
-		}
-		
 		return l("unnamed_person");
 	
 	};

@@ -112,16 +112,21 @@ eldp_environment.bundle_form = {
 					name: "keywords"
 				},
 				{
-					heading: "Languages",
-					name: "languages",
-					type: "subarea",
-					fields: [
-						{
-							name: "bundle_languages",
-							type: "special",
-							object_structure: "array"
-						}
-					]
+					heading: "Conditions of Access",
+					type: "textarea",
+					name: "access_conditions"
+				}
+			]
+		},
+		{
+			title: "Languages",
+			name: "languages",
+			type: "column",
+			fields: [
+				{
+					name: "bundle_languages",
+					type: "special",
+					object_structure: "array"
 				}
 			]
 		},
@@ -236,8 +241,7 @@ eldp_environment.person_form = {
    				{
 					heading: "Death Year",
 					name: "death_year",
-					type: "text",
-					maxLength: 4
+					type: "year"
 				},
    				{
 					heading: "Age",
@@ -282,25 +286,10 @@ eldp_environment.person_form = {
 					type: "textarea",  //multiple values
 				},
    				{
-					heading: "Additional Information (Ethnicity)",
-					name: "ethnicity_additional_info",
-					type: "textarea"
-				},
-   				{
 					heading: "Nationalities",
 					name: "nationality",
 					type: "textarea",  //multiple values
 				},
-   				{
-					heading: "Additional Information (Nationality)",
-					name: "nationality_additional_info",
-					type: "textarea"
-				}
-			]
-		},	
-		{
-			type: "column",
-			fields: [
 				{
 					heading: "Additional Information (Person)",
 					name: "person_additional_information",
@@ -311,6 +300,26 @@ eldp_environment.person_form = {
 					name: "anonymized",
 					type: "check",
 					comment: "Indicates if real names or anonymized codes are used to identify the actor"
+				}
+			]
+		},	
+		{
+			type: "column",
+			fields: [
+			   	{
+					heading: "Additional Information (Ethnicity)",
+					name: "ethnicity_additional_info",
+					type: "textarea"
+				},
+   				{
+					heading: "Additional Information (Nationality)",
+					name: "nationality_additional_info",
+					type: "textarea"
+				},
+   				{
+					heading: "Education",
+					name: "education",
+					type: "text"
 				}
 			]
 		},	

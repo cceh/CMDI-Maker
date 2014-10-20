@@ -104,6 +104,21 @@ APP.forms = (function () {
 			
 		},
 		
+		year: function(parent, field, element_id_prefix, element_class_prefix, data_object){
+		
+			var input;
+			
+			input = APP.GUI.makeYearInput(parent, field.heading,
+				element_id_prefix+field.name,
+				element_id_prefix+field.name,
+				(data_object && data_object[field.name] ? data_object[field.name] : "YYYY"),
+				field.comment
+			);
+			
+			return input;
+			
+		},
+		
 		date: function(parent, field, element_id_prefix, element_class_prefix, data_object){
 		
 			var input;
@@ -307,6 +322,18 @@ APP.forms = (function () {
 		open_vocabulary: setString,
 		textarea: setString,
 		text: setString,
+		
+		year: function(field, resulting_object){
+			if (field.default_value){
+				resulting_object[field.name] = field.default_value;
+			}
+			
+			else {
+				resulting_object[field.name] = "YYYY";
+			}
+		},
+		
+		
 		check: function (field, resulting_object){
 			resulting_object[field.name] = false;
 		},
@@ -449,7 +476,7 @@ APP.forms = (function () {
 			
 		}
 	
-		if (field.type == "text" || field.type == "textarea" || field.type == "select" || field.type == "open_vocabulary" || field.type == "check"){
+		if (field.type == "year" || field.type == "text" || field.type == "textarea" || field.type == "select" || field.type == "open_vocabulary" || field.type == "check"){
 		
 			target = checkForValueOrTakeDefault(data_object, field);
 		
@@ -533,7 +560,7 @@ APP.forms = (function () {
 	
 		var sub_object;
 
-		if ((field.type == "text") || (field.type == "textarea") || (field.type == "select") || (field.type == "open_vocabulary")){
+		if ((field.type == "year") || (field.type == "text") || (field.type == "textarea") || (field.type == "select") || (field.type == "open_vocabulary")){
 
 			object[field.name] = get(element_id_prefix+field.name);
 			

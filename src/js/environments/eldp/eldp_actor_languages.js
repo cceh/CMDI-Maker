@@ -117,21 +117,6 @@ eldp_environment.workflow[1].languages = (function (){
 		dom.spanBR(div,"","", "Name: " + ALO.name);
 		dom.spanBR(div,"","", "Country ID: " + ALO.country_code);
 		
-		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
-		
-		if (ALO.MotherTongue === true){
-			input.checked = true;
-		}
-
-		dom.span(div,"","", my.l("languages", "mother_tongue") + "  ");
-		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
-		
-		if (ALO.PrimaryLanguage === true){
-			input.checked = true;
-		}
-		
-		dom.spanBR(div,"","", my.l("languages", "primary_language"));
-		
 		dom.br(div);
 		//NOW: Additional information
 		
@@ -158,9 +143,6 @@ eldp_environment.workflow[1].languages = (function (){
 			iso_code: LanguageObject[0],	
 			name: LanguageObject[3],
 			country_code: LanguageObject[1],
-			
-			MotherTongue: first_added_language,
-			PrimaryLanguage: first_added_language,
 			
 			additional_information: ""
 
