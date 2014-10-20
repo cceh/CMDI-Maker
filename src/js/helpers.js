@@ -306,13 +306,13 @@ function replaceAccentBearingLettersWithASCISubstitute(string){
 	.replace(/Ô/g,"O").replace(/ô/g,"o").replace(/õ/g,"o");
 	
 	//U
-	text.replace(/Ü/g,"Ue").replace(/ß/g,"ss").replace(/ü/g,"ue");
+	text.replace(/Ü/g,"Ue").replace(/ü/g,"ue").replace(/Û/g,"U").replace(/û/g,"u");
 	
 	//Y
 	text.replace(/ÿ/g,"y").replace(/Ý/g,"Y");
 	
 	//ß
-	text = text.replace(/\s+/g, '_');
+	text = text.replace(/ß/g,"ss").replace(/\s+/g, '_');
 
 	return text;
 }
