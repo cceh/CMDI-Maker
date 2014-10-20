@@ -281,6 +281,12 @@ function replaceAccentBearingLettersWithASCISubstitute(string){
 
 	var text = string;
 	
+	if (typeof text != "string"){
+	
+		console.error("replaceAccentBearingLetters: Argument is not of type 'string'");
+	
+	}
+	
 	//A
 	text = text.replace(/á/g,"a").replace(/à/g,"a").replace(/Á/g,"A").replace(/À/g,"A").replace(/ä/g,"ae").replace(/Ä/g,"Ae");
 	
@@ -289,7 +295,7 @@ function replaceAccentBearingLettersWithASCISubstitute(string){
 	.replace(/ï/g,"c").replace(/Ï/g,"C").replace(/ċ/g,"c").replace(/Ċ/g,"C");
 	
 	//E
-	text = text.replace(/é/g,"e").replace(/è/g,"e").replace(/É/g,"E").replace(/È/g,"E");
+	text = text.replace(/é/g,"e").replace(/è/g,"e").replace(/É/g,"E").replace(/È/g,"E").replace(/Ê/g,"E").replace(/ê/g,"e");
 	
 	//I
 	text = text.replace(/î/g,"i").replace(/Î/g,"I").replace(/í/g,"i").replace(/ì/g,"i").replace(/Í/g,"I").replace(/Ì/g,"I")

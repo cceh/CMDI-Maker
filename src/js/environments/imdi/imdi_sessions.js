@@ -1110,6 +1110,28 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		});
 		
 	};
+	
+	
+	
+	my.checkAllSessionNamesForInvalidChars = function(){
+	
+		forEach(my.sessions, my.checkSessionNameForInvalidChar);
+		my.refreshSessionsDisplay();
+		
+	}
+	
+	
+	my.checkSessionNameForInvalidChar = function(session){
+
+		var session_name = get("session_" + session.id + "_session_name");
+
+		session_name = replaceAccentBearingLettersWithASCISubstitute(session_name);
+		
+		session_name = removeAllCharactersFromStringExcept(session_name, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
+		
+		session.session.name = session_name;
+	
+	}
 
 
 	return my;
