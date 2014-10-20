@@ -21,7 +21,7 @@ var eldp_environment = (function(){
 
 	my.name = "eldp";
 	my.id = "eldp";
-	my.title = "ELDP (pre-alpha)";
+	my.title = "ELDP (beta)";
 	
 	my.workflow = [];
 	my.languages = [];

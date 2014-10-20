@@ -22,6 +22,12 @@ imdi_environment.imdi_generator = function(){
 	var resources = imdi_environment.workflow[1];
 	var actor = imdi_environment.workflow[2];
 	var session = imdi_environment.workflow[3];
+	
+	var parent = imdi_environment;
+	
+	
+	var already_warned_for_invalid_dates = false;
+	var already_warned_for_invalid_birth_dates = false;
 
 	var imdi_version = "IMDI 3.04";
 	
@@ -54,8 +60,8 @@ imdi_environment.imdi_generator = function(){
     
 		return return_string;
     
-	}
-
+	};
+	
 	
 	var create_imdi_session = function (session_id) {
 	
@@ -63,56 +69,77 @@ imdi_environment.imdi_generator = function(){
     
 		var return_string = "";
     
-		return_string+=xml.header;
-		return_string+=create_imdi_header("SESSION",APP.CONF.originator,"1.0",today());
-		return_string+=xml.tag("Session",0);
-		return_string+=xml.element("Name",get(session_prefix+"_session_name"));
-		return_string+=xml.element("Title",get(session_prefix+"_session_title"));
+		return_string += xml.header;
+		return_string += create_imdi_header("SESSION",APP.CONF.originator,"1.0",today());
+		return_string += xml.tag("Session",0);
+		return_string += xml.element("Name",get(session_prefix+"_session_name"));
+		return_string += xml.element("Title",get(session_prefix+"_session_title"));
 
 
 		return_string += xml.open("Date");
-		return_string += APP.forms.getDateStringByDateInput(session.dom_element_prefix+session_id+"_session_date") || "Unspecified";
+		return_string += APP.forms.getDateStringByDateInput(session_prefix+"_session_date") || "Unspecified";
 		return_string += xml.close("Date");
 		
-		return_string+=xml.element("Description",get(session_prefix+"_session_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
-   
-		return_string+=xml.tag("MDGroup",0);
-		return_string+=xml.tag("Location",0);
-		return_string+=xml.element("Continent",get(session_prefix+"_session_location_continent"),[["Link","http://www.mpi.nl/IMDI/Schema/Continents.xml"],["Type","ClosedVocabulary"]]);
-		return_string+=xml.element("Country",get(session_prefix+"_session_location_country"),[["Link","http://www.mpi.nl/IMDI/Schema/Countries.xml"],["Type","OpenVocabulary"]]);
-		return_string+=xml.element("Region",get(session_prefix+"_session_location_region"));
-		return_string+=xml.element("Address",get(session_prefix+"_session_location_address"));
-		return_string+=xml.tag("Location",1);
+		
+		
+		// if a valid session date cannot be parsed from the form BUT there has been some input by the user
+		// AND the user has not been warned before about that, warn him or her
+		if (
+			APP.forms.isUserDefinedDateInvalid(session_prefix+"_session_date")
+			&& (already_warned_for_invalid_dates == false)
+		){
+		
+			APP.alert(
+				parent.l("warning") +
+				parent.l("output", "invalid_date_entered_in_session") + "<br>" +
+				parent.l("output", "correct_or_ignore_warning")
+			);
+			
+			already_warned_for_invalid_dates = true;
+		}
+		
+		
+		return_string += xml.element("Description",get(session_prefix+"_session_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
 
-		return_string+=xml.tag("Project",0);
-		return_string+=xml.element("Name",get(session_prefix+"_project_name"));
-		return_string+=xml.element("Title",get(session_prefix+"_project_title"));
-		return_string+=xml.element("Id",get(session_prefix+"_project_id"));
-		return_string+=xml.tag("Contact",0);
-		return_string+=xml.element("Name",get(session_prefix+"_project_contact_name"));
-		return_string+=xml.element("Address",get(session_prefix+"_project_contact_address"));
-		return_string+=xml.element("Email",get(session_prefix+"_project_contact_email"));
-		return_string+=xml.element("Organisation",get(session_prefix+"_project_contact_organisation"));
-		return_string+=xml.tag("Contact",1);
-		return_string+=xml.element("Description",get(session_prefix+"_project_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string+=xml.tag("Project",1);
-		return_string+=xml.tag("Keys",0);
-		return_string+=xml.tag("Keys",1);
-		return_string+=insert_session_content(session_id);
+		return_string += xml.tag("MDGroup",0);
+		return_string += xml.tag("Location",0);
+		return_string += xml.element("Continent",get(session_prefix+"_session_location_continent"),[["Link","http://www.mpi.nl/IMDI/Schema/Continents.xml"],["Type","ClosedVocabulary"]]);
+		return_string += xml.element("Country",get(session_prefix+"_session_location_country"),[["Link","http://www.mpi.nl/IMDI/Schema/Countries.xml"],["Type","OpenVocabulary"]]);
+		return_string += xml.element("Region",get(session_prefix+"_session_location_region"));
+		return_string += xml.element("Address",get(session_prefix+"_session_location_address"));
+		return_string += xml.tag("Location",1);
+
+		return_string += xml.open("Project");
+		return_string += xml.element("Name",get(session_prefix+"_project_name"));
+		return_string += xml.element("Title",get(session_prefix+"_project_title"));
+		return_string += xml.element("Id",get(session_prefix+"_project_id"));
+		return_string += xml.tag("Contact",0);
+		return_string += xml.element("Name",get(session_prefix+"_project_contact_name"));
+		return_string += xml.element("Address",get(session_prefix+"_project_contact_address"));
+		return_string += xml.element("Email",get(session_prefix+"_project_contact_email"));
+		return_string += xml.element("Organisation",get(session_prefix+"_project_contact_organisation"));
+		return_string += xml.tag("Contact",1);
+		return_string += xml.element("Description",get(session_prefix+"_project_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
+		return_string += xml.close("Project");
+		
+		return_string += xml.open("Keys");
+		return_string += xml.close("Keys");
+		
+		return_string += insert_session_content(session_id);
 
 		//Actors
-		return_string+=xml.tag("Actors",0);
+		return_string += xml.tag("Actors",0);
 		
 		//Actors Description
-		return_string+=xml.element("Description",get(session_prefix+"_actors_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
+		return_string += xml.element("Description",get(session_prefix+"_actors_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
     
 		forEach(session.sessions[session.getSessionIndexFromID(session_id)].actors.actors, function(actor){
 			return_string += insert_actor(session_id, actor);
 		});
 
-		return_string+=xml.tag("Actors",1);
-		return_string+=xml.tag("MDGroup",1);
-		return_string+=xml.tag("Resources",0);
+		return_string += xml.tag("Actors",1);
+		return_string += xml.tag("MDGroup",1);
+		return_string += xml.tag("Resources",0);
 
 		forEach(session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles, function(mediaFile){
 	
@@ -335,6 +362,21 @@ imdi_environment.imdi_generator = function(){
 		return_string += xml.open("BirthDate");
 		return_string += APP.forms.getDateStringByDateObject(actor.actors[i].birth_date) || "Unspecified";
 		return_string += xml.close("BirthDate");
+		
+		
+		if (
+			APP.forms.isUserDefinedDateInvalid(actor.actors[i].birth_date)
+			&& (already_warned_for_invalid_birth_dates == false)
+		){
+		
+			APP.alert(
+				parent.l("warning") +
+				parent.l("output", "invalid_birth_date_entered") + "<br>" +
+				parent.l("output", "correct_or_ignore_warning")
+			);
+			
+			already_warned_for_invalid_birth_dates = true;
+		}
 		
 		return_string += xml.element("Sex",actor.actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
 		return_string += xml.element("Education",(actor.actors[i].education != "") ? actor.actors[i].education : "Unspecified" );
