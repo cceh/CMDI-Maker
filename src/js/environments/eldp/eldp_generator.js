@@ -23,7 +23,7 @@ eldp_environment.eldp_generator = function(){
 	var bundle = eldp_environment.workflow[2];
 
 
-	var create_bundle = function(bundle){
+	var createBundle = function(bundle){
 		
 		xml.reset();  //we're starting a new xml file here, so tabula rasa!
 		xml.setElementPrefix("cmd");
@@ -72,7 +72,7 @@ eldp_environment.eldp_generator = function(){
 	};
 	
 	
-	var insert_person_languages = function(languages){
+	var insertPersonLanguages = function(languages){
 	
 		return_string = "";
 	
@@ -106,7 +106,7 @@ eldp_environment.eldp_generator = function(){
 			
 			
 			return_string += xml.open("Languages");
-			return_string += insert_person_languages(pers.languages);
+			return_string += insertPersonLanguages(pers.languages);
 			return_string += xml.close("Languages");
 			return_string += xml.close("Person");
 		
@@ -118,7 +118,7 @@ eldp_environment.eldp_generator = function(){
 	}
 
 	
-	var insert_content_languages = function (session_id) {
+	var insertContentLanguages = function (session_id) {
 
 		var return_string = "";
 		
@@ -138,7 +138,7 @@ eldp_environment.eldp_generator = function(){
 	};
 	
 
-	var insert_resource = function(link,size){
+	var insertResource = function(link,size){
 
 		var return_string = "";
 		
@@ -196,7 +196,7 @@ eldp_environment.eldp_generator = function(){
 	};
 
 
-	var insert_actor = function(session_id,actor_id){
+	var insertActor = function(session_id,actor_id){
 
 		var i = actor.getActorsIndexFromID(actor_id);
 		var ac = actor.actors[i];
@@ -273,7 +273,7 @@ eldp_environment.eldp_generator = function(){
 	
 	my.bundles = map(bundle.bundles, function (bundle){
 		xml.reset();
-		return create_bundle(bundle);
+		return createBundle(bundle);
 	});
 
 	return my;
