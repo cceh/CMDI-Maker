@@ -170,7 +170,13 @@ eldp_environment.languages[0] = {
 		really_erase_bundle: "Really?<br>You want to erase a whole bundle? Are you sure about that?",
 		object: "Object",
 		file_name: "File Name",
-		size: "Size"
+		size: "Size",
+		copy_metadata: "Copy Metadata",
+		from_bundle_1_to_all_others: "From Bundle 1 to all others",
+		from_2nd_last_to_last_bundle: "From second last to last bundle",
+		elements_to_copy: "Elements to copy",
+		from_where_to_where: "From where to where",
+		metadata_copied: "Metadata copied"
 	},
 	
 	output: {
@@ -325,7 +331,13 @@ eldp_environment.languages[1] = {
 		content_language: "Content Language",
 		working_language: "Working Language",
 		object: "Object",
-		file_name: "Dateiname"
+		file_name: "Dateiname",
+		copy_metadata: "Metadaten kopieren",
+		from_bundle_1_to_all_others: "Von Bundle 1 in alle anderen Bundles",
+		from_2nd_last_to_last_bundle: "Vom vorletzten Bundle ins letzte Bundle",
+		elements_to_copy: "Zu kopierende Elemente",
+		from_where_to_where: "Von wo nach wo",
+		metadata_copied: "Metadaten kopiert"
 	},
 	
 	output: {

@@ -201,12 +201,42 @@ var forEach = function(array, action) {
 	for (var i = 0; i < array.length; i++){
 		action(array[i], i);
 	}
-}
+};
+
+
+var getSelectedRadioIndex = function (radios){
+
+	for (var r = 0; r < radios.length; r++){
+	
+		if (radios[r].checked === true){
+		
+			return r;
+		
+		}
+	
+	}
+	
+	return 0;
+
+};
+	
+	
+var getSelectedRadioValue = function (radios){
+	
+	return radios[getSelectedRadioIndex(radios)].value;
+	
+};
 
 
 function get(name){
 
-	var elem = document.getElementsByName(name)[0];
+	var elem = document.getElementsByName(name);
+	
+	if (elem[0] && elem[0].nodeName == "INPUT" && elem[0].type == "radio"){
+		return getSelectedRadioValue(elem);
+	}
+	
+	elem = elem[0];
 	
 	if (typeof elem == "undefined"){
 	
@@ -218,7 +248,6 @@ function get(name){
 	
 		console.error("get: Element " + name + " is undefined!");
 		return;
-	
 	
 	}	
 	

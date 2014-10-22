@@ -112,6 +112,11 @@ eldp_environment.bundle_form = {
 					name: "keywords"
 				},
 				{
+					heading: "Restrictions of Access",
+					type: "textarea",
+					name: "access_restrictions"
+				},
+				{
 					heading: "Conditions of Access",
 					type: "textarea",
 					name: "access_conditions"
@@ -187,12 +192,12 @@ eldp_environment.bundle_form = {
 		{
 			name: "content",
 			label: "Content",
-			fields: ["content_genre","content_keywords", "content_languages"]
+			fields: ["content_genre","content_keywords"]
 		},
 		{
 			name: "persons",
 			label: "Persons",
-			fields: ["actors_description"]
+			fields: ["persons_description"]
 			//since type of field actors is "special", there will be other stuff going on as well here!
 		}	
 	]

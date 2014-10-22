@@ -63,6 +63,7 @@ var source_scripts = [
 	"./src/js/environments/eldp/eldp_actors.js",
 	"./src/js/environments/eldp/eldp_actor_languages.js",
 	"./src/js/environments/eldp/eldp_sessions.js",
+		"./src/js/environments/eldp/eldp_sessions_rendering.js",
 	"./src/js/environments/eldp/eldp_output.js",
 	"./src/js/environments/eldp/eldp_generator.js",
 

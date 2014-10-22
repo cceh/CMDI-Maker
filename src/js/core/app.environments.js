@@ -253,7 +253,7 @@ APP.environments = (function () {
 	
 	my.getByID = function(id){
 		
-		return getObject(my.environments, "id", id);
+		return getObjectByID(my.environments, id);
 	
 	};
 	
@@ -372,7 +372,7 @@ APP.environments = (function () {
 			
 			function_div.addEventListener('click', func.onclick);
 
-			var sub_div = dom.make("div",func.sub_div,"",function_wrap);
+			var sub_div = dom.make("div",func.sub_div,"function_sub_div",function_wrap);
 			
 			if (func.sub_div_innerHTML){
 				sub_div.innerHTML = func.sub_div_innerHTML;
