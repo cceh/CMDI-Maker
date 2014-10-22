@@ -63,7 +63,8 @@ eldp_environment.workflow[2] = (function() {
 			addPerson: my.addPerson,
 			removePerson: my.removePerson,
 			addResource: my.addResource,
-			removeResource: my.removeResource
+			removeResource: my.removeResource,
+			removeLanguage: my.removeLanguage
 		
 		};
 		
@@ -781,7 +782,7 @@ eldp_environment.workflow[2] = (function() {
 	
 		return my.render.updatePersonNameInAllBundles(person_id, my.bundles);
 	
-	}
+	};
 
 
 	return my;

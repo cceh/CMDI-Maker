@@ -31,9 +31,6 @@ eldp_environment.workflow[2].render = (function() {
 
 	var actions;
 
-	
-	my.view_element;
-	
 	my.dom_element_prefix = "bundle_";
 	
 	my.init = function(view, actions_object){
@@ -87,14 +84,14 @@ eldp_environment.workflow[2].render = (function() {
 			
 		}
 
-		var options = bundle_form.fields_to_copy;
+		var copy_options = bundle_form.fields_to_copy;
 
-		for (var c = 0; c < options.length; c++){
+		for (var c = 0; c < copy_options.length; c++){
 		
-			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+options[c].name, "", "", "checkbox");
+			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+copy_options[c].name, "", "", "checkbox");
 			input.checked = true;
 			
-			dom.span(div, "", "", " "+options[c].label);
+			dom.span(div, "", "", " " + copy_options[c].label);
 			dom.br(div);
 		
 		}
@@ -165,8 +162,6 @@ eldp_environment.workflow[2].render = (function() {
 	
 	
 	my.drawNewBundle = function(bundle_object){
-		var r;
-		var file;
 	
 		var bundle_id = bundle_object.id;
 		var bundle_expanded = bundle_object.expanded;
@@ -357,7 +352,7 @@ eldp_environment.workflow[2].render = (function() {
 		//If lang type is local and name has not been specified yet, put a message there
 		if (BLO.name_type == "LOCAL"){
 
-			var textInputValue = (BLO.name != "") ? BLO.name : l("bundle", "specify_local_used_language_name");
+			var textInputValue = (BLO.name !== "") ? BLO.name : l("bundle", "specify_local_used_language_name");
 			
 			line2.push(
 				dom.textInput(
@@ -397,7 +392,7 @@ eldp_environment.workflow[2].render = (function() {
 		
 		APP.GUI.FORMS.redBox(g(element_id_prefix + "display"), element_id, "bundle_language_entry", box_content, function(num, num2, num3){
 			return function(){
-				my.removeLanguage(num, num2, num3);
+				actions.removeLanguage(num, num2, num3);
 			};
 		}(bundle_id, lang_id, element_id));
 	};
@@ -538,7 +533,7 @@ eldp_environment.workflow[2].render = (function() {
 		var bundle_id = bundle.id;
 	
 		var id = person_in_bundle.id;
-		var role_display = (person_in_bundle.role != "") ? person_in_bundle.role : "Role";
+		var role_display = (person_in_bundle.role !== "") ? person_in_bundle.role : "Role";
 
 		dom.make("div", my.dom_element_prefix + bundle_id + "_person_" + id, "person_in_bundle_wrap", g(my.dom_element_prefix+bundle_id+"_persons_persons"));
 		var div = dom.make("div", my.dom_element_prefix+bundle_id+"_person_" + id + "_label", "person_in_bundle", g(my.dom_element_prefix+bundle_id+"_person_" + id));
@@ -604,42 +599,42 @@ eldp_environment.workflow[2].render = (function() {
 	
 		var cb_u = dom.input(parent, element_id_prefix+"u", "", "", "checkbox", "u");
 		dom.span(parent, "", "", "U");
-		if (urcs.u == true) {
+		if (urcs.u === true) {
 			cb_u.checked = true;
 		}
 		
 		
 		var cb_r = dom.input(parent, element_id_prefix+"r", "", "", "checkbox", "r");
 		dom.span(parent, "", "", "R");
-		if (urcs.r == true) {
+		if (urcs.r === true) {
 			cb_r.checked = true;
 		}
 		
 		var cb_c = dom.input(parent, element_id_prefix+"c", "", "", "checkbox", "c");
 		dom.span(parent, "", "", "C");
-		if (urcs.c == true) {
+		if (urcs.c === true) {
 			cb_c.checked = true;
 		}
 		
 		var cb_s = dom.input(parent, element_id_prefix+"s", "", "", "checkbox", "s");
 		dom.span(parent, "", "", "S");
-		if (urcs.s == true) {
+		if (urcs.s === true) {
 			cb_s.checked = true;
 		}
 	
 	
-	}
+	};
 
 
 	my.refreshBundleHeading = function(bundle_id){
 
-		if (get(my.dom_element_prefix+bundle_id+"_bundle_name") === ""){
-			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = l("bundle", "unnamed_bundle");
+		if (get(my.dom_element_prefix + bundle_id + "_bundle_name") === ""){
+			g(my.dom_element_prefix + bundle_id + "_label").innerHTML = l("bundle", "unnamed_bundle");
 		}
 		
 		else {
 		
-			g(my.dom_element_prefix+bundle_id+"_label").innerHTML = l("bundle", "bundle") + ": "+get(my.dom_element_prefix+bundle_id+"_bundle_name");
+			g(my.dom_element_prefix + bundle_id + "_label").innerHTML = l("bundle", "bundle") + ": "+get(my.dom_element_prefix+bundle_id+"_bundle_name");
 
 		}
 
