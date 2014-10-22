@@ -28,28 +28,24 @@ eldp_environment.workflow[2].render = (function() {
 	var bundle_form = my.parent.bundle_form;
 	var resources;
 	var person;
-	var action_to_create_new_bundle;
-	var action_to_delete_bundle;
-	var set_language_action;
-	var action_to_add_person;
+
+	var actions;
+
 	
 	my.view_element;
 	
 	my.dom_element_prefix = "bundle_";
 	
-	my.init = function(view, action, action2, action3, action4){
+	my.init = function(view, actions_object){
 	
 		my.view_element = view;
 		
-		action_to_create_new_bundle = action;
-		action_to_delete_bundle = action2;
-		set_language_action = action3;
-		action_to_add_person = action4;
-	
+		actions = actions_object;
+		
 		resources = eldp_environment.workflow[0];
 		person = eldp_environment.workflow[1];
 	
-		my.displayNoBundleText(action_to_create_new_bundle);
+		my.displayNoBundleText(actions.newBundle);
 		
 	};
 	
@@ -125,7 +121,7 @@ eldp_environment.workflow[2].render = (function() {
 			
 			dom.button((add_res_div),
 			l("bundle", "add_to_bundle"), function(num) {
-				return function(){ my.addResource(num, select.selectedIndex);  };
+				return function(){ actions.addResource(num, select.selectedIndex);  };
 			}(bundle_id));
 			
 		}
@@ -154,7 +150,7 @@ eldp_environment.workflow[2].render = (function() {
 		
 		if (bundles.length === 0){
 	
-			my.displayNoBundleText(action_to_create_new_bundle);
+			my.displayNoBundleText(actions.newBundle);
 			return;
 	
 		}
@@ -209,7 +205,7 @@ eldp_environment.workflow[2].render = (function() {
 
 			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
 				event.stopPropagation();
-				action_to_delete_bundle(num);
+				actions.deleteBundle(num);
 			};
 			
 		}(bundle_id) );
@@ -313,7 +309,7 @@ eldp_environment.workflow[2].render = (function() {
 				false,
 				false,
 				function(LanguageObject){
-					set_language_action(LanguageObject, bundle_id, element_id_prefix);
+					actions.setLanguage(LanguageObject, bundle_id, element_id_prefix);
 				}
 			);
 	
@@ -459,7 +455,7 @@ eldp_environment.workflow[2].render = (function() {
 			dom.br(aad);	
 			
 			dom.button(aad, "Add to bundle", function(num) { 
-				return function(){ action_to_add_person(num, person.persons[select.selectedIndex].id);  };
+				return function(){ actions.addPerson(num, person.persons[select.selectedIndex].id);  };
 			}(bundle_id));
 			
 		}
@@ -529,7 +525,7 @@ eldp_environment.workflow[2].render = (function() {
 
 		no_bundles_message.innerHTML += l("bundle", "why_not_create_one__after_link");
 
-		g("new_bundle_link").addEventListener('click', action_to_create_new_bundle);
+		g("new_bundle_link").addEventListener('click', actions.newBundle);
 		//we have to use g here instead of no_bundles_link, because latter one isn't there anymore. it has been overwritten by ...innerHTML --> logically!
 		
 		bundles_view.scrollTop = 0;
@@ -538,7 +534,7 @@ eldp_environment.workflow[2].render = (function() {
 
 
 	my.renderPerson = function(bundle, person_in_bundle){
-		console.log(bundle, person_in_bundle);
+
 		var bundle_id = bundle.id;
 	
 		var id = person_in_bundle.id;
@@ -568,7 +564,7 @@ eldp_environment.workflow[2].render = (function() {
 		
 		APP.GUI.icon(g(my.dom_element_prefix+bundle_id+"_person_" + id),
 		"delete_person_"+id+"_icon", "delete_person_icon", "reset", function(num, num2) { 
-			return function(){ my.removePerson(num, num2);  
+			return function(){ actions.removePerson(num, num2);  
 			};
 		}(bundle_id, id));
 
@@ -585,7 +581,7 @@ eldp_environment.workflow[2].render = (function() {
 
 		var img = APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ my.removeResource(num, num2);
+			return function(){ actions.removeResource(num, num2);
 			};
 		}(bundle_id,resource_id) );
 		

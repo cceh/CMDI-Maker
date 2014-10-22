@@ -56,7 +56,18 @@ eldp_environment.workflow[2] = (function() {
 		my.resource_id_counter = 0;
 		my.person_id_counter = 0;
 		
-		my.render.init(view, my.newBundle, my.userErase, my.set, my.addPerson);
+		var actions = {
+			newBundle: my.newBundle,
+			deleteBundle: my.userErase,
+			setLanguage: my.set,
+			addPerson: my.addPerson,
+			removePerson: my.removePerson,
+			addResource: my.addResource,
+			removeResource: my.removeResource
+		
+		};
+		
+		my.render.init(view, actions);
 
 	};
 	
@@ -449,7 +460,7 @@ eldp_environment.workflow[2] = (function() {
 				
 				my.bundles[my.getIndexByID(bundle_id)].persons.persons.push(person_in_bundle);
 			
-				my.render.renderPerson(bundle_id, person_in_bundle);
+				my.render.renderPerson(my.bundles[my.getIndexByID(bundle_id)], person_in_bundle);
 				
 				my.person_id_counter++;
 				
@@ -732,7 +743,7 @@ eldp_environment.workflow[2] = (function() {
 
 		for (var s=0;s<my.bundles.length;s++){
 		
-			my.refreshResources(my.bundles[s].id);
+			my.render.refreshResources(my.bundles[s].id);
 			
 		}
 
