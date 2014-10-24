@@ -257,7 +257,7 @@ eldp_environment.workflow[2] = (function() {
 		bundle_object.id = my.getNewBundleID();
 		my.bundles.push(bundle_object);
 		
-		my.drawNewBundle(bundle_object);
+		my.render.drawNewBundle(bundle_object);
 		
 		for (var r=0; r<resources.length; r++){
 		
@@ -440,6 +440,7 @@ eldp_environment.workflow[2] = (function() {
 			APP.log("There is no bundle to be erased!\nTo erase one, you have to create one first.", "error");
 		
 		}
+		
 	};
 
 
@@ -493,11 +494,12 @@ eldp_environment.workflow[2] = (function() {
 		var person_index = getIndexByID(persons_in_bundle, id);
 		
 		//remove id in array
-		persons_in_bundle.splice(person_index,1);
+		persons_in_bundle.splice(person_index, 1);
 		
-		dom.remove(my.dom_element_prefix+bundle_id+"_person_"+id);
+		dom.remove(my.dom_element_prefix + bundle_id + "_person_" + id);
 		
-		APP.save();  //necessary?
+		//my.refreshBundlesArray();
+		//my.render.refresh(my.bundles);
 		
 	};
 
@@ -667,9 +669,9 @@ eldp_environment.workflow[2] = (function() {
 						my.removeAllPersons(my.bundles[s].id);
 			
 						// copy persons from bundle 1 to bundle bundle
-						for (var a=0;a<my.bundles[0].persons.persons.length;a++){
-							my.addPerson(my.bundles[s].id,my.bundles[0].persons.persons[a]);
-						}
+						forEach(my.bundles[0].persons.persons, function(pers){
+							my.addPerson(my.bundles[s].id, pers.person_id);
+						});
 					
 					}
 				
@@ -690,7 +692,7 @@ eldp_environment.workflow[2] = (function() {
 	//fields_to_copy is an array
 	//it is indeed html conform to get textarea.value
 		
-		for (var s=1;s<my.bundles.length;s++){   //important to not include the first bundle in this loop
+		for (var s=1; s<my.bundles.length; s++){   //important to not include the first bundle in this loop
 		
 			for (var k=0;k<fields_to_copy.length;k++){
 				APP.GUI.copyField(

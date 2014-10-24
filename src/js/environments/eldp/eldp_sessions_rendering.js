@@ -152,11 +152,7 @@ eldp_environment.workflow[2].render = (function() {
 	
 		}
 		
-		for (var s=0; s<bundles.length; s++){
-		
-			my.drawNewBundle(bundles[s]);
-		
-		}
+		forEach(bundles, my.drawNewBundle);
 	
 	};
 	
