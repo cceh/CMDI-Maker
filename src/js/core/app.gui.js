@@ -889,6 +889,61 @@ APP.GUI = (function() {
 	};
 	
 	
+	my.pager = (function(){
+		
+		var my = {};
+		
+		my.page = 0;
+		
+		my.show = function(config){
+		
+			var div = dom.div(document.body, "pager", "pager", "Page: ");
+			g("content_wrapper").style.bottom = "84px";
+			
+			var items_count = config.items.length;
+			var page_count = Math.floor(items_count / config.items_per_page) + 1;
+
+			for (var i=0; i < page_count; i++){
+			
+				p = i + 1;
+				
+				var span = dom.span(div, "page_link", "page_link", p);
+				
+				if (p == my.page){
+				
+					span.className += " page_link_active";
+				
+				}
+				
+				
+				span.addEventListener("click", function(num){
+				
+					return function(){
+						config.on_change(config.items);
+						my.page = num;
+						my.show(config);
+					};
+				
+				}(i), false);
+			
+			}
+		
+		}
+		
+		my.hide = function(){
+		
+			if (g("pager")){
+				dom.remove("pager");
+			}
+		
+		}
+		
+		return my;
+	
+	
+	})();
+	
+	
 	my.selectionMechanism = function (file_entry_prefix, selected_flag_in_className, callback){
 	//This constructor function provides a selection mechanism for objects in the GUI.
 	//SHIFT = Select multiple resources

@@ -17,8 +17,6 @@ limitations under the License.
 
 eldp_environment.workflow[2].render = (function() {
 	'use strict';
-
-	
 	
 	var my = {};
 	my.parent = eldp_environment;
@@ -152,12 +150,22 @@ eldp_environment.workflow[2].render = (function() {
 	
 		}
 		
-		forEach(bundles, my.drawNewBundle);
+
+		var page = APP.GUI.pager.page;
+		var items_per_page = 20;
+		var start_item = page * items_per_page;
+		var end_item = start_item + items_per_page;
+		
+		var bundles_to_display = bundles.slice(start_item, items_per_page);
+		
+		console.log("displaying bundles " + start_item + " - " + end_item);
+		
+		forEach(bundles_to_display, my.renderBundle);
 	
 	};
 	
 	
-	my.drawNewBundle = function(bundle_object){
+	my.renderBundle = function(bundle_object){
 	
 		var bundle_id = bundle_object.id;
 		var bundle_expanded = bundle_object.expanded;

@@ -523,6 +523,7 @@ var APP = (function () {
 	my.view = function (module_or_id){
 		var module;
 		var id;
+		var pager;
 	
 		my.GUI.closeSelectFrame();
 		my.GUI.mainMenu.close();
@@ -581,6 +582,18 @@ var APP = (function () {
 		
 		//make the selected view visible
 		g(id).style.display = "block";
+		
+		if (module && module.identity.pager){
+		
+			my.GUI.pager.show(module.identity.pager);
+		
+		}
+		
+		else {
+		
+			my.GUI.pager.hide();
+			
+		}
 		
 		//if a module view is selected, call the view method of the module
 		//every module can have a view method for things to be done, before viewing the page

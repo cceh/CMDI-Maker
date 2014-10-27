@@ -603,3 +603,30 @@ padding-right: 10px;
 	color: white;
 
 }
+
+
+.pager{
+	position: fixed;
+	background-color: bisque;
+	left: 0px;
+	right: 0px;
+	bottom: 44px;
+	height: 20px;
+	padding: 10px 20px;
+	font-size: 14pt;
+	z-index: -1;
+}
+
+.page_link{
+
+	padding: 0px 10px;
+	cursor: pointer;
+
+}
+
+.page_link_active{
+
+	background-color: black;
+	color: white;
+
+}

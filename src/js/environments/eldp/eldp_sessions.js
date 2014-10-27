@@ -27,6 +27,11 @@ eldp_environment.workflow[2] = (function() {
 		id: "bundle",
 		title: "Bundles",
 		icon: "edit",
+		pager: {
+			items_per_page: 20,
+			on_page_change: undefined,
+			items: undefined
+		}
 	};
 	
 	my.bundles = [];
@@ -69,6 +74,10 @@ eldp_environment.workflow[2] = (function() {
 		};
 		
 		my.render.init(view, actions);
+		
+		my.identity.pager.render = my.render.renderBundle
+		my.identity.pager.on_change = my.render.refresh;
+		my.identity.pager.items = my.bundles;
 
 	};
 	
@@ -231,7 +240,7 @@ eldp_environment.workflow[2] = (function() {
 		//push new bundle object into bundles array
 		my.bundles.push(bundle_object);
 
-		my.render.drawNewBundle(bundle_object);
+		my.render.renderBundle(bundle_object);
 		
 		return bundle_object.id;
 	};
@@ -257,7 +266,7 @@ eldp_environment.workflow[2] = (function() {
 		bundle_object.id = my.getNewBundleID();
 		my.bundles.push(bundle_object);
 		
-		my.render.drawNewBundle(bundle_object);
+		my.render.renderBundle(bundle_object);
 		
 		for (var r=0; r<resources.length; r++){
 		
