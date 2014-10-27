@@ -75,7 +75,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		my.render.init(view, actions);
 		
-		my.identity.pager.render = my.render.renderBundle
+		my.identity.pager.render = my.render.renderBundle;
 		my.identity.pager.on_change = my.render.refresh;
 		my.identity.pager.items = my.bundles;
 

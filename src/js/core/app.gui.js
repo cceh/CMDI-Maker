@@ -901,20 +901,19 @@ APP.GUI = (function() {
 			g("content_wrapper").style.bottom = "84px";
 			
 			var items_count = config.items.length;
+			
+			//how many pages will there be
 			var page_count = Math.floor(items_count / config.items_per_page) + 1;
 
-			for (var i=0; i < page_count; i++){
+			for (var i = 0; i < page_count; i++){
 			
-				p = i + 1;
+				var span = dom.span(div, "page_link", "page_link", i+1);
 				
-				var span = dom.span(div, "page_link", "page_link", p);
-				
-				if (p == my.page){
+				if (i == my.page){
 				
 					span.className += " page_link_active";
 				
 				}
-				
 				
 				span.addEventListener("click", function(num){
 				
