@@ -299,6 +299,25 @@ var g = function (id){
 };
 
 
+/**
+ * Remove an element and provide a function that inserts it into its original position
+ * @param element {Element} The element to be temporarily removed
+ * @return {Function} A function that inserts the element into its original position
+ **/
+var removeToInsertLater = function(element) {
+	var parentNode = element.parentNode;
+	var nextSibling = element.nextSibling;
+	parentNode.removeChild(element);
+	return function() {
+		if (nextSibling) {
+			parentNode.insertBefore(element, nextSibling);
+		} else {
+			parentNode.appendChild(element);
+		}
+	};
+}
+
+
 function randomString(length, chars) {
 	var result = '';
 	for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
