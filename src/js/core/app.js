@@ -583,6 +583,12 @@ var APP = (function () {
 		//make the selected view visible
 		g(id).style.display = "block";
 		
+		//if there is a pager, remove it
+		if (g("pager")){
+			dom.remove("pager");
+		}
+		
+		/*
 		if (module && module.identity.pager){
 		
 			my.GUI.pager.show(module.identity.pager);
@@ -594,6 +600,7 @@ var APP = (function () {
 			my.GUI.pager.hide();
 			
 		}
+		*/
 		
 		//if a module view is selected, call the view method of the module
 		//every module can have a view method for things to be done, before viewing the page

@@ -26,12 +26,7 @@ eldp_environment.workflow[2] = (function() {
 	my.identity = {
 		id: "bundle",
 		title: "Bundles",
-		icon: "edit",
-		pager: {
-			items_per_page: 20,
-			on_page_change: undefined,
-			items: undefined
-		}
+		icon: "edit"
 	};
 	
 	my.bundles = [];
@@ -74,10 +69,6 @@ eldp_environment.workflow[2] = (function() {
 		};
 		
 		my.render.init(view, actions);
-		
-		my.identity.pager.render = my.render.renderBundle;
-		my.identity.pager.on_change = my.render.refresh;
-		my.identity.pager.items = my.bundles;
 
 	};
 	

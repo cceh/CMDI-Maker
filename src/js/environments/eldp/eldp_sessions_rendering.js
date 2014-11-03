@@ -28,6 +28,8 @@ eldp_environment.workflow[2].render = (function() {
 	var person;
 
 	var actions;
+	
+	var bundle;
 
 	my.dom_element_prefix = "bundle_";
 	
@@ -39,8 +41,18 @@ eldp_environment.workflow[2].render = (function() {
 		
 		resources = eldp_environment.workflow[0];
 		person = eldp_environment.workflow[1];
+		bundle = eldp_environment.workflow[2];
 	
 		my.displayNoBundleText(actions.newBundle);
+		
+		
+		var pager_config = {};
+		pager_config.render = my.renderBundle;
+		pager_config.on_page_change = my.refresh;
+		pager_config.items_list = bundle.bundles;
+		pager_config.view = view;
+		
+		my.pager = new APP.GUI.pager(pager_config);
 		
 	};
 	
@@ -48,6 +60,8 @@ eldp_environment.workflow[2].render = (function() {
 	my.view = function(){
 	
 		APP.GUI.scrollTop();
+		
+		my.pager.render();
 	
 	};
 	
@@ -151,16 +165,19 @@ eldp_environment.workflow[2].render = (function() {
 		}
 		
 
-		var page = APP.GUI.pager.page;
-		var items_per_page = 20;
-		var start_item = page * items_per_page;
-		var end_item = start_item + items_per_page;
+		var page = my.pager.current_page;
+		var start_item = page * my.pager.items_per_page;
+		var end_item = start_item + my.pager.items_per_page - 1;
 		
-		var bundles_to_display = bundles.slice(start_item, items_per_page);
+		var bundles_to_display = bundles.slice(start_item, my.pager.items_per_page); //NOT RIGHT
 		
 		console.log("displaying bundles " + start_item + " - " + end_item);
+		console.log("bundles to display: ");
+		console.log(bundles_to_display);
 		
 		forEach(bundles_to_display, my.renderBundle);
+		
+		my.pager.render();
 	
 	};
 	
@@ -229,12 +246,8 @@ eldp_environment.workflow[2].render = (function() {
 		
 		//Render languages
 		var element_id_prefix = my.dom_element_prefix + bundle_id + "_languages_";
-		console.log("rendering langs by");
-		console.log(bundle_object.languages.bundle_languages);
 		
 		forEach(bundle_object.languages.bundle_languages, function(LanguageObject){
-			console.log("RENDERING LANG : ");
-			console.log(LanguageObject, bundle_id, element_id_prefix);
 			my.renderLanguage(LanguageObject, bundle_id, element_id_prefix);
 		});
 

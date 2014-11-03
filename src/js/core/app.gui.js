@@ -889,27 +889,51 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.pager = (function(){
+	my.pager = function(config){
+	
+		var self = this;
 		
-		var my = {};
+		this.current_page = (config.current_page || 0);
+		this.items_per_page = (config.items_per_page || 20);
+		this.view = config.view;
+		this.items_list = config.items_list;
+		this.on_page_change = config.on_page_change;
+
 		
-		my.page = 0;
 		
-		my.show = function(config){
+		this.init = function(){
 		
-			var div = dom.div(document.body, "pager", "pager", "Page: ");
+			this.render();
+		
+		};
+		
+		
+		this.render = function(){
+		
+			console.log("rendering pager");
+		
+			self.hide();
+			
+			//console.log("items_list: ");
+			//console.log(self.items_list);
+		
+			var div = dom.div(self.view, "pager", "pager", "Page: ");
 			g("content_wrapper").style.bottom = "84px";
 			
-			var items_count = config.items.length;
+			var items_count = self.items_list.length;
+			
+			console.log("items count: " + items_count);
 			
 			//how many pages will there be
-			var page_count = Math.floor(items_count / config.items_per_page) + 1;
+			var page_count = Math.ceil(items_count / self.items_per_page);
+			
+			console.log("there will be pages: " + page_count);
 
 			for (var i = 0; i < page_count; i++){
 			
-				var span = dom.span(div, "page_link", "page_link", i+1);
+				var span = dom.span(div, "page_link_"+i, "page_link", i+1);
 				
-				if (i == my.page){
+				if (i == self.current_page){
 				
 					span.className += " page_link_active";
 				
@@ -918,29 +942,39 @@ APP.GUI = (function() {
 				span.addEventListener("click", function(num){
 				
 					return function(){
-						config.on_change(config.items);
-						my.page = num;
-						my.show(config);
+						self.changePage(num);
 					};
 				
 				}(i), false);
 			
 			}
 		
-		}
+		};
 		
-		my.hide = function(){
+		
+		this.changePage = function(p){
+		
+			self.current_page = p;
+			
+			self.on_page_change(self.items_list);
+
+			self.render();
+			
+		};
+		
+		
+		this.hide = function(){
 		
 			if (g("pager")){
 				dom.remove("pager");
 			}
 		
-		}
+		};
 		
-		return my;
-	
-	
-	})();
+		
+		this.init();
+		
+	};
 	
 	
 	my.selectionMechanism = function (file_entry_prefix, selected_flag_in_className, callback){
