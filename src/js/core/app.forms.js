@@ -100,6 +100,13 @@ APP.forms = (function () {
 				field.maxLength
 			);
 			
+			//if there is a data object, do the big data-binding thing!
+			if (data_object){
+				input.addEventListener("blur", function(){
+					data_object[field.name] = input.value;
+				});
+			}
+			
 			return input;
 			
 		},
@@ -114,6 +121,13 @@ APP.forms = (function () {
 				(data_object && data_object[field.name] ? data_object[field.name] : "YYYY"),
 				field.comment
 			);
+			
+			//if there is a data object, do the big data-binding thing!
+			if (data_object){
+				input.addEventListener("blur", function(){
+					data_object[field.name] = input.value;
+				});
+			}
 			
 			return input;
 			
@@ -131,6 +145,21 @@ APP.forms = (function () {
 				(data_object && data_object[field.name] ? data_object[field.name].day : ""),					
 				field.comment
 			);
+			
+			//if there is a data object, do the big data-binding thing!
+			if (data_object){
+				input.year.addEventListener("blur", function(){
+					data_object[field.name].year = input.year.value;
+				});
+				
+				input.month.addEventListener("blur", function(){
+					data_object[field.name].month = input.month.value;
+				});
+				
+				input.day.addEventListener("blur", function(){
+					data_object[field.name].day = input.day.value;
+				});
+			}
 			
 			return input;
 		
@@ -151,6 +180,13 @@ APP.forms = (function () {
 				(data_object && data_object[field.name] ? data_object[field.name] : ""),
 				field.comment
 			);
+			
+			//if there is a data object, do the big data-binding thing!
+			if (data_object){
+				input.addEventListener("blur", function(){
+					data_object[field.name] = input.value;
+				});
+			}
 			
 			return input;
 		
@@ -257,6 +293,13 @@ APP.forms = (function () {
 				field.comment
 			);
 			
+			//if there is a data object, do the big data-binding thing!
+			if (data_object){
+				input.addEventListener("blur", function(){
+					data_object[field.name] = get(input.name);
+				});
+			}
+			
 			return input;
 
 		},
@@ -284,6 +327,17 @@ APP.forms = (function () {
 				field.comment
 			);
 			
+			//if there is a data object, do the big data-binding thing!
+			if (data_object){			
+				input.text.addEventListener("blur", function(){
+					data_object[field.name] = input.text.value;
+				});
+				
+				input.select.addEventListener("blur", function(){
+					data_object[field.name] = get(input.select.name);
+				});
+			}
+			
 			return input;
 		
 		},
@@ -300,11 +354,20 @@ APP.forms = (function () {
 				field.comment
 			);
 			
+			//if there is a data object, do the big data-binding thing!
+			if (data_object){
+				input.addEventListener("blur", function(){
+					console.log(input);
+					data_object[field.name] = input.checked;
+				});
+			}
+			
 			return input;
 		},
 		
 
 	};
+	
 	
 	var setString = function(field, resulting_object){
 		if (field.default_value){
@@ -416,14 +479,46 @@ APP.forms = (function () {
 	
 		forEach(fields, function (subfield){
 			
-			make(parent, subfield, element_id_prefix, element_class_prefix, data_object, on_special);
+			my.make(parent, subfield, element_id_prefix, element_class_prefix, data_object, on_special);
 			
 		});
 		
-	};	
+	};
+	
+	
+	var createEmptyObjectForEach = function (fields, resulting_object){
+	
+		if (typeof fields == "undefined"){
+			return;
+		}
+	
+		forEach(fields, function(field){
+			
+			my.createEmptyObjectFromTemplate(field, resulting_object);
+			
+		});
+	
+	};
+	
+	
+	var fillObjectForEach = function(fields, object, element_id_prefix){
+
+		forEach(fields, function(field){
+
+			my.fillObjectWithFormData(object, element_id_prefix, field);
+			
+		});
+
+	};
+	
+	
+	//PUBLIC
+	
+	
+	var my = {};
 	
 
-	var make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
+	my.make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 		
 		var input;
 
@@ -487,8 +582,8 @@ APP.forms = (function () {
 
 	};
 	
-
-	var fill = function (field, element_id_prefix, data_object, on_special){
+	
+	my.fill = function (field, element_id_prefix, data_object, on_special){
 		
 		var target;
 		
@@ -537,22 +632,7 @@ APP.forms = (function () {
 	};
 	
 	
-	var createEmptyObjectForEach = function (fields, resulting_object){
-	
-		if (typeof fields == "undefined"){
-			return;
-		}
-	
-		forEach(fields, function(field){
-			
-			createEmptyObjectFromTemplate(field, resulting_object);
-			
-		});
-	
-	};
-
-
-	var createEmptyObjectFromTemplate = function (field, resulting_object){
+	my.createEmptyObjectFromTemplate = function (field, resulting_object){
 	//resulting object does not have to be specified, when calling this method, it is only neccessary because of
 	//the recursive nature of this method
 		
@@ -567,7 +647,7 @@ APP.forms = (function () {
 	};
 	
 	
-	var makeObjectWithFormData = function(field, element_id_prefix){
+	my.makeObjectWithFormData = function(field, element_id_prefix){
 	
 		var object = my.createEmptyObjectFromTemplate(field);
 		
@@ -579,18 +659,7 @@ APP.forms = (function () {
 	};
 	
 	
-	var fillObjectForEach = function(fields, object, element_id_prefix){
-
-		forEach(fields, function(field){
-
-			fillObjectWithFormData(object, element_id_prefix, field);
-			
-		});
-
-	};
-
-
-	var fillObjectWithFormData = function (object, element_id_prefix, field, on_special){
+	my.fillObjectWithFormData = function (object, element_id_prefix, field, on_special){
 	//object = the object to be filled with form data
 	//field = form template object
 	
@@ -663,7 +732,7 @@ APP.forms = (function () {
 	};
 	
 	
-	var getDateStringByDateInput = function(element_prefix){
+	my.getDateStringByDateInput = function(element_prefix){
 	
 		var date_object = {};
 	
@@ -676,7 +745,7 @@ APP.forms = (function () {
 	};
 	
 	
-	var getDateStringByDateObject = function(date_object){
+	my.getDateStringByDateObject = function(date_object){
 	
 		if (!date_object || !date_object.month || !date_object.day){
 			return undefined;
@@ -701,7 +770,7 @@ APP.forms = (function () {
 	};
 	
 	
-	var isUserDefinedDateInvalid = function(element_prefix_or_date_object){
+	my.isUserDefinedDateInvalid = function(element_prefix_or_date_object){
 		
 		var year, month, day;
 		var typeOfDate;
@@ -741,17 +810,6 @@ APP.forms = (function () {
 	
 	};
 	
-	
-	var my = {};
-	
-	my.make = make;
-	my.fill = fill;
-	my.makeObjectWithFormData = makeObjectWithFormData;
-	my.fillObjectWithFormData = fillObjectWithFormData;
-	my.createEmptyObjectFromTemplate = createEmptyObjectFromTemplate;
-	my.getDateStringByDateInput = getDateStringByDateInput;
-	my.getDateStringByDateObject = getDateStringByDateObject;
-	my.isUserDefinedDateInvalid = isUserDefinedDateInvalid;
 	
 	return my;
 	

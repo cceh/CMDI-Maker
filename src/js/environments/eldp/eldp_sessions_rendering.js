@@ -169,7 +169,17 @@ eldp_environment.workflow[2].render = (function() {
 		var start_item = page * my.pager.items_per_page;
 		var end_item = start_item + my.pager.items_per_page - 1;
 		
-		var bundles_to_display = bundles.slice(start_item, my.pager.items_per_page); //NOT RIGHT
+		
+		if (bundles.length > end_item){
+		
+			var bundles_to_display = bundles.slice(start_item, my.pager.items_per_page);
+		}
+		
+		else {
+		
+			bundles_to_display = bundles.slice(start_item);
+			
+		}
 		
 		console.log("displaying bundles " + start_item + " - " + end_item);
 		console.log("bundles to display: ");

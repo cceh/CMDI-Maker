@@ -222,7 +222,14 @@ APP.GUI = (function() {
 		
 		});
 
-		dom.br(parent);	
+		dom.br(parent);
+		
+		var return_object = {
+			text: input,
+			select: select
+		};
+		
+		return return_object;
 
 	};
 	
@@ -407,7 +414,12 @@ APP.GUI = (function() {
 
 	my.changeOVInput = function (id, options){
 	//change input form of open vocabulary (=make select to text input and vice versa)
-
+	//This method has to be changed!
+	//my.openVocabulary creates already both elements select and text input.
+	//Here we should make use of that and the fact, that data-binding has been
+	//already applied to them
+	
+	
 		var object = g(id);
 		var new_object;
 		
@@ -504,6 +516,14 @@ APP.GUI = (function() {
 		d_input.maxLength = 2;
 		
 		dom.br(parent);
+		
+		return_object = {
+			year: y_input,
+			month: m_input,
+			day: d_input
+		};
+		
+		return return_object;
 		
 	};
 
@@ -957,7 +977,9 @@ APP.GUI = (function() {
 			self.current_page = p;
 			
 			self.on_page_change(self.items_list);
-
+			
+			APP.GUI.scrollTop();
+			
 			self.render();
 			
 		};

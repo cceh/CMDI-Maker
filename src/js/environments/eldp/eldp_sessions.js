@@ -231,7 +231,7 @@ eldp_environment.workflow[2] = (function() {
 		//push new bundle object into bundles array
 		my.bundles.push(bundle_object);
 
-		my.render.renderBundle(bundle_object);
+		my.render.refresh(my.bundles);
 		
 		return bundle_object.id;
 	};
