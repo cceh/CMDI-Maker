@@ -631,3 +631,8 @@ padding-right: 10px;
 	color: white;
 
 }
+
+
+#pager_info_span{
+	float: right;
+}

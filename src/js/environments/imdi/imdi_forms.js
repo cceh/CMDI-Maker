@@ -348,6 +348,7 @@ imdi_environment.actor_form = {
 					heading: "Age",
 					name: "age",
 					type: "text",
+					allowed_chars: "0123456789"
 				},
    				{
 					heading: "Sex",

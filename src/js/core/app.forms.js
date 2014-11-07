@@ -161,6 +161,36 @@ APP.forms = (function () {
 				});
 			}
 			
+			
+			var valid_chars = "0123456789";
+			
+			input.year.onkeypress = function(e) {
+				var chr = String.fromCharCode(e.which);
+				
+				if (valid_chars.indexOf(chr) == -1){
+					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+					return false;
+				}
+			};
+			
+			input.month.onkeypress = function(e) {
+				var chr = String.fromCharCode(e.which);
+				
+				if (valid_chars.indexOf(chr) == -1){
+					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+					return false;
+				}
+			};
+			
+			input.day.onkeypress = function(e) {
+				var chr = String.fromCharCode(e.which);
+				
+				if (valid_chars.indexOf(chr) == -1){
+					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+					return false;
+				}
+			};
+			
 			return input;
 		
 		},
@@ -556,7 +586,7 @@ APP.forms = (function () {
 				var chr = String.fromCharCode(e.which);
 				
 				if (field.allowed_chars.indexOf(chr) == -1){
-					APP.log("This character is not allowed here.","error");
+					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
 					return false;
 				}
 			};

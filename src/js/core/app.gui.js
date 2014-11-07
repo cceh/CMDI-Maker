@@ -918,17 +918,16 @@ APP.GUI = (function() {
 		this.view = config.view;
 		this.items_list = config.items_list;
 		this.on_page_change = config.on_page_change;
-
-		
-		
-		this.init = function(){
-		
-			this.render();
-		
-		};
 		
 		
 		this.render = function(){
+		
+			self.start_item = self.current_page * self.items_per_page;
+			self.end_item = self.start_item + self.items_per_page - 1;
+			
+			if (self.items_list.length < self.end_item){
+				self.end_item = self.items_list.length - 1;
+			}
 		
 			console.log("rendering pager");
 		
@@ -937,7 +936,7 @@ APP.GUI = (function() {
 			//console.log("items_list: ");
 			//console.log(self.items_list);
 		
-			var div = dom.div(self.view, "pager", "pager", "Page: ");
+			var div = dom.div(document.body, "pager", "pager", "Page: ");
 			g("content_wrapper").style.bottom = "84px";
 			
 			var items_count = self.items_list.length;
@@ -968,6 +967,11 @@ APP.GUI = (function() {
 				}(i), false);
 			
 			}
+			
+			var pager_info = "Showing items " + (self.start_item+1) + "-" + 
+			(self.end_item+1) + " of " + self.items_list.length;
+			
+			dom.span(div, "pager_info_span", "", pager_info);
 		
 		};
 		
@@ -979,7 +983,7 @@ APP.GUI = (function() {
 			self.on_page_change(self.items_list);
 			
 			APP.GUI.scrollTop();
-			
+	
 			self.render();
 			
 		};
@@ -994,7 +998,7 @@ APP.GUI = (function() {
 		};
 		
 		
-		this.init();
+		this.render();
 		
 	};
 	

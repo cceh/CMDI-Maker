@@ -588,20 +588,7 @@ var APP = (function () {
 			dom.remove("pager");
 		}
 		
-		/*
-		if (module && module.identity.pager){
-		
-			my.GUI.pager.show(module.identity.pager);
-		
-		}
-		
-		else {
-		
-			my.GUI.pager.hide();
-			
-		}
-		*/
-		
+	
 		//if a module view is selected, call the view method of the module
 		//every module can have a view method for things to be done, before viewing the page
 		if (module && module.view){

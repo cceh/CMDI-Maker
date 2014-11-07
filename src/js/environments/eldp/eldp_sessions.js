@@ -360,9 +360,8 @@ eldp_environment.workflow[2] = (function() {
 		my.refreshBundlesArray();
 		
 		my.bundles = sortBySubKey(my.bundles,["bundle","name"]);
-		my.render.refresh(my.bundles);
 		
-		console.log("Bundles sorted by name");
+		my.render.refresh(my.bundles);
 		
 	};
 
@@ -388,8 +387,6 @@ eldp_environment.workflow[2] = (function() {
 
 	my.erase = function (bundle_id){
 
-		dom.remove(my.dom_element_prefix+bundle_id);
-		
 		my.bundles.splice(my.getIndexByID(bundle_id),1);
 		
 		my.render.refresh(my.bundles);
@@ -400,9 +397,9 @@ eldp_environment.workflow[2] = (function() {
 	my.getIndexFromResourceID = function (resource_id){
 		var r;
 
-		for (var s=0;s<my.bundles.length;s++){
+		for (var s=0;s < my.bundles.length;s++){
 		
-			for (r=0; r<my.bundles[s].resources.resources.length; r++){
+			for (r=0; r < my.bundles[s].resources.resources.length; r++){
 		
 				if (my.bundles[s].resources.resources[r].id == resource_id){
 					return r;
