@@ -20,6 +20,34 @@ APP.GUI = (function() {
 	var l = APP.l;
 	
 	var my = {};
+	
+	
+	my.showBusyIndicator = function(){
+	
+		if (g("busy_div")){
+			dom.remove("busy_div");
+		}
+		
+		g("environment_view").style.display = "none";
+	
+		var busy_div = dom.div(document.body, "busy_div", "busy_div");
+		
+		var p = dom.p(busy_div, "", "", "center");
+		
+		var img = dom.img(p, "busy_icon", "busy_icon", "img/busy.svg");
+		
+		img.width = "700";
+		img.height = "300";
+		
+	}
+	
+	my.hideBusyIndicator = function(){
+	
+		dom.remove("busy_div");
+		
+		g("environment_view").style.display = "block";
+	
+	}
 
 	my.setIcon = function (element, icon_id){
 	
@@ -919,6 +947,8 @@ APP.GUI = (function() {
 		this.items_list = config.items_list;
 		this.on_page_change = config.on_page_change;
 		
+		this.before_page_change = config.before_page_change;
+		
 		
 		this.render = function(){
 		
@@ -932,11 +962,8 @@ APP.GUI = (function() {
 			console.log("rendering pager");
 		
 			self.hide();
-			
-			//console.log("items_list: ");
-			//console.log(self.items_list);
 		
-			var div = dom.div(document.body, "pager", "pager", "Page: ");
+			var div = dom.div(g("environment_view"), "pager", "pager", "Page: ");
 			g("content_wrapper").style.bottom = "84px";
 			
 			var items_count = self.items_list.length;
@@ -977,6 +1004,12 @@ APP.GUI = (function() {
 		
 		
 		this.changePage = function(p){
+		
+			if (typeof self.before_page_change == "function"){
+			
+				self.before_page_change();
+			
+			}
 		
 			self.current_page = p;
 			

@@ -51,6 +51,7 @@ eldp_environment.workflow[2].render = (function() {
 		pager_config.on_page_change = my.refresh;
 		pager_config.items_list = bundle.bundles;
 		pager_config.view = view;
+		pager_config.before_page_change = bundle.refreshVisibleBundlesInArray;
 		
 		my.pager = new APP.GUI.pager(pager_config);
 		
@@ -520,9 +521,11 @@ eldp_environment.workflow[2].render = (function() {
 
 		var all_available_person_ids = getArrayWithIDs(persons);
 		
-		for (var s=0; s<bundles.length; s++){   //for all existing bundles
 		
-			my.refreshPersonListInBundle(bundles[s], all_available_person_ids);
+		// for all visible bundles
+		for (var i = my.pager.start_item; i <= my.pager.end_item; i++){
+		
+			my.refreshPersonListInBundle(bundles[i], all_available_person_ids);
 
 		}
 
