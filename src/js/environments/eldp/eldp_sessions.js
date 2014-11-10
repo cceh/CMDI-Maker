@@ -109,7 +109,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.getSaveData = function(){
 
-		my.refreshBundlesArray();
+		my.refreshVisibleBundlesInArray();
 	
 		var object = {
 			bundles: my.bundles,
@@ -122,53 +122,61 @@ eldp_environment.workflow[2] = (function() {
 	};
 	
 	
+	my.refreshVisibleBundlesInArray = function(){
+	
+		for (var i = my.render.pager.start_item; i <= my.render.pager.end_item; i++){
+		
+			my.refreshBundleInArray(my.bundles[i]);
+		
+		}
+		
+	}
+	
+	
 	my.refreshBundlesArray = function(){
 	
-		var array = [];
+		forEach(my.bundles, my.refreshBundleInArray);
 	
-		forEach(my.bundles, function(bun){
+	};
+	
+	
+	my.refreshBundleInArray = function(bun){
+	
+		var bundle_object = bun;
 		
-			var bundle_object = bun;
-			
-			APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+bun.id+"_", bundle_form);
-			
-			//Refresh persons' roles
-			forEach(bundle_object.persons.persons, function(person_in_bundle){
-			
-				person_in_bundle.role = get("person_in_bundle_" + person_in_bundle.id + "_role_input");
-			
-			});
-			
-			
-			forEach(bundle_object.resources.resources, function(resource_in_bundle){
-
-				resource_in_bundle.urcs.u = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_u").checked;
-				resource_in_bundle.urcs.r = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_r").checked;
-				resource_in_bundle.urcs.c = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_c").checked;
-				resource_in_bundle.urcs.s = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_s").checked;
-			
-			});
-			
-			
-			forEach(bundle_object.languages.bundle_languages, function(BLO){
-			
-				BLO.content_language = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_content_language").checked;
-				BLO.working_language = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_working_language").checked;
-				
-				
-				if (BLO.name_type == "LOCAL"){
-				
-					BLO.name = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_name_input").value;
-				
-				}
-			
-			});
-			
-			array.push(bundle_object);
-			
+		APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+bun.id+"_", bundle_form);
+		
+		//Refresh persons' roles
+		forEach(bundle_object.persons.persons, function(person_in_bundle){
+		
+			person_in_bundle.role = get("person_in_bundle_" + person_in_bundle.id + "_role_input");
+		
 		});
 		
-		my.bundles = array;	
+		
+		forEach(bundle_object.resources.resources, function(resource_in_bundle){
+
+			resource_in_bundle.urcs.u = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_u").checked;
+			resource_in_bundle.urcs.r = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_r").checked;
+			resource_in_bundle.urcs.c = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_c").checked;
+			resource_in_bundle.urcs.s = g(my.dom_element_prefix+bun.id+"_resource_" + resource_in_bundle.id + "_s").checked;
+		
+		});
+		
+		
+		forEach(bundle_object.languages.bundle_languages, function(BLO){
+			
+			BLO.content_language = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_content_language").checked;
+			BLO.working_language = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_working_language").checked;
+			
+			
+			if (BLO.name_type == "LOCAL"){
+			
+				BLO.name = g(my.dom_element_prefix+bun.id+"_languages_" + BLO.id + "_name_input").value;
+			
+			}
+		
+		});
 	
 	};
 	
