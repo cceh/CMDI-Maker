@@ -947,14 +947,37 @@ APP.GUI = (function() {
 		this.items_list = config.items_list;
 		this.on_page_change = config.on_page_change;
 		
+		//if show_always is activated, the pager renders, even if all items fit on one page
+		this.show_always = config.show_always;
+		
 		this.before_page_change = config.before_page_change;
 		
 		
 		this.render = function(){
 		
-			self.start_item = self.current_page * self.items_per_page;
-			self.end_item = self.start_item + self.items_per_page - 1;
+			var items_count = self.items_list.length;
 			
+			//how many pages will there be
+			var page_count = Math.ceil(items_count / self.items_per_page);
+			
+			//if there are 0 items, page_count should not be 0, but 1
+			if (page_count == 0){
+				page_count = 1;
+			}
+
+			
+			// if current page is higher than page_count, reset current_page to
+			// the highest possible 
+			if (self.current_page >= page_count){
+				console.log("current page " + self.current_page + 
+				"higher than page_count " + page_count + "! Set it to " + (page_count - 1));
+				self.current_page = page_count - 1;
+			}
+			
+			
+			self.start_item = self.current_page * self.items_per_page;
+			
+			self.end_item = self.start_item + self.items_per_page - 1;
 			if (self.items_list.length < self.end_item){
 				self.end_item = self.items_list.length - 1;
 			}
@@ -962,19 +985,16 @@ APP.GUI = (function() {
 			console.log("rendering pager");
 		
 			self.hide();
-		
-			var div = dom.div(g("environment_view"), "pager", "pager", "Page: ");
-			g("content_wrapper").style.bottom = "84px";
 			
-			var items_count = self.items_list.length;
-			
-			console.log("items count: " + items_count);
-			
-			//how many pages will there be
-			var page_count = Math.ceil(items_count / self.items_per_page);
-			
-			console.log("there will be pages: " + page_count);
 
+		
+			if (items_count > self.items_per_page || self.show_always == true){
+			
+				var div = dom.div(g("environment_view"), "pager", "pager", "Page: ");
+				g("content_wrapper").style.bottom = "84px";
+
+			}
+			
 			for (var i = 0; i < page_count; i++){
 			
 				var span = dom.span(div, "page_link_"+i, "page_link", i+1);
@@ -995,8 +1015,18 @@ APP.GUI = (function() {
 			
 			}
 			
-			var pager_info = "Showing items " + (self.start_item+1) + "-" + 
-			(self.end_item+1) + " of " + self.items_list.length;
+			if (self.items_list.length != 0){
+				
+				var pager_info = "Showing items " + (self.start_item+1) + "-" + 
+				(self.end_item+1) + " of " + self.items_list.length;
+			
+			}
+			
+			else {
+			
+				pager_info = "";
+				
+			}
 			
 			dom.span(div, "pager_info_span", "", pager_info);
 		

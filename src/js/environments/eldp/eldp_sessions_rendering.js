@@ -51,6 +51,7 @@ eldp_environment.workflow[2].render = (function() {
 		pager_config.on_page_change = my.refresh;
 		pager_config.items_list = bundle.bundles;
 		pager_config.view = view;
+		pager_config.items_per_page = 10;
 		pager_config.before_page_change = bundle.refreshVisibleBundlesInArray;
 		
 		my.pager = new APP.GUI.pager(pager_config);
@@ -167,24 +168,20 @@ eldp_environment.workflow[2].render = (function() {
 		
 
 		var page = my.pager.current_page;
-		var start_item = page * my.pager.items_per_page;
-		var end_item = start_item + my.pager.items_per_page - 1;
+		var end_item = my.pager.start_item + my.pager.items_per_page - 1;
 		
 		
 		if (bundles.length > end_item){
 		
-			var bundles_to_display = bundles.slice(start_item, my.pager.items_per_page);
+			var bundles_to_display = bundles.slice(my.pager.start_item, my.pager.items_per_page);
+		
 		}
 		
 		else {
 		
-			bundles_to_display = bundles.slice(start_item);
+			bundles_to_display = bundles.slice(my.pager.start_item);
 			
 		}
-		
-		console.log("displaying bundles " + start_item + " - " + end_item);
-		console.log("bundles to display: ");
-		console.log(bundles_to_display);
 		
 		forEach(bundles_to_display, my.renderBundle);
 		
