@@ -167,7 +167,6 @@ eldp_environment.workflow[2].render = (function() {
 		}
 		
 
-		var page = my.pager.current_page;
 		var end_item = my.pager.start_item + my.pager.items_per_page - 1;
 		
 		
@@ -182,6 +181,10 @@ eldp_environment.workflow[2].render = (function() {
 			bundles_to_display = bundles.slice(my.pager.start_item);
 			
 		}
+		
+		console.log("Bundles to display");
+		console.log(bundles_to_display);
+		console.log("start item " + my.pager.start_item);
 		
 		forEach(bundles_to_display, my.renderBundle);
 		

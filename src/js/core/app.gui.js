@@ -971,16 +971,11 @@ APP.GUI = (function() {
 			if (self.current_page >= page_count){
 				console.log("current page " + self.current_page + 
 				"higher than page_count " + page_count + "! Set it to " + (page_count - 1));
-				self.current_page = page_count - 1;
+				self.changePage(page_count - 1);
 			}
 			
-			
-			self.start_item = self.current_page * self.items_per_page;
-			
-			self.end_item = self.start_item + self.items_per_page - 1;
-			if (self.items_list.length < self.end_item){
-				self.end_item = self.items_list.length - 1;
-			}
+			self.refreshStartAndEndItem();
+
 		
 			console.log("rendering pager");
 		
@@ -1043,12 +1038,29 @@ APP.GUI = (function() {
 		
 			self.current_page = p;
 			
+			self.refreshStartAndEndItem();
+			
 			self.on_page_change(self.items_list);
 			
 			APP.GUI.scrollTop();
 	
-			self.render();
+			//self.render();
 			
+		};
+		
+		this.refreshStartAndEndItem = function(){
+		
+			self.start_item = self.current_page * self.items_per_page;
+			
+			self.end_item = self.start_item + self.items_per_page - 1;
+			if (self.items_list.length < self.end_item){
+				self.end_item = self.items_list.length - 1;
+			}
+			
+			if (self.items_list.length == 0){
+				self.end_item = 0;
+			}
+		
 		};
 		
 		
@@ -1056,6 +1068,8 @@ APP.GUI = (function() {
 		
 			if (g("pager")){
 				dom.remove("pager");
+				g("content_wrapper").style.bottom = "";
+				
 			}
 		
 		};
