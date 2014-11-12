@@ -14,14 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
+/**
+ * A sub module of APP that deals with the GUI.
+ *
+ * @class APP.GUI
+ */
 APP.GUI = (function() {
 	
 	var l = APP.l;
 	
 	var my = {};
 	
-	
+/**
+ * Displays a busy indicator until hideBusyIndicator is called.
+ * @method showBusyIndicator
+ */	
 	my.showBusyIndicator = function(){
 	
 		if (g("busy_div")){
@@ -40,7 +47,11 @@ APP.GUI = (function() {
 		img.height = "300";
 		
 	}
-	
+
+/**
+ * Hides the busy indicator again.
+ * @method showBusyIndicator
+ */		
 	my.hideBusyIndicator = function(){
 	
 		dom.remove("busy_div");
