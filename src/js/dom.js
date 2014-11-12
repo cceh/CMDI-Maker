@@ -326,10 +326,6 @@ var dom = (function() {
 			parent_to_append_to.appendChild(element);
 		}
 		
-		else {
-			console.info("Created element: " + element_id + " without appending it to parent!");
-		}
-
 		if (innerHTML){
 		
 			element.innerHTML = innerHTML;

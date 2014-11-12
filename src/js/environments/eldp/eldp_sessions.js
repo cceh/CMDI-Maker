@@ -124,13 +124,10 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.refreshVisibleBundlesInArray = function(){
 		
-		for (var i = my.render.pager.start_item; i <= my.render.pager.end_item; i++){
-
-			console.log("refreshing visible bundle " + i);		
-			my.refreshBundleInArray(my.bundles[i]);
-
-		
-		}
+		forEach(
+			my.render.pager.visible_items,
+			my.refreshBundleInArray
+		);
 		
 	}
 	

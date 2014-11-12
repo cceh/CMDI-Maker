@@ -46,13 +46,14 @@ eldp_environment.workflow[2].render = (function() {
 		my.displayNoBundleText(actions.newBundle);
 		
 		
-		var pager_config = {};
-		pager_config.render = my.renderBundle;
-		pager_config.on_page_change = my.refresh;
-		pager_config.items_list = bundle.bundles;
-		pager_config.view = view;
-		pager_config.items_per_page = 10;
-		pager_config.before_page_change = bundle.refreshVisibleBundlesInArray;
+		var pager_config = {
+			render: my.renderBundle,
+			on_page_change: my.refresh,
+			items_list: bundle.bundles,
+			view: view,
+			items_per_page: 10,
+			before_page_change: bundle.refreshVisibleBundlesInArray
+		};
 		
 		my.pager = new APP.GUI.pager(pager_config);
 		
@@ -63,7 +64,7 @@ eldp_environment.workflow[2].render = (function() {
 	
 		APP.GUI.scrollTop();
 		
-		my.pager.render();
+		//my.pager.render();
 	
 	};
 	
@@ -165,31 +166,14 @@ eldp_environment.workflow[2].render = (function() {
 			return;
 	
 		}
-		
 
-		var end_item = my.pager.start_item + my.pager.items_per_page - 1;
+		console.log("render.refresh: bundles: ");
+		console.log(bundles);
+
+		my.pager.refresh(bundles);
 		
-		
-		if (bundles.length > end_item){
-		
-			var bundles_to_display = bundles.slice(my.pager.start_item, my.pager.items_per_page);
-		
-		}
-		
-		else {
-		
-			bundles_to_display = bundles.slice(my.pager.start_item);
-			
-		}
-		
-		console.log("Bundles to display");
-		console.log(bundles_to_display);
-		console.log("start item " + my.pager.start_item);
-		
-		forEach(bundles_to_display, my.renderBundle);
-		
-		my.pager.render();
-	
+		forEach(my.pager.visible_items, my.renderBundle);
+
 	};
 	
 	
@@ -523,9 +507,9 @@ eldp_environment.workflow[2].render = (function() {
 		
 		
 		// for all visible bundles
-		for (var i = my.pager.start_item; i <= my.pager.end_item; i++){
+		for (var i = 0; i < my.pager.visible_items.length; i++){
 		
-			my.refreshPersonListInBundle(bundles[i], all_available_person_ids);
+			my.refreshPersonListInBundle(my.pager.visible_items[i], all_available_person_ids);
 
 		}
 
