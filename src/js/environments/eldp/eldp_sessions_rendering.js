@@ -64,7 +64,7 @@ eldp_environment.workflow[2].render = (function() {
 	
 		APP.GUI.scrollTop();
 		
-		//my.pager.render();
+		my.pager.refresh(bundle.bundles);
 	
 	};
 	

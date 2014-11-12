@@ -1027,8 +1027,6 @@ APP.GUI = (function() {
 			
 			self.items_list = items;
 			
-			self.items_count = self.items_list.length;
-			
 			refreshVars();
 
 			console.log(
@@ -1047,6 +1045,15 @@ APP.GUI = (function() {
 				var div = dom.div(g("environment_view"), "pager", "pager", "Page: ");
 				g("content_wrapper").style.bottom = "84px";
 
+				console.log("pager: YES");
+				console.log(g("pager"));
+			}
+			
+			else {
+			
+				console.log("pager: NO");
+				return;
+			
 			}
 			
 			for (var i = 0; i < self.page_count; i++){
@@ -1070,7 +1077,7 @@ APP.GUI = (function() {
 			
 			}
 			
-			if (self.items_list.length != 0){
+			if (self.items_count != 0){
 				
 				var pager_info = "Showing items " + (self.start_item+1) + "-" + 
 				(self.end_item+1) + " of " + self.items_list.length;
@@ -1112,6 +1119,8 @@ APP.GUI = (function() {
 				g("content_wrapper").style.bottom = "";
 				
 			}
+			
+			console.log("pager HIDDEN");
 		
 		};
 		
