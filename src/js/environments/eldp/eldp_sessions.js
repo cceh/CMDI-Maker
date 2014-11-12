@@ -748,9 +748,11 @@ eldp_environment.workflow[2] = (function() {
 	//Offer possibility to add every available media file to all bundle
 	//refresh all bundles with available media files
 
-		for (var s=0;s<my.bundles.length;s++){
+		var visible_bundles = my.render.pager.visible_items;
+	
+		for (var s = 0; s < visible_bundles.length; s++){
 		
-			my.render.refreshResources(my.bundles[s].id);
+			my.render.refreshResources(visible_bundles[s].id);
 			
 		}
 
