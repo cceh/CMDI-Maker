@@ -585,7 +585,10 @@ APP.forms = (function () {
 			input.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (field.allowed_chars.indexOf(chr) == -1){
+				if (field.allowed_chars.indexOf(chr) == -1 && e.charCode != 0){
+				//we also have to check for e.charCode != 0 here only because of FIREFOX. firefox handles backspace, delete and other
+				//keys as keyboard events on a text input while chrome does not! if we press del in chrome, this event won't be thrown at all.
+				
 					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
 					return false;
 				}
