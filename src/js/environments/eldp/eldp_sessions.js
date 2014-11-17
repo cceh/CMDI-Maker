@@ -650,8 +650,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 
-		APP.log(l("bundle", "metadata_copied"));	
-	
+		APP.log(l("bundle", "metadata_copied"));
 	
 	};
 
@@ -667,7 +666,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		for (var i=0; i<bundle_form.fields_to_copy.length; i++){
 		
-			if (g(APP.CONF.copy_checkbox_element_prefix+bundle_form.fields_to_copy[i].name).checked){  //if checkbox is checked
+			if (g(APP.CONF.copy_checkbox_element_prefix + bundle_form.fields_to_copy[i].name).checked){  //if checkbox is checked
 			
 				if (bundle_form.fields_to_copy[i].name == "persons"){  //special case: persons!
 				
@@ -701,10 +700,23 @@ eldp_environment.workflow[2] = (function() {
 		for (var s=1; s<my.bundles.length; s++){   //important to not include the first bundle in this loop
 		
 			for (var k=0;k<fields_to_copy.length;k++){
-				APP.GUI.copyField(
-					my.dom_element_prefix+my.bundles[s].id+"_"+fields_to_copy[k],
-					my.dom_element_prefix+my.bundles[0].id+"_"+fields_to_copy[k]
-				);
+				
+				if (fields_to_copy[k] == "bundle_date"){
+					my.bundles[s].bundle.date = cloneObject(my.bundles[0].bundle.date);
+				}
+				
+				if (fields_to_copy[k] == "bundle_location"){
+					my.bundles[s].bundle.location = cloneObject(my.bundles[0].bundle.location);
+				}
+				
+				if (fields_to_copy[k] == "content"){
+					my.bundles[s].content = cloneObject(my.bundles[0].content);
+				}	
+
+				if (fields_to_copy[k] == "persons_description"){
+					my.bundles[s].persons.description = cloneObject(my.bundles[0].persons.description);
+				}						
+				
 			}
 		
 		}
@@ -726,11 +738,25 @@ eldp_environment.workflow[2] = (function() {
 		var last_bundle = my.bundles[my.bundles.length - 1];   //last bundle
 		var second_last_bundle = my.bundles[my.bundles.length - 2];  //second_last_bundle
 		
-		for (var k=0; k<fields_to_copy.length; k++){
-			APP.GUI.copyField(
-				my.dom_element_prefix + last_bundle.id + "_" + fields_to_copy[k],
-				my.dom_element_prefix + second_last_bundle.id + "_" + fields_to_copy[k]
-			);
+		
+		for (var k=0;k<fields_to_copy.length;k++){
+		
+			if (fields_to_copy[k] == "bundle_date"){
+				last_bundle.bundle.date = cloneObject(second_last_bundle.bundle.date);
+			}
+			
+			if (fields_to_copy[k] == "bundle_location"){
+				last_bundle.bundle.location = cloneObject(second_last_bundle.bundle.location);
+			}
+			
+			if (fields_to_copy[k] == "content"){
+				last_bundle.content = cloneObject(second_last_bundle.content);
+			}	
+			
+			if (fields_to_copy[k] == "persons_description"){
+				last_bundle.persons.description = second_last_bundle.persons.description;
+			}						
+			
 		}
 	
 	};
@@ -739,10 +765,9 @@ eldp_environment.workflow[2] = (function() {
 	my.removeAllPersons = function(bundle_id){
 	//Remove all persons from respective bundle
 		
-		while (my.bundles[my.getIndexByID(bundle_id)].persons.persons.length > 0){
-			my.removePerson(bundle_id,my.bundles[my.getIndexByID(bundle_id)].persons.persons[0]);
-			//Remove always the first person of this bundle because every person is at some point the first	
-		}
+		my.bundles[my.getIndexByID(bundle_id)].persons.persons = [];
+		my.render.refresh(my.bundles);
+		
 	};
 
 

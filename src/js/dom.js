@@ -342,7 +342,15 @@ var dom = (function() {
 	my.remove = function (elem){
 	
 		if (typeof elem == "string"){
-			elem = g(elem);
+			var id = elem;
+			elem = g(id);
+		}
+		
+		if (typeof elem == "undefined"){
+			
+			console.error("dom.remove: Element undefined. id = " + id);
+			return undefined;
+			
 		}
 
 		return elem.parentNode.removeChild(elem);

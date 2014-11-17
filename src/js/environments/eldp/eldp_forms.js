@@ -182,17 +182,17 @@ eldp_environment.bundle_form = {
 		{
 			name: "date",
 			label: "Date",
-			fields: ["bundle_date_year","bundle_date_month","bundle_date_day"]
+			fields: ["bundle_date"]
 		},
 		{
 			name: "location",
 			label: "Location",
-			fields: ["bundle_location_continent","bundle_location_country","bundle_location_region","bundle_location_address"]
+			fields: ["bundle_location"]
 		},
 		{
 			name: "content",
 			label: "Content",
-			fields: ["content_genre","content_keywords"]
+			fields: ["content"]
 		},
 		{
 			name: "persons",
