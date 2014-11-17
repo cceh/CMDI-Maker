@@ -167,8 +167,8 @@ eldp_environment.workflow[2].render = (function() {
 	
 		}
 
-		console.log("render.refresh: bundles: ");
-		console.log(bundles);
+		//console.log("render.refresh: bundles: ");
+		//console.log(bundles);
 
 		my.pager.refresh(bundles);
 		
@@ -478,7 +478,7 @@ eldp_environment.workflow[2].render = (function() {
 		}
 		
 		
-		console.log("Refreshing Person List of Bundle with id" + bundle_id);
+		//console.log("Refreshing Person List of Bundle with id" + bundle_id);
 		
 		
 		//check if person in bundle is part of persons[...].id(s)? if not, remove it immediately!

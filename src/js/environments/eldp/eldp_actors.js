@@ -66,7 +66,8 @@ eldp_environment.workflow[1] = (function(){
 		object.languages = getLanguagesOfActivePersonFromForm();  //PRELIMINARY OVERWRITE!
 
 		object.id = my.persons[my.active_person_index].id;
-		console.log("Saving person with id " + object.id);
+		
+		//console.log("Saving person with id " + object.id);
 
 		return object;
 	 

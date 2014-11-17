@@ -611,6 +611,8 @@ eldp_environment.workflow[2] = (function() {
 		else {
 			my.copyMetadataFrom2ndLastToLast();
 		}
+		
+		my.render.refresh(my.bundles);
 	
 	};
 	

@@ -971,25 +971,20 @@ APP.GUI = (function() {
 			//how many pages will there be
 			self.page_count = Math.ceil(self.items_count / self.items_per_page);
 			
-			console.log("items_count / items_per_page = " + self.items_count + " / "+
-			self.items_per_page);
+			/*
+			console.log(
+				"items_count / items_per_page = " + self.items_count + " / "+
+				self.items_per_page
+			);
+			*/
+			
 			
 			//if there are 0 items, page_count should not be 0, but 1
 			if (self.page_count == 0){
-				console.log("page count was 0 but should be 1");
+				//console.log("page count was 0 but should be 1");
 				self.page_count = 1;
 			}
 			
-			// if current page is higher than page_count, reset current_page to
-			// the highest possible 
-			if (self.current_page >= self.page_count){
-				console.log("current page " + self.current_page + 
-				"higher than page_count " + self.page_count + "! Set it to " + (self.page_count - 1));
-				self.changePage(self.page_count - 1);
-				return;
-			}
-		
-		
 			self.start_item = self.current_page * self.items_per_page;
 			
 			//if the page if full of items
@@ -1021,25 +1016,45 @@ APP.GUI = (function() {
 					self.start_item
 				);
 				
+				/*
 				console.log("page is last page. showing all items from "+
 					self.start_item + ". page is " + self.current_page + 
 					". page_count = " + self.page_count
 				);
+				*/
 				
 			}
+		
+		
+			// if current page is higher than page_count, reset current_page to
+			// the highest possible 
+			if (self.current_page >= self.page_count){
+			
+				/*
+				console.log(
+					"current page " + self.current_page + 
+					"higher than page_count " + self.page_count + "! Set it to " + (self.page_count - 1)
+				);
+				*/
+				
+				self.changePage(self.page_count - 1);
+				return;
+			}
+			
 		
 		};
 		
 		
 		this.refresh = function(items){
 		
-			console.log("got items: ");
-			console.log(items);
+			//console.log("got items: ");
+			//console.log(items);
 			
 			self.items_list = items;
 			
 			refreshVars();
 
+			/*
 			console.log(
 				"rendering page " + self.current_page + "\n" + 
 				"page_count " + self.page_count + "\n" + 
@@ -1048,6 +1063,7 @@ APP.GUI = (function() {
 				"items count " + self.items_count + "\n" + 
 				"visible items length " + self.visible_items.length + "\n" 				
 			);
+			*/
 			
 			self.hide();
 			
@@ -1056,13 +1072,13 @@ APP.GUI = (function() {
 				var div = dom.div(g("environment_view"), "pager", "pager", "Page: ");
 				g("content_wrapper").style.bottom = "84px";
 
-				console.log("pager: YES");
-				console.log(g("pager"));
+				//console.log("pager: YES");
+				//console.log(g("pager"));
 			}
 			
 			else {
 			
-				console.log("pager: NO");
+				//console.log("pager: NO");
 				return;
 			
 			}
@@ -1131,7 +1147,7 @@ APP.GUI = (function() {
 				
 			}
 			
-			console.log("pager HIDDEN");
+			//console.log("pager HIDDEN");
 		
 		};
 		
