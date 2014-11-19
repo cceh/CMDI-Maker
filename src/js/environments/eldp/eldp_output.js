@@ -19,7 +19,10 @@ eldp_environment.workflow[3] = (function (){
 	'use strict';
 
 	var my = {};
+	
 	var bundle;
+	var person;
+	var resources;
 	
 	my.parent = eldp_environment;
 	var l = my.parent.l;
@@ -36,6 +39,8 @@ eldp_environment.workflow[3] = (function (){
 	my.init = function(view_element){
 	
 		bundle = eldp_environment.workflow[2];
+		person = eldp_environment.workflow[1];
+		resources = eldp_environment.workflow[0];
 		
 		my.view_element = view_element;
 		
@@ -46,6 +51,8 @@ eldp_environment.workflow[3] = (function (){
 	
 	
 	my.view = function(){
+	
+		APP.save();
 	
 		//if there is nothing to be done, return
 		if (bundle.bundles.length === 0){
@@ -65,7 +72,7 @@ eldp_environment.workflow[3] = (function (){
 			
 		}
 		
-		//my.generate();
+		my.generate();
 		
 	};
 	
@@ -92,13 +99,20 @@ eldp_environment.workflow[3] = (function (){
 		
 		APP.save(); //BAD HERE. has to be there so that all values in objects are up-to-date. must happen before eldp_generator is called.
 		
-		var xml_strings = eldp_environment.eldp_generator();
 		
-		for (var s=0;s<bundle.bundles.length;s++){
+		var data = {
+			bundles: bundle.bundles,
+			persons: person.persons,
+			resources: resources.resources
+		};
+		
+		var xml_strings = eldp_environment.eldp_generator(data);
+		
+		for (var s = 0; s < bundle.bundles.length; s++){
 			
 			filename = get(bundle.dom_element_prefix+bundle.bundles[s].id+"_bundle_name") + ".cmdi";
 			APP.GUI.createXMLOutputDIV(xml_window, "CMDI Bundle " + (s+1), "textarea_bundle_"+s,
-			xml_strings.bundles[s],filename, true);
+			xml_strings.bundles[s],filename, false);
 			
 		}
 		

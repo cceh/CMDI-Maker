@@ -15,18 +15,30 @@ limitations under the License.
 */
 
 
-eldp_environment.eldp_generator = function(){
+eldp_environment.eldp_generator = function(data){
 "use strict";
+
+
+	var eldp_bundle_profile="clarin.eu:cr1:p_1271859438204";
+
+	var insert_cmdi_header = function(MdCreator,MdCreationDate,MdProfile){
+		
+		var return_string = "";
+		return_string+=xml.tag("Header",0);
+		return_string+=xml.element("MdCreator",MdCreator);
+		return_string+=xml.element("MdCreationDate",MdCreationDate);
+		return_string+=xml.element("MdProfile",MdProfile);
+		return_string+=xml.tag("Header",1);
+		
+		return return_string;
+		
+	};
 	
-	var resources = eldp_environment.workflow[0];
-	var person = eldp_environment.workflow[1];
-	var bundle = eldp_environment.workflow[2];
 
-
-	var createBundle = function(bundle){
+	var createBundle = function(bundle, persons, resources){
 		
 		xml.reset();  //we're starting a new xml file here, so tabula rasa!
-		xml.setElementPrefix("cmd");
+		//xml.setElementPrefix("cmd");
 
 		var return_string = "";
 		return_string += xml.header;	
@@ -36,21 +48,40 @@ eldp_environment.eldp_generator = function(){
 			["xmlns:dcr","http://www.isocat.org/ns/dcr"],
 			["xmlns:ann","http://www.clarin.eu"],
 			["xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance"],
-			["xsi:schemaLocation","http://www.clarin.eu/cmd/ file:/C:/Users/Jan/Desktop/Arbeit/ELDP.xsd"],
+			["xsi:schemaLocation","http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/" + eldp_bundle_profile + "/xsd"],
 			["CMDVersion", "1.1"]
 		]);
 		
 
 		//CMDI Header
-		return_string += xml.open("Header");
-		return_string += xml.close("Header");
+		return_string += insert_cmdi_header(get("metadata_creator"),today()+"+01:00",eldp_bundle_profile);
 		
-		//return_string+=insert_header(get("metadata_creator"),today()+"+01:00",imdi_session_profile);
 		
-		return_string += xml.open("ELDP-Bundle")
+		//in resources is nothing, as this is a session and no corpus. attached media files in a cmdi session are further down
+		return_string+=xml.tag("Resources",0);
+		return_string+=xml.tag("ResourceProxyList",2);
+		return_string+=xml.tag("JournalFileProxyList",2);
+		return_string+=xml.tag("ResourceRelationList",2);
+		return_string+=xml.tag("Resources",1);
 		
-		return_string += xml.element("Name", bundle.bundle.name);
-		return_string += xml.element("Title", bundle.bundle.title);
+		return_string += xml.tag("Components",0);
+		
+		
+		return_string += xml.open("ELDP-Bundle");
+
+		return_string += xml.element("Title", bundle.bundle.title);		
+		
+		//return_string += xml.element("Name", bundle.bundle.name);
+		//NO TypeofRecord!
+		
+		return_string += xml.open("StatusInfo");
+		return_string += xml.close("StatusInfo");
+		
+		return_string += xml.open("Depositor");
+		return_string += xml.close("Depositor");
+		
+		
+
 		return_string += xml.element("Date", bundle.bundle.date.year + "-" + bundle.bundle.date.month + "-" + bundle.bundle.date.day);
 		return_string += xml.element("Description", bundle.bundle.description);
 		
@@ -271,11 +302,157 @@ eldp_environment.eldp_generator = function(){
 	
 	var my = {};
 	
-	my.bundles = map(bundle.bundles, function (bundle){
+
+	my.bundles = map(data.bundles, function (bundle){
 		xml.reset();
-		return createBundle(bundle);
+		return createBundle(bundle, data.persons, data.resources);
 	});
 
 	return my;
 
 }
+
+
+
+/*
+<?xml version="1.0" encoding="UTF-8"?>
+<CMD xmlns="http://www.clarin.eu/cmd/"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     CMDVersion="1.1"
+     xsi:schemaLocation="http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1407745711992/xsd">
+   <Header>
+      <MdCreator>Sebastian</MdCreator>
+      <MdCreationDate>2014-11-19+01:00</MdCreationDate>
+      <MdProfile>clarin.eu:cr1:p_1407745711992</MdProfile>
+   </Header>
+   <Resources>
+      <ResourceProxyList/>
+      <JournalFileProxyList/>
+      <ResourceRelationList/>
+   </Resources>
+   <Components>
+      <ELDP_Bundle>
+         <Title xml:lang="fra">b_title</Title>
+         <TypeofRecord>umbrella</TypeofRecord>
+         <ID>001</ID>
+         <StatusInfo>
+            <Status>stable</Status>
+            <ChangeDate>2014-11-19</ChangeDate>
+         </StatusInfo>
+         <Depositor>
+            <Role>dep role</Role>
+            <AdditionalInformation>ad</AdditionalInformation>
+            <PersonalData>
+               <Name>
+                  <Name>asd</Name>
+               </Name>
+               <BiographicalData>
+                  <DeathYear>asd</DeathYear>
+               </BiographicalData>
+            </PersonalData>
+            <Gender/>
+            <Languages>
+               <Language>
+                  <Name>German</Name>
+                  <Autoglottonym>deutsch</Autoglottonym>
+               </Language>
+            </Languages>
+         </Depositor>
+         <ContentLanguage>
+            <Name>German</Name>
+            <Use>Working</Use>
+            <History/>
+            <AdditionalInformation>this is some additional information</AdditionalInformation>
+         </ContentLanguage>
+         <Person>
+            <Age_at_Time_of_Recording>12</Age_at_Time_of_Recording>
+            <Role>data_inputter</Role>
+            <BiographicalNote/>
+            <Ethnicity>
+               <EthnicAffiliation>ui</EthnicAffiliation>
+               <AdditionalInformation>addinfo</AdditionalInformation>
+            </Ethnicity>
+            <PersonalData>
+               <Name>
+                  <Name>Guy Stone</Name>
+               </Name>
+               <BiographicalData>
+                  <BirthYear>1922</BirthYear>
+                  <DeathYear>2999</DeathYear>
+               </BiographicalData>
+            </PersonalData>
+            <Gender>
+               <GenderIdentification>huhu</GenderIdentification>
+               <AdditionalInformation/>
+            </Gender>
+            <Education>
+               <Level/>
+               <AdditionalInformation/>
+               <AdditionalInformation/>
+               <AdditionalInformation/>
+            </Education>
+            <Nationality/>
+         </Person>
+         <ProjectLocation>
+            <ProjectGeographic/>
+         </ProjectLocation>
+         <AccessInformation>
+            <Restricitons xml:lang="aom">res_of_access</Restricitons>
+            <ConditionsofAccess>cond of access</ConditionsofAccess>
+            <oURCS>User</oURCS>
+         </AccessInformation>
+         <Resource>
+            <Title/>
+            <TypeofRecord/>
+            <ID/>
+            <Host/>
+            <StatusInfo>
+               <Status/>
+               <ChangeDate/>
+            </StatusInfo>
+            <Depositor>
+               <Role/>
+               <AdditionalInformation/>
+               <PersonalData>
+                  <Name>
+                     <Name/>
+                  </Name>
+                  <BiographicalData>
+                     <DeathYear/>
+                  </BiographicalData>
+               </PersonalData>
+               <Gender/>
+               <Languages>
+                  <Language>
+                     <Name/>
+                     <Autoglottonym/>
+                  </Language>
+               </Languages>
+            </Depositor>
+            <ContentLanguage>
+               <Name/>
+               <Use/>
+               <History/>
+               <AdditionalInformation/>
+            </ContentLanguage>
+            <Location/>
+            <AccessInformation>
+               <Restricitons/>
+               <ConditionsofAccess/>
+               <oURCS/>
+            </AccessInformation>
+            <VideoFile>
+               <General>
+                  <Name/>
+                  <Date/>
+               </General>
+               <MediaInformations/>
+               <ImageInformations/>
+               <VideoInformations/>
+               <Checksum/>
+            </VideoFile>
+         </Resource>
+      </ELDP_Bundle>
+   </Components>
+</CMD>
+*/
