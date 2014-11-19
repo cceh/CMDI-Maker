@@ -14,13 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+ * The main module for the app.
+ *
+ * @module CORE
+ */
 
+/**
+ * The main module for the app.
+ *
+ * @class APP
+ */
 var APP = (function () {
 	'use strict';
 
 	var my = {};
 	
-	
+/**
+ * Initializes the app.
+ * @method init
+ * @param {Boolean} no_recall If true, the app will not attempt to recall saved data from the application cache.
+ * @static 
+ */
 	my.init = function (no_recall) {
 		var recall_object;
 		
@@ -519,10 +534,16 @@ var APP = (function () {
 
 	};
 
-	
+	/**
+	* This method changes the view of the app. A view can be a view of the app, 
+	* or of a module of an environment.
+	* @method view
+	* @param {Mixed} module_or_id It can be a module or an id of a view element.
+	*/
 	my.view = function (module_or_id){
 		var module;
 		var id;
+		var pager;
 	
 		my.GUI.closeSelectFrame();
 		my.GUI.mainMenu.close();
@@ -582,6 +603,11 @@ var APP = (function () {
 		//make the selected view visible
 		g(id).style.display = "block";
 		
+		//if there is a pager, remove it
+		if (g("pager")){
+			dom.remove("pager");
+		}		
+	
 		//if a module view is selected, call the view method of the module
 		//every module can have a view method for things to be done, before viewing the page
 		if (module && module.view){

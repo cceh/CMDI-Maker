@@ -29,7 +29,7 @@ eldp_environment.eldp_generator = function(){
 		xml.setElementPrefix("cmd");
 
 		var return_string = "";
-		return_string += xml.header;		
+		return_string += xml.header;	
 		
 		return_string += xml.open("CMD",[
 			["xmlns:cmd","http://www.clarin.eu/cmd/"],

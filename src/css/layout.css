@@ -413,7 +413,7 @@ input[type="checkbox"], input[type="radio"]{
 
 }
 
-.module_header {
+.header {
 	top: 0px;
 	height: 50px;
 	left: 0px;
@@ -452,6 +452,7 @@ input[type="checkbox"], input[type="radio"]{
 	left: 0px;
 	right: 0px;
 	overflow: auto;
+	z-index: -2;
 
 }
 
@@ -601,5 +602,44 @@ padding-right: 10px;
 .function_sub_div h3{
 
 	color: white;
+
+}
+
+
+.pager{
+	position: fixed;
+	background-color: bisque;
+	left: 0px;
+	right: 0px;
+	bottom: 44px;
+	height: 20px;
+	padding: 10px 20px;
+	font-size: 14pt;
+	z-index: -1;
+}
+
+.page_link{
+
+	padding: 0px 10px;
+	cursor: pointer;
+
+}
+
+.page_link_active{
+
+	background-color: black;
+	color: white;
+
+}
+
+
+#pager_info_span{
+	float: right;
+}
+
+
+.busy_div{
+
+	margin-top: 100px;
 
 }

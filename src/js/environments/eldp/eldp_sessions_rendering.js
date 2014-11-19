@@ -17,8 +17,6 @@ limitations under the License.
 
 eldp_environment.workflow[2].render = (function() {
 	'use strict';
-
-	
 	
 	var my = {};
 	my.parent = eldp_environment;
@@ -30,6 +28,8 @@ eldp_environment.workflow[2].render = (function() {
 	var person;
 
 	var actions;
+	
+	var bundle;
 
 	my.dom_element_prefix = "bundle_";
 	
@@ -41,8 +41,21 @@ eldp_environment.workflow[2].render = (function() {
 		
 		resources = eldp_environment.workflow[0];
 		person = eldp_environment.workflow[1];
+		bundle = eldp_environment.workflow[2];
 	
 		my.displayNoBundleText(actions.newBundle);
+		
+		
+		var pager_config = {
+			render: my.renderBundle,
+			on_page_change: my.refresh,
+			items_list: bundle.bundles,
+			view: view,
+			items_per_page: 10,
+			before_page_change: bundle.refreshVisibleBundlesInArray
+		};
+		
+		my.pager = new APP.GUI.pager(pager_config);
 		
 	};
 	
@@ -50,6 +63,8 @@ eldp_environment.workflow[2].render = (function() {
 	my.view = function(){
 	
 		APP.GUI.scrollTop();
+		
+		my.pager.refresh(bundle.bundles);
 	
 	};
 	
@@ -151,13 +166,18 @@ eldp_environment.workflow[2].render = (function() {
 			return;
 	
 		}
+
+		//console.log("render.refresh: bundles: ");
+		//console.log(bundles);
+
+		my.pager.refresh(bundles);
 		
-		forEach(bundles, my.drawNewBundle);
-	
+		forEach(my.pager.visible_items, my.renderBundle);
+
 	};
 	
 	
-	my.drawNewBundle = function(bundle_object){
+	my.renderBundle = function(bundle_object){
 	
 		var bundle_id = bundle_object.id;
 		var bundle_expanded = bundle_object.expanded;
@@ -221,12 +241,8 @@ eldp_environment.workflow[2].render = (function() {
 		
 		//Render languages
 		var element_id_prefix = my.dom_element_prefix + bundle_id + "_languages_";
-		console.log("rendering langs by");
-		console.log(bundle_object.languages.bundle_languages);
 		
 		forEach(bundle_object.languages.bundle_languages, function(LanguageObject){
-			console.log("RENDERING LANG : ");
-			console.log(LanguageObject, bundle_id, element_id_prefix);
 			my.renderLanguage(LanguageObject, bundle_id, element_id_prefix);
 		});
 
@@ -462,7 +478,7 @@ eldp_environment.workflow[2].render = (function() {
 		}
 		
 		
-		console.log("Refreshing Person List of Bundle with id" + bundle_id);
+		//console.log("Refreshing Person List of Bundle with id" + bundle_id);
 		
 		
 		//check if person in bundle is part of persons[...].id(s)? if not, remove it immediately!
@@ -489,9 +505,11 @@ eldp_environment.workflow[2].render = (function() {
 
 		var all_available_person_ids = getArrayWithIDs(persons);
 		
-		for (var s=0; s<bundles.length; s++){   //for all existing bundles
 		
-			my.refreshPersonListInBundle(bundles[s], all_available_person_ids);
+		// for all visible bundles
+		for (var i = 0; i < my.pager.visible_items.length; i++){
+		
+			my.refreshPersonListInBundle(my.pager.visible_items[i], all_available_person_ids);
 
 		}
 

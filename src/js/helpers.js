@@ -41,6 +41,21 @@ function ajax_get(url, success_callback){
 }
 
 
+function cloneObject(obj) {
+    var clone = {};
+
+    for (var i in obj) {
+        if (obj[i] && typeof obj[i] == 'object') {
+            clone[i] = cloneObj(obj[i]);
+        } else {
+            clone[i] = obj[i];
+        }
+    }
+
+    return clone;
+}
+
+
 function readFileAsText(file, onsuccess){
 
 	var reader = new FileReader();
