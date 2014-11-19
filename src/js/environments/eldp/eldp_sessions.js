@@ -448,7 +448,7 @@ eldp_environment.workflow[2] = (function() {
 	};
 
 
-	my.addPerson = function(bundle_id, person_id){
+	my.addPerson = function(bundle_id, person_id, role){
 	//add existing person to bundle
 	
 		//var person_ids_in_bundle = getArrayWithIDs(my.bundles[my.getIndexByID(bundle_id)].persons.persons);
@@ -458,15 +458,23 @@ eldp_environment.workflow[2] = (function() {
 		
 			if (person.persons[person.getIndexByID(person_id)]){  //check if person still exists before adding
 				
+				console.log("adding person in bundle with id " + bundle_id);
+				console.log(role);
+				
+				if (typeof role != "string"){
+					role = "";
+				}
+				
 				var person_in_bundle = {
 					id: my.person_id_counter,
 					person_id: person_id,
-					role: ""
+					role: role
 				};
 				
 				my.bundles[my.getIndexByID(bundle_id)].persons.persons.push(person_in_bundle);
 			
-				my.render.renderPerson(my.bundles[my.getIndexByID(bundle_id)], person_in_bundle);
+				//my.render.renderPerson(my.bundles[my.getIndexByID(bundle_id)], person_in_bundle);
+				my.render.refresh(my.bundles);
 				
 				my.person_id_counter++;
 				
@@ -604,6 +612,8 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.handleClickOnCopyMetadata = function(){
 	
+		my.refreshVisibleBundlesInArray();
+	
 		if (get("copy_bundle_options") == "1_to_others"){
 			my.assignBundle1Metadata();
 		}
@@ -638,9 +648,9 @@ eldp_environment.workflow[2] = (function() {
 					my.removeAllPersons(last_bundle.id);
 			
 					// copy persons from 2nd last bundle to last bundle
-					for (var a = 0; a < second_last_bundle.persons.persons.length; a++){
-						my.addPerson(last_bundle.id, second_last_bundle.persons.persons[a]);
-					}
+					forEach(second_last_bundle.persons.persons, function(pers){
+						my.addPerson(last_bundle.id, pers.person_id, pers.role);
+					});
 					
 				}
 			
@@ -675,7 +685,7 @@ eldp_environment.workflow[2] = (function() {
 			
 						// copy persons from bundle 1 to bundle bundle
 						forEach(my.bundles[0].persons.persons, function(pers){
-							my.addPerson(my.bundles[s].id, pers.person_id);
+							my.addPerson(my.bundles[s].id, pers.person_id, pers.role);
 						});
 					
 					}
@@ -714,7 +724,7 @@ eldp_environment.workflow[2] = (function() {
 				}	
 
 				if (fields_to_copy[k] == "persons_description"){
-					my.bundles[s].persons.description = cloneObject(my.bundles[0].persons.description);
+					my.bundles[s].persons.description = my.bundles[0].persons.description;
 				}						
 				
 			}
@@ -815,7 +825,8 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.updatePersonNameInAllBundles = function(person_id){
 	
-		return my.render.updatePersonNameInAllBundles(person_id, my.bundles);
+		//return my.render.updatePersonNameInAllBundles(person_id, my.bundles);
+		return;
 	
 	};
 

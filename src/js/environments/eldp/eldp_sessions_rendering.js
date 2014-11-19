@@ -413,8 +413,12 @@ eldp_environment.workflow[2].render = (function() {
 	my.refreshPersonName = function(bundle, id){
 	
 		var bundle_id = bundle.id;
+		
+		var div_id = my.dom_element_prefix + bundle_id + "_person_" + id + "_label";
 
-		var div = g(my.dom_element_prefix + bundle_id + "_person_" + id + "_label");
+		var div = g(div_id);
+		
+		console.log(div_id);
 		
 		var h2 = div.getElementsByTagName("h2")[0];
 		

@@ -26,18 +26,21 @@ APP.GUI = (function() {
 	var my = {};
 	
 /**
- * Displays a busy indicator until hideBusyIndicator is called.
+ * Displays a busy indicator.
+ * @param parent Parent element
  * @method showBusyIndicator
  */	
-	my.showBusyIndicator = function(){
+	my.showBusyIndicator = function(parent){
 	
 		if (g("busy_div")){
 			dom.remove("busy_div");
 		}
 		
-		g("environment_view").style.display = "none";
+		//g("environment_view").style.display = "none";
+		
+		parent.innerHTML = "";
 	
-		var busy_div = dom.div(document.body, "busy_div", "busy_div");
+		var busy_div = dom.div(parent, "busy_div", "busy_div");
 		
 		var p = dom.p(busy_div, "", "", "center");
 		
@@ -51,14 +54,14 @@ APP.GUI = (function() {
 /**
  * Hides the busy indicator again.
  * @method showBusyIndicator
- */		
+ */		/*
 	my.hideBusyIndicator = function(){
 	
 		dom.remove("busy_div");
 		
 		g("environment_view").style.display = "block";
 	
-	}
+	}*/
 
 	my.setIcon = function (element, icon_id){
 	
