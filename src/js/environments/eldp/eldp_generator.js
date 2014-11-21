@@ -77,8 +77,8 @@ eldp_environment.eldp_generator = function(data){
 		return_string += xml.open("StatusInfo");
 		return_string += xml.close("StatusInfo");
 		
-		return_string += xml.open("Depositor");
-		return_string += xml.close("Depositor");
+		return_string += xml.open("Depositors");
+		return_string += xml.close("Depositors");
 		
 		
 

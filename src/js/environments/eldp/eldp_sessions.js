@@ -852,17 +852,17 @@ eldp_environment.workflow[2] = (function() {
 
 	my.areAllBundlesProperlyNamed = function(){
 
-		for (var i=0;i<my.bundles.length;i++){
+		for (var i = 0; i < my.bundles.length; i++){
 		
-			if (get(my.dom_element_prefix+my.bundles[i].id+"_bundle_name") === ""){
+			if (my.bundles[i].bundle.name === ""){
 			
 				return false;
 			
 			}
 			
-			for (var c=0; c<my.parent.not_allowed_chars.length; c++){
+			for (var c = 0; c < my.parent.not_allowed_chars.length; c++){
 		
-				if (get(my.dom_element_prefix+my.bundles[i].id+"_bundle_name").indexOf(my.parent.not_allowed_chars[c]) != -1){
+				if (my.bundles[i].bundle.name.indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				
