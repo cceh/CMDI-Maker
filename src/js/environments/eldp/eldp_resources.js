@@ -336,7 +336,6 @@ eldp_environment.workflow[0] = (function(){
 				id: "file_entry_"+i,
 				className: "file_entry media_file_entry",
 				parent: list,
-				//compatibility_warning: compatibility_warning,
 				stable: res.stable,
 				inProgress: res.inProgress,
 				path: res.path
@@ -602,10 +601,6 @@ eldp_environment.workflow[0] = (function(){
 		}
 
 
-		console.log("SELECTED FILES:");
-		console.log(my.fileSelection.selected_files);
-
-		
 		//Then check for all resources that have to be faded
 		for (var k=0; k<my.fileSelection.selected_files.length; k++){
 			
@@ -613,17 +608,11 @@ eldp_environment.workflow[0] = (function(){
 			
 			//get resources that start with the same name as this
 			resources_to_fade_for_file = my.getIndexesOfResourcesThatStartWithTheSameNameAsThis(my.fileSelection.selected_files[k]);
-			
-			console.log("RESOURCS TO FADE FOR FILE:");
-			console.log(resources_to_fade_for_file);
-			
+		
 			//fade them too
 			for (var j = 0; j < resources_to_fade_for_file.length; j++){
 				resources_to_fade.push(resources_to_fade_for_file[j]);
 			}
-			
-			console.log("RESOURCES TO FADE:");
-			console.log(resources_to_fade);
 			
 		};
 		

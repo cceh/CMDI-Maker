@@ -248,7 +248,7 @@ eldp_environment.person_form = {
 					type: "text",
 					comment: "Short unique code to identify the actor as used in the transcription"
 				},
-   				{
+				{
 					heading: "Birth Year",
 					name: "birth_year",
 					type: "year",
