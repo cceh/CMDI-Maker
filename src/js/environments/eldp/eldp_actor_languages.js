@@ -121,7 +121,7 @@ eldp_environment.workflow[1].languages = (function (){
 		if (ALO.name_type == "LOCAL"){
 
 			var textInputValue = (ALO.name !== "") ? ALO.name : my.l("bundle", "specify_local_used_language_name");
-			console.log("LOCAL");
+
 			dom.textInput(
 				div, my.element_id_prefix + my.id_counter + "_name_input", "eldp_person_lang_name_input", "",
 				textInputValue
@@ -130,7 +130,7 @@ eldp_environment.workflow[1].languages = (function (){
 		}
 		
 		else {
-			console.log("not LOCAL");
+
 			dom.span(div, "", "", ALO.name);
 			
 		}

@@ -763,7 +763,15 @@ eldp_environment.workflow[2] = (function() {
 
 				if (fields_to_copy[k] == "persons_description"){
 					my.bundles[s].persons.description = my.bundles[0].persons.description;
-				}						
+				}
+
+				if (fields_to_copy[k] == "resources_recording_equipment"){
+					my.bundles[s].resources.recording_equipment = my.bundles[0].resources.recording_equipment;
+				}	
+
+				if (fields_to_copy[k] == "resources_recording_conditions"){
+					my.bundles[s].resources.recording_conditions = my.bundles[0].resources.recording_conditions;
+				}	
 				
 			}
 		
@@ -803,7 +811,15 @@ eldp_environment.workflow[2] = (function() {
 			
 			if (fields_to_copy[k] == "persons_description"){
 				last_bundle.persons.description = second_last_bundle.persons.description;
-			}						
+			}	
+
+			if (fields_to_copy[k] == "resources_recording_equipment"){
+				last_bundle.resources.recording_equipment = second_last_bundle.resources.recording_equipment;
+			}	
+
+			if (fields_to_copy[k] == "resources_recording_conditions"){
+				last_bundle.resources.recording_conditions = second_last_bundle.resources.recording_conditions;
+			}				
 			
 		}
 	

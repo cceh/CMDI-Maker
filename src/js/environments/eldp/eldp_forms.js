@@ -204,7 +204,12 @@ eldp_environment.bundle_form = {
 			name: "languages",
 			label: "Languages",
 			fields: []
-		}
+		},
+		{
+			name: "recording_equipment_conditions",
+			label: "Recording Equipment/Conditions",
+			fields: ["resources_recording_equipment", "resources_recording_conditions"]
+		},		
 	]
 };
 
