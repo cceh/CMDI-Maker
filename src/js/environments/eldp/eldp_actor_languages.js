@@ -113,8 +113,31 @@ eldp_environment.workflow[1].languages = (function (){
 			};
 		}(my.id_counter));
 		
+		
 		dom.spanBR(div,"","", "ISO639-3 Code: " + ALO.iso_code);
-		dom.spanBR(div,"","", "Name: " + ALO.name);
+		dom.span(div,"","", "Name: ");
+		
+		//If lang type is local and name has not been specified yet, put a message there
+		if (ALO.name_type == "LOCAL"){
+
+			var textInputValue = (ALO.name !== "") ? ALO.name : my.l("bundle", "specify_local_used_language_name");
+			console.log("LOCAL");
+			dom.textInput(
+				div, my.element_id_prefix + my.id_counter + "_name_input", "eldp_person_lang_name_input", "",
+				textInputValue
+			);
+			
+		}
+		
+		else {
+			console.log("not LOCAL");
+			dom.span(div, "", "", ALO.name);
+			
+		}
+		
+		dom.br(div);
+		
+		
 		dom.spanBR(div,"","", "Country ID: " + ALO.country_code);
 		
 		dom.br(div);
@@ -126,7 +149,8 @@ eldp_environment.workflow[1].languages = (function (){
 
 
 	my.addFromForm = function(LanguageObject){
-	//if actor language is added by user
+		console.log(LanguageObject);
+		//if actor language is added by user
 		var first_added_language;
 
 		if (my.languages_of_active_person.length === 0){
@@ -143,6 +167,7 @@ eldp_environment.workflow[1].languages = (function (){
 			iso_code: LanguageObject[0],	
 			name: LanguageObject[3],
 			country_code: LanguageObject[1],
+			name_type: LanguageObject[2],
 			
 			additional_information: ""
 

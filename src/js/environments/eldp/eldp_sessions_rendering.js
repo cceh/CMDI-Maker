@@ -399,9 +399,6 @@ eldp_environment.workflow[2].render = (function() {
 
 		box_content.push(line2, line3);
 		
-		console.log("Doing red box to ");
-		console.log(element_id_prefix + "display");
-		
 		APP.GUI.FORMS.redBox(g(element_id_prefix + "display"), element_id, "bundle_language_entry", box_content, function(num, num2, num3){
 			return function(){
 				actions.removeLanguage(num, num2, num3);

@@ -47,7 +47,15 @@ eldp_environment.workflow[1] = (function(){
 	var getLanguagesOfActivePersonFromForm = function(){
 	
 		var array = map(my.languages.languages_of_active_person, function(ALO){
-		
+			
+			if (ALO.name_type == "LOCAL"){
+			
+				ALO.name = get("person_languages_" + ALO.id + "_name_input");
+			
+			}
+			
+			ALO.additional_information = get("person_languages_" + ALO.id + "addInfo");
+			
 			return ALO;
 			
 		});
