@@ -643,18 +643,23 @@ eldp_environment.workflow[0] = (function(){
 		
 		var file_list;  //this is where the file strings will be stored
 		
-		console.log(file);
-		
 		readFileAsText(file, function(result){
 		
 			try {
+			
 				file_list = linesToArray(result);
 				
 				forEach(file_list, function(file_string){
-					my.available_resources.push({
-						name: getFilenameFromUNIXFilePath(file_string),
-						path: getDirectoryFromUNIXFilePath(file_string)
-					});
+				
+					if (file_string.length > 0 && file_string != " "){
+					
+						my.available_resources.push({
+							name: getFilenameFromFilePath(file_string),
+							path: getDirectoryFromFilePath(file_string)
+						});
+					
+					}
+					
 				});
 				
 				my.refreshFileListDisplay();
@@ -665,9 +670,6 @@ eldp_environment.workflow[0] = (function(){
 				console.info("No files found! Maybe this file list is not valid!");
 				return;
 			}
-			
-			console.log(file_list);
-			
 		
 		});
 		

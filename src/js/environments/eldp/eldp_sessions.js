@@ -293,7 +293,7 @@ eldp_environment.workflow[2] = (function() {
 			country_code: LanguageObject[1],
 			id: my.lang_id_counter,
 			working_language: false,
-			content_language: false,
+			content_language: false
 		};
 		
 		
@@ -639,12 +639,12 @@ eldp_environment.workflow[2] = (function() {
 		for (var i=0; i<bundle_form.fields_to_copy.length; i++){
 		
 			if (g(APP.CONF.copy_checkbox_element_prefix+bundle_form.fields_to_copy[i].name).checked){  //if checkbox is checked
+
+				var last_bundle = my.bundles[my.bundles.length - 1];   //last bundle
+				var second_last_bundle = my.bundles[my.bundles.length - 2];  //second_last_bundle
 			
 				if (bundle_form.fields_to_copy[i].name == "persons"){  //special case: persons!
 				
-					var last_bundle = my.bundles[my.bundles.length - 1];   //last bundle
-					var second_last_bundle = my.bundles[my.bundles.length - 2];  //second_last_bundle
-					
 					my.removeAllPersons(last_bundle.id);
 			
 					// copy persons from 2nd last bundle to last bundle
@@ -653,6 +653,23 @@ eldp_environment.workflow[2] = (function() {
 					});
 					
 				}
+				
+				if (bundle_form.fields_to_copy[i].name == "languages"){  //special case: persons!
+					
+					last_bundle.languages.bundle_languages = [];
+					
+					forEach(second_last_bundle.languages.bundle_languages, function(BLO){
+					
+						var BLO_new = cloneObject(BLO);
+						BLO_new.id = my.lang_id_counter;
+						my.lang_id_counter += 1;
+					
+						last_bundle.languages.bundle_languages.push(BLO_new);
+						
+					});
+					
+				}
+				
 			
 				my.copyFieldsFrom2ndLastToLastBundle(bundle_form.fields_to_copy[i].fields);
 				
@@ -690,6 +707,27 @@ eldp_environment.workflow[2] = (function() {
 					
 					}
 				
+				}
+				
+				
+				if (bundle_form.fields_to_copy[i].name == "languages"){  //special case: languages!
+					
+					for (s = 1; s<my.bundles.length; s++){
+						
+						my.bundles[s].languages.bundle_languages = [];
+					
+						forEach(my.bundles[0].languages.bundle_languages, function(BLO){
+						
+							var BLO_new = cloneObject(BLO);
+							BLO_new.id = my.lang_id_counter;
+							my.lang_id_counter += 1;
+						
+							my.bundles[s].languages.bundle_languages.push(BLO_new);
+							
+						});
+					
+					}
+					
 				}
 			
 				my.copyFieldsToAllBundles(bundle_form.fields_to_copy[i].fields);

@@ -82,9 +82,35 @@ function getFileTypeFromFilename(filename){
 }
 
 
+function getFilenameFromFilePath(path){
+
+	if (path.indexOf("\\") != -1){
+		return getFilenameFromWindowsFilePath(path);
+	}
+	
+	else {
+		return getFilenameFromUNIXFilePath(path);
+	}
+
+}
+
+
 function getFilenameFromUNIXFilePath(path){
 
 	var pos_of_slash = path.lastIndexOf("/");
+	
+	if (pos_of_slash == -1){
+		return path;
+	}
+	
+	return path.substring(pos_of_slash+1);
+
+}
+
+
+function getFilenameFromWindowsFilePath(path){
+
+	var pos_of_slash = path.lastIndexOf("\\");
 	
 	if (pos_of_slash == -1){
 		return path;
@@ -108,9 +134,35 @@ function addScript(url, onloaded){
 }
 
 
+function getDirectoryFromFilePath(path){
+
+	if (path.indexOf("\\") != -1){
+		return getDirectoryFromWindowsFilePath(path);
+	}
+	
+	else {
+		return getDirectoryFromUNIXFilePath(path);
+	}
+
+}
+
+
 function getDirectoryFromUNIXFilePath(path){
 
 	var pos_of_slash = path.lastIndexOf("/");
+	
+	if (pos_of_slash == -1){
+		return undefined;
+	}
+	
+	return path.substring(0, pos_of_slash+1);
+
+}
+
+
+function getDirectoryFromWindowsFilePath(path){
+
+	var pos_of_slash = path.lastIndexOf("\\");
 	
 	if (pos_of_slash == -1){
 		return undefined;

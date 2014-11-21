@@ -199,7 +199,12 @@ eldp_environment.bundle_form = {
 			label: "Persons",
 			fields: ["persons_description"]
 			//since type of field actors is "special", there will be other stuff going on as well here!
-		}	
+		},
+		{
+			name: "languages",
+			label: "Languages",
+			fields: []
+		}
 	]
 };
 
