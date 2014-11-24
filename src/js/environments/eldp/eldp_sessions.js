@@ -23,21 +23,28 @@ eldp_environment.workflow[2] = (function() {
 	
 	var bundle_form = my.parent.bundle_form;
 	
+	var refresh = function(){
+		my.render.refresh(my.bundles.getAll());
+	}
+	
 	my.identity = {
 		id: "bundle",
 		title: "Bundles",
 		icon: "edit"
 	};
 	
-	my.bundles = [];
-	my.id_counter = 0;
+	my.bundles = new ObjectList();
+
 	my.lang_id_counter = 0;
 	my.resource_id_counter = 0;
 	my.person_id_counter = 0;
 	
 	my.dom_element_prefix = "bundle_";
 	
-	my.reset = function(){ my.eraseAll(); };
+	my.reset = function(){
+		my.bundles.eraseAll();
+		refresh();
+	};
 	
 	var resources;
 	var person;
@@ -50,9 +57,8 @@ eldp_environment.workflow[2] = (function() {
 		resources = eldp_environment.workflow[0];
 		person = eldp_environment.workflow[1];
 	
-		my.bundles = [];
-		my.id_counter = 0;
-		my.lang_id_counter = 0;
+		my.bundles.reset();
+
 		my.resource_id_counter = 0;
 		my.person_id_counter = 0;
 		
@@ -87,23 +93,13 @@ eldp_environment.workflow[2] = (function() {
 			return;
 		}
 		
-		
-		for (var s=0; s<data.bundles.length; s++){
-		
-			my.bundles.push(data.bundles[s]);
-			my.bundles[s].id = my.getNewBundleID();
-			
-		}
-		
-		if (data.lang_id_counter){
-			my.lang_id_counter = data.lang_id_counter;
-		}
-		
+		my.bundles.setState(data.bundles);
+
 		if (data.person_id_counter){
 			my.person_id_counter = data.person_id_counter;
 		}
 		
-		my.render.refresh(my.bundles);
+		refresh();
 	
 	};
 	
@@ -113,7 +109,7 @@ eldp_environment.workflow[2] = (function() {
 		my.refreshVisibleBundlesInArray();
 	
 		var object = {
-			bundles: my.bundles,
+			bundles: my.bundles.getState(),
 			lang_id_counter: my.lang_id_counter,
 			person_id_counter: my.person_id_counter
 		};
@@ -135,7 +131,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.refreshBundlesArray = function(){
 	
-		forEach(my.bundles, my.refreshBundleInArray);
+		forEach(my.bundles.getAll(), my.refreshBundleInArray);
 	
 	};
 	
@@ -224,7 +220,11 @@ eldp_environment.workflow[2] = (function() {
 				label: l("bundle", "sort_by_name"),
 				icon: "az",
 				id: "bundle_link_sort_by_name",
-				onclick: function() { my.sortAlphabetically(); }
+				onclick: function() {
+					my.refreshBundlesArray();
+					my.bundles.sortBySubKey("bundle", "name");
+					refresh();
+				}
 			}
 		];
 	};
@@ -233,29 +233,15 @@ eldp_environment.workflow[2] = (function() {
 	my.newBundle = function(){
 
 		var bundle_object = APP.forms.createEmptyObjectFromTemplate(my.parent.bundle_form);
-		bundle_object.id = my.getNewBundleID();
 		
 		//new bundles are always expanded
 		bundle_object.expanded = true;
 		
-		//push new bundle object into bundles array
-		my.bundles.push(bundle_object);
+		my.bundles.add(bundle_object);
 
-		my.render.refresh(my.bundles);
+		refresh();
 		
 		return bundle_object.id;
-	};
-	
-	
-	my.getNewBundleID = function(){
-	
-		//this is the id, always unique, even if bundle created after one is deleted
-		var bundle_id = my.id_counter;
-		
-		my.id_counter += 1;
-		
-		return bundle_id;
-	
 	};
 	
 	
@@ -264,8 +250,8 @@ eldp_environment.workflow[2] = (function() {
 		var bundle_object = APP.forms.createEmptyObjectFromTemplate(my.parent.bundle_form);
 		bundle_object.bundle.name = name;
 		bundle_object.expanded = expanded;
-		bundle_object.id = my.getNewBundleID();
-		my.bundles.push(bundle_object);
+
+		my.bundles.add(bundle_object);
 		
 		my.render.renderBundle(bundle_object);
 		
@@ -299,10 +285,7 @@ eldp_environment.workflow[2] = (function() {
 			content_language: false
 		};
 		
-		
-		var bundle_index = my.getIndexByID(bundle_id);
-		
-		my.bundles[bundle_index].languages.bundle_languages.push(BLO);
+		my.bundles.getByID(bundle_id).languages.bundle_languages.push(BLO);
 		
 		my.render.renderLanguage(BLO, bundle_id, element_id_prefix);
 		
@@ -317,7 +300,7 @@ eldp_environment.workflow[2] = (function() {
 		var language_index = my.getLanguageObjectIndexByID(bundle_index, l_id);
 
 		console.log(bundle_index + ", " + language_index);
-		my.bundles[bundle_index].languages.bundle_languages.splice(language_index, 1);
+		my.bundles.get(bundle_index).languages.bundle_languages.splice(language_index, 1);
 		
 		dom.remove(element_id);
 	
@@ -326,14 +309,14 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.getLanguageObjectIndexByID = function(bundle_index, l_id){
 		
-		return getIndex(my.bundles[bundle_index].languages.bundle_languages, 4, l_id);
+		return getIndex(my.bundles.get(bundle_index).languages.bundle_languages, 4, l_id);
 
 	};
 
 	
 	my.getName = function(bundle_index){
 
-		if (my.bundles[bundle_index].name === ""){
+		if (my.bundles.get(bundle_index).name === ""){
 		
 			return l("bundle", "unnamed_bundle");
 			
@@ -341,41 +324,13 @@ eldp_environment.workflow[2] = (function() {
 		
 		else {
 		
-			return l("bundle", "bundle") + ": " + my.bundles[bundle_index].name;
+			return l("bundle", "bundle") + ": " + my.bundles.get(bundle_index).name;
 		
 		}
 		
 	};
 	
 	
-	my.getIndexByID = function(bundle_id){
-
-		var index = getIndex(my.bundles, "id", bundle_id);
-		
-		if (typeof index == "undefined"){
-		
-			console.error("ERROR: ELDP.bundles: Could not find bundle index from bundle_id! bundle_id = " + bundle_id);
-			console.log(my.bundles);
-			
-		}
-		
-		return index;		
-
-	};
-	
-	
-	my.sortAlphabetically = function(){
-		
-		//Before we sort the bundles, we save the newest user input
-		my.refreshBundlesArray();
-		
-		my.bundles = sortBySubKey(my.bundles,["bundle","name"]);
-		
-		my.render.refresh(my.bundles);
-		
-	};
-
-
 	my.userErase = function(bundle_id){
 
 		APP.confirm(l("bundle", "really_erase_bundle"), function (e) {
@@ -387,7 +342,7 @@ eldp_environment.workflow[2] = (function() {
 		
 			else {
 				// user clicked "cancel"
-				my.erase(bundle_id);
+				my.bundles.eraseByID(bundle_id);
 				APP.log(l("bundle", "bundle_deleted"));
 			}
 		}, l("bundle", "no"), l("bundle", "yes_delete_bundle"));
@@ -395,61 +350,24 @@ eldp_environment.workflow[2] = (function() {
 	};
 
 
-	my.erase = function (bundle_id){
-
-		my.bundles.splice(my.getIndexByID(bundle_id),1);
-		
-		my.render.refresh(my.bundles);
-
-	};
-	
-	
 	my.getIndexFromResourceID = function (resource_id){
+	
 		var r;
 
-		for (var s=0;s < my.bundles.length;s++){
+		my.bundles.forEach(function(bun){
 		
-			for (r=0; r < my.bundles[s].resources.resources.length; r++){
+			for (r=0; r < bun.resources.resources.length; r++){
 		
-				if (my.bundles[s].resources.resources[r].id == resource_id){
+				if (bun.resources.resources[r].id == resource_id){
 					return r;
 				}
 			
 			}
 			
-		}
+		});
 
 	};
 	
-
-	my.eraseAll = function (){
-
-		while (my.bundles.length > 0){
-		
-			my.eraseLast();
-		
-		}
-
-	};
-
-
-
-	my.eraseLast = function(){
-
-		if (my.bundles.length > 0){
-		
-			my.erase(my.bundles[my.bundles.length-1].id);
-
-		}
-		
-		else {
-		
-			APP.log("There is no bundle to be erased!\nTo erase one, you have to create one first.", "error");
-		
-		}
-		
-	};
-
 
 	my.addPerson = function(bundle_id, person_id, role){
 	//add existing person to bundle
@@ -474,10 +392,10 @@ eldp_environment.workflow[2] = (function() {
 					role: role
 				};
 				
-				my.bundles[my.getIndexByID(bundle_id)].persons.persons.push(person_in_bundle);
+				my.bundles.getByID(bundle_id).persons.persons.push(person_in_bundle);
 			
 				//my.render.renderPerson(my.bundles[my.getIndexByID(bundle_id)], person_in_bundle);
-				my.render.refresh(my.bundles);
+				my.render.refresh(my.bundles.getAll());
 				
 				my.person_id_counter++;
 				
@@ -502,7 +420,7 @@ eldp_environment.workflow[2] = (function() {
 
 	my.removePerson = function(bundle_id, id){
 	
-		var bundle = my.bundles[my.getIndexByID(bundle_id)];
+		var bundle = my.bundles.getByID(bundle_id);
 
 		var persons_in_bundle = bundle.persons.persons;
 		
@@ -512,9 +430,6 @@ eldp_environment.workflow[2] = (function() {
 		persons_in_bundle.splice(person_index, 1);
 		
 		dom.remove(my.dom_element_prefix + bundle_id + "_person_" + id);
-		
-		//my.refreshBundlesArray();
-		//my.render.refresh(my.bundles);
 		
 	};
 
@@ -540,7 +455,7 @@ eldp_environment.workflow[2] = (function() {
 			s: false
 		};
 		
-		my.bundles[my.getIndexByID(bundle_id)].resources.resources.push({
+		my.bundles.getByID(bundle_id).resources.resources.push({
 			name: filename,
 			size: filesize,
 			id: my.resource_id_counter,
@@ -588,7 +503,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 		
-		my.render.renderResource(resource_id, bundle_id,filename, filesize, urcs);
+		my.render.renderResource(resource_id, bundle_id, filename, filesize, urcs);
 
 		my.resource_id_counter += 1;
 		
@@ -600,11 +515,11 @@ eldp_environment.workflow[2] = (function() {
 	my.removeResource = function(bundle_id, resource_id){
 		var m;
 
-		var ids_of_bundle_resources = getArrayWithIDs(my.bundles[my.getIndexByID(bundle_id)].resources.resources);
+		var ids_of_bundle_resources = getArrayWithIDs(my.bundles.getByID(bundle_id).resources.resources);
 		
 		if (ids_of_bundle_resources.indexOf(resource_id) != -1){
 
-			my.bundles[my.getIndexByID(bundle_id)].resources.resources.splice(my.getIndexFromResourceID(resource_id),1);
+			my.bundles.getByID(bundle_id).resources.resources.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
@@ -625,7 +540,7 @@ eldp_environment.workflow[2] = (function() {
 			my.copyMetadataFrom2ndLastToLast();
 		}
 		
-		my.render.refresh(my.bundles);
+		refresh();
 	
 	};
 	
@@ -643,8 +558,8 @@ eldp_environment.workflow[2] = (function() {
 		
 			if (g(APP.CONF.copy_checkbox_element_prefix+bundle_form.fields_to_copy[i].name).checked){  //if checkbox is checked
 
-				var last_bundle = my.bundles[my.bundles.length - 1];   //last bundle
-				var second_last_bundle = my.bundles[my.bundles.length - 2];  //second_last_bundle
+				var last_bundle = my.bundles.getLast();
+				var second_last_bundle = my.bundles.getFromEnd(1);
 			
 				if (bundle_form.fields_to_copy[i].name == "persons"){  //special case: persons!
 				
@@ -701,11 +616,11 @@ eldp_environment.workflow[2] = (function() {
 				if (bundle_form.fields_to_copy[i].name == "persons"){  //special case: persons!
 				
 					for (var s = 1; s < my.bundles.length; s++){
-						my.removeAllPersons(my.bundles[s].id);
+						my.removeAllPersons(my.bundles.idOf(s));
 			
 						// copy persons from bundle 1 to bundle bundle
-						forEach(my.bundles[0].persons.persons, function(pers){
-							my.addPerson(my.bundles[s].id, pers.person_id, pers.role);
+						forEach(my.bundles.get(0).persons.persons, function(pers){
+							my.addPerson(my.bundles.idOf(s), pers.person_id, pers.role);
 						});
 					
 					}
@@ -715,17 +630,17 @@ eldp_environment.workflow[2] = (function() {
 				
 				if (bundle_form.fields_to_copy[i].name == "languages"){  //special case: languages!
 					
-					for (s = 1; s<my.bundles.length; s++){
+					for (s = 1; s < my.bundles.length; s++){
 						
-						my.bundles[s].languages.bundle_languages = [];
+						my.bundles.get(s).languages.bundle_languages = [];
 					
-						forEach(my.bundles[0].languages.bundle_languages, function(BLO){
+						forEach(my.bundles.get(0).languages.bundle_languages, function(BLO){
 						
 							var BLO_new = cloneObject(BLO);
 							BLO_new.id = my.lang_id_counter;
 							my.lang_id_counter += 1;
 						
-							my.bundles[s].languages.bundle_languages.push(BLO_new);
+							my.bundles.get(s).languages.bundle_languages.push(BLO_new);
 							
 						});
 					
@@ -748,32 +663,32 @@ eldp_environment.workflow[2] = (function() {
 	//fields_to_copy is an array
 	//it is indeed html conform to get textarea.value
 		
-		for (var s=1; s<my.bundles.length; s++){   //important to not include the first bundle in this loop
+		for (var s = 1; s < my.bundles.length; s++){   //important to not include the first bundle in this loop
 		
 			for (var k = 0; k < fields_to_copy.length; k++){
 				
 				if (fields_to_copy[k] == "bundle_date"){
-					my.bundles[s].bundle.date = cloneObject(my.bundles[0].bundle.date);
+					my.bundles.get(s).bundle.date = cloneObject(my.bundles.getFirst().bundle.date);
 				}
 				
 				if (fields_to_copy[k] == "bundle_location"){
-					my.bundles[s].bundle.location = cloneObject(my.bundles[0].bundle.location);
+					my.bundles.get(s).bundle.location = cloneObject(my.bundles.getFirst().bundle.location);
 				}
 				
 				if (fields_to_copy[k] == "content"){
-					my.bundles[s].content = cloneObject(my.bundles[0].content);
+					my.bundles.get(s).content = cloneObject(my.bundles.getFirst().content);
 				}	
 
 				if (fields_to_copy[k] == "persons_description"){
-					my.bundles[s].persons.description = my.bundles[0].persons.description;
+					my.bundles.get(s).persons.description = my.bundles.getFirst().persons.description;
 				}
 
 				if (fields_to_copy[k] == "resources_recording_equipment"){
-					my.bundles[s].resources.recording_equipment = my.bundles[0].resources.recording_equipment;
+					my.bundles.get(s).resources.recording_equipment = my.bundles.getFirst().resources.recording_equipment;
 				}	
 
 				if (fields_to_copy[k] == "resources_recording_conditions"){
-					my.bundles[s].resources.recording_conditions = my.bundles[0].resources.recording_conditions;
+					my.bundles.get(s).resources.recording_conditions = my.bundles.getFirst().resources.recording_conditions;
 				}	
 				
 			}
@@ -785,7 +700,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.refreshPersonLists = function(persons){
 	
-		my.render.refreshPersonLists(my.bundles, persons);
+		my.render.refreshPersonLists(my.bundles.getAll(), persons);
 	
 	};
 	
@@ -794,8 +709,8 @@ eldp_environment.workflow[2] = (function() {
 	//fields_to_copy is an array
 	//it is indeed html conform to get textarea.value
 		
-		var last_bundle = my.bundles[my.bundles.length - 1];   //last bundle
-		var second_last_bundle = my.bundles[my.bundles.length - 2];  //second_last_bundle
+		var last_bundle = my.bundles.getLast();
+		var second_last_bundle = my.bundles.getFromEnd(1);
 		
 		
 		for (var k=0;k<fields_to_copy.length;k++){
@@ -832,8 +747,8 @@ eldp_environment.workflow[2] = (function() {
 	my.removeAllPersons = function(bundle_id){
 	//Remove all persons from respective bundle
 		
-		my.bundles[my.getIndexByID(bundle_id)].persons.persons = [];
-		my.render.refresh(my.bundles);
+		my.bundles.getByID(bundle_id).persons.persons = [];
+		refresh();
 		
 	};
 
@@ -857,7 +772,7 @@ eldp_environment.workflow[2] = (function() {
 
 		for (var i = 0; i < my.bundles.length; i++){
 		
-			if (my.bundles[i].bundle.name === ""){
+			if (my.bundles.get(i).bundle.name === ""){
 			
 				return false;
 			
@@ -865,7 +780,7 @@ eldp_environment.workflow[2] = (function() {
 			
 			for (var c = 0; c < my.parent.not_allowed_chars.length; c++){
 		
-				if (my.bundles[i].bundle.name.indexOf(my.parent.not_allowed_chars[c]) != -1){
+				if (my.bundles.get(i).bundle.name.indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				
@@ -882,12 +797,11 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.updatePersonNameInAllBundles = function(person_id){
 	
-		//return my.render.updatePersonNameInAllBundles(person_id, my.bundles);
-		return;
+		return my.render.updatePersonNameInAllBundles(person_id, my.bundles.getAll());
 	
 	};
-
-
+	
+	
 	return my;
 
 })();

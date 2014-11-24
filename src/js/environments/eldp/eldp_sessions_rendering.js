@@ -49,7 +49,7 @@ eldp_environment.workflow[2].render = (function() {
 		var pager_config = {
 			render: my.renderBundle,
 			on_page_change: my.refresh,
-			items_list: bundle.bundles,
+			items_list: bundle.bundles.getAll(),
 			view: view,
 			items_per_page: 10,
 			before_page_change: bundle.refreshVisibleBundlesInArray
@@ -64,7 +64,7 @@ eldp_environment.workflow[2].render = (function() {
 	
 		APP.GUI.scrollTop();
 		
-		my.pager.refresh(bundle.bundles);
+		my.pager.refresh(bundle.bundles.getAll());
 	
 	};
 	
@@ -415,13 +415,20 @@ eldp_environment.workflow[2].render = (function() {
 
 		var div = g(div_id);
 		
-		console.log(div_id);
-		
 		var h2 = div.getElementsByTagName("h2")[0];
 		
-		var person_in_bundle = getObjectByID(bundle.persons.persons, id);
+		console.log(h2);
 		
-		h2.innerHTML = person.getDisplayName(person_in_bundle.person_id);
+		var person_in_bundle = getObjectByID(bundle.persons.persons, id);
+		var person_id = person_in_bundle.person_id;
+		
+		console.log(person_id);
+		
+		var display_name = person.getDisplayName(person_id);
+		
+		console.log(display_name);
+		
+		h2.innerHTML = display_name;
 		//display name of person
 
 	};
@@ -431,11 +438,13 @@ eldp_environment.workflow[2].render = (function() {
 	
 		forEach(bundles, function(bundle){
 		
-			var person_ids_in_bundle = getArrayWithIDs(bundle.persons.persons);
-	
+			var person_ids_in_bundle = map(bundle.persons.persons, function(pers){
+				return pers.person_id;
+			});
+			
 			//search for person_id in this bundles' persons
 			if (person_ids_in_bundle.indexOf(person_id) != -1){
-				
+				console.log("PERSON IS IN THERE!!!");
 				my.refreshPersonName(bundle, person_id);
 	
 			}

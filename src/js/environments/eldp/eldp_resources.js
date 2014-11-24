@@ -37,6 +37,8 @@ eldp_environment.workflow[0] = (function(){
 
 	my.view_id = "VIEW_resources";
 	
+	my.substitute_for_bad_chars = "_";
+	
 	my.init = function(view){
 	
 		bundle = eldp_environment.workflow[2];

@@ -16,6 +16,7 @@ limitations under the License.
 
 
 var ObjectList = function() {
+	"use strict";
 
 	//PRIVATE
 	
@@ -51,6 +52,10 @@ var ObjectList = function() {
 	
 	//PUBLIC
 	
+	var self = this;
+	
+	this.length = 0;
+	
 	
 	//GET METHODS
 	
@@ -75,7 +80,40 @@ var ObjectList = function() {
 	};
 
 
-	this.get = this.getByID;
+	this.get = this.getByIndex;
+	
+	
+	this.getFirst = function(){
+	
+		if (list.length > 0){
+			
+			return list[0];
+			
+		}
+	
+	}
+	
+	
+	this.getLast = function(){
+	
+		if (list.length > 0){
+			
+			return list[list.length - 1];
+			
+		}
+	
+	}
+	
+	
+	this.getFromEnd = function(backwards_index){
+	
+		if (backwards_index < list.length){
+		
+			return list[list.length - 1 - backwards_index];
+			
+		}
+	
+	}
 
 	
 	this.getAll = function(){
@@ -109,22 +147,34 @@ var ObjectList = function() {
 	};
 	
 	
+	this.idOf = function(index){
+	
+		return list[index].id;
+		
+	}
+	
+	
 	//REMOVE METHODS
 	this.removeByID = function(id){
 	
 		list.splice(self.getIndexByID(id),1);
+		
+		self.length = list.length;
 	
 	};
 	
-	
-	this.remove = this.removeByID;
-
 	
 	this.removeByIndex = function(index){
 	
 		list.splice(index, 1);
+		
+		self.length = list.length;
 	
 	};
+	
+	
+	this.remove = this.removeByIndex;
+	this.erase = this.removeByIndex;
 	
 	
 	this.removeFirst = function(){
@@ -149,7 +199,12 @@ var ObjectList = function() {
 	
 		list = [];
 		
+		self.length = list.length;
+		
 	};
+	
+	
+	this.eraseAll = this.removeAll;
 	
 	
 	//ADD  (add with new id)
@@ -160,6 +215,8 @@ var ObjectList = function() {
 		object.id = id;
 		
 		list.push(object);
+		
+		self.length = list.length;
 		
 		return id;
 	
@@ -236,6 +293,7 @@ var ObjectList = function() {
 	
 		list = [];
 		id_counter = 0;
+		self.length = list.length;
 	
 	};
 	
@@ -244,6 +302,7 @@ var ObjectList = function() {
 	
 		id_counter = state.id_counter;
 		list = state.list;
+		self.length = list.length;
 	
 	};	
 	
@@ -278,11 +337,11 @@ var ObjectList = function() {
 	};
 	
 	
-	this.sortBySubKey = function(keys){
+	this.sortBySubKey = function(key0, key1){
 
 		return list.sort(function(a, b) {
-			var x = a[keys[0]][keys[1]];
-			var y = b[keys[0]][keys[1]];
+			var x = a[key0][key1];
+			var y = b[key0][key1];
 
 			if (typeof x == "string"){
 				x = x.toLowerCase(); 

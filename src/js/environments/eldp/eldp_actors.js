@@ -502,6 +502,7 @@ eldp_environment.workflow[1] = (function(){
 		//if the person does already exist, check if it is in a bundle and correct the person name in the bundle, if required
 		bundle.updatePersonNameInAllBundles(person_to_put.id);
 
+
 		return person_to_put;
 
 	};
