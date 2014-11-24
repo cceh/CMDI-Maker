@@ -209,7 +209,9 @@ eldp_environment.workflow[2] = (function() {
 						}
 				
 						else {
-							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+							// user clicked "cancel" (as cancel is always the red 
+							//button, the red button is chosen to be the executive 
+							//button
 							APP.environments.resetActive();
 							APP.log(l("bundle", "form_reset"));
 						}
@@ -697,7 +699,7 @@ eldp_environment.workflow[2] = (function() {
 			
 				if (bundle_form.fields_to_copy[i].name == "persons"){  //special case: persons!
 				
-					for (var s=1; s<my.bundles.length; s++){
+					for (var s = 1; s < my.bundles.length; s++){
 						my.removeAllPersons(my.bundles[s].id);
 			
 						// copy persons from bundle 1 to bundle bundle
@@ -747,7 +749,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		for (var s=1; s<my.bundles.length; s++){   //important to not include the first bundle in this loop
 		
-			for (var k=0;k<fields_to_copy.length;k++){
+			for (var k = 0; k < fields_to_copy.length; k++){
 				
 				if (fields_to_copy[k] == "bundle_date"){
 					my.bundles[s].bundle.date = cloneObject(my.bundles[0].bundle.date);

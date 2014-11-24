@@ -121,7 +121,11 @@ eldp_environment.eldp_generator = function(data){
 	
 	};
 	
+	/*
 	
+	!! AGE  = BUNDLE_DATE - PERSON BIRTH YEAR
+	
+	*/
 	var insert_persons = function(person_in_bundles){
 	
 		var return_string = "";

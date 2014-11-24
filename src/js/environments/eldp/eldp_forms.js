@@ -102,8 +102,13 @@ eldp_environment.bundle_form = {
 					name: "genre",
 					type: "open_vocabulary",
 					size: 1,
-					vocabulary: ["Unknown","Unspecified","Discourse","Ritual/religious texts","Fiction","Newspaper article",
-					"Radio/TV feature","Drama","Singing","Instrumental music","Poetry","Literature","Secondary document","Personal notes","Stimuli"],
+					vocabulary: [
+						"Unknown", "Unspecified", "Conversation", "Description",
+						"Dictionary", "Discourse", "Elicitation", "Explanation",
+						"Folktale", "Historical narrative", "Interview", "Metadata",
+						"Narrative", "Procedural narrative", "Questionnaire", 
+						"Ritual/religious", "Song", "Speech", "Stimuli", "Wordlist"
+					],
 					comment: "The conventionalized discourse types of the content of the bundle."
 				},
 				{
@@ -112,15 +117,15 @@ eldp_environment.bundle_form = {
 					name: "keywords"
 				},
 				{
-					heading: "Restrictions of Access",
+					heading: "Recording Equipment",
+					name: "recording_equipment",
 					type: "textarea",
-					name: "access_restrictions"
 				},
 				{
-					heading: "Conditions of Access",
+					heading: "Recording Conditions",
+					name: "recording_conditions",
 					type: "textarea",
-					name: "access_conditions"
-				}
+				},
 			]
 		},
 		{
@@ -164,14 +169,14 @@ eldp_environment.bundle_form = {
 					object_structure: "array"
 				},
 				{
-					heading: "Recording Equipment",
-					name: "recording_equipment",
+					heading: "Restrictions of Access",
 					type: "textarea",
+					name: "access_restrictions"
 				},
 				{
-					heading: "Recording Conditions",
-					name: "recording_conditions",
+					heading: "Conditions of Access",
 					type: "textarea",
+					name: "access_conditions"
 				},
 			]
 		}
@@ -259,22 +264,13 @@ eldp_environment.person_form = {
 					type: "year"
 				},
    				{
-					heading: "Age",
-					name: "age",
-					type: "text",
-				},
-   				{
 					heading: "Sex",
 					name: "sex",
 					type: "select",
-					vocabulary: ["Unknown","Unspecified","NAP","Female","Male"],
+					vocabulary: ["Unknown","Unspecified","Female","Male"],
 					default_value: "Unspecified"
 				},
-   				{
-					heading: "Biographical Note",
-					name: "biographical_note",
-					type: "textarea",
-				}/*,  //Role gets specified in bundle
+				/*,  //Role gets specified in bundle
 				{
 					heading: "Role",
 					name: "role",
@@ -300,10 +296,31 @@ eldp_environment.person_form = {
 					name: "ethnicity",
 					type: "textarea",  //multiple values
 				},
+				{
+					heading: "Additional Information (Ethnicity)",
+					name: "ethnicity_additional_info",
+					type: "textarea"
+				},
    				{
 					heading: "Nationalities",
 					name: "nationality",
 					type: "textarea",  //multiple values
+				},
+				{
+					heading: "Additional Information (Nationality)",
+					name: "nationality_additional_info",
+					type: "textarea"
+				},
+
+			]
+		},	
+		{
+			type: "column",
+			fields: [
+   				{
+					heading: "Education",
+					name: "education",
+					type: "text"
 				},
 				{
 					heading: "Additional Information (Person)",
@@ -311,30 +328,15 @@ eldp_environment.person_form = {
 					type: "textarea"
 				},
 				{
+					heading: "Biographical Note",
+					name: "biographical_note",
+					type: "textarea",
+				},
+				{
 					heading: "Anonymized",
 					name: "anonymized",
 					type: "check",
 					comment: "Indicates if real names or anonymized codes are used to identify the actor"
-				}
-			]
-		},	
-		{
-			type: "column",
-			fields: [
-			   	{
-					heading: "Additional Information (Ethnicity)",
-					name: "ethnicity_additional_info",
-					type: "textarea"
-				},
-   				{
-					heading: "Additional Information (Nationality)",
-					name: "nationality_additional_info",
-					type: "textarea"
-				},
-   				{
-					heading: "Education",
-					name: "education",
-					type: "text"
 				}
 			]
 		},	
