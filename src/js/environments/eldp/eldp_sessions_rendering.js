@@ -444,7 +444,7 @@ eldp_environment.workflow[2].render = (function() {
 			
 			//search for person_id in this bundles' persons
 			if (person_ids_in_bundle.indexOf(person_id) != -1){
-				console.log("PERSON IS IN THERE!!!");
+
 				my.refreshPersonName(bundle, person_id);
 	
 			}

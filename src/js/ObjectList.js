@@ -123,7 +123,18 @@ var ObjectList = function() {
 	};
 	
 	
-	//this.getByStatement
+	this.getByKeyValue = function(key, value){
+	
+		for (var i=0; i < list.length; i++){
+			
+			if (list[i][key] == value){
+				return list[i];
+			}
+		}
+		
+		return undefined;		
+	
+	};
 	
 	
 	this.getIndexByID = function(id){
