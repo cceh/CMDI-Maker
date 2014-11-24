@@ -87,6 +87,7 @@ var ObjectList = function() {
 	
 	//this.getByStatement
 	
+	
 	this.getIndexByID = function(id){
 	
 		for (var i=0; i < list.length; i++){

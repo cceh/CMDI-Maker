@@ -95,7 +95,7 @@ eldp_environment.bundle_form = {
 			title: "Content",
 			name: "content",
 			type: "column",
-			comment: "The content group is used to describe the content of the bundle. This is done using four dimensions (communication context, genre, task and modalities).",
+			comment: "The content group is used to describe the content of the " + "bundle. This is done using four dimensions (communication context, " + "genre, task and modalities).",
 			fields: [
 				{
 					heading: "Genre",
