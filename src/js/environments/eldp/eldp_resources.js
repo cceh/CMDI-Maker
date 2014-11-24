@@ -266,8 +266,55 @@ eldp_environment.workflow[0] = (function(){
 				label: my.l("resources", "clear_file_list"),
 				onclick: function() { my.clearFileList(); }
 			},
+			{
+				id: "link_set_for_all",
+				icon: "submit",
+				label: my.l("resources", "set_for_all"),
+				wrapper_id: "sfa_div",
+				type: "function_wrap",
+				sub_div: "sfa_select",
+				onclick: function() { my.setForAll(); },
+				sub_div_innerHTML: '<input type="checkbox" name="stable_for_all" id="stable_for_all" value="stable_for_all" checked> Stable<br>'+
+							'<input type="checkbox" name="inProgress_for_all" id="inProgress_for_all" value="inProgress_for_all"> In Progress<br>',
+			},
 		];
 	};
+	
+	
+	my.setForAll = function(){
+	
+		forEach(my.available_resources, function(res){
+	
+			if (g("stable_for_all").checked == true){
+			
+				res.stable = true;
+			
+			}
+			
+			else {
+			
+				res.stable = false;
+			
+			}
+			
+			
+			if (g("inProgress_for_all").checked == true){
+			
+				res.inProgress = true;
+			
+			}
+			
+			else {
+			
+				res.inProgress = false;
+			
+			}
+			
+		});
+		
+		my.refreshFileListDisplay();
+	
+	}
 	
 	
 	my.handleFileTypeChange = function(event){

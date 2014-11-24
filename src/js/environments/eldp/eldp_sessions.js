@@ -57,6 +57,7 @@ eldp_environment.workflow[2] = (function() {
 		my.person_id_counter = 0;
 		
 		var actions = {
+		
 			newBundle: my.newBundle,
 			deleteBundle: my.userErase,
 			setLanguage: my.set,

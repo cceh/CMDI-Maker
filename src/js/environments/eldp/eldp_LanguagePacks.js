@@ -89,6 +89,7 @@ eldp_environment.languages[0] = {
 		fade: "Fade",
 		fade_explanation: "Resources are faded down when they will be included in bundles.<br>"+
 			"This is to prevent selecting them mistakenly.",
+		set_for_all: "Set for all"
 		
 	},
 	
