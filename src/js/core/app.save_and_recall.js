@@ -146,8 +146,8 @@ APP.save_and_recall = (function () {
 	my.save = function(){
 	//This saves the app data and the data of the active environment
 		
-		var form_object = my.retrieveDataToSave();
-		localStorage.setItem(APP.CONF.local_storage_key, JSON.stringify(form_object));
+		var app_data = my.retrieveAppDataToSave();
+		localStorage.setItem(APP.CONF.local_storage_key, JSON.stringify(app_data));
 		
 		if (APP.environments.active_environment){
 			var environment_object = my.retrieveEnvironmentDataToSave();
@@ -163,7 +163,7 @@ APP.save_and_recall = (function () {
 	
 		var CMP_object = {};
 		
-		CMP_object[APP.CONF.app_core_storage_key] = my.retrieveDataToSave();
+		CMP_object[APP.CONF.app_core_storage_key] = my.retrieveAppDataToSave();
 		
 		if (APP.environments.active_environment){
 			var environment_object = my.retrieveEnvironmentDataToSave();
@@ -326,7 +326,7 @@ APP.save_and_recall = (function () {
 	};
 	
 	
-	my.retrieveDataToSave = function(){
+	my.retrieveAppDataToSave = function(){
 
 		var object = {
 		
