@@ -31,12 +31,12 @@ eldp_environment.bundle_form = {
 					type: "text",
 					comment: "A short name or abbreviation of one or two words. This identifier distinguishes the bundle from others in the same (sub-) corpus and is used for quick browsing.",
 					not_allowed_chars: " !\"§$%&/\\()=?^°`´'#*+~<>[]{}|²³,.;:"
-				},    
+				},  
 				{
 					heading: "Title",
 					name: "title",
 					type: "text",
-					comment: "The bundle title is the complete title of the bundle without any abbreviations.",
+					comment: "An informative title, without abbreviations, given to the Project, Bundle or resource.",
 				},
 				{
 					heading: "Date",

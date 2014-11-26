@@ -323,9 +323,13 @@ APP.environments = (function () {
 	
 	my.disableFunction = function(id){
 		
-		my.disabled_functions.push(id);
-		dom.hide(g(id));
-	
+		if (my.disabled_functions.indexOf(id) == -1){	
+		
+			my.disabled_functions.push(id);
+			APP.GUI.showFunctionsForView(APP.environments.getModuleByViewID(APP.active_view));			
+			
+		}
+
 	};
 	
 	
@@ -333,8 +337,8 @@ APP.environments = (function () {
 		
 		if (my.disabled_functions.indexOf(id) != -1){
 			
-			my.disabled_functions.splice(my.disabled_functions.indexOf(id),1);
-			g(id).style.display = "inline";
+			my.disabled_functions.splice(my.disabled_functions.indexOf(id), 1);
+			APP.GUI.showFunctionsForView(APP.environments.getModuleByViewID(APP.active_view));
 			
 		}		
 	

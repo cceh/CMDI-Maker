@@ -641,7 +641,7 @@ eldp_environment.workflow[1] = (function(){
 			my.showNoPersonsMessage();
 			
 			APP.environments.disableFunction("link_delete_active_person");
-			APP.environments.disableFunction("link_sort_persons_alphabetically");
+			APP.environments.disableFunction("sa_div");
 			APP.environments.disableFunction("link_duplicateActivePerson");
 			
 		}
@@ -650,7 +650,7 @@ eldp_environment.workflow[1] = (function(){
 			highlightActivePersonInList(my.active_person_index);
 			
 			APP.environments.enableFunction("link_delete_active_person");
-			APP.environments.enableFunction("link_sort_persons_alphabetically");
+			APP.environments.enableFunction("sa_div");
 			APP.environments.enableFunction("link_duplicateActivePerson");
 		}
 

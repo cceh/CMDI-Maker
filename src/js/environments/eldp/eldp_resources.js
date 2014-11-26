@@ -512,7 +512,7 @@ eldp_environment.workflow[0] = (function(){
 		
 		else {    //for all media files of filetype
 		
-			for (f=0; f<my.available_resources.length; f++){
+			for (f = 0; f < my.available_resources.length; f++){
 			
 				var file_type = getFileTypeFromFilename(my.available_resources[f].name);
 			
