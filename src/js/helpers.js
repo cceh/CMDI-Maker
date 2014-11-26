@@ -77,7 +77,12 @@ function getFileTypeFromFilename(filename){
 
 	var pos_of_dot = filename.lastIndexOf(".");
 	
-	return filename.slice(pos_of_dot+1,filename.length).toLowerCase();
+	var file_type = filename.slice(pos_of_dot+1,filename.length).toLowerCase();
+	
+	//because it sometimes happens that there is some crazy stuff in string that should be removed
+	file_type = removeAllCharactersFromStringExcept(file_type, "abcdefghijklmnopqrstuvwxyz0123456789");
+	
+	return file_type;
 
 }
 

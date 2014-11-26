@@ -40,7 +40,7 @@ var ObjectList = function() {
 
 		for (var i in obj) {
 			if (obj[i] && typeof obj[i] == 'object') {
-				clone[i] = cloneObj(obj[i]);
+				clone[i] = cloneObject(obj[i]);
 			} else {
 				clone[i] = obj[i];
 			}
@@ -185,6 +185,8 @@ var ObjectList = function() {
 	
 	};
 	
+	this.eraseByID = this.removeByID;
+	
 	
 	this.removeByIndex = function(index){
 	
@@ -272,6 +274,7 @@ var ObjectList = function() {
 	
 	};
 	
+	this.duplicate = this.duplicateByID;
 	
 	this.duplicateByIndex = function(index){
 	
@@ -281,8 +284,6 @@ var ObjectList = function() {
 	
 	};
 	
-	
-	this.duplicate = this.duplicateByID;
 	
 	
 	//this.duplicateKey //duplicates a subobject by key in another list item

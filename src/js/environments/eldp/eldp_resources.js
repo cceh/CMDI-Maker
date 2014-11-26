@@ -91,17 +91,6 @@ eldp_environment.workflow[0] = (function(){
 	
 	};
 	
-	/*
-	my.addCompatibilityWarning = function(parent, string){
-	
-		var warning_div = dom.div(parent,"","warning_div");
-		var warning_img_div = dom.div(warning_div,"","warning_img_div");
-		APP.GUI.icon(warning_img_div,"","warning_icon", "warning");
-		
-		dom.div(warning_div,"","compatibility_warning", string);
-	
-	};*/
-	
 	
 	my.getFileType = function(filename){
 	
@@ -499,20 +488,13 @@ eldp_environment.workflow[0] = (function(){
   
 
 	my.createBundlePerResource = function(){
-		var chosen_file_type;
+
 		var f;
 
-		var radio_buttons = document.getElementsByName("radio_file_type");
-		
-		//get file type
-		for (var i = 0; i < radio_buttons.length; i++) {
-			if (radio_buttons[i].checked) {
-				chosen_file_type = radio_buttons[i].value;
-				break;
-			}
-		}
+		var radio_buttons = dom.getByName("radio_file_type");
+		var chosen_file_type = dom.getSelectedRadioValue(radio_buttons);	
 
-		console.log("Searching for files of chosen file type" + chosen_file_type);
+		console.log("Searching for files of chosen file type " + chosen_file_type);
 		
 		if (chosen_file_type == "selected"){
 		
@@ -532,7 +514,9 @@ eldp_environment.workflow[0] = (function(){
 		
 			for (f=0; f<my.available_resources.length; f++){
 			
-				if (getFileTypeFromFilename(my.available_resources[f].name) == chosen_file_type){
+				var file_type = getFileTypeFromFilename(my.available_resources[f].name);
+			
+				if (file_type == chosen_file_type){
 				
 					console.log("Found a file of file type " + chosen_file_type);
 					

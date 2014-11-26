@@ -344,6 +344,7 @@ eldp_environment.workflow[2] = (function() {
 				// user clicked "cancel"
 				my.bundles.eraseByID(bundle_id);
 				APP.log(l("bundle", "bundle_deleted"));
+				refresh();
 			}
 		}, l("bundle", "no"), l("bundle", "yes_delete_bundle"));
 
@@ -758,6 +759,8 @@ eldp_environment.workflow[2] = (function() {
 	//refresh all bundles with available media files
 
 		var visible_bundles = my.render.pager.visible_items;
+		//console.log("VISIBLE ITEMS");
+		//console.log(visible_bundles);
 	
 		for (var s = 0; s < visible_bundles.length; s++){
 		

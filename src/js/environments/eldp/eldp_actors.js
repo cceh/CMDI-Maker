@@ -240,10 +240,19 @@ eldp_environment.workflow[1] = (function(){
 				id: "link_sort_persons_alphabetically",
 				icon: "az",
 				label: l("sort_persons_alphabetically"),
+				type: "function_wrap",
+				wrapper_id: "sa_div",
+				sub_div: "sa_subdiv",
+				sub_div_innerHTML: 
+					'<input type="radio" name="sa_by" value="nameKnownAs"> By Name (known as)<br>'+
+					'<input type="radio" name="sa_by" value="fullName" checked> By Full Name<br>'+
+					'<input type="radio" name="sa_by" value="nameSortBy"> By Name (Sort By)',
 				onclick: function() {
 				
-					my.persons.sortByKey("fullName");
-
+					my.saveActivePerson();
+			
+					var key = dom.getSelectedRadioValue(dom.getByName("sa_by"));
+					my.persons.sortByKey(key);
 					my.refreshListDisplay();
 		
 					APP.log(l("persons_alphabetically_sorted"));
@@ -254,7 +263,11 @@ eldp_environment.workflow[1] = (function(){
 				id: "link_duplicateActivePerson",
 				icon: "duplicate_user",
 				label: l("duplicate_this_person"),
-				onclick: function() { my.duplicateActivePerson(); }
+				onclick: function() {
+					my.saveActivePerson();
+					my.persons.duplicateByIndex(my.active_person_index);
+					my.refreshListDisplay();
+				}
 			}
 		];
 	};

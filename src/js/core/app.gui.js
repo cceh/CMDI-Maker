@@ -1014,7 +1014,7 @@ APP.GUI = (function() {
 			
 			//if page is last page
 			if (self.current_page == self.page_count - 1){
-			
+
 				self.visible_items = self.items_list.slice(
 					self.start_item
 				);
@@ -1026,6 +1026,15 @@ APP.GUI = (function() {
 				);
 				*/
 				
+				
+			}
+			
+			//console.log("PAGER ITEMS LIST:");
+			//console.log(self.items_list);
+			
+			//if page is last page but no items there because no items at all
+			if (self.items_list.length == 0){
+				self.visible_items = [];
 			}
 		
 		

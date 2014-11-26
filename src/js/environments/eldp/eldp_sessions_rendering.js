@@ -117,9 +117,9 @@ eldp_environment.workflow[2].render = (function() {
 	
 	my.refreshResources = function(bundle_id){
 	//refresh resources for one bundle
-
+		console.log("BUNDLE ID " + bundle_id);
 		var add_res_div = g(my.dom_element_prefix+bundle_id+"_resources_add_mf_div");
-
+		
 		add_res_div.innerHTML = "";
 
 		var select = document.createElement("select");
@@ -160,19 +160,18 @@ eldp_environment.workflow[2].render = (function() {
 		
 		bundles_view.innerHTML = "";
 		
-		if (bundles.length === 0){
-	
-			my.displayNoBundleText(actions.newBundle);
-			return;
-	
-		}
-
 		//console.log("render.refresh: bundles: ");
 		//console.log(bundles);
 
 		my.pager.refresh(bundles);
 		
 		forEach(my.pager.visible_items, my.renderBundle);
+		
+		if (bundles.length === 0){
+	
+			my.displayNoBundleText(actions.newBundle);
+	
+		}
 
 	};
 	
@@ -526,7 +525,7 @@ eldp_environment.workflow[2].render = (function() {
 	};
 	
 	
-	my.displayNoBundleText = function(){
+	my.displayNoBundleText = function(action){
 
 		console.log("Showing no bundle text");
 
@@ -544,7 +543,7 @@ eldp_environment.workflow[2].render = (function() {
 
 		no_bundles_message.innerHTML += l("bundle", "why_not_create_one__after_link");
 
-		g("new_bundle_link").addEventListener('click', actions.newBundle);
+		g("new_bundle_link").addEventListener('click', action);
 		//we have to use g here instead of no_bundles_link, because latter one isn't there anymore. it has been overwritten by ...innerHTML --> logically!
 		
 		bundles_view.scrollTop = 0;
