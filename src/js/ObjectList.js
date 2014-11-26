@@ -151,9 +151,20 @@ var ObjectList = function() {
 	};
 	
 	
-	this.getArrayWithIDs = function(array){
+	this.getArrayWithValuesByKey = function(key){
 
-		return getArrayWithValuesByKey(array, "id");
+		var new_array = map(list, function(item){
+			return item[key];
+		});
+
+		return new_array;
+
+	}
+	
+	
+	this.getArrayWithIDs = function(){
+
+		return self.getArrayWithValuesByKey("id");
 
 	};
 	
@@ -232,6 +243,24 @@ var ObjectList = function() {
 		return id;
 	
 	};
+	
+	
+	this.replaceByID = function(id, object){
+	
+		var index = self.getIndexByID(id);
+	
+		if (typeof index == "undefined"){
+			return;
+		}
+		
+		//set old id to object
+		object.id = id;
+	
+		list.splice(index, 1, object);
+		
+	}
+	
+	this.replace = this.replaceByID;
 	
 	
 	//DUPLICATE
@@ -363,6 +392,32 @@ var ObjectList = function() {
 		});
 
 
+	};
+	
+	
+	this.isThereAnyItemWhereKeyIsValue = function(key, value){
+	
+		for (var i = 0; i < list.length; i++){
+			if (self.get(i)[key] == value){
+				return true;
+			}
+		}
+		
+		return false;	
+	
+	};
+	
+	
+	this.isThereAnyItemWhereKeyIsNotValue = function(key, value){
+	
+		for (var i = 0; i < list.length; i++){
+			if (self.get(i)[key] != value){
+				return true;
+			}
+		}
+		
+		return false;	
+	
 	};
 
 

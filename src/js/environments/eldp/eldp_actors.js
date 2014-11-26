@@ -23,7 +23,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	var showLanguagesOfActivePerson = function(){
 
-		forEach(my.persons[my.active_person_index].languages, my.languages.set);
+		forEach(my.persons.get(my.active_person_index).languages, my.languages.set);
 
 	};
 	
@@ -73,7 +73,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		object.languages = getLanguagesOfActivePersonFromForm();  //PRELIMINARY OVERWRITE!
 
-		object.id = my.persons[my.active_person_index].id;
+		object.id = my.persons.idOf(my.active_person_index);
 		
 		//console.log("Saving person with id " + object.id);
 
@@ -97,20 +97,14 @@ eldp_environment.workflow[1] = (function(){
 	
 		my.saveActivePerson();
 		
-		my.show(my.persons[index].id);
+		my.show(my.persons.idOf(index));
 	
 	};
 	
 	
 	var isEveryPersonNamed = function(){
 	
-		for (var i=0; i<my.persons.length; i++){
-			if (my.persons[i].name == ""){
-				return false;
-			}
-		}
-		
-		return true;
+		return !(my.persons.isThereAnyItemWhereKeyIsValue("name", ""));
 	
 	};
 	
@@ -127,7 +121,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	var person_form = my.parent.person_form;
 	
-	my.persons = [];
+	my.persons = new ObjectList();
 	
 	my.element_id_prefix = "person_";
 	
@@ -137,15 +131,13 @@ eldp_environment.workflow[1] = (function(){
 		icon: "user"
 	};
 	
-	my.id_counter = 0;
 	my.active_person_index;
 	
 	my.module_view;
 	
 	my.init = function(view){
 	
-		my.persons = [];
-		my.id_counter = 0;
+		my.persons.reset();
 		my.active_person = undefined;  //Necessary!
 		
 		my.module_view = view;
@@ -175,8 +167,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.saveActivePerson();
 		
-		object.persons = my.persons;
-		object.id_counter = my.id_counter;
+		object.persons = my.persons.getState();
 		object.active_person = my.active_person;
 		
 		return object;
@@ -210,11 +201,7 @@ eldp_environment.workflow[1] = (function(){
 	my.recall = function(data){
 	
 		if (data.persons){
-			my.persons = data.persons;
-		}
-		
-		if (data.id_counter){
-			my.id_counter = data.id_counter;
+			my.persons.setState(data.persons);
 		}
 		
 		if (data.active_person_index){
@@ -229,7 +216,7 @@ eldp_environment.workflow[1] = (function(){
 		my.refreshListDisplay();
 		
 		if (typeof my.active_person_index != "undefined"){
-			my.show(my.persons[my.active_person_index].id);
+			my.show(my.persons.idOf(my.active_person_index));
 		}
 	
 	};
@@ -253,7 +240,15 @@ eldp_environment.workflow[1] = (function(){
 				id: "link_sort_persons_alphabetically",
 				icon: "az",
 				label: l("sort_persons_alphabetically"),
-				onclick: function() { my.sortAlphabetically(); }
+				onclick: function() {
+				
+					my.persons.sortByKey("fullName");
+
+					my.refreshListDisplay();
+		
+					APP.log(l("persons_alphabetically_sorted"));
+					
+				}
 			},
 			{
 				id: "link_duplicateActivePerson",
@@ -277,8 +272,7 @@ eldp_environment.workflow[1] = (function(){
 			else {
 				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button
 				
-				my.id_counter = 0;
-				my.persons = [];
+				my.persons.reset();
 
 				APP.log(l("all_persons_deleted"));
 				
@@ -291,7 +285,7 @@ eldp_environment.workflow[1] = (function(){
 
 	my.show = function(person_id){
 
-		var person_index = my.getIndexByID(person_id);
+		var person_index = my.persons.getIndexByID(person_id);
 		
 		if (typeof person_index == "undefined"){
 			console.error("person.show: Undefined person_id!");
@@ -314,7 +308,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.refreshFormTitle();
 		
-		var person_to_display = my.persons[person_index];
+		var person_to_display = my.persons.get(person_index);
 		
 		APP.forms.fill(person_form, my.element_id_prefix, person_to_display);
 		
@@ -327,7 +321,7 @@ eldp_environment.workflow[1] = (function(){
 	
 		var form_title = g(my.element_id_prefix + "form_title");
 		
-		var person_name = my.getDisplayName(my.persons[my.active_person_index].id);
+		var person_name = my.getDisplayName(my.persons.idOf(my.active_person_index));
 		
 		if (person_name == ""){
 			form_title.innerHTML = l("unnamed_person");
@@ -340,31 +334,11 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.getIndexByID = function(person_id) {
-
-		for (var i = 0, len = my.persons.length; i < len; i++) {
-			if (my.persons[i].id == person_id){
-				return i;
-			}
-		}
-		
-		return alert("An error has occured.\nCould not find persons cache index from person id!\n\nperson_id = " + person_id);
-		
-	};
-	
-	
-	my.getPersonByID = function(person_id){
-	
-		return getObject(my.persons, "id", person_id);
-		
-	}
-	
-	
 	my.export_persons = function(){
 		
 		if (my.persons.length !== 0){
 		
-			var persons_json = JSON.stringify(my.persons);
+			var persons_json = JSON.stringify(my.persons.getState());
 			
 			APP.save_file(persons_json, "persons.json", APP.CONF.file_download_header);
 			
@@ -494,14 +468,10 @@ eldp_environment.workflow[1] = (function(){
 	my.save = function(person_to_put){
 	//this will always overwrite an existing person
 
-		//create array with all person ids
-		var person_ids = getArrayWithIDs(my.persons);
-
-		my.persons.splice(my.getIndexByID(person_to_put.id),1,person_to_put);
+		my.persons.replace(person_to_put.id, person_to_put);
 
 		//if the person does already exist, check if it is in a bundle and correct the person name in the bundle, if required
 		bundle.updatePersonNameInAllBundles(person_to_put.id);
-
 
 		return person_to_put;
 
@@ -526,20 +496,14 @@ eldp_environment.workflow[1] = (function(){
 			person_to_put = APP.forms.createEmptyObjectFromTemplate(person_form);
 		}
 		
-		person_to_put.id = my.id_counter;
-		console.log("Saving person with id " + person_to_put.id);
-		my.id_counter++;
-		
-		my.persons.push(person_to_put);
-	 
-		console.log('Yeah, dude inserted! insertId is: ' + person_to_put.id);
+		var person_id = my.persons.add(person_to_put);
 		
 		my.createFormIfNotExistent();
 
 		my.refreshListDisplay();
 		
 		//show this created person
-		my.show(person_to_put.id);
+		my.show(person_id);
 	};
 
 
@@ -550,7 +514,7 @@ eldp_environment.workflow[1] = (function(){
 			return;
 		}
 	
-		var name_of_person = my.persons[my.active_person_index].name;
+		var name_of_person = my.persons.get(my.active_person_index).name;
 		var confirm_message;
 		
 		if (name_of_person == ""){
@@ -586,18 +550,18 @@ eldp_environment.workflow[1] = (function(){
 
 	my.deleteActivePerson = function(){
 
-		my.persons.splice(my.active_person_index,1);
+		my.persons.removeByIndex(my.active_person_index);
 		
 		if (my.persons.length == 0){
 			my.active_person_index = undefined;
 		}		
 		
 		if (my.active_person_index > 0){
-			my.show(my.persons[my.active_person_index - 1].id);
+			my.show(my.persons.idOf(my.active_person_index - 1));
 		}
 		
 		else if (my.persons.length > 0){
-			my.show(my.persons[0].id)
+			my.show(my.persons.idOf(0))
 		}
 		
 		my.refreshListDisplay();
@@ -606,13 +570,13 @@ eldp_environment.workflow[1] = (function(){
 	
 	my.getAge = function (bundle_id, person_id){
 
-		var i = my.getIndexByID(person_id);
+		var pers = my.persons.getByID(person_id);
 		
-		if (my.persons[i].age === ""){   //at first, check, if person's age hasn't been specified yet
+		if (pers.age === ""){   //at first, check, if person's age hasn't been specified yet
 		
 			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
-				var birthDate = my.persons[i].birth_date.year + "-" + my.persons[i].birth_date.month + "-" + my.persons[i].birth_date.day;
+				var birthDate = pers.birth_date.year + "-" + pers.birth_date.month + "-" + my.persons[i].birth_date.day;
 				var bundleDate = get(bundle.dom_element_prefix+bundle_id+"_bundle_date_year") + "-" +
 				get(bundle.dom_element_prefix+bundle_id+"_bundle_date_month") + "-" + get(bundle.dom_element_prefix+bundle_id+"_bundle_date_day"); 
 				var age_calc_result = calcAgeAtDate(bundleDate,birthDate);
@@ -641,23 +605,12 @@ eldp_environment.workflow[1] = (function(){
 		
 		else { //if person's age has been specified
 		
-			return my.persons[i].age;
+			return pers.age;
 		
 		}
 
 	};
 	
-
-	my.sortAlphabetically = function(){
-
-		my.persons = sortByKey(my.persons,"title");
-
-		my.refreshListDisplay();
-		
-		APP.log(l("persons_alphabetically_sorted"));
-
-	};
-
 
 	my.refreshListDisplay = function(not_in_bundles){
 		
@@ -669,7 +622,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		g(my.element_id_prefix + 'list').innerHTML = "";
 
-		forEach(my.persons, renderPersonListEntry);
+		my.persons.forEach(renderPersonListEntry);
 		
 		if (my.persons.length == 0){
 			my.showNoPersonsMessage();
@@ -689,7 +642,7 @@ eldp_environment.workflow[1] = (function(){
 		}
 
 		if ((bundle) && (!not_in_bundles)){
-			bundle.refreshPersonLists(my.persons);
+			bundle.refreshPersonLists(my.persons.getAll());
 		}
 		
 	};
@@ -704,7 +657,7 @@ eldp_environment.workflow[1] = (function(){
 		}
 		
 		else {		
-			person = my.persons[my.getIndexByID(person_or_person_id)];
+			person = my.persons.getByID(person_or_person_id);
 		}
 		
 		

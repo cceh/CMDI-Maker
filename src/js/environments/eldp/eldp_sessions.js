@@ -377,7 +377,7 @@ eldp_environment.workflow[2] = (function() {
 		//if bundle doesn't already contain this person
 		//if (person_ids_in_bundle.indexOf(person_id) == -1){
 		
-			if (person.persons[person.getIndexByID(person_id)]){  //check if person still exists before adding
+			if (person.persons.getByID(person_id)){  //check if person still exists before adding
 				
 				console.log("adding person in bundle with id " + bundle_id);
 				console.log(role);

@@ -269,7 +269,7 @@ eldp_environment.workflow[2].render = (function() {
 		//refreshes list of resources that are available
 		my.refreshResources(bundle_id);
 		
-		var all_available_person_ids = getArrayWithIDs(person.persons);
+		var all_available_person_ids = person.persons.getArrayWithIDs();
 		// find a better place for that
 
 		my.refreshPersonListInBundle(bundle_object, all_available_person_ids);
@@ -463,7 +463,7 @@ eldp_environment.workflow[2].render = (function() {
 
 		var select = document.createElement("select");
 		
-		dom.setSelectOptions(select, person.persons, "display_name", "take_index");
+		dom.setSelectOptions(select, person.persons.getAll(), "display_name", "take_index");
 
 		if (person.persons.length > 0){
 		
@@ -472,7 +472,7 @@ eldp_environment.workflow[2].render = (function() {
 			dom.br(aad);	
 			
 			dom.button(aad, "Add to bundle", function(num) { 
-				return function(){ actions.addPerson(num, person.persons[select.selectedIndex].id);  };
+				return function(){ actions.addPerson(num, person.persons.idOf(select.selectedIndex));  };
 			}(bundle_id));
 			
 		}
@@ -492,13 +492,13 @@ eldp_environment.workflow[2].render = (function() {
 		
 		
 		//check if person in bundle is part of persons[...].id(s)? if not, remove it immediately!
-		forEach(bundle.persons.persons, function(person_in_bundle){
+		bundle.persons.persons.forEach(function(person_in_bundle){
 			
 			// if a person is not in available persons, remove it from the bundle!
 			if (all_available_person_ids.indexOf(person_in_bundle.person_id) == -1){
 				
 				console.log("There is an person in bundle with id" + bundle_id + " that does not exist anymore. Deleting!");
-				my.removePerson(bundle_id, person_in_bundle.id);
+				actions.removePerson(bundle_id, person_in_bundle.id);
 			
 			}
 		
