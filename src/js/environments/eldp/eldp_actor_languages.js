@@ -62,13 +62,9 @@ eldp_environment.workflow[1].languages = (function (){
 
 	my.clearActivePersonLanguages = function(){
 
-		while (my.languages_of_active_person.length > 0){
-
-			my.remove(my.languages_of_active_person.idOf(0));
-			
-		}
-		
 		my.languages_of_active_person.reset();
+
+		g(my.element_id_prefix + "display").innerHTML = "";
 
 	};
 	
