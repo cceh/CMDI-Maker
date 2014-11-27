@@ -71,8 +71,6 @@ var APP = (function () {
 		
 
 		g("VIEWLINK_start").addEventListener("click", function() { my.view("VIEW_start"); });
-		
-		//g("LINK_refresh_version").addEventListener("click", APP.getVersionOnServer);
 	
 		document.addEventListener("keydown", function(event) {
 		

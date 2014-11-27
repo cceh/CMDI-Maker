@@ -35,6 +35,7 @@ var source_scripts = [
 "./src/js/core/app.forms.js",
 "./src/js/core/app.gui.js",
 "./src/js/core/app.gui.forms.js",
+"./src/js/core/app.gui.pager.js",
 "./src/js/core/app.save_and_recall.js",
 "./src/js/core/app.settings.js",
 "./src/js/core/app.config.js",
