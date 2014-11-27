@@ -18,10 +18,15 @@ limitations under the License.
 var ObjectList = function() {
 	"use strict";
 
+	var self = this;
+	
 	//PRIVATE
 	
 	var list = [];
 	var id_counter = 0;
+	
+	//value is id of the object the pointer points to
+	var pointer = -1;
 	
 	var getNewID = function(){
 	
@@ -50,11 +55,41 @@ var ObjectList = function() {
 	};
 	
 	
+	var checkPointerValidity = function(){
+	
+		if (!self.idExists(pointer)){
+		
+			pointer = 0;
+		
+		}
+		
+		if (self.length == 0){
+		
+			pointer = -1;
+		
+		}
+	
+	};
+	
+	
 	//PUBLIC
 	
-	var self = this;
-	
 	this.length = 0;
+	
+	
+	this.idExists = function(id){
+	
+		for (var i = 0; i < list.length; i++){
+		
+			if (list[i].id == id){
+				return true;
+			}
+		
+		}
+		
+		return false;
+	
+	}
 	
 	
 	//GET METHODS
@@ -179,9 +214,13 @@ var ObjectList = function() {
 	//REMOVE METHODS
 	this.removeByID = function(id){
 	
-		list.splice(self.getIndexByID(id),1);
+		var index = self.getIndexByID(id);
+	
+		list.splice(index, 1);
 		
 		self.length = list.length;
+		
+		checkPointerValidity();
 	
 	};
 	
@@ -193,6 +232,8 @@ var ObjectList = function() {
 		list.splice(index, 1);
 		
 		self.length = list.length;
+		
+		checkPointerValidity();
 	
 	};
 	
@@ -212,7 +253,7 @@ var ObjectList = function() {
 	
 		if (list.length > 0){
 		
-			self.remove(list[list.length - 1].id);
+			self.removeByID(list[list.length - 1].id);
 
 		}
 	
@@ -225,6 +266,15 @@ var ObjectList = function() {
 		
 		self.length = list.length;
 		
+		pointer = -1;
+		
+	};
+	
+	
+	this.removeActive = function(){
+	
+		self.removeByID(pointer);
+	
 	};
 	
 	
@@ -242,15 +292,17 @@ var ObjectList = function() {
 		
 		self.length = list.length;
 		
+		checkPointerValidity();
+		
 		return id;
 	
 	};
 	
 	
 	this.replaceByID = function(id, object){
-	
+
 		var index = self.getIndexByID(id);
-	
+
 		if (typeof index == "undefined"){
 			return;
 		}
@@ -263,6 +315,12 @@ var ObjectList = function() {
 	}
 	
 	this.replace = this.replaceByID;
+	
+	this.replaceActive = function(object){
+	
+		self.replaceByID(pointer, object);
+	
+	};
 	
 	
 	//DUPLICATE
@@ -281,6 +339,13 @@ var ObjectList = function() {
 		var clone = cloneObject(self.getByIndex(index));
 		
 		self.add(clone);
+	
+	};
+	
+	
+	this.duplicateActive = function(){
+	
+		self.duplicateByID(pointer);
 	
 	};
 	
@@ -334,6 +399,7 @@ var ObjectList = function() {
 	
 		list = [];
 		id_counter = 0;
+		pointer = -1;
 		self.length = list.length;
 	
 	};
@@ -344,6 +410,8 @@ var ObjectList = function() {
 		id_counter = state.id_counter;
 		list = state.list;
 		self.length = list.length;
+		
+		pointer = state.pointer;
 	
 	};	
 	
@@ -352,7 +420,8 @@ var ObjectList = function() {
 	
 		var state = {
 			id_counter: id_counter,
-			list: list
+			list: list,
+			pointer: pointer
 		};
 		
 		return state;
@@ -423,6 +492,51 @@ var ObjectList = function() {
 
 
 	//this.sortByID
+	
+	
+	
+	//POINTER METHODS
+	this.setPointer = function(id){
+	
+		if (self.idExists(id)){
+			pointer = id;
+		}
+	
+	};
+	
+	
+	this.setPointerByIndex = function(index){
+	
+		if (list[index]){
+			self.setPointer(list[index].id);
+		}
+	
+	};
+	
+	
+	this.getPointer = function(){
+	
+		return pointer;
+		
+	};
+	
+	
+	this.getIndexOfActiveObject = function(){
+	
+		return self.getIndexByID(pointer);
+	
+	};
+	
+	this.getActiveIndex = this.getIndexOfActiveObject;
+	
+	
+	this.getActiveObject = function(){
+	
+		return self.getByID(pointer);
+	
+	}
+	
+	this.getActive = this.getActiveObject;
 	
 
 

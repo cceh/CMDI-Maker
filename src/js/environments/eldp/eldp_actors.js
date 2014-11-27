@@ -23,7 +23,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	var showLanguagesOfActivePerson = function(){
 
-		forEach(my.persons.get(my.active_person_index).languages, my.languages.set);
+		forEach(my.persons.getActive().languages.actor_languages, my.languages.set);
 
 	};
 	
@@ -31,7 +31,7 @@ eldp_environment.workflow[1] = (function(){
 	var highlightActivePersonInList = function(person_index){
 
 		if (typeof person_index == "undefined"){
-			console.log("I shall highlight a person with index = undefined! Returning!");
+			console.error("I shall highlight a person with index = undefined! Returning!");
 			return;
 		}
 	
@@ -46,7 +46,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	var getLanguagesOfActivePersonFromForm = function(){
 	
-		var array = map(my.languages.languages_of_active_person, function(ALO){
+		var array = my.languages.languages_of_active_person.map(function(ALO){
 			
 			if (ALO.name_type == "LOCAL"){
 			
@@ -71,10 +71,8 @@ eldp_environment.workflow[1] = (function(){
 
 		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, person_form);
 		
-		object.languages = getLanguagesOfActivePersonFromForm();  //PRELIMINARY OVERWRITE!
+		object.languages.actor_languages = getLanguagesOfActivePersonFromForm();  //PRELIMINARY OVERWRITE!
 
-		object.id = my.persons.idOf(my.active_person_index);
-		
 		//console.log("Saving person with id " + object.id);
 
 		return object;
@@ -94,7 +92,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	
 	var handleClickOnPersonList = function(index){
-	
+
 		my.saveActivePerson();
 		
 		my.show(my.persons.idOf(index));
@@ -131,14 +129,11 @@ eldp_environment.workflow[1] = (function(){
 		icon: "user"
 	};
 	
-	my.active_person_index;
-	
 	my.module_view;
 	
 	my.init = function(view){
 	
 		my.persons.reset();
-		my.active_person = undefined;  //Necessary!
 		
 		my.module_view = view;
 		
@@ -168,7 +163,6 @@ eldp_environment.workflow[1] = (function(){
 		my.saveActivePerson();
 		
 		object.persons = my.persons.getState();
-		object.active_person = my.active_person;
 		
 		return object;
 	
@@ -204,20 +198,9 @@ eldp_environment.workflow[1] = (function(){
 			my.persons.setState(data.persons);
 		}
 		
-		if (data.active_person_index){
-			my.active_person_index = data.active_person_index;
-		}
-		
-		//if active_person_index cannot be recalled but there are persons, set it to 0
-		else if (my.persons.length > 0){
-			my.active_person_index = 0;
-		}
-		
 		my.refreshListDisplay();
 		
-		if (typeof my.active_person_index != "undefined"){
-			my.show(my.persons.idOf(my.active_person_index));
-		}
+		my.show(my.persons.getPointer());
 	
 	};
 	
@@ -265,8 +248,11 @@ eldp_environment.workflow[1] = (function(){
 				label: l("duplicate_this_person"),
 				onclick: function() {
 					my.saveActivePerson();
-					my.persons.duplicateByIndex(my.active_person_index);
+					my.persons.duplicateActive();
 					my.refreshListDisplay();
+				
+					APP.log(l("person_saved_and_duplicated"),"success");
+			
 				}
 			}
 		];
@@ -317,11 +303,11 @@ eldp_environment.workflow[1] = (function(){
 		highlightActivePersonInList(person_index);
 		my.languages.clearActivePersonLanguages();
 		
-		my.active_person_index = person_index;
+		my.persons.setPointer(person_id);
 		
 		my.refreshFormTitle();
 		
-		var person_to_display = my.persons.get(person_index);
+		var person_to_display = my.persons.getActive();
 		
 		APP.forms.fill(person_form, my.element_id_prefix, person_to_display);
 		
@@ -334,7 +320,7 @@ eldp_environment.workflow[1] = (function(){
 	
 		var form_title = g(my.element_id_prefix + "form_title");
 		
-		var person_name = my.getDisplayName(my.persons.idOf(my.active_person_index));
+		var person_name = my.getDisplayName(my.persons.getPointer());
 		
 		if (person_name == ""){
 			form_title.innerHTML = l("unnamed_person");
@@ -366,55 +352,6 @@ eldp_environment.workflow[1] = (function(){
 
 	};
 	
-	
-	my.handleImportFileInputChange = function (evt){
-	
-		var files = evt.target.files; // FileList object
-
-		console.log(files);
-		
-		var file = files[0];
-		
-		console.log(file);
-		
-		readFileAsText(file, function(result){
-			var imported_persons;
-		
-			try {
-				imported_persons = JSON.parse(result);
-			}
-			
-			catch (e) {
-			//if json parsing is not possible, try xml parsing
-
-				if (window.DOMParser) {
-					var parser = new DOMParser();
-					
-					var xml = parser.parseFromString(result,"text/xml");
-					
-					imported_persons = parseIMDIForpersons(xml);
-					
-				}
-				
-				
-			}
-			
-			if (!imported_persons){
-				return;
-			}
-			
-			for (var a=0; a<imported_persons.length; a++){
-				my.save(imported_persons[a], true);
-			}
-			
-			my.refreshListDisplay();
-			
-			APP.log(imported_persons.length + " " + l("persons_imported"));
-		
-		});
-
-	};
-
 
 	my.createFormIfNotExistent = function(){
 	
@@ -442,28 +379,15 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.duplicate_active_person = function(){
-
-		//first, save changes to the current person
-		var person_object = my.saveActivePerson();
-		
-		//then create a new person with this object
-		my.createNewPerson(person_object);
-		
-		APP.log(l("person_saved_and_duplicated"),"success");
-
-	};
-
-
 	my.saveActivePerson = function(){
 	
-		if (typeof my.active_person_index == "undefined"){
+		if (typeof my.persons.pointer == -1){
 			console.info("Shall save active person but active person is undefined! No problem!");
 			return;
 		}
 	
 		var person_to_put = makePersonObjectFromFormInput();
-
+		
 		person_to_put.display_name = my.getDisplayName(person_to_put);
 		
 		my.save(person_to_put);
@@ -481,7 +405,7 @@ eldp_environment.workflow[1] = (function(){
 	my.save = function(person_to_put){
 	//this will always overwrite an existing person
 
-		my.persons.replace(person_to_put.id, person_to_put);
+		my.persons.replaceActive(person_to_put);
 
 		//if the person does already exist, check if it is in a bundle and correct the person name in the bundle, if required
 		bundle.updatePersonNameInAllBundles(person_to_put.id);
@@ -522,12 +446,12 @@ eldp_environment.workflow[1] = (function(){
 
 	my.handleClickOnDeletePerson = function(){
 	
-		if (typeof my.active_person_index == "undefined"){
+		if (typeof my.persons.pointer == -1){
 			console.warn("Active Person is undefined. Don't know what to delete!");
 			return;
 		}
 	
-		var name_of_person = my.persons.get(my.active_person_index).name;
+		var name_of_person = my.persons.getActive().name;
 		var confirm_message;
 		
 		if (name_of_person == ""){
@@ -563,21 +487,9 @@ eldp_environment.workflow[1] = (function(){
 
 	my.deleteActivePerson = function(){
 
-		my.persons.removeByIndex(my.active_person_index);
-		
-		if (my.persons.length == 0){
-			my.active_person_index = undefined;
-		}		
-		
-		if (my.active_person_index > 0){
-			my.show(my.persons.idOf(my.active_person_index - 1));
-		}
-		
-		else if (my.persons.length > 0){
-			my.show(my.persons.idOf(0))
-		}
-		
+		my.persons.removeActive();
 		my.refreshListDisplay();
+
 	};
 	
 	
@@ -647,7 +559,7 @@ eldp_environment.workflow[1] = (function(){
 		}
 		
 		else {
-			highlightActivePersonInList(my.active_person_index);
+			highlightActivePersonInList(my.persons.getActiveIndex());
 			
 			APP.environments.enableFunction("link_delete_active_person");
 			APP.environments.enableFunction("sa_div");

@@ -478,7 +478,7 @@ var APP = (function () {
 		var random_index = Math.floor(Math.random() * APP.CONF.hellos.length);
 		g("hello").innerHTML = APP.CONF.hellos[random_index][0];
 		g("hello").addEventListener("click", function () {
-			my.log(my.l("start", "this_is","before_language") + APP.CONF.hellos[index][1] + my.l("start", "this_is","after_language"));
+			my.log(my.l("start", "this_is","before_language") + APP.CONF.hellos[random_index][1] + my.l("start", "this_is","after_language"));
 		});
 
 		g("greeting_text").innerHTML = my.l("start","greeting_text");

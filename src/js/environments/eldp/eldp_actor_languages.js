@@ -23,11 +23,9 @@ eldp_environment.workflow[1].languages = (function (){
 	my.parent = eldp_environment;
 	var actor = my.parent.workflow[1];
 
-	my.languages_of_active_person = [];
+	my.languages_of_active_person = new ObjectList();
 	
 	my.element_id_prefix = actor.element_id_prefix + "languages_";
-	
-	my.id_counter = 0;
 	
 	my.l = my.parent.l;
 	
@@ -55,9 +53,7 @@ eldp_environment.workflow[1].languages = (function (){
 
 	my.remove = function (al_id){
 
-		var index = my.getActorLanguageObjectIndexFromID(al_id);
-
-		my.languages_of_active_person.splice(index,1);
+		my.languages_of_active_person.remove(al_id);
 		
 		dom.remove(my.element_id_prefix + al_id + "_div");
 
@@ -68,37 +64,19 @@ eldp_environment.workflow[1].languages = (function (){
 
 		while (my.languages_of_active_person.length > 0){
 
-			my.remove(my.languages_of_active_person[0].id);
+			my.remove(my.languages_of_active_person.idOf(0));
 			
 		}
 		
-		my.id_counter = 0;
+		my.languages_of_active_person.reset();
 
 	};
 	
 
-	my.getActorLanguageObjectIndexFromID = function (al_id){
-
-		for (var l=0; l<my.languages_of_active_person.length; l++){
-		
-			if (my.languages_of_active_person[l].id == al_id){
-				return l;
-			}
-		
-		}
-
-	};
-
-
 	my.set = function(ALO){
 
-		ALO.id = my.id_counter;
-		
-		my.languages_of_active_person.push(ALO);
-		
+		my.languages_of_active_person.add(ALO);
 		my.renderActorLanguage(g(my.element_id_prefix + "display"), ALO);
-
-		my.id_counter += 1;
 
 	};
 	
@@ -106,12 +84,12 @@ eldp_environment.workflow[1].languages = (function (){
 	my.renderActorLanguage = function(parent, ALO){
 	//ALO = ActorLanguageObject
 	
-		var div = dom.make("div",my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry", parent);
+		var div = dom.make("div",my.element_id_prefix + ALO.id + "_div",my.element_id_prefix + "entry", parent);
 		
-		APP.GUI.icon(div,"delete_lang_"+my.id_counter+"_icon","delete_lang_icon", "reset", function(num) {
+		APP.GUI.icon(div,"delete_lang_" + ALO.id + "_icon","delete_lang_icon", "reset", function(num) {
 			return function(){ actor.languages.remove(num);  
 			};
-		}(my.id_counter));
+		}(ALO.id));
 		
 		
 		dom.spanBR(div,"","", "ISO639-3 Code: " + ALO.iso_code);
@@ -123,7 +101,7 @@ eldp_environment.workflow[1].languages = (function (){
 			var textInputValue = (ALO.name !== "") ? ALO.name : my.l("bundle", "specify_local_used_language_name");
 
 			dom.textInput(
-				div, my.element_id_prefix + my.id_counter + "_name_input", "eldp_person_lang_name_input", "",
+				div, my.element_id_prefix + ALO.id + "_name_input", "eldp_person_lang_name_input", "",
 				textInputValue
 			);
 			
@@ -143,7 +121,7 @@ eldp_environment.workflow[1].languages = (function (){
 		dom.br(div);
 		//NOW: Additional information
 		
-		APP.GUI.makeTextarea(18, 4, div, my.l("languages", "additional_information"), my.element_id_prefix + my.id_counter+ "addInfo", my.element_id_prefix + my.id_counter+ "addInfo" , "className", ALO.additional_information, "");
+		APP.GUI.makeTextarea(18, 4, div, my.l("languages", "additional_information"), my.element_id_prefix + ALO.id + "addInfo", my.element_id_prefix + ALO.id + "addInfo" , "className", ALO.additional_information, "");
 		
 	};
 

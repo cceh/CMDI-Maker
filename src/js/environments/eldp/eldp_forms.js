@@ -348,7 +348,8 @@ eldp_environment.person_form = {
 				{
 					heading: "Actor Languages",
 					name: "actor_languages",
-					type: "special"
+					type: "special",
+					object_structure: "array"
 				}
 			]
 		}
