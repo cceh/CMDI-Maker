@@ -184,6 +184,7 @@ var ObjectList = function() {
 		return undefined;
 
 	};
+	this.indexOf = this.getIndexByID;
 	
 	
 	this.getArrayWithValuesByKey = function(key){
@@ -208,7 +209,7 @@ var ObjectList = function() {
 	
 		return list[index].id;
 		
-	}
+	};
 	
 	
 	//REMOVE METHODS

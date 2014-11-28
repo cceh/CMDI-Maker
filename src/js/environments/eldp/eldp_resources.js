@@ -572,30 +572,37 @@ eldp_environment.workflow[0] = (function(){
 			
 		}
 
-
 		//Then check for all resources that have to be faded
-		for (var k=0; k<my.fileSelection.selected_files.length; k++){
+		for (var k = 0; k < my.fileSelection.selected_files.length; k++){
 		
 			var file_index = my.fileSelection.selected_files[k];
+			var file_id = my.resources.idOf(file_index);
 			
-			resources_to_fade.push(file_index);   //fade the resource that is selected
+			
+			resources_to_fade.push(file_id);   //fade the resource that is selected
 			
 			var id_of_res = my.resources.idOf(file_index);
 			
 			//get resource ids of resources that start with the same name as this
 			resources_to_fade_for_file = my.getIDsOfResourcesThatStartWithTheSameNameAsThis(id_of_res);
-		
+			
 			//fade them too
 			for (var j = 0; j < resources_to_fade_for_file.length; j++){
 				resources_to_fade.push(resources_to_fade_for_file[j]);
 			}
+			
+			//console.log(resources_to_fade);
+		
 			
 		};
 		
 		
 		//Then fade them!
 		for (i=0; i<resources_to_fade.length; i++){
-			g(element_prefix+resources_to_fade[i].toString()).style.opacity = "0.5";
+		
+			var index = my.resources.indexOf(resources_to_fade[i]);
+		
+			g(element_prefix+index.toString()).style.opacity = "0.5";
 		}
 	
 	
