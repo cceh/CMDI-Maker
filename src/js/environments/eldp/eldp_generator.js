@@ -23,16 +23,23 @@ eldp_environment.eldp_generator = function(data){
 
 	var insert_cmdi_header = function(MdCreator,MdCreationDate,MdProfile){
 		
-		var return_string = "";
-		return_string+=xml.tag("Header",0);
-		return_string+=xml.element("MdCreator",MdCreator);
-		return_string+=xml.element("MdCreationDate",MdCreationDate);
-		return_string+=xml.element("MdProfile",MdProfile);
-		return_string+=xml.tag("Header",1);
+		var rs = "";
+		rs+=xml.tag("Header",0);
+		rs+=xml.element("MdCreator",MdCreator);
+		rs+=xml.element("MdCreationDate",MdCreationDate);
+		rs+=xml.element("MdProfile",MdProfile);
+		rs+=xml.tag("Header",1);
 		
-		return return_string;
+		return rs;
 		
 	};
+	
+	
+	var getXMLLangAttribute = function(){
+	
+		return ["xml:lang", get("metadata_language_select")];
+	
+	}
 	
 
 	var createBundle = function(bundle, persons, resources){
@@ -40,10 +47,10 @@ eldp_environment.eldp_generator = function(data){
 		xml.reset();  //we're starting a new xml file here, so tabula rasa!
 		//xml.setElementPrefix("cmd");
 
-		var return_string = "";
-		return_string += xml.header;	
+		var rs = ""; //return string
+		rs += xml.header;	
 		
-		return_string += xml.open("CMD",[
+		rs += xml.open("CMD",[
 			["xmlns:cmd","http://www.clarin.eu/cmd/"],
 			["xmlns:dcr","http://www.isocat.org/ns/dcr"],
 			["xmlns:ann","http://www.clarin.eu"],
@@ -54,69 +61,105 @@ eldp_environment.eldp_generator = function(data){
 		
 
 		//CMDI Header
-		return_string += insert_cmdi_header(get("metadata_creator"),today()+"+01:00",eldp_bundle_profile);
+		rs += insert_cmdi_header(get("metadata_creator"),today()+"+01:00",eldp_bundle_profile);
 		
 		
 		//in resources is nothing, as this is a session and no corpus. attached media files in a cmdi session are further down
-		return_string+=xml.tag("Resources",0);
-		return_string+=xml.tag("ResourceProxyList",2);
-		return_string+=xml.tag("JournalFileProxyList",2);
-		return_string+=xml.tag("ResourceRelationList",2);
-		return_string+=xml.tag("Resources",1);
+		rs += xml.tag("Resources",0);
+		rs += xml.tag("ResourceProxyList",2);
+		rs += xml.tag("JournalFileProxyList",2);
+		rs += xml.tag("ResourceRelationList",2);
+		rs += xml.tag("Resources",1);
 		
-		return_string += xml.tag("Components",0);
+		rs += xml.open("Components");
 		
 		
-		return_string += xml.open("ELDP-Bundle");
+		rs += xml.open("ELDP-Bundle");
 
-		return_string += xml.element("Title", bundle.bundle.title);		
+		rs += xml.element("Title", bundle.bundle.title);		
+		rs += xml.element("ID", ""); //no input
+		rs += xml.element("Description", bundle.bundle.description, [getXMLLangAttribute()]);
 		
-		//return_string += xml.element("Name", bundle.bundle.name);
-		//NO TypeofRecord!
+		rs += xml.open("StatusInfo");
+		rs += xml.element("Status", "");
+		rs += xml.element("ChangeDate", today());
+		rs += xml.close("StatusInfo");
 		
-		return_string += xml.open("StatusInfo");
-		return_string += xml.close("StatusInfo");
+		//No depositors
 		
-		return_string += xml.open("Depositors");
-		return_string += xml.close("Depositors");
-		
-		
+		rs += insertBundleLanguages(bundle.languages.bundle_languages);
+		rs += insertBundlePersons(bundle.persons.persons);
 
-		return_string += xml.element("Date", bundle.bundle.date.year + "-" + bundle.bundle.date.month + "-" + bundle.bundle.date.day);
-		return_string += xml.element("Description", bundle.bundle.description);
+		rs += xml.open("ProjectLocations");
 		
-		return_string += xml.open("Location");
-		return_string += xml.element("Continent", bundle.bundle.location.continent);
-		return_string += xml.element("Country", bundle.bundle.location.country);
-		return_string += xml.element("Region", bundle.bundle.location.region);
-		return_string += xml.element("Address", bundle.bundle.location.address);
-		return_string += xml.close("Location")
+		rs += xml.open("ProjectLocation");
+		rs += xml.element("Name", bundle.bundle.location.name);
+		rs += xml.open("ProjectGeographic");
+		rs += xml.element("Country", bundle.bundle.location.country);
+		//rs += xml.element("Region", bundle.bundle.location.region);
+		//rs += xml.element("Address", bundle.bundle.location.address);
+		rs += xml.close("ProjectGeographic");
+		rs += xml.close("ProjectLocation");
 		
-		return_string += xml.open("Persons");
-		return_string += insert_persons(bundle.persons.persons);
-		return_string += xml.close("Persons");
+		rs += xml.close("ProjectLocations");
+
+		rs += insertBundleResources(bundle.resources.resources);
 		
-		return_string += xml.close("ELDP-Bundle");
+		rs += xml.close("ELDP-Bundle");
+		rs += xml.close("Components");
+		rs += xml.close("CMD");
 		
-		return return_string;
+		return rs;
 		
+	};
+	
+	
+	var insertBundleLanguages = function(langs){
+	
+		if (langs.length == 0){
+			return;
+		}
+		
+		var rs = "";
+		
+		rs += xml.open("ContentLanguages");
+		
+		forEach(langs, function(lang){
+		
+			rs += xml.open("ContentLanguage");
+			rs += xml.element("Name", lang.name);
+			rs += xml.element("Code", "ISO639-3:" + lang.code);
+			
+			if (lang.content_language == true){
+				rs += xml.element("Use", "content");
+			}
+			
+			else {
+				rs += xml.element("Use", "working");
+			}
+			
+			rs += xml.close("ContentLanguage");		
+		
+		});
+	
+	
 	};
 	
 	
 	var insertPersonLanguages = function(languages){
 	
-		return_string = "";
+		rs = "";
 	
 		forEach(languages, function(lang){
 		
-			return_string += xml.open("Language");
-			return_string += xml.element("ID", lang.iso_code);
-			return_string += xml.element("Name", lang.name);
-			return_string += xml.close("Language");
+			rs += xml.open("Language");
+			rs += xml.element("ID", lang.iso_code);
+			rs += xml.element("Name", lang.name);
+			rs += xml.close("Language");
 		
 		});
 		
-		return return_string;
+		return rs;
 	
 	
 	};
@@ -126,181 +169,186 @@ eldp_environment.eldp_generator = function(data){
 	!! AGE  = BUNDLE_DATE - PERSON BIRTH YEAR
 	
 	*/
-	var insert_persons = function(person_in_bundles){
+	var insertBundlePersons = function(person_in_bundles){
 	
-		var return_string = "";
+		if (person_in_bundles.length == 0){
+			return;
+		}
+		
+		var rs = "";
+		
+		rs += xml.open("Persons");
 		
 		forEach(person_in_bundles, function(person_in_bundle){
-			var pers = person.getPersonByID(person_in_bundle.id);
+			var pers = person.persons.getByID(person_in_bundle.person_id);
 			
-			return_string += xml.open("Person")
-			return_string += xml.element("Title", pers.title);
-			return_string += xml.element("Role", person_in_bundle.role);
-			//return_string += xml.element("Forenames", pers.forenames);
-			//return_string += xml.element("Surname", pers.surname);
+			rs += xml.open("Person");
 			
+			rs += xml.element("PersonID", "");  //no input
+			rs += xml.element("Role", person_in_bundle.role);
 			
-			return_string += xml.open("Languages");
-			return_string += insertPersonLanguages(pers.languages);
-			return_string += xml.close("Languages");
-			return_string += xml.close("Person");
+			rs += xml.element("BiographicalNote", pers.biographical_note);
+			
+			rs += xml.open("PersonalData");
+			rs += xml.open("Name");
+			
+			rs += xml.element("Title", pers.title);
+			
+			if (pers.nameKnownAs != ""){
+				xml.element("Name", pers.nameKnownAs, ["kind", "knownas"]);
+			}
+			
+			if (pers.fullName != ""){
+				xml.element("Name", pers.fullName, ["kind", "FullName"]);
+			}
+			
+			if (pers.nameSortBy != ""){
+				xml.element("Name", pers.nameSortBy, ["kind", "sortBy"]);
+			}
+			
+			rs += xml.close("Name");
+			
+			rs += xml.open("BiographicalData");
+			
+			rs += xml.element("BirthYear", pers.birth_year);
+			
+			rs += xml.close("BiographicalData");
+			
+	
+	
+			rs += xml.open("Languages");
+			rs += insertPersonLanguages(pers.languages);
+			rs += xml.close("Languages");
+			rs += xml.close("Person");
 		
 		});
+
+		rs += xml.close("Persons");		
+		return rs;
 	
-		return return_string;
 	
-	
-	}
+	};
 
 	
 	var insertContentLanguages = function (session_id) {
 
-		var return_string = "";
+		var rs = "";
 		
 		var languages = corpus.content_languages.content_languages;
 	
 		for (var l=0;l<languages.length;l++){  //for all content languages // no session separate languages yet
 	
-			return_string += xml.open("Content_Language");
-			return_string += xml.element("Id",APP.CONF.LanguageCodePrefix+languages[l][0]);
-			return_string += xml.element("Name",languages[l][3]);
-			return_string += xml.close("Content_Language");
+			rs += xml.open("Content_Language");
+			rs += xml.element("Id",APP.CONF.LanguageCodePrefix+languages[l][0]);
+			rs += xml.element("Name",languages[l][3]);
+			rs += xml.close("Content_Language");
 	
 		}
 
-		return return_string;
+		return rs;
 		
 	};
 	
 
-	var insertResource = function(link,size){
+	var insertBundleResource = function(res){
 
-		var return_string = "";
+		var rs = "";
 		
-		return_string += xml.open("WrittenResource");
-
-		return_string += xml.element("ResourceLink",link);
-		return_string += xml.element("MediaResourceLink","");
-
-		return_string += xml.element("Date","Unspecified");
-		//no input yet, but should come soon
+		console.log(res);
 		
-		return_string += xml.element("Type",resources.getFileType(link).type);
-		return_string += xml.element("SubType",resources.getFileType(link).type);
-		return_string += xml.element("Format",resources.getFileType(link).mimetype);
-		return_string += xml.element("Size",size);
-		
-		return_string += xml.open("Validation");
-		return_string += xml.element("Type","");
-		return_string += xml.element("Methodology","");
-		return_string += xml.element("Level","Unspecified");
-		return_string += xml.element("Description","");
-		return_string += xml.close("Validation");
-
-		return_string += xml.element("Derivation","");
-
-		return_string += xml.element("CharacterEncoding","");
-		return_string += xml.element("ContentEncoding","");
-		return_string += xml.element("LanguageId","");
-		return_string += xml.element("Anonymized","Unspecified");
-
-		return_string += xml.open("Access");
-	  
-		return_string += xml.tag("Availability",2);
-		return_string += xml.tag("Date",2);
-		return_string += xml.tag("Owner",2);
-		return_string += xml.tag("Publisher",2);
-		
-		return_string += xml.tag("Contact",0);
-		return_string += xml.tag("Name",2);
-		return_string += xml.tag("Address",2);
-		return_string += xml.tag("Email",2);
-		return_string += xml.tag("Organisation",2);
-		return_string += xml.tag("Contact",1);
-
-		return_string += xml.element("Description","");
-
-		return_string += xml.tag("Access",1);
-
-		return_string += xml.element("Description","");
-		return_string += xml.element("Keys","");
-		return_string += xml.tag("WrittenResource",1);
-
-		return return_string;
+		return rs;
 		
 	};
+	
+	
+	var insertBundleResources = function(resources){
 
+		var rs = "";
+		
+		if (resources.length == 0){
+			return rs;
+		}
+		
+		rs += xml.open("Resources");
+		
+		forEach(resources, insertBundleResource);
+		
+		rs += xml.close("Resources");
+		
+		return rs;
+		
+	};
 
 	var insertActor = function(session_id,actor_id){
 
 		var i = actor.getActorsIndexFromID(actor_id);
 		var ac = actor.actors[i];
 
-		var return_string = "";
-		return_string+=xml.tag("Actor",0);
-		return_string+=xml.element("Role",ac.role);
-		return_string+=xml.element("Name",ac.name);
-		return_string+=xml.element("FullName",ac.full_name);
-		return_string+=xml.element("Code",ac.code);
-		return_string+=xml.element("FamilySocialRole",ac.family_social_role);
-		return_string+=xml.element("EthnicGroup",ac.ethnic_group);   
+		var rs = "";
+		rs+=xml.tag("Actor",0);
+		rs+=xml.element("Role",ac.role);
+		rs+=xml.element("Name",ac.name);
+		rs+=xml.element("FullName",ac.full_name);
+		rs+=xml.element("Code",ac.code);
+		rs+=xml.element("FamilySocialRole",ac.family_social_role);
+		rs+=xml.element("EthnicGroup",ac.ethnic_group);   
 		
 		//Age field
-		return_string += xml.tag("Age",0);
-		return_string += actor.getAge(session_id,actor_id);
-		return_string += xml.tag("Age",1);	
+		rs += xml.tag("Age",0);
+		rs += actor.getAge(session_id,actor_id);
+		rs += xml.tag("Age",1);	
 		//End of age field
 		
 		if ((ac.birth_date.year != "") && (ac.birth_date.year != "YYYY")){
 		
-			return_string += xml.element("BirthDate",ac.birth_date.year+"-"+ac.birth_date.month+"-"+ac.birth_date.day);
+			rs += xml.element("BirthDate",ac.birth_date.year+"-"+ac.birth_date.month+"-"+ac.birth_date.day);
 			
 		}
 		
 		else {
 		
-			return_string += xml.element("BirthDate","Unspecified");
+			rs += xml.element("BirthDate","Unspecified");
 		
 		}
 		
-		return_string+=xml.element("Sex",ac.sex);
-		return_string+=xml.element("Education",(ac.education != "") ? ac.education : "Unspecified" );
-		return_string+=xml.element("Anonymized",(ac.anonymized) ? "true" : "false"); 
+		rs+=xml.element("Sex",ac.sex);
+		rs+=xml.element("Education",(ac.education != "") ? ac.education : "Unspecified" );
+		rs+=xml.element("Anonymized",(ac.anonymized) ? "true" : "false"); 
 		
-		return_string+=xml.tag("Contact",0);
-		return_string+=xml.element("Name",ac.contact.name);   
-		return_string+=xml.element("Address",ac.contact.address);   
-		return_string+=xml.element("Email",ac.contact.email);   
-		return_string+=xml.element("Organisation",ac.contact.organisation);   
-		return_string+=xml.tag("Contact",1);
+		rs+=xml.tag("Contact",0);
+		rs+=xml.element("Name",ac.contact.name);   
+		rs+=xml.element("Address",ac.contact.address);   
+		rs+=xml.element("Email",ac.contact.email);   
+		rs+=xml.element("Organisation",ac.contact.organisation);   
+		rs+=xml.tag("Contact",1);
 
-		return_string += xml.tag("Keys",2);
+		rs += xml.tag("Keys",2);
 		
-		return_string += xml.tag("descriptions",0);
-		return_string += xml.element("Description",ac.description);
-		return_string += xml.tag("descriptions",1);	
+		rs += xml.tag("descriptions",0);
+		rs += xml.element("Description",ac.description);
+		rs += xml.tag("descriptions",1);	
 		
-		return_string += xml.tag("Actor_Languages",0);
-		//return_string += xml.element("Description","");
+		rs += xml.tag("Actor_Languages",0);
+		//rs += xml.element("Description","");
 		
 		for (var l=0; l<ac.languages.length; l++){
 		
-			return_string += xml.tag("Actor_Language",0);
-			return_string += xml.element("Id",APP.CONF.LanguageCodePrefix+ac.languages[l].iso_code);
-			return_string += xml.element("Name",ac.languages[l].name);
+			rs += xml.tag("Actor_Language",0);
+			rs += xml.element("Id",APP.CONF.LanguageCodePrefix+ac.languages[l].iso_code);
+			rs += xml.element("Name",ac.languages[l].name);
 			
-			return_string += xml.element("MotherTongue",(ac.languages[l].MotherTongue) ? "true" : "false");
-			return_string += xml.element("PrimaryLanguage",(ac.languages[l].PrimaryLanguage) ? "true" : "false");		
+			rs += xml.element("MotherTongue",(ac.languages[l].MotherTongue) ? "true" : "false");
+			rs += xml.element("PrimaryLanguage",(ac.languages[l].PrimaryLanguage) ? "true" : "false");		
 
-			return_string += xml.tag("Actor_Language",1);
+			rs += xml.tag("Actor_Language",1);
 		
 		}
 
-		return_string += xml.tag("Actor_Languages",1);
+		rs += xml.tag("Actor_Languages",1);
 		
-		return_string+=xml.tag("Actor",1);
+		rs+=xml.tag("Actor",1);
 	  
-		return return_string;
+		return rs;
 		
 	}
 	

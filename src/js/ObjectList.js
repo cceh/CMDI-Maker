@@ -214,6 +214,13 @@ var ObjectList = function() {
 	//REMOVE METHODS
 	this.removeByID = function(id){
 	
+		if (typeof id == "array"){
+		
+			id.forEach(self.removeByID);
+			return;
+		
+		}
+	
 		var index = self.getIndexByID(id);
 	
 		list.splice(index, 1);
@@ -407,6 +414,14 @@ var ObjectList = function() {
 	
 	this.setState = function(state){
 	
+		
+	
+		if ((!state) || (!state.list) || (typeof state.list != "object")){
+			console.error("Error setState: Invalid data!");
+			console.info("typeof state.list = " + typeof state.list);
+			return;
+		}
+	
 		id_counter = state.id_counter;
 		list = state.list;
 		self.length = list.length;
@@ -539,6 +554,28 @@ var ObjectList = function() {
 	this.getActive = this.getActiveObject;
 	
 
+	/////
+	this.mapIndexesToIDs = function(array){
+	
+		var IDs = array.map(function(item){
+		
+			return list[item].id;
+		
+		});
+		
+		return IDs;
+	
+	}
+	
+	this.setForAll = function(key, value){
+	
+		list.forEach(function(item){
+		
+			item[key] = value;
+		
+		});
+	
+	}
 
 
 	/*

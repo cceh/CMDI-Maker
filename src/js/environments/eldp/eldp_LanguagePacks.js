@@ -177,7 +177,8 @@ eldp_environment.languages[0] = {
 		from_2nd_last_to_last_bundle: "From second last to last bundle",
 		elements_to_copy: "Elements to copy",
 		from_where_to_where: "From where to where",
-		metadata_copied: "Metadata copied"
+		metadata_copied: "Metadata copied",
+		bundle_title_taken_from_eaf: "Bundle title has been taken from EAF file name, since bundle has not been manually named yet.",
 	},
 	
 	output: {

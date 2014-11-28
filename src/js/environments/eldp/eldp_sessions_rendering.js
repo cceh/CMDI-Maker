@@ -117,28 +117,33 @@ eldp_environment.workflow[2].render = (function() {
 	
 	my.refreshResources = function(bundle_id){
 	//refresh resources for one bundle
-		console.log("BUNDLE ID " + bundle_id);
+
 		var add_res_div = g(my.dom_element_prefix+bundle_id+"_resources_add_mf_div");
 		
 		add_res_div.innerHTML = "";
 
 		var select = document.createElement("select");
 		
-		dom.setSelectOptions(select, resources.available_resources, "name", "take_index");
+		dom.setSelectOptions(select, resources.resources.getAll(), "name", "take_index", false);
 		
-		if (resources.available_resources.length > 0){
+		if (resources.resources.length > 0){
 		
 			add_res_div.appendChild(select);
 			dom.br(add_res_div);
 			
-			dom.button((add_res_div),
-			l("bundle", "add_to_bundle"), function(num) {
-				return function(){ actions.addResource(num, select.selectedIndex);  };
-			}(bundle_id));
+			dom.button(
+				add_res_div,
+				l("bundle", "add_to_bundle"),
+				function(num) {
+					return function(){
+						actions.addResource(num, select.selectedIndex, false);
+					};
+				}(bundle_id)
+			);
 			
 		}
 
-		if (resources.available_resources.length === 0){
+		if (resources.resources.length === 0){
 		
 			var p = document.createElement("h5");
 			add_res_div.appendChild(p);
@@ -230,7 +235,7 @@ eldp_environment.workflow[2].render = (function() {
 		//create the form
 		APP.forms.make(bundle_content, bundle_form, my.dom_element_prefix+bundle_id+"_", my.dom_element_prefix, bundle_object, my.makeSpecialFormInput);
 		
-		g(my.dom_element_prefix+bundle_id+"_bundle_name").addEventListener("blur", function(num){
+		g(my.dom_element_prefix+bundle_id+"_bundle_title").addEventListener("blur", function(num){
 			return function(){
 			
 				my.refreshBundleHeading(num);
@@ -257,10 +262,9 @@ eldp_environment.workflow[2].render = (function() {
 		
 		if (typeof(bundle_object.resources.resources) != "undefined"){
 			
-			forEach(bundle_object.resources.resources, function (file){
-				file.id = my.resource_id_counter;
-				my.renderResource(my.resource_id_counter, bundle_id, file.name, file.size, file.urcs);
-				my.resource_id_counter += 1;
+			forEach(bundle_object.resources.resources, function (resource_in_bundle){
+				my.renderResource(resource_in_bundle, bundle_id);
+				bundle.resource_id_counter += resource_in_bundle.id;  //DIRTY!
 			});
 		
 		}
@@ -589,28 +593,30 @@ eldp_environment.workflow[2].render = (function() {
 	};
 
 
-	my.renderResource = function(resource_id, bundle_id, name, size, urcs){
+	my.renderResource = function(resource_in_bundle, bundle_id){
+	
+		var id = resource_in_bundle.id;
+		var urcs = resource_in_bundle.urcs;
+		
+		var name = resources.resources.getByID(resource_in_bundle.resource_id).name;
 
-		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_resource_" + resource_id, "mf", g(my.dom_element_prefix+bundle_id+"_resources_resources"));
+		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_resource_" + id, "mf", g(my.dom_element_prefix+bundle_id+"_resources_resources"));
 
 		var h3 = dom.h3(div);
 
 		h3.innerHTML = l("bundle", "object");
 
-		var img = APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset");
+		var img = APP.GUI.icon(div,"delete_resource_" + id +"_icon","delete_resource_icon","reset");
 		img.addEventListener('click', function(num, num2) { 
 			return function(){ actions.removeResource(num, num2);
 			};
-		}(bundle_id,resource_id) );
+		}(bundle_id, id) );
 		
 		dom.span(div, "", "resource_file_content_span",
 		l("bundle", "file_name") + 
-		"<br><input type=\"text\" name=\""+my.dom_element_prefix+bundle_id+"_resource_" + resource_id + "_name\" value=\"\"><br>");
-		
-		div.getElementsByTagName("input")[0].value = name;
-		//div.getElementsByTagName("input")[1].value = size;
-		
-		my.renderUCRS(div, my.dom_element_prefix+bundle_id+"_resource_" + resource_id + "_", urcs);
+		"<br><input type='text' value='" + name + "'><br>");
+
+		my.renderUCRS(div, my.dom_element_prefix+bundle_id+"_resource_" + id + "_", urcs);
 
 
 	};
@@ -651,13 +657,13 @@ eldp_environment.workflow[2].render = (function() {
 
 	my.refreshBundleHeading = function(bundle_id){
 
-		if (get(my.dom_element_prefix + bundle_id + "_bundle_name") === ""){
+		if (get(my.dom_element_prefix + bundle_id + "_bundle_title") === ""){
 			g(my.dom_element_prefix + bundle_id + "_label").innerHTML = l("bundle", "unnamed_bundle");
 		}
 		
 		else {
 		
-			g(my.dom_element_prefix + bundle_id + "_label").innerHTML = l("bundle", "bundle") + ": "+get(my.dom_element_prefix+bundle_id+"_bundle_name");
+			g(my.dom_element_prefix + bundle_id + "_label").innerHTML = l("bundle", "bundle") + ": "+get(my.dom_element_prefix+bundle_id+"_bundle_title");
 
 		}
 

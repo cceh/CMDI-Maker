@@ -26,7 +26,7 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.fileSelection = undefined;
 	
-	my.available_resources = [];
+	my.resources = new ObjectList();
 	// this array only contains file metadata retrieved by file upload form / drag and drop
 
 	my.identity = {
@@ -73,7 +73,7 @@ eldp_environment.workflow[0] = (function(){
 			"file_entry_", 
 			"selected_file",
 			function(event){
-				my.available_resources[event.index].selected = event.selected;
+				my.resources.get(event.index).selected = event.selected;
 				
 				my.fadeFilesThatStartWithSameNameAsSelectedOnes();
 				
@@ -204,7 +204,7 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.recall = function(data){
 	
-		my.available_resources = data;
+		my.resources.setState(data);
 		my.refreshFileListDisplay();
 	
 	};
@@ -212,7 +212,7 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.getSaveData = function(){
 	
-		return my.available_resources;
+		return my.resources.getState();
 	
 	};
 	
@@ -232,12 +232,7 @@ eldp_environment.workflow[0] = (function(){
 							'<input type="radio" name="radio_file_type" value="eaf"> EAF<br>'+
 							'<input type="radio" name="radio_file_type" value="wav"> WAV<br>'+
 							'<input type="radio" name="radio_file_type" value="mpg"> MPG<br>'+
-							'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>',
-				after_that: function(){	
-					forEach(g("radio_file_type"), function(elem){
-						elem.addEventListener("click", my.handleFileTypeChange, false);
-					});
-				}
+							'<input type="radio" name="radio_file_type" value="mp4"> MP4<br>'
 			},
 			{
 				id: "link_sort_alphabetically",
@@ -255,7 +250,7 @@ eldp_environment.workflow[0] = (function(){
 				id: "link_clear_file_list",
 				icon: "reset",
 				label: my.l("resources", "clear_file_list"),
-				onclick: function() { my.clearFileList(); }
+				onclick: function() { my.reset(); }
 			},
 			{
 				id: "link_set_for_all",
@@ -274,50 +269,13 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.setForAll = function(){
 	
-		forEach(my.available_resources, function(res){
-	
-			if (g("stable_for_all").checked == true){
-			
-				res.stable = true;
-			
-			}
-			
-			else {
-			
-				res.stable = false;
-			
-			}
-			
-			
-			if (g("inProgress_for_all").checked == true){
-			
-				res.inProgress = true;
-			
-			}
-			
-			else {
-			
-				res.inProgress = false;
-			
-			}
-			
-		});
-		
+		my.resources.setForAll("stable", g("stable_for_all").checked);
+		my.resources.setForAll("inProgress", g("inProgress_for_all").checked);
 		my.refreshFileListDisplay();
 	
 	}
 	
-	
-	my.handleFileTypeChange = function(event){
-	
-		console.log("ftc");
-		console.log(event.target.value);
-		
-		//my.fadeFilesThatWouldBeAddedToBundle();
-	
-	}
-	
-	
+
 	my.getValidityOfFile = function(filename){
 	// returns 0=valid media file, 1=valid written resource, 2=invalid media file, 3=invalid written resource, -1=unknown file
 		var j;
@@ -363,7 +321,7 @@ eldp_environment.workflow[0] = (function(){
 		
 		list.innerHTML = "";
 
-		forEach(my.available_resources, function(res, i) {
+		my.resources.forEach(function(res, i) {
 		
 			my.renderResource({
 				number: i,
@@ -382,7 +340,7 @@ eldp_environment.workflow[0] = (function(){
 
 		});
 		
-		if (my.available_resources.length === 0){
+		if (my.resources.length === 0){
 			list.innerHTML = "<h2>" + my.l("resources", "no_resource_files_imported") + "</h2>";
 		}
 
@@ -397,8 +355,8 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.refreshFileStateValues = function(file_index){
 	
-		my.available_resources[file_index].stable = g("f_stable_"+file_index).checked;
-		my.available_resources[file_index].inProgress = g("f_inProgress_"+file_index).checked;
+		my.resources.get(file_index).stable = g("f_stable_"+file_index).checked;
+		my.resources.get(file_index).inProgress = g("f_inProgress_"+file_index).checked;
 	
 	};
 	
@@ -466,7 +424,7 @@ eldp_environment.workflow[0] = (function(){
 		// files is a FileList of File objects. List some properties.
 		var output = [];
 		for (var i = 0, f; !!(f = FileList[i]); i++) {
-			my.available_resources.push({
+			my.resources.add({
 				name: f.name,
 				type: f.type || 'n/a',
 				size: bytesToSize(f.size,1),
@@ -481,7 +439,7 @@ eldp_environment.workflow[0] = (function(){
 
 	my.sortAlphabetically = function(){
 	
-		my.available_resources = sortByKey(my.available_resources, "name");
+		my.resources.sortByKey("name");
 		my.refreshFileListDisplay();
 		
 	};
@@ -501,8 +459,10 @@ eldp_environment.workflow[0] = (function(){
 			console.log("Searching for selected files");
 			
 			for (f=0; f<my.fileSelection.selected_files.length; f++){
+			
+				var id = my.resources.idOf(my.fileSelection.selected_files[f]);
 		
-				my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd(my.fileSelection.selected_files[f]);
+				my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd(id);
 			
 			}
 			
@@ -512,15 +472,15 @@ eldp_environment.workflow[0] = (function(){
 		
 		else {    //for all media files of filetype
 		
-			for (f = 0; f < my.available_resources.length; f++){
+			for (f = 0; f < my.resources.length; f++){
 			
-				var file_type = getFileTypeFromFilename(my.available_resources[f].name);
+				var file_type = getFileTypeFromFilename(my.resources.get(f).name);
 			
 				if (file_type == chosen_file_type){
 				
 					console.log("Found a file of file type " + chosen_file_type);
 					
-					my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd(f);
+					my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd(my.resources.idOf(f));
 				
 				}
 				
@@ -533,88 +493,67 @@ eldp_environment.workflow[0] = (function(){
 	
 	
 	my.removeSelectedFiles = function(){
-		var f;
 		
-		for (f = 0; f<my.fileSelection.selected_files.length; f++){
-		
-			my.available_resources[my.fileSelection.selected_files[f]] = null;
-		
-		}
-		
-		f = 0;
-		
-		while (f < my.available_resources.length){
-		
-			if (my.available_resources[f] === null){
-				my.available_resources.splice(f,1);
-			}
-			
-			else {
-				f++;
-			}
-	
-		}
-		
+		var selected_files = my.fileSelection.selected_files;
+		var IDs = my.resources.mapIndexesToIDs(selected_files);
+		my.resources.removeByID(IDs);
 		my.refreshFileListDisplay();
+		
 	};
 	
 	
-	my.removeFile = function(index){
-	
-		my.available_resources.splice(index,1);
-		my.refreshFileListDisplay();
-	
-	};
+	my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd = function(id){
 
-
-	my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd = function(resource_index){
-
-		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.available_resources[resource_index].name));
+		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.resources.getByID(id).name));
 		session_name = replaceCharactersInStringWithSubstitute(session_name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
 		
 		var expanded = false; //collapse automatically generated bundle
 		
-		var resources = [];
+		var resource_ids = [];
 		
 		//of course, we add the resource that has been selected to the bundle 
-		resources.push(resource_index);
+		resource_ids.push(id);
 		
-		//if another file's name of available_resources starts with the same name as this file, add it to the bundle, too!
-		var additional_resources = my.getIndexesOfResourcesThatStartWithTheSameNameAsThis(resource_index);
+		//if another file's name of resources starts with the same name as this file, add it to the bundle, too!
+		var additional_resources = my.getIDsOfResourcesThatStartWithTheSameNameAsThis(id);
 		
 		//The .push method can take multiple arguments, so by using .apply to pass all the elements of the second array as arguments to .push,
-		resources.push.apply(resources, additional_resources);
+		resource_ids.push.apply(resource_ids, additional_resources);
 		
-		bundle.createNewBundleWithResources(session_name, expanded, resources);
+		bundle.createNewBundleWithResources(session_name, expanded, resource_ids);
 
 	};
 	
 	
-	my.getIndexesOfResourcesThatStartWithTheSameNameAsThis = function (resource_index){
+	my.getIDsOfResourcesThatStartWithTheSameNameAsThis = function (id){
 	
-		var resources = [];
-		
-		for (var i=0; i<my.available_resources.length; i++){
+		var this_resource = my.resources.getByID(id);
+	
+		var resources = my.resources.filter(function(res){
 			
 			//do not include the resource itself
-			if (resource_index == i){
-				continue;
+			if (id == res.id){
+				return false;
 			}
 		
 			if (
 				isSubstringAStartOfAWordInString(
-					removeEndingFromFilename(my.available_resources[i].name),
-					removeEndingFromFilename(my.available_resources[resource_index].name)
+					removeEndingFromFilename(res.name),
+					removeEndingFromFilename(this_resource.name)
 				)
 			){
 			
-				resources.push(i);
+				return true;
 			
 			}
+			
+			return false;
 		
-		}	
+		});
+		
+		var IDs = getArrayWithIDs(resources);
 	
-		return resources;
+		return IDs;
 	
 	};
 	
@@ -627,7 +566,7 @@ eldp_environment.workflow[0] = (function(){
 		var resources_to_fade_for_file;
 	
 		//First, unfade all files
-		for (var i = 0; i<my.available_resources.length; i++){
+		for (var i = 0; i < my.resources.length; i++){
 		
 			g(element_prefix + i.toString()).style.opacity = "1";
 			
@@ -636,11 +575,15 @@ eldp_environment.workflow[0] = (function(){
 
 		//Then check for all resources that have to be faded
 		for (var k=0; k<my.fileSelection.selected_files.length; k++){
+		
+			var file_index = my.fileSelection.selected_files[k];
 			
-			resources_to_fade.push(my.fileSelection.selected_files[k]);   //fade the resource that is selected
+			resources_to_fade.push(file_index);   //fade the resource that is selected
 			
-			//get resources that start with the same name as this
-			resources_to_fade_for_file = my.getIndexesOfResourcesThatStartWithTheSameNameAsThis(my.fileSelection.selected_files[k]);
+			var id_of_res = my.resources.idOf(file_index);
+			
+			//get resource ids of resources that start with the same name as this
+			resources_to_fade_for_file = my.getIDsOfResourcesThatStartWithTheSameNameAsThis(id_of_res);
 		
 			//fade them too
 			for (var j = 0; j < resources_to_fade_for_file.length; j++){
@@ -675,7 +618,7 @@ eldp_environment.workflow[0] = (function(){
 				
 					if (file_string.length > 0 && file_string != " "){
 					
-						my.available_resources.push({
+						my.resources.add({
 							name: getFilenameFromFilePath(file_string),
 							path: getDirectoryFromFilePath(file_string)
 						});
@@ -698,9 +641,9 @@ eldp_environment.workflow[0] = (function(){
 	};
 
 
-	my.clearFileList = function(){
+	my.reset = function(){
 
-		my.available_resources = [];
+		my.resources = my.resources.reset();
 		my.refreshFileListDisplay();
 
 	};

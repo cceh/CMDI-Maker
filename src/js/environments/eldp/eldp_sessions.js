@@ -351,21 +351,23 @@ eldp_environment.workflow[2] = (function() {
 	};
 
 
-	my.getIndexFromResourceID = function (resource_id){
+	my.getIndexFromResourceID = function (id){
 	
 		var r;
 
-		my.bundles.forEach(function(bun){
+		for (var b = 0; b < my.bundles.length; b++){
 		
-			for (r=0; r < bun.resources.resources.length; r++){
+			var bun = my.bundles.get(b);
 		
-				if (bun.resources.resources[r].id == resource_id){
+			for (r = 0; r < bun.resources.resources.length; r++){
+		
+				if (bun.resources.resources[r].id == id){
 					return r;
 				}
 			
 			}
 			
-		});
+		};
 
 	};
 	
@@ -439,15 +441,14 @@ eldp_environment.workflow[2] = (function() {
 	// resource_file_index is the index of the available media file, that is to be added to the bundle
 	// if resource_file_index is -1, a new empty field with no available media file is created
 	//if without_questions == true, no alerts will be thrown (e.g. when resources are added at start up)
-	
-		if (resource_file_index >= resources.available_resources.length){
+
+		if (resource_file_index >= resources.resources.length){
 			return;
 		}
 		
-		var filename = resources.available_resources[resource_file_index].name;
-		var filesize = resources.available_resources[resource_file_index].size;
+		var res = resources.resources.get(resource_file_index);
 		
-		var resource_id = my.resource_id_counter;
+		var id = my.resource_id_counter;
 
 		var urcs = {
 			u: false,
@@ -456,75 +457,50 @@ eldp_environment.workflow[2] = (function() {
 			s: false
 		};
 		
-		my.bundles.getByID(bundle_id).resources.resources.push({
-			name: filename,
-			size: filesize,
-			id: my.resource_id_counter,
-			resource_file_index: resource_file_index,
+		var resource_in_bundle = {
+			id: id,
+			resource_id: res.id,
 			urcs: urcs
-		});
-
-
-		if (resource_file_index == -1){
-			filename = "";
-			filesize = "";
-		}	
+		};
 		
+		my.bundles.getByID(bundle_id).resources.resources.push(resource_in_bundle);
 		
 		//Rename the bundle if an EAF file is added for the first time and bundle has no name yet
-		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+bundle_id+"_bundle_name") === "")){
+		if ((getFileTypeFromFilename(res.name) == "eaf") && (get(my.dom_element_prefix+bundle_id+"_bundle_title") === "")){
 		
-			var name = removeEndingFromFilename(filename);
+			var name = removeEndingFromFilename(res.name);
 			
-			g(my.dom_element_prefix+bundle_id+"_bundle_name").value = name;
+			g(my.dom_element_prefix+bundle_id+"_bundle_title").value = name;
 			
-			my.refreshBundleHeading(bundle_id);
+			my.render.refreshBundleHeading(bundle_id);
 		
-			APP.log(l("bundle", "bundle_name_taken_from_eaf"));
+			APP.log(l("bundle", "bundle_title_taken_from_eaf"));
 		
 		}
 		
-		
-		//Check, if there is a date string in the form of YYYY-MM-DD in the filename of an eaf file. If so, adopt it for the bundle date
-		//only, if bundle date is still YYYY
-		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+bundle_id+"_bundle_date_year") == "YYYY")){
-			
-			var date = parseDate(filename);
-			
-			if (date !== null){
-			
-				g(my.dom_element_prefix+bundle_id+"_bundle_date_year").value = date.year;
-				g(my.dom_element_prefix+bundle_id+"_bundle_date_month").value = date.month;
-				g(my.dom_element_prefix+bundle_id+"_bundle_date_day").value = date.day;
-				
-				APP.log(l("bundle", "bundle_date_extracted_from_eaf_file_name") + ": " + date.year + "-" + date.month + "-" + date.day);
-			
-			}
-		
-		
-		}
-		
-		my.render.renderResource(resource_id, bundle_id, filename, filesize, urcs);
+		my.render.renderResource(resource_in_bundle, bundle_id);
 
 		my.resource_id_counter += 1;
 		
-		return my.resource_id_counter - 1;
+		return id;
 		
 	};
 
 
-	my.removeResource = function(bundle_id, resource_id){
+	my.removeResource = function(bundle_id, id){
 		var m;
 
 		var ids_of_bundle_resources = getArrayWithIDs(my.bundles.getByID(bundle_id).resources.resources);
 		
-		if (ids_of_bundle_resources.indexOf(resource_id) != -1){
+		if (ids_of_bundle_resources.indexOf(id) != -1){
+		
+			var index = my.getIndexFromResourceID(id);
 
-			my.bundles.getByID(bundle_id).resources.resources.splice(my.getIndexFromResourceID(resource_id),1);
+			my.bundles.getByID(bundle_id).resources.resources.splice(index, 1);
 		
 		}
 		
-		dom.remove(my.dom_element_prefix+bundle_id+"_resource_"+resource_id);
+		dom.remove(my.dom_element_prefix + bundle_id + "_resource_" + id);
 
 	};
 	

@@ -283,6 +283,11 @@ eldp_environment.workflow[1] = (function(){
 
 
 	my.show = function(person_id){
+	
+		if (my.persons.length == 0){
+			console.info("person.show: No persons to show!");
+			return;
+		}		
 
 		var person_index = my.persons.getIndexByID(person_id);
 		
@@ -290,12 +295,7 @@ eldp_environment.workflow[1] = (function(){
 			console.error("person.show: Undefined person_id!");
 			person_index = 0;
 		}
-		
-		if (my.persons.length == 0){
-			console.info("person.show: No persons to show!");
-			return;
-		}
-		
+
 		console.log("Showing person " + person_index);
 		
 		my.createFormIfNotExistent();
@@ -381,7 +381,7 @@ eldp_environment.workflow[1] = (function(){
 
 	my.saveActivePerson = function(){
 	
-		if (typeof my.persons.pointer == -1){
+		if (my.persons.getPointer() == -1){
 			console.info("Shall save active person but active person is undefined! No problem!");
 			return;
 		}
