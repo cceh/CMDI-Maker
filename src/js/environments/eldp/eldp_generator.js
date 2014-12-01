@@ -263,7 +263,19 @@ eldp_environment.eldp_generator = function(data){
 		console.log(res_in_bun);
 		
 		rs += xml.open("Resource");
-		rs += xml.element("Name", "XXX");
+		rs += xml.element("Title", resource.name);
+		rs += xml.element("ID", "");
+		rs += xml.element("Host", "");
+		rs += xml.open("StatusInfo");
+		rs += xml.element("Status", (resource.stable == true) ? "stable" : "in-progress");
+		xml.element("ChangeDate", (typeof resource.lastModified != "undefined") ? resource.lastModified : "");
+		rs += xml.close("StatusInfo");
+		
+		
+		//rs += insertContentLanguages
+		//rs += insertPersons
+		
+		
 		rs += xml.close("Resource");
 		
 		return rs;
