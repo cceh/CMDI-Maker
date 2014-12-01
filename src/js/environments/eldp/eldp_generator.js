@@ -39,9 +39,44 @@ eldp_environment.eldp_generator = function(data){
 	
 		return ["xml:lang", get("metadata_language_select")];
 	
-	}
+	};
 	
-
+	
+	var insertBundleLanguages = function(langs){
+	
+		if (langs.length === 0){
+			return "";
+		}
+		
+		var rs = "";
+		
+		rs += xml.open("ContentLanguages");
+		
+		forEach(langs, function(lang){
+		
+			rs += xml.open("ContentLanguage");
+			rs += xml.element("Name", lang.name);
+			rs += xml.element("Code", "ISO639-3:" + lang.code);
+			
+			if (lang.content_language === true){
+				rs += xml.element("Use", "content");
+			}
+			
+			else {
+				rs += xml.element("Use", "working");
+			}
+			
+			rs += xml.close("ContentLanguage");		
+		
+		});
+		
+		rs += xml.close("ContentLanguages");
+		
+		return rs;
+	
+	};
+	
+	
 	var createBundle = function(bundle, persons, resources){
 		
 		xml.reset();  //we're starting a new xml file here, so tabula rasa!
@@ -88,7 +123,7 @@ eldp_environment.eldp_generator = function(data){
 		//No depositors
 		
 		rs += insertBundleLanguages(bundle.languages.bundle_languages);
-		rs += insertBundlePersons(bundle.persons.persons);
+		rs += insertBundlePersons(bundle.persons.persons, persons);
 
 		rs += xml.open("ProjectLocations");
 		
@@ -103,7 +138,7 @@ eldp_environment.eldp_generator = function(data){
 		
 		rs += xml.close("ProjectLocations");
 
-		rs += insertBundleResources(bundle.resources.resources);
+		rs += insertBundleResources(bundle.resources.resources, resources);
 		
 		rs += xml.close("ELDP-Bundle");
 		rs += xml.close("Components");
@@ -114,41 +149,9 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 	
-	var insertBundleLanguages = function(langs){
-	
-		if (langs.length == 0){
-			return;
-		}
-		
-		var rs = "";
-		
-		rs += xml.open("ContentLanguages");
-		
-		forEach(langs, function(lang){
-		
-			rs += xml.open("ContentLanguage");
-			rs += xml.element("Name", lang.name);
-			rs += xml.element("Code", "ISO639-3:" + lang.code);
-			
-			if (lang.content_language == true){
-				rs += xml.element("Use", "content");
-			}
-			
-			else {
-				rs += xml.element("Use", "working");
-			}
-			
-			rs += xml.close("ContentLanguage");		
-		
-		});
-	
-	
-	};
-	
-	
 	var insertPersonLanguages = function(languages){
 	
-		rs = "";
+		var rs = "";
 	
 		forEach(languages, function(lang){
 		
@@ -169,10 +172,10 @@ eldp_environment.eldp_generator = function(data){
 	!! AGE  = BUNDLE_DATE - PERSON BIRTH YEAR
 	
 	*/
-	var insertBundlePersons = function(person_in_bundles){
+	var insertBundlePersons = function(person_in_bundles, persons){
 	
-		if (person_in_bundles.length == 0){
-			return;
+		if (person_in_bundles.length === 0){
+			return "";
 		}
 		
 		var rs = "";
@@ -180,7 +183,9 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.open("Persons");
 		
 		forEach(person_in_bundles, function(person_in_bundle){
-			var pers = person.persons.getByID(person_in_bundle.person_id);
+			var pers = persons.getByID(person_in_bundle.person_id);
+			console.log("PERS");
+			console.log(pers);
 			
 			rs += xml.open("Person");
 			
@@ -194,16 +199,16 @@ eldp_environment.eldp_generator = function(data){
 			
 			rs += xml.element("Title", pers.title);
 			
-			if (pers.nameKnownAs != ""){
-				xml.element("Name", pers.nameKnownAs, ["kind", "knownas"]);
+			if (pers.nameKnownAs !== ""){
+				rs += xml.element("Name", pers.nameKnownAs, [["kind", "KnownAs"]]);
 			}
 			
-			if (pers.fullName != ""){
-				xml.element("Name", pers.fullName, ["kind", "FullName"]);
+			if (pers.fullName !== ""){
+				rs += xml.element("Name", pers.fullName, [["kind", "FullName"]]);
 			}
 			
-			if (pers.nameSortBy != ""){
-				xml.element("Name", pers.nameSortBy, ["kind", "sortBy"]);
+			if (pers.nameSortBy !== ""){
+				rs += xml.element("Name", pers.nameSortBy, [["kind", "asSortBy"]]);
 			}
 			
 			rs += xml.close("Name");
@@ -223,7 +228,8 @@ eldp_environment.eldp_generator = function(data){
 		
 		});
 
-		rs += xml.close("Persons");		
+		rs += xml.close("Persons");	
+		
 		return rs;
 	
 	
@@ -250,28 +256,40 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 
-	var insertBundleResource = function(res){
+	var insertBundleResource = function(res_in_bun, resource){
 
 		var rs = "";
 		
-		console.log(res);
+		console.log(res_in_bun);
+		
+		rs += xml.open("Resource");
+		rs += xml.element("Name", "XXX");
+		rs += xml.close("Resource");
 		
 		return rs;
 		
 	};
 	
 	
-	var insertBundleResources = function(resources){
+	var insertBundleResources = function(resources_in_bundle, resources){
 
 		var rs = "";
 		
-		if (resources.length == 0){
+		if (resources_in_bundle.length === 0){
+		
 			return rs;
+			
 		}
 		
 		rs += xml.open("Resources");
 		
-		forEach(resources, insertBundleResource);
+		forEach(resources_in_bundle, function(res_in_bun){
+		
+			var res = resources.getByID(res_in_bun.resource_id);
+		
+			rs += insertBundleResource(res_in_bun, res);
+			
+		});
 		
 		rs += xml.close("Resources");
 		
@@ -279,6 +297,7 @@ eldp_environment.eldp_generator = function(data){
 		
 	};
 
+	
 	var insertActor = function(session_id,actor_id){
 
 		var i = actor.getActorsIndexFromID(actor_id);
@@ -299,7 +318,7 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.tag("Age",1);	
 		//End of age field
 		
-		if ((ac.birth_date.year != "") && (ac.birth_date.year != "YYYY")){
+		if ((ac.birth_date.year !== "") && (ac.birth_date.year != "YYYY")){
 		
 			rs += xml.element("BirthDate",ac.birth_date.year+"-"+ac.birth_date.month+"-"+ac.birth_date.day);
 			
@@ -312,7 +331,7 @@ eldp_environment.eldp_generator = function(data){
 		}
 		
 		rs+=xml.element("Sex",ac.sex);
-		rs+=xml.element("Education",(ac.education != "") ? ac.education : "Unspecified" );
+		rs+=xml.element("Education",(ac.education !== "") ? ac.education : "Unspecified" );
 		rs+=xml.element("Anonymized",(ac.anonymized) ? "true" : "false"); 
 		
 		rs+=xml.tag("Contact",0);
@@ -347,10 +366,10 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.tag("Actor_Languages",1);
 		
 		rs+=xml.tag("Actor",1);
-	  
+	
 		return rs;
 		
-	}
+	};
 	
 	var my = {};
 	
@@ -362,7 +381,7 @@ eldp_environment.eldp_generator = function(data){
 
 	return my;
 
-}
+};
 
 
 

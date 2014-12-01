@@ -345,7 +345,7 @@ eldp_environment.workflow[0] = (function(){
 		}
 
 		if ((bundle) && (!not_in_bundles)){
-			bundle.refreshResourcesOfAllBundles();
+			bundle.refreshResourcesOfAllBundles(my.resources.getAll());
 		}
 		
 		my.fileSelection.selected_files = [];

@@ -470,15 +470,13 @@ eldp_environment.workflow[2] = (function() {
 		
 			var name = removeEndingFromFilename(res.name);
 			
-			g(my.dom_element_prefix+bundle_id+"_bundle_title").value = name;
-			
-			my.render.refreshBundleHeading(bundle_id);
+			my.bundles.getByID(bundle_id).bundle.title = name;
 		
 			APP.log(l("bundle", "bundle_title_taken_from_eaf"));
 		
 		}
 		
-		my.render.renderResource(resource_in_bundle, bundle_id);
+		refresh();
 
 		my.resource_id_counter += 1;
 		
@@ -730,9 +728,30 @@ eldp_environment.workflow[2] = (function() {
 	};
 
 
-	my.refreshResourcesOfAllBundles = function(){
+	my.refreshResourcesOfAllBundles = function(resources){
 	//Offer possibility to add every available media file to all bundle
 	//refresh all bundles with available media files
+	
+		var all_available_resource_ids = getArrayWithIDs(resources);
+
+		my.bundles.forEach(function(bun){
+		//check for added resources that have been deleted in resource tab and delete them here too
+			bun.resources.resources.forEach(function(res_in_bun){
+			
+				// if a person is not in available persons, remove it from the bundle!
+				if (all_available_resource_ids.indexOf(res_in_bun.resource_id) == -1){
+					
+					console.log("There is a resource in bundle with id" + res_in_bun.resource_id + " that does not exist anymore. Deleting!");
+					my.removeResource(bun.id, res_in_bun.id);
+				
+				}
+			
+			
+			});
+			
+		});
+		
+	
 
 		var visible_bundles = my.render.pager.visible_items;
 		//console.log("VISIBLE ITEMS");
@@ -751,7 +770,7 @@ eldp_environment.workflow[2] = (function() {
 
 		for (var i = 0; i < my.bundles.length; i++){
 		
-			if (my.bundles.get(i).bundle.name === ""){
+			if (my.bundles.get(i).bundle.title === ""){
 			
 				return false;
 			
@@ -759,7 +778,7 @@ eldp_environment.workflow[2] = (function() {
 			
 			for (var c = 0; c < my.parent.not_allowed_chars.length; c++){
 		
-				if (my.bundles.get(i).bundle.name.indexOf(my.parent.not_allowed_chars[c]) != -1){
+				if (my.bundles.get(i).bundle.title.indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				

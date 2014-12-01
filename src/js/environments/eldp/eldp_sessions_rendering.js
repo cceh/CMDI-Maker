@@ -156,6 +156,7 @@ eldp_environment.workflow[2].render = (function() {
 		
 		}
 		
+
 	};
 
 
@@ -204,15 +205,6 @@ eldp_environment.workflow[2].render = (function() {
 		}(bundle_object) );
 
 		var bundle_label = dom.make('h1', my.dom_element_prefix+bundle_id+'_label','bundle_heading',bundle_header);
-		
-		
-		if (bundle_object.bundle.name === ""){
-			bundle_label.innerHTML = l("bundle", "unnamed_bundle");
-		}
-		
-		else {
-			bundle_label.innerHTML = l("bundle", "bundle") + ": " + bundle_object.bundle.name;
-		}
 
 		//create icon for deleting the bundle
 		var bundle_delete_link = dom.make('a',my.dom_element_prefix+bundle_id+'_delete_link','bundle_delete_link',bundle_header);
@@ -280,7 +272,8 @@ eldp_environment.workflow[2].render = (function() {
 		if (bundle_expanded === false){
 			my.display(bundle_object);
 		}
-	
+		
+		my.refreshBundleHeading(bundle_id);
 	
 	};
 	
@@ -657,12 +650,15 @@ eldp_environment.workflow[2].render = (function() {
 
 	my.refreshBundleHeading = function(bundle_id){
 
-		if (get(my.dom_element_prefix + bundle_id + "_bundle_title") === ""){
+		//if (get(my.dom_element_prefix + bundle_id + "_bundle_title") === ""){
+		if (bundle.bundles.getByID(bundle_id).bundle.title === ""){
+
 			g(my.dom_element_prefix + bundle_id + "_label").innerHTML = l("bundle", "unnamed_bundle");
+			
 		}
 		
 		else {
-		
+
 			g(my.dom_element_prefix + bundle_id + "_label").innerHTML = l("bundle", "bundle") + ": "+get(my.dom_element_prefix+bundle_id+"_bundle_title");
 
 		}
