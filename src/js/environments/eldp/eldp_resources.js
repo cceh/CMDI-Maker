@@ -635,6 +635,7 @@ eldp_environment.workflow[0] = (function(){
 				});
 				
 				my.refreshFileListDisplay();
+				
 			}
 			
 			catch (e) {

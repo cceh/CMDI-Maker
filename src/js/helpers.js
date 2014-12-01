@@ -179,8 +179,16 @@ function getDirectoryFromWindowsFilePath(path){
 
 
 var linesToArray = function(string){
-
-	return string.split("\n");
+	
+	var array = string.split("\n");
+	
+	for (var i = 0; i < array.length; i++){
+	
+		array[i] = removeCharactersFromString(array[i], "\r");
+	
+	}
+	
+	return array;
 
 };
 
@@ -442,7 +450,7 @@ var removeCharactersFromString = function (string, char_string){
 	var character;
 	var pos;
 	
-	for (var c=0; c< char_string.length; c++){
+	for (var c = 0; c < char_string.length; c++){
 
 		character = char_string[c];
 	
@@ -457,6 +465,7 @@ var removeCharactersFromString = function (string, char_string){
 	}
 	
 	return string;
+	
 };
 
 

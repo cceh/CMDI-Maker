@@ -264,6 +264,7 @@ eldp_environment.eldp_generator = function(data){
 		
 		rs += xml.open("Resource");
 		rs += xml.element("Title", resource.name);
+		
 		rs += xml.element("ID", "");
 		rs += xml.element("Host", "");
 		rs += xml.open("StatusInfo");
