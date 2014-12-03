@@ -687,3 +687,61 @@ padding-right: 10px;
 	display: block;
 
 }
+
+
+/* EXPANDABLE FORM */
+.expandable_form{
+
+overflow: hidden;
+display: block;
+width: 100%;
+float: left;
+margin-bottom: 20px;
+background-color: lightskyblue;
+border-radius: 10px;
+
+}
+
+
+.expandable_form_header{
+
+	padding: 15px;
+	cursor: pointer;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+
+.expandable_form_heading{
+	
+display: inline;
+white-space: nowrap;
+	
+}
+
+
+.expandable_form_content{
+	
+	background-color: #9999FF;
+	display: block;
+	
+}
+
+
+.expandable_form a{
+	
+	color: #1111EE;
+	
+}
+
+.expandable_form a:hover{
+	
+color: #FFFFFF;
+	
+}

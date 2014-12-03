@@ -341,19 +341,7 @@ color: #4D87C7;
 
 /*--- Sessions ---*/
 
-.bundle_header{
 
-	padding: 15px;
-	cursor: pointer;
-
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-
-}
 
 
 .person_role_input{
@@ -371,24 +359,6 @@ color: #4D87C7;
 	
 }
 
-.bundle_content{
-	
-	background-color: #9999FF;
-	display: block;
-	
-}
-
-.bundle_content a{
-	
-	color: #1111EE;
-	
-}
-
-.bundle_content a:hover{
-	
-color: #FFFFFF;
-	
-}
 
 
 .mf h3, .wr h3{ 
@@ -434,12 +404,6 @@ float: right;
 
 }
 
-.bundle_heading{
-	
-display: inline;
-white-space: nowrap;
-	
-}
 
 .persons{
 
@@ -495,17 +459,6 @@ cursor: pointer;
 
 }
 
-.bundle_div{
-
-overflow: hidden;
-display: block;
-width: 100%;
-float: left;
-margin-bottom: 20px;
-background-color: lightskyblue;
-border-radius: 10px;
-
-}
 
 .bundle_project_td{
 	

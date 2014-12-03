@@ -77,6 +77,90 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
+	my.expandableForm = function(parent, element_prefix, expanded, on_expand_collapse, on_delete, id){
+	
+		var form = dom.make('div', element_prefix, 'expandable_form', parent); 
+		
+		var header = dom.make('div', element_prefix + '_header','expandable_form_header', form);
+		header.addEventListener('click', function(num, num2) { 
+			return function(){
+				my.expandableFormViewChange(num, on_expand_collapse, num2);
+			};
+		}(element_prefix, id) );
+
+		var label = dom.make('h1', element_prefix + '_label','expandable_form_heading', header);
+
+		//create icon for deleting the expandable form
+		var delete_link = dom.make('a',element_prefix+'_delete_link','expandable_form_delete_link', header);
+		delete_link.addEventListener('click', function(num) {
+
+			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
+				event.stopPropagation();
+				on_delete(num);
+			};
+			
+		}(element_prefix) );
+		delete_link.innerHTML = "<img id=\"" + element_prefix + "_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Bundle\">";
+		
+		//create icon to expand/collapse the expandable form, it will do nothing, just indicate status
+		var display_link = dom.make('a',element_prefix+'_display_link','expandable_form_display_link', header);
+		APP.GUI.icon(display_link, element_prefix+"_expand_img", "expand_img", "down");
+
+		var content = dom.make('div', element_prefix+'_content', 'expandable_form_content', form);
+
+		if (expanded == false){
+			my.collapseExpandableForm(element_prefix);
+		}
+		
+		return {
+			form: form,
+			header: header,
+			label: label,
+			content: content
+		};
+	
+	};
+	
+	
+	my.collapseExpandableForm = function (element_prefix){
+	
+		g(element_prefix + "_content").style.display = "none";
+		g(element_prefix + "_expand_img").src = APP.CONF.path_to_icons+"up.png";
+
+	};
+	
+
+	my.expandableFormViewChange = function(element_prefix, on_expand_collapse, id){
+	
+		if (g(element_prefix + "_content").style.display != "none"){
+		
+			my.collapseExpandableForm(element_prefix);
+			
+			var event = {
+				id: id,
+				expanded: false
+			};
+			
+
+		}
+		
+		else {
+		
+			g(element_prefix + "_content").style.display = "block";
+			g(element_prefix + "_expand_img").src = APP.CONF.path_to_icons + "down.png";
+			
+			var event = {
+				id: id,
+				expanded: true
+			};
+			
+		}
+		
+		on_expand_collapse(event);
+		
+	};
+	
+	
 	return my;
 	
 })();

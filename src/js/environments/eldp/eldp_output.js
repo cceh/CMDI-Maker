@@ -31,7 +31,7 @@ eldp_environment.workflow[3] = (function (){
 	
 	my.identity = {
 		id: "xml_output",
-		title: "JSON Output",
+		title: "CMDI Output",
 		icon: "data"
 	};
 	

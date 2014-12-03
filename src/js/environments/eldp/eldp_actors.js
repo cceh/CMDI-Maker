@@ -382,7 +382,6 @@ eldp_environment.workflow[1] = (function(){
 	my.saveActivePerson = function(){
 	
 		if (my.persons.getPointer() == -1){
-			console.info("Shall save active person but active person is undefined! No problem!");
 			return;
 		}
 	

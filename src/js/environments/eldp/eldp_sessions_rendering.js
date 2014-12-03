@@ -194,38 +194,21 @@ eldp_environment.workflow[2].render = (function() {
 			bundles_view.innerHTML = "";
 		}
 		
-		var bundle_div = dom.make('div',my.dom_element_prefix+bundle_id,'bundle_div',bundles_view); 
-		//bundles_count is right! but it has to be clear which bundle in bundles has which bundle_id
+		var form = APP.GUI.FORMS.expandableForm(
+			bundles_view,
+			my.dom_element_prefix + bundle_id,
+			bundle_expanded,
+			function(event) {
 
-		var bundle_header = dom.make('div',my.dom_element_prefix+bundle_id+'_header','bundle_header',bundle_div);
-		bundle_header.addEventListener('click', function(num) { 
-			return function(){
-				my.display(num);  
-			};
-		}(bundle_object) );
-
-		var bundle_label = dom.make('h1', my.dom_element_prefix+bundle_id+'_label','bundle_heading',bundle_header);
-
-		//create icon for deleting the bundle
-		var bundle_delete_link = dom.make('a',my.dom_element_prefix+bundle_id+'_delete_link','bundle_delete_link',bundle_header);
-		bundle_delete_link.addEventListener('click', function(num) {
-
-			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
-				event.stopPropagation();
-				actions.deleteBundle(num);
-			};
+				bundle_object.expanded = event.expanded;
 			
-		}(bundle_id) );
-		bundle_delete_link.innerHTML = "<img id=\""+my.dom_element_prefix+bundle_id+"_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Bundle\">";
+			},
+			my.deleteSession,
+			bundle_id
+		);
 		
-		//create icon to expand/collapse the bundle
-		var bundle_display_link = dom.make('a',my.dom_element_prefix+bundle_id+'_display_link','bundle_display_link',bundle_header);
-		APP.GUI.icon(bundle_display_link, my.dom_element_prefix+bundle_id+"_expand_img", "expand_img", "down");
-
-		var bundle_content = dom.make('div',my.dom_element_prefix+bundle_id+'_content','bundle_content',bundle_div);
-
 		//create the form
-		APP.forms.make(bundle_content, bundle_form, my.dom_element_prefix+bundle_id+"_", my.dom_element_prefix, bundle_object, my.makeSpecialFormInput);
+		APP.forms.make(form.content, bundle_form, my.dom_element_prefix+bundle_id+"_", my.dom_element_prefix, bundle_object, my.makeSpecialFormInput);
 		
 		g(my.dom_element_prefix+bundle_id+"_bundle_title").addEventListener("blur", function(num){
 			return function(){
@@ -269,33 +252,8 @@ eldp_environment.workflow[2].render = (function() {
 
 		my.refreshPersonListInBundle(bundle_object, all_available_person_ids);
 		
-		if (bundle_expanded === false){
-			my.display(bundle_object);
-		}
-		
 		my.refreshBundleHeading(bundle_id);
 	
-	};
-	
-	
-	my.display = function(bundle){
-	
-		var bundle_id = bundle.id;
-	
-		var bundle_prefix = my.dom_element_prefix + bundle_id;
-	
-		if (document.getElementById(bundle_prefix + "_content").style.display != "none"){
-			document.getElementById(bundle_prefix + "_content").style.display = "none";
-			document.getElementById(bundle_prefix + "_expand_img").src=APP.CONF.path_to_icons+"up.png";
-			bundle.expanded = false;
-		}
-		
-		else {
-			document.getElementById(bundle_prefix + "_content").style.display = "block";
-			document.getElementById(bundle_prefix + "_expand_img").src=APP.CONF.path_to_icons+"down.png";
-			bundle.expanded = true;
-		}
-		
 	};
 	
 	
