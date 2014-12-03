@@ -651,7 +651,7 @@ eldp_environment.workflow[0] = (function(){
 
 	my.reset = function(){
 
-		my.resources = my.resources.reset();
+		my.resources.reset();
 		my.refreshFileListDisplay();
 
 	};
