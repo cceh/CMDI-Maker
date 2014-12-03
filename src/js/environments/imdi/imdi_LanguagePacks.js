@@ -59,6 +59,8 @@ imdi_environment.languages[0] = {
 	ok: "OK",
 	function_currently_unavailable: "This function is currently unavailable!",
 	warning: "WARNING:<br>",
+	really_overwrite_data: "Do you really want to overwrite data?",
+	yes_overwrite_data: "Yes, overwrite data",
 	
 	languages: {
 		set_global_languages_of_content: "Set Global Languages of Content",
@@ -283,6 +285,8 @@ imdi_environment.languages[1] = {
 	ok: "OK",
 	function_currently_unavailable: "Diese Funktion ist derzeit nicht verfügbar!",
 	warning: "WARNUNG:<br>",
+	really_overwrite_data: "Möchtest Du wirklich Daten überschreiben?",
+	yes_overwrite_data: "Ja, Daten überschreiben",
 	
 	languages: {
 		set_global_languages_of_content: "Globale Content Language hinzufügen",

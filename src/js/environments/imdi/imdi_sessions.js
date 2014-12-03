@@ -101,6 +101,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	
 	my.createCopySessionOptions = function (){
+	
 		var sf = session_form;
 
 		var div = g("copy_sessions_select");
@@ -142,7 +143,21 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				wrapper_id: "copy_sessions_div",
 				type: "function_wrap",
 				sub_div: "copy_sessions_select",
-				onclick: function() { my.assignSession1Metadata(); }
+				onclick: function() {
+					
+					APP.confirm(l("really_overwrite_data"), function (e) {
+						if (e) {
+							// user clicked "ok"
+						}
+				
+						else {
+							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+							my.assignSession1Metadata();
+							
+						}
+					}, l("no"), l("yes_overwrite_data"));
+				
+				}
 			},
 			{
 				label: l("session", "reset_form"),
@@ -162,6 +177,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 							
 						}
 					}, l("no"), l("yes_delete_form"));
+					
 				}
 			},
 			{

@@ -111,7 +111,7 @@ eldp_environment.workflow[3] = (function (){
 		
 		for (var s = 0; s < bundle.bundles.length; s++){
 			
-			filename = bundle.bundles.get(s).bundle.name + ".cmdi";
+			filename = bundle.bundles.get(s).bundle.title + ".cmdi";
 			APP.GUI.createXMLOutputDIV(xml_window, "CMDI Bundle " + (s+1), "textarea_bundle_"+s,
 			xml_strings.bundles[s],filename, false);
 			

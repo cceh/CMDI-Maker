@@ -19,7 +19,8 @@ eldp_environment.eldp_generator = function(data){
 "use strict";
 
 
-	var eldp_bundle_profile="clarin.eu:cr1:p_1271859438204";
+	//var eldp_bundle_profile="clarin.eu:cr1:p_1271859438204";
+	var eldp_bundle_profile="clarin.eu:cr1:p_1407745711992";
 
 	var insert_cmdi_header = function(MdCreator,MdCreationDate,MdProfile){
 		
@@ -42,7 +43,7 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 	
-	var insertBundleLanguages = function(langs){
+	var insertLanguages = function(langs){
 	
 		if (langs.length === 0){
 			return "";
@@ -86,6 +87,7 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.header;	
 		
 		rs += xml.open("CMD",[
+			["xmlns", "http://www.clarin.eu/cmd/"],
 			["xmlns:cmd","http://www.clarin.eu/cmd/"],
 			["xmlns:dcr","http://www.isocat.org/ns/dcr"],
 			["xmlns:ann","http://www.clarin.eu"],
@@ -100,16 +102,16 @@ eldp_environment.eldp_generator = function(data){
 		
 		
 		//in resources is nothing, as this is a session and no corpus. attached media files in a cmdi session are further down
-		rs += xml.tag("Resources",0);
+		rs += xml.open("Resources");
 		rs += xml.tag("ResourceProxyList",2);
 		rs += xml.tag("JournalFileProxyList",2);
 		rs += xml.tag("ResourceRelationList",2);
-		rs += xml.tag("Resources",1);
+		rs += xml.close("Resources");
 		
 		rs += xml.open("Components");
 		
 		
-		rs += xml.open("ELDP-Bundle");
+		rs += xml.open("ELDP_Bundle");
 
 		rs += xml.element("Title", bundle.bundle.title);		
 		rs += xml.element("ID", ""); //no input
@@ -122,8 +124,8 @@ eldp_environment.eldp_generator = function(data){
 		
 		//No depositors
 		
-		rs += insertBundleLanguages(bundle.languages.bundle_languages);
-		rs += insertBundlePersons(bundle.persons.persons, persons);
+		rs += insertLanguages(bundle.languages.bundle_languages);
+		rs += insertPersons(bundle.persons.persons, persons);
 
 		rs += xml.open("ProjectLocations");
 		
@@ -138,9 +140,9 @@ eldp_environment.eldp_generator = function(data){
 		
 		rs += xml.close("ProjectLocations");
 
-		rs += insertBundleResources(bundle.resources.resources, resources);
+		rs += insertBundleResources(bundle.resources.resources, resources, bundle.languages.bundle_languages, bundle.persons.persons, persons);
 		
-		rs += xml.close("ELDP-Bundle");
+		rs += xml.close("ELDP_Bundle");
 		rs += xml.close("Components");
 		rs += xml.close("CMD");
 		
@@ -172,7 +174,7 @@ eldp_environment.eldp_generator = function(data){
 	!! AGE  = BUNDLE_DATE - PERSON BIRTH YEAR
 	
 	*/
-	var insertBundlePersons = function(person_in_bundles, persons){
+	var insertPersons = function(person_in_bundles, persons){
 	
 		if (person_in_bundles.length === 0){
 			return "";
@@ -219,6 +221,8 @@ eldp_environment.eldp_generator = function(data){
 			
 			rs += xml.close("BiographicalData");
 			
+			rs += xml.close("PersonalData");
+			
 	
 	
 			rs += xml.open("Languages");
@@ -234,29 +238,9 @@ eldp_environment.eldp_generator = function(data){
 	
 	
 	};
-
-	
-	var insertContentLanguages = function (session_id) {
-
-		var rs = "";
-		
-		var languages = corpus.content_languages.content_languages;
-	
-		for (var l=0;l<languages.length;l++){  //for all content languages // no session separate languages yet
-	
-			rs += xml.open("Content_Language");
-			rs += xml.element("Id",APP.CONF.LanguageCodePrefix+languages[l][0]);
-			rs += xml.element("Name",languages[l][3]);
-			rs += xml.close("Content_Language");
-	
-		}
-
-		return rs;
-		
-	};
 	
 
-	var insertBundleResource = function(res_in_bun, resource){
+	var insertBundleResource = function(res_in_bun, resource, languages, persons_in_bundle, persons){
 
 		var rs = "";
 		
@@ -272,9 +256,8 @@ eldp_environment.eldp_generator = function(data){
 		xml.element("ChangeDate", (typeof resource.lastModified != "undefined") ? resource.lastModified : "");
 		rs += xml.close("StatusInfo");
 		
-		
-		//rs += insertContentLanguages
-		//rs += insertPersons
+		rs += insertLanguages(languages);
+		rs += insertPersons(persons_in_bundle, persons);
 		
 		
 		rs += xml.close("Resource");
@@ -284,7 +267,7 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 	
-	var insertBundleResources = function(resources_in_bundle, resources){
+	var insertBundleResources = function(resources_in_bundle, resources, languages, persons_in_bundle, persons){
 
 		var rs = "";
 		
@@ -300,7 +283,7 @@ eldp_environment.eldp_generator = function(data){
 		
 			var res = resources.getByID(res_in_bun.resource_id);
 		
-			rs += insertBundleResource(res_in_bun, res);
+			rs += insertBundleResource(res_in_bun, res, languages, persons_in_bundle, persons);
 			
 		});
 		
@@ -395,148 +378,3 @@ eldp_environment.eldp_generator = function(data){
 	return my;
 
 };
-
-
-
-/*
-<?xml version="1.0" encoding="UTF-8"?>
-<CMD xmlns="http://www.clarin.eu/cmd/"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     CMDVersion="1.1"
-     xsi:schemaLocation="http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1407745711992/xsd">
-   <Header>
-      <MdCreator>Sebastian</MdCreator>
-      <MdCreationDate>2014-11-19+01:00</MdCreationDate>
-      <MdProfile>clarin.eu:cr1:p_1407745711992</MdProfile>
-   </Header>
-   <Resources>
-      <ResourceProxyList/>
-      <JournalFileProxyList/>
-      <ResourceRelationList/>
-   </Resources>
-   <Components>
-      <ELDP_Bundle>
-         <Title xml:lang="fra">b_title</Title>
-         <TypeofRecord>umbrella</TypeofRecord>
-         <ID>001</ID>
-         <StatusInfo>
-            <Status>stable</Status>
-            <ChangeDate>2014-11-19</ChangeDate>
-         </StatusInfo>
-         <Depositor>
-            <Role>dep role</Role>
-            <AdditionalInformation>ad</AdditionalInformation>
-            <PersonalData>
-               <Name>
-                  <Name>asd</Name>
-               </Name>
-               <BiographicalData>
-                  <DeathYear>asd</DeathYear>
-               </BiographicalData>
-            </PersonalData>
-            <Gender/>
-            <Languages>
-               <Language>
-                  <Name>German</Name>
-                  <Autoglottonym>deutsch</Autoglottonym>
-               </Language>
-            </Languages>
-         </Depositor>
-         <ContentLanguage>
-            <Name>German</Name>
-            <Use>Working</Use>
-            <History/>
-            <AdditionalInformation>this is some additional information</AdditionalInformation>
-         </ContentLanguage>
-         <Person>
-            <Age_at_Time_of_Recording>12</Age_at_Time_of_Recording>
-            <Role>data_inputter</Role>
-            <BiographicalNote/>
-            <Ethnicity>
-               <EthnicAffiliation>ui</EthnicAffiliation>
-               <AdditionalInformation>addinfo</AdditionalInformation>
-            </Ethnicity>
-            <PersonalData>
-               <Name>
-                  <Name>Guy Stone</Name>
-               </Name>
-               <BiographicalData>
-                  <BirthYear>1922</BirthYear>
-                  <DeathYear>2999</DeathYear>
-               </BiographicalData>
-            </PersonalData>
-            <Gender>
-               <GenderIdentification>huhu</GenderIdentification>
-               <AdditionalInformation/>
-            </Gender>
-            <Education>
-               <Level/>
-               <AdditionalInformation/>
-               <AdditionalInformation/>
-               <AdditionalInformation/>
-            </Education>
-            <Nationality/>
-         </Person>
-         <ProjectLocation>
-            <ProjectGeographic/>
-         </ProjectLocation>
-         <AccessInformation>
-            <Restricitons xml:lang="aom">res_of_access</Restricitons>
-            <ConditionsofAccess>cond of access</ConditionsofAccess>
-            <oURCS>User</oURCS>
-         </AccessInformation>
-         <Resource>
-            <Title/>
-            <TypeofRecord/>
-            <ID/>
-            <Host/>
-            <StatusInfo>
-               <Status/>
-               <ChangeDate/>
-            </StatusInfo>
-            <Depositor>
-               <Role/>
-               <AdditionalInformation/>
-               <PersonalData>
-                  <Name>
-                     <Name/>
-                  </Name>
-                  <BiographicalData>
-                     <DeathYear/>
-                  </BiographicalData>
-               </PersonalData>
-               <Gender/>
-               <Languages>
-                  <Language>
-                     <Name/>
-                     <Autoglottonym/>
-                  </Language>
-               </Languages>
-            </Depositor>
-            <ContentLanguage>
-               <Name/>
-               <Use/>
-               <History/>
-               <AdditionalInformation/>
-            </ContentLanguage>
-            <Location/>
-            <AccessInformation>
-               <Restricitons/>
-               <ConditionsofAccess/>
-               <oURCS/>
-            </AccessInformation>
-            <VideoFile>
-               <General>
-                  <Name/>
-                  <Date/>
-               </General>
-               <MediaInformations/>
-               <ImageInformations/>
-               <VideoInformations/>
-               <Checksum/>
-            </VideoFile>
-         </Resource>
-      </ELDP_Bundle>
-   </Components>
-</CMD>
-*/

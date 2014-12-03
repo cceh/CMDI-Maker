@@ -191,7 +191,10 @@ eldp_environment.languages[0] = {
 		download_zip_archive: "Download ZIP archive",
 		not_allowed_chars_are: "Not allowed chars are: ",
 		spaces_are_not_allowed_either: "Space characters are not allowed either."
-	}
+	},
+	
+	really_overwrite_data: "Do you really want to overwrite data?",
+	yes_overwrite_data: "Yes, overwrite data"
 };
 
 
@@ -349,5 +352,9 @@ eldp_environment.languages[1] = {
 		download_zip_archive: "ZIP-Archiv herunterladen",
 		not_allowed_chars_are: "Nicht erlaubte Zeichen sind: ",
 		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt."
-	}
+	},
+	
+	really_overwrite_data: "Möchtest Du wirklich Daten überschreiben?",
+	yes_overwrite_data: "Ja, Daten überschreiben"
+	
 };
