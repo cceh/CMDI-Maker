@@ -365,11 +365,9 @@ eldp_environment.workflow[2].render = (function() {
 	
 		var bundle_id = bundle.id;
 		
-		var div_id = my.dom_element_prefix + bundle_id + "_person_" + id + "_label";
+		var h2_id = my.dom_element_prefix + bundle_id + "_person_" + id + "_name_disp";
 
-		var div = g(div_id);
-		
-		var h2 = div.getElementsByTagName("h2")[0];
+		var h2 = g(h2_id);
 		
 		console.log(h2);
 		

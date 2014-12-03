@@ -45,10 +45,6 @@ eldp_environment.eldp_generator = function(data){
 	
 	var insertLanguages = function(langs){
 	
-		if (langs.length === 0){
-			return "";
-		}
-		
 		var rs = "";
 		
 		rs += xml.open("ContentLanguages");
@@ -70,6 +66,18 @@ eldp_environment.eldp_generator = function(data){
 			rs += xml.close("ContentLanguage");		
 		
 		});
+		
+		if (langs.length == 0){
+		
+			rs += xml.open("ContentLanguage");
+			rs += xml.element("Name", "");
+			rs += xml.element("Code", "");
+			
+			rs += xml.element("Use", "");
+
+			rs += xml.close("ContentLanguage");			
+		
+		}
 		
 		rs += xml.close("ContentLanguages");
 		
@@ -118,11 +126,32 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.element("Description", bundle.bundle.description, [getXMLLangAttribute()]);
 		
 		rs += xml.open("StatusInfo");
-		rs += xml.element("Status", "");
+		rs += xml.element("Status", "in-progress");  //no input
 		rs += xml.element("ChangeDate", today());
 		rs += xml.close("StatusInfo");
 		
-		//No depositors
+		//No depositor input
+		rs += xml.open("Depositors");
+		rs += xml.open("Depositor");
+		rs += xml.element("Role", "");
+		rs += xml.element("AdditionalInformation", "");
+		rs += xml.open("PersonalData");
+		rs += xml.open("Name");
+		rs += xml.element("Name", "");
+		rs += xml.close("Name");
+		rs += xml.open("BiographicalData");
+		/*rs += xml.element("BirthYear", "");*/
+		rs += xml.close("BiographicalData");
+		rs += xml.close("PersonalData");
+		rs += xml.element("Gender", "");
+		rs += xml.open("Languages");
+		rs += xml.open("Language");
+		rs += xml.element("Name", "");
+		rs += xml.element("Autoglottonym", "");
+		rs += xml.close("Language");
+		rs += xml.close("Languages");
+		rs += xml.close("Depositor");
+		rs += xml.close("Depositors");
 		
 		rs += insertLanguages(bundle.languages.bundle_languages);
 		rs += insertPersons(bundle.persons.persons, persons);
@@ -217,7 +246,7 @@ eldp_environment.eldp_generator = function(data){
 			
 			rs += xml.open("BiographicalData");
 			
-			rs += xml.element("BirthYear", pers.birth_year);
+			rs += xml.element("BirthYear", (pers.birth_year != "YYYY") ? pers.birth_year : "");
 			
 			rs += xml.close("BiographicalData");
 			
