@@ -3,6 +3,7 @@ CACHE MANIFEST
 
 CACHE:
 index.html
+img/busy.svg
 img/favicon.ico
 img/logo-128.png
 js/LanguageIndex.js
@@ -65,4 +66,4 @@ img/logos/LOGO_Uni_Koeln.png
 NETWORK:
 *
 
-# hash: 230bf129c27eddac31f8d45de57c878686cdbe91136e977e5768384688383cf2
+# hash: 8c5035e45954eaf10fff4c360ca5b4f42a9284bc7bd4ea74899caa729e83a20e
