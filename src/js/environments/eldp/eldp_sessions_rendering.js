@@ -203,7 +203,7 @@ eldp_environment.workflow[2].render = (function() {
 				bundle_object.expanded = event.expanded;
 			
 			},
-			my.deleteSession,
+			actions.deleteBundle,
 			bundle_id
 		);
 		
@@ -519,17 +519,31 @@ eldp_environment.workflow[2].render = (function() {
 		h2.id = my.dom_element_prefix+bundle_id+"_person_" + id + "_name_disp";
 		
 		
-		//dom.input(div, "person_in_bundle_"+id+"_role_input", "person_role_input", "", "text", role_display);
+		/*
 		APP.GUI.openVocabulary(div,
 			undefined, "", "person_in_bundle_"+id+"_role_input", 1,
 			[
-				"annotator","author","compiler","consultant","data_inputter","depositor",
-				"developer","editor","illustrator","interpreter","interviewee","interviewer",
-				"participant","performer","photographer","recorder","researcher","research_participant",
-				"responder","signer","singer","speaker","sponsor","transcriber","translator"
+				"annotator","Author","Compiler","Consultant","Data_inputter","Depositor",
+				"Developer","Editor","Illustrator","Interpreter","Interviewee","Interviewer",
+				"Participant","Performer","Photographer","Recorder","Researcher","Research_participant",
+				"Responder","Signer","Singer","Speaker","Sponsor","Transcriber","Translator"
 			],
 			role_display, undefined, "person_role_input"
 		);
+		*/
+		
+		var select = APP.GUI.makeSelect(div,
+			undefined, "person_in_bundle_"+id+"_role_input",
+			"person_in_bundle_"+id+"_role_input", 1,
+			[
+				"annotator","Author","Compiler","Consultant","Data_inputter","Depositor",
+				"Developer","Editor","Illustrator","Interpreter","Interviewee","Interviewer",
+				"Participant","Performer","Photographer","Recorder","Researcher","Research_participant",
+				"Responder","Signer","Singer","Speaker","Sponsor","Transcriber","Translator"
+			],
+			role_display, undefined
+		);
+		select.className = "person_role_input";
 		
 		my.refreshPersonName(bundle, id);
 		

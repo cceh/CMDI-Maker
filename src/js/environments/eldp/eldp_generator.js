@@ -21,6 +21,7 @@ eldp_environment.eldp_generator = function(data){
 
 	//var eldp_bundle_profile="clarin.eu:cr1:p_1271859438204";
 	var eldp_bundle_profile="clarin.eu:cr1:p_1407745711992";
+	var language_code_prefix = "ISO639-3:";
 
 	var insert_cmdi_header = function(MdCreator,MdCreationDate,MdProfile){
 		
@@ -53,31 +54,19 @@ eldp_environment.eldp_generator = function(data){
 		
 			rs += xml.open("ContentLanguage");
 			rs += xml.element("Name", lang.name);
-			rs += xml.element("Code", "ISO639-3:" + lang.code);
+			rs += xml.element("Code", language_code_prefix + lang.code);
 			
 			if (lang.content_language === true){
-				rs += xml.element("Use", "content");
+				rs += xml.element("Use", "Content");
 			}
 			
 			else {
-				rs += xml.element("Use", "working");
+				rs += xml.element("Use", "Working");
 			}
 			
 			rs += xml.close("ContentLanguage");		
 		
 		});
-		
-		if (langs.length == 0){
-		
-			rs += xml.open("ContentLanguage");
-			rs += xml.element("Name", "");
-			rs += xml.element("Code", "");
-			
-			rs += xml.element("Use", "");
-
-			rs += xml.close("ContentLanguage");			
-		
-		}
 		
 		rs += xml.close("ContentLanguages");
 		
@@ -131,27 +120,8 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.close("StatusInfo");
 		
 		//No depositor input
-		rs += xml.open("Depositors");
-		rs += xml.open("Depositor");
-		rs += xml.element("Role", "");
-		rs += xml.element("AdditionalInformation", "");
-		rs += xml.open("PersonalData");
-		rs += xml.open("Name");
-		rs += xml.element("Name", "");
-		rs += xml.close("Name");
-		rs += xml.open("BiographicalData");
-		/*rs += xml.element("BirthYear", "");*/
-		rs += xml.close("BiographicalData");
-		rs += xml.close("PersonalData");
-		rs += xml.element("Gender", "");
-		rs += xml.open("Languages");
-		rs += xml.open("Language");
-		rs += xml.element("Name", "");
-		rs += xml.element("Autoglottonym", "");
-		rs += xml.close("Language");
-		rs += xml.close("Languages");
-		rs += xml.close("Depositor");
-		rs += xml.close("Depositors");
+		rs += insertDummyDepositor();
+
 		
 		rs += insertLanguages(bundle.languages.bundle_languages);
 		rs += insertPersons(bundle.persons.persons, persons);
@@ -180,18 +150,59 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 	
+	var insertDummyDepositor = function(){
+	
+		var rs = "";
+	
+		rs += xml.open("Depositors");
+		rs += xml.open("Depositor");
+		rs += xml.element("Role", "");
+		rs += xml.element("AdditionalInformation", "");
+		rs += xml.open("PersonalData");
+		rs += xml.open("Name");
+		rs += xml.element("Name", "");
+		rs += xml.close("Name");
+		rs += xml.open("BiographicalData");
+		/*rs += xml.element("BirthYear", "");*/
+		rs += xml.close("BiographicalData");
+		rs += xml.close("PersonalData");
+		rs += xml.element("Gender", "");
+		rs += xml.open("Languages");
+		rs += xml.open("Language");
+		rs += xml.element("Name", "");
+		rs += xml.element("Autoglottonym", "");
+		rs += xml.close("Language");
+		rs += xml.close("Languages");
+		rs += xml.close("Depositor");
+		rs += xml.close("Depositors");
+	
+		return rs;	
+	
+	};
+	
+	
 	var insertPersonLanguages = function(languages){
 	
 		var rs = "";
+		
+		if (languages.length == 0){
+			return "";
+		}
+		
+		
+		rs += xml.open("Languages");
 	
 		forEach(languages, function(lang){
 		
 			rs += xml.open("Language");
-			rs += xml.element("ID", lang.iso_code);
 			rs += xml.element("Name", lang.name);
+			rs += xml.element("Code", language_code_prefix + lang.iso_code);
+			rs += xml.element("Additional_Information", lang.additional_information);
 			rs += xml.close("Language");
 		
 		});
+		
+		rs += xml.close("Languages");
 		
 		return rs;
 	
@@ -252,11 +263,8 @@ eldp_environment.eldp_generator = function(data){
 			
 			rs += xml.close("PersonalData");
 			
-	
-	
-			rs += xml.open("Languages");
-			rs += insertPersonLanguages(pers.languages);
-			rs += xml.close("Languages");
+			rs += insertPersonLanguages(pers.languages.actor_languages);
+
 			rs += xml.close("Person");
 		
 		});
@@ -282,8 +290,16 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.element("Host", "");
 		rs += xml.open("StatusInfo");
 		rs += xml.element("Status", (resource.stable == true) ? "stable" : "in-progress");
-		xml.element("ChangeDate", (typeof resource.lastModified != "undefined") ? resource.lastModified : "");
+		
+		var lm = parseDate(resource.lastModified);
+		
+		rs += xml.element("ChangeDate", (typeof lm != "null") ? lm.year + "-" + lm.month + "-" + lm.day : "");
 		rs += xml.close("StatusInfo");
+		
+		
+		//Depositor!
+		rs += insertDummyDepositor();
+		
 		
 		rs += insertLanguages(languages);
 		rs += insertPersons(persons_in_bundle, persons);

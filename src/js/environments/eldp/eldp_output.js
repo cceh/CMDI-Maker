@@ -56,21 +56,33 @@ eldp_environment.workflow[3] = (function (){
 	
 		//if there is nothing to be done, return
 		if (bundle.bundles.length === 0){
-		
 			APP.alert(l("output", "you_must_create_some_bundles_first"));
 			APP.view(bundle);
 			return;
-			
 		}
 		
-		//corpus must have a proper name or no name at all
+		//all bundles must have proper name
 		if (!bundle.areAllBundlesProperlyNamed()){
-			
 			APP.view(bundle);
 			APP.alert(l("output", "bundles_must_have_proper_name") + my.parent.not_allowed_chars);
 			return;
-			
 		}
+		
+		
+		if (!bundle.doAllBundlesHaveALanguage()){
+			APP.view(bundle);
+			APP.alert(l("output", "bundles_must_have_one_language"));
+			return;
+		}
+		
+		
+		if (!person.doesEveryPersonHaveValidBirthYear()){
+			APP.view(person);
+			APP.alert(l("output", "persons_must_have_valid_birth_year"));
+			return;
+		}
+		
+		
 		
 		my.generate();
 		

@@ -328,7 +328,7 @@ eldp_environment.workflow[0] = (function(){
 				title: res.name,
 				mime_type: res.mime_type,
 				file_size: res.size,
-				last_change: res.last_change,
+				lastModified: res.lastModified,
 				id: "file_entry_"+i,
 				className: "file_entry media_file_entry",
 				parent: list,
@@ -363,13 +363,13 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.renderResource = function(options){
 		//possible options:
-		//number, title, mimeType, file_size, last_change, id, className, parent, compatibility_warning, stable, inProgress, path
+		//number, title, mimeType, file_size, lastModified, id, className, parent, compatibility_warning, stable, inProgress, path
 	
 		var div = dom.make("div", options.id, options.className, options.parent);
 		var title = dom.make("h2", "", "file_entry_title", div, options.title);
 		var p = dom.make("p", "", "", div, options.mimeType +
 		'<br><span class="size_span">' + my.l("resources", "size") + ': ' + options.file_size + '</span><br>'+
-		'<span name="date_span" class="date_span">' + my.l("resources", "last_modified") + ': ' + options.last_change + '</span><br>' +
+		'<span name="date_span" class="date_span">' + my.l("resources", "last_modified") + ': ' + options.lastModified + '</span><br>' +
 		'<span name="path_span" class="date_span">' + my.l("resources", "path") + ': ' + options.path + '</span>'
 		);
 		

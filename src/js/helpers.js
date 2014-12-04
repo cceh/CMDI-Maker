@@ -738,7 +738,29 @@ function parseDate(str){
 	
 	}
 	
+	//if not successful, try other date format
+	var parts = str.match(/(\d+)/g);
+	
+	// note parts[1]-1
+	if (parts !== null){
+		var date = new Date(parts[2], parts[1]-1, parts[0]);
+		
+		if(date.getFullYear()==parts[2] && date.getMonth()==parts[1]-1){
+		
+			return {
+			
+				year: parts[2],
+				month: parts[1],
+				day: parts[0]
+				
+			
+			};   
+		}		
+		
+	}
+	
 	return null;
+	
 }
 
 

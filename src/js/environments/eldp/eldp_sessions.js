@@ -793,6 +793,24 @@ eldp_environment.workflow[2] = (function() {
 	};
 	
 	
+	
+	my.doAllBundlesHaveALanguage = function(){
+	
+		for (var i = 0; i < my.bundles.length; i++){
+		
+			if (my.bundles.get(i).languages.bundle_languages.length == 0){
+			
+				return false;
+			
+			}
+			
+		}
+		
+		return true;	
+	
+	};
+	
+	
 	my.updatePersonNameInAllBundles = function(person_id){
 	
 		return my.render.updatePersonNameInAllBundles(person_id, my.bundles.getAll());

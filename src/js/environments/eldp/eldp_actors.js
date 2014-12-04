@@ -621,6 +621,42 @@ eldp_environment.workflow[1] = (function(){
 		}(i), false );
 	
 	};
+	
+	
+	my.doesEveryPersonHaveValidBirthYear = function(){
+	
+		for (var i = 0; i < my.persons.length; i++){
+		
+			var year = my.persons.get(i).birth_year;
+		
+			if (year.length > 4 || year == "YYYY" || year == ""){
+			
+				return false;
+			
+			}
+			
+		}
+		
+		return true;	
+	
+	};
+	
+	
+	my.doesEveryPersonHaveALanguage = function(){
+	
+		for (var i = 0; i < my.persons.length; i++){
+		
+			if (my.persons.get(i).languages.actor_languages.length == 0){
+			
+				return false;
+			
+			}
+			
+		}
+		
+		return true;	
+	
+	};
 
 
 	return my;
