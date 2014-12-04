@@ -382,8 +382,9 @@ eldp_environment.workflow[2] = (function() {
 		
 			if (person.persons.getByID(person_id)){  //check if person still exists before adding
 				
+				my.refreshBundlesArray();
+				
 				console.log("adding person in bundle with id " + bundle_id);
-				console.log(role);
 				
 				if (typeof role != "string"){
 					role = "";
@@ -397,8 +398,7 @@ eldp_environment.workflow[2] = (function() {
 				
 				my.bundles.getByID(bundle_id).persons.persons.push(person_in_bundle);
 			
-				//my.render.renderPerson(my.bundles[my.getIndexByID(bundle_id)], person_in_bundle);
-				my.render.refresh(my.bundles.getAll());
+				refresh();
 				
 				my.person_id_counter++;
 				
@@ -410,14 +410,7 @@ eldp_environment.workflow[2] = (function() {
 				return;
 			
 			}
-/*
-		}
-		
-		else {
-		
-			APP.log(l("bundle", "this_person_is_already_in_the_bundle"), "error");
-		
-		}*/
+
 	};
 
 

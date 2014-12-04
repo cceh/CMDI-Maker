@@ -523,7 +523,7 @@ eldp_environment.workflow[2].render = (function() {
 		APP.GUI.openVocabulary(div,
 			undefined, "", "person_in_bundle_"+id+"_role_input", 1,
 			[
-				"annotator","Author","Compiler","Consultant","Data_inputter","Depositor",
+				"Annotator","Author","Compiler","Consultant","Data_inputter","Depositor",
 				"Developer","Editor","Illustrator","Interpreter","Interviewee","Interviewer",
 				"Participant","Performer","Photographer","Recorder","Researcher","Research_participant",
 				"Responder","Signer","Singer","Speaker","Sponsor","Transcriber","Translator"
@@ -536,7 +536,7 @@ eldp_environment.workflow[2].render = (function() {
 			undefined, "person_in_bundle_"+id+"_role_input",
 			"person_in_bundle_"+id+"_role_input", 1,
 			[
-				"annotator","Author","Compiler","Consultant","Data_inputter","Depositor",
+				"Annotator","Author","Compiler","Consultant","Data_inputter","Depositor",
 				"Developer","Editor","Illustrator","Interpreter","Interviewee","Interviewer",
 				"Participant","Performer","Photographer","Recorder","Researcher","Research_participant",
 				"Responder","Signer","Singer","Speaker","Sponsor","Transcriber","Translator"

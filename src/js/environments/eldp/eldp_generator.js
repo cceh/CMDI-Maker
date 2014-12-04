@@ -156,7 +156,7 @@ eldp_environment.eldp_generator = function(data){
 	
 		rs += xml.open("Depositors");
 		rs += xml.open("Depositor");
-		rs += xml.element("Role", "");
+		rs += xml.element("Role", "Depositor");  
 		rs += xml.element("AdditionalInformation", "");
 		rs += xml.open("PersonalData");
 		rs += xml.open("Name");
@@ -306,7 +306,7 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.open("AccessInformation");
 		
 		rs += xml.element("Restrictions", bundle.resources.access_restrictions);
-		rs += xml.element("ConditionsOfAccess", bundle.resources.access_conditions);
+		rs += xml.element("ConditionsofAccess", bundle.resources.access_conditions);
 		
 		var oURCS = "Open Access";
 		if (res_in_bun.urcs.u == true) oURCS = "User";
