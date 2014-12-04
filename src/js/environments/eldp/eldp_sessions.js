@@ -296,10 +296,9 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.removeLanguage = function(bundle_id, l_id, element_id){
 	
-		var bundle_index = my.getIndexByID(bundle_id);	
+		var bundle_index = my.bundles.getIndexByID(bundle_id);	
 		var language_index = my.getLanguageObjectIndexByID(bundle_index, l_id);
 
-		console.log(bundle_index + ", " + language_index);
 		my.bundles.get(bundle_index).languages.bundle_languages.splice(language_index, 1);
 		
 		dom.remove(element_id);
