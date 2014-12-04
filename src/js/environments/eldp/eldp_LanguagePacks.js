@@ -179,6 +179,7 @@ eldp_environment.languages[0] = {
 		from_where_to_where: "From where to where",
 		metadata_copied: "Metadata copied",
 		bundle_title_taken_from_eaf: "Bundle title has been taken from EAF file name, since bundle has not been manually named yet.",
+		bundles_must_have_one_language: "Every bundle must have at least one language.",
 	},
 	
 	output: {
@@ -190,7 +191,8 @@ eldp_environment.languages[0] = {
 		download_corpus_including_all_bundles: "Download Corpus including all Bundles",
 		download_zip_archive: "Download ZIP archive",
 		not_allowed_chars_are: "Not allowed chars are: ",
-		spaces_are_not_allowed_either: "Space characters are not allowed either."
+		spaces_are_not_allowed_either: "Space characters are not allowed either.",
+		persons_must_have_valid_birth_year: "Every person must have a valid birth year!"
 	},
 	
 	really_overwrite_data: "Do you really want to overwrite data?",
@@ -263,6 +265,7 @@ eldp_environment.languages[1] = {
 		fade: "Ausgeblendete Dateien",
 		fade_explanation: "Dateien werden ausgeblendet, wenn sie in einem Bundle enthalten sein werden.<br>"+
 			"Dies soll das versehentliche Auswählen dieser verhindern.",
+		set_for_all: "Für alle festlegen"
 		
 	},
 	
@@ -351,7 +354,9 @@ eldp_environment.languages[1] = {
 		download_corpus_including_all_bundles: "Corpus mit allen Bundles herunterladen",
 		download_zip_archive: "ZIP-Archiv herunterladen",
 		not_allowed_chars_are: "Nicht erlaubte Zeichen sind: ",
-		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt."
+		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt.",
+		bundles_must_have_one_language: "Jedes Bundle muss mindestens eine Language haben.",
+		persons_must_have_valid_birth_year: "Jede Person muss ein valides Birth Year haben!"
 	},
 	
 	really_overwrite_data: "Möchtest Du wirklich Daten überschreiben?",
