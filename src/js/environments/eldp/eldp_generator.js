@@ -139,7 +139,7 @@ eldp_environment.eldp_generator = function(data){
 		
 		rs += xml.close("ProjectLocations");
 
-		rs += insertBundleResources(bundle.resources.resources, resources, bundle.languages.bundle_languages, bundle.persons.persons, persons);
+		rs += insertBundleResources(bundle.resources.resources, resources, bundle.languages.bundle_languages, bundle.persons.persons, persons, bundle);
 		
 		rs += xml.close("ELDP_Bundle");
 		rs += xml.close("Components");
@@ -277,7 +277,7 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 
-	var insertBundleResource = function(res_in_bun, resource, languages, persons_in_bundle, persons){
+	var insertBundleResource = function(res_in_bun, resource, languages, persons_in_bundle, persons, bundle){
 
 		var rs = "";
 		
@@ -291,9 +291,7 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.open("StatusInfo");
 		rs += xml.element("Status", (resource.stable == true) ? "stable" : "in-progress");
 		
-		var lm = parseDate(resource.lastModified);
-		
-		rs += xml.element("ChangeDate", (typeof lm != "null") ? lm.year + "-" + lm.month + "-" + lm.day : "");
+		rs += xml.element("ChangeDate", today());
 		rs += xml.close("StatusInfo");
 		
 		
@@ -305,6 +303,21 @@ eldp_environment.eldp_generator = function(data){
 		rs += insertPersons(persons_in_bundle, persons);
 		
 		
+		rs += xml.open("AccessInformation");
+		
+		rs += xml.element("Restrictions", bundle.resources.access_restrictions);
+		rs += xml.element("ConditionsOfAccess", bundle.resources.access_conditions);
+		
+		var oURCS = "Open Access";
+		if (res_in_bun.urcs.u == true) oURCS = "User";
+		if (res_in_bun.urcs.r == true) oURCS = "Researcher";
+		if (res_in_bun.urcs.c == true) oURCS = "Community member";
+		if (res_in_bun.urcs.s == true) oURCS = "Subscriber";
+		
+		rs += xml.element("oURCS", oURCS);
+		
+		rs += xml.close("AccessInformation");
+		
 		rs += xml.close("Resource");
 		
 		return rs;
@@ -312,7 +325,7 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 	
-	var insertBundleResources = function(resources_in_bundle, resources, languages, persons_in_bundle, persons){
+	var insertBundleResources = function(resources_in_bundle, resources, languages, persons_in_bundle, persons, bundle){
 
 		var rs = "";
 		
@@ -328,7 +341,7 @@ eldp_environment.eldp_generator = function(data){
 		
 			var res = resources.getByID(res_in_bun.resource_id);
 		
-			rs += insertBundleResource(res_in_bun, res, languages, persons_in_bundle, persons);
+			rs += insertBundleResource(res_in_bun, res, languages, persons_in_bundle, persons, bundle);
 			
 		});
 		
