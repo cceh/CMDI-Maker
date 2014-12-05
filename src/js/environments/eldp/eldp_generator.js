@@ -124,7 +124,7 @@ eldp_environment.eldp_generator = function(data){
 
 		
 		rs += insertLanguages(bundle.languages.bundle_languages);
-		rs += insertPersons(bundle.persons.persons, persons);
+		rs += insertPersons(bundle.persons.persons, persons, bundle);
 
 		rs += xml.open("ProjectLocations");
 		
@@ -214,7 +214,7 @@ eldp_environment.eldp_generator = function(data){
 	!! AGE  = BUNDLE_DATE - PERSON BIRTH YEAR
 	
 	*/
-	var insertPersons = function(person_in_bundles, persons){
+	var insertPersons = function(person_in_bundles, persons, bundle){
 	
 		if (person_in_bundles.length === 0){
 			return "";
@@ -226,15 +226,41 @@ eldp_environment.eldp_generator = function(data){
 		
 		forEach(person_in_bundles, function(person_in_bundle){
 			var pers = persons.getByID(person_in_bundle.person_id);
-			console.log("PERS");
-			console.log(pers);
 			
 			rs += xml.open("Person");
 			
 			rs += xml.element("PersonID", "");  //no input
+			
+			//cheap way to calculate person's age, as wished by ELDP
+			if (bundle.bundle.date.year !== "" && bundle.bundle.date.year !== "YYYY"){
+				rs += xml.element("Age_at_Time_of_Recording", bundle.bundle.date.year - pers.birth_year);
+			}
+			
 			rs += xml.element("Role", person_in_bundle.role);
 			
+			rs += xml.element("AdditionalInformation", pers.person_additional_information);
+			
 			rs += xml.element("BiographicalNote", pers.biographical_note);
+			
+			var ethnicities = linesToArray(pers.ethnicity);
+			var ethnicities_add_infos = linesToArray(pers.ethnicity_additional_info);
+			
+			if (ethnicities.length == ethnicities_add_infos.length && ethnicities.length != 0){
+			
+				//No wrapper element here!
+			
+				for (var i = 0; i < ethnicities.length; i++){
+				
+					rs += xml.open("Ethnicity");
+					
+					rs += xml.element("EthnicAffiliation", ethnicities[i]);
+					rs += xml.element("AdditionalInformation", ethnicities_add_infos[i]);
+					
+					rs += xml.close("Ethnicity");				
+				
+				}
+				
+			}
 			
 			rs += xml.open("PersonalData");
 			rs += xml.open("Name");
@@ -259,12 +285,48 @@ eldp_environment.eldp_generator = function(data){
 			
 			rs += xml.element("BirthYear", (pers.birth_year != "YYYY") ? pers.birth_year : "");
 			
+			if (pers.death_year != "YYYY" && pers.death_year != ""){
+				rs += xml.element("DeathYear", pers.death_year);
+			}
+			
+			
 			rs += xml.close("BiographicalData");
 			
 			rs += xml.close("PersonalData");
 			
+			rs += xml.open("Gender");
+			rs += xml.element("GenderIdentification", pers.sex);
+			rs += xml.element("AdditionalInformation", "");  //No input!
+			rs += xml.close("Gender");
+			
+			rs += xml.open("Education");
+			rs += xml.element("Level", pers.education);
+			rs += xml.element("AdditionalInformation", "");  //No input!
+			rs += xml.close("Education");
+			
 			rs += insertPersonLanguages(pers.languages.actor_languages);
 
+			
+			var nationalities = linesToArray(pers.nationality);
+			var nationalities_add_infos = linesToArray(pers.nationality_additional_info);
+			
+			if (nationalities.length == nationalities_add_infos.length && nationalities.length != 0){
+			
+				//No wrapper element here!
+			
+				for (var i = 0; i < nationalities.length; i++){
+				
+					rs += xml.open("Nationality");
+					
+					rs += xml.element("Name", nationalities[i]);
+					rs += xml.element("AdditionalInformation", nationalities_add_infos[i]);
+					
+					rs += xml.close("Nationality");				
+				
+				}
+				
+			}
+			
 			rs += xml.close("Person");
 		
 		});
@@ -300,7 +362,7 @@ eldp_environment.eldp_generator = function(data){
 		
 		
 		rs += insertLanguages(languages);
-		rs += insertPersons(persons_in_bundle, persons);
+		rs += insertPersons(persons_in_bundle, persons, bundle);
 		
 		
 		rs += xml.open("AccessInformation");
