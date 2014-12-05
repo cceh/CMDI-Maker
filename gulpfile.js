@@ -54,6 +54,7 @@ var source_scripts = [
 	"./src/js/environments/imdi/imdi_actors.js",
 		"./src/js/environments/imdi/imdi_actor_languages.js",
 	"./src/js/environments/imdi/imdi_sessions.js",
+		"./src/js/environments/imdi/imdi_sessions_gui.js",
 	"./src/js/environments/imdi/imdi_output.js",
 	
 

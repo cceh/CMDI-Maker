@@ -179,7 +179,7 @@ eldp_environment.languages[0] = {
 		from_where_to_where: "From where to where",
 		metadata_copied: "Metadata copied",
 		bundle_title_taken_from_eaf: "Bundle title has been taken from EAF file name, since bundle has not been manually named yet.",
-		bundles_must_have_one_language: "Every bundle must have at least one language.",
+
 	},
 	
 	output: {
@@ -192,7 +192,8 @@ eldp_environment.languages[0] = {
 		download_zip_archive: "Download ZIP archive",
 		not_allowed_chars_are: "Not allowed chars are: ",
 		spaces_are_not_allowed_either: "Space characters are not allowed either.",
-		persons_must_have_valid_birth_year: "Every person must have a valid birth year!"
+		persons_must_have_valid_birth_year: "Every person must have a valid birth year!",
+		bundles_must_have_one_language: "Every bundle must have at least one language.",
 	},
 	
 	really_overwrite_data: "Do you really want to overwrite data?",

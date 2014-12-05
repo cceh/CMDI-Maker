@@ -91,8 +91,8 @@ APP.GUI.FORMS = (function() {
 		var label = dom.make('h1', element_prefix + '_label','expandable_form_heading', header);
 
 		//create icon for deleting the expandable form
-		var delete_link = dom.make('a',element_prefix+'_delete_link','expandable_form_delete_link', header);
-		delete_link.addEventListener('click', function(num) {
+		var delete_link = APP.GUI.icon(header, element_prefix+'_delete_link','expandable_form_delete_link', "reset", 
+		function(num) {
 
 			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
 				event.stopPropagation();
@@ -103,7 +103,7 @@ APP.GUI.FORMS = (function() {
 		delete_link.innerHTML = "<img id=\"" + element_prefix + "_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Bundle\">";
 		
 		//create icon to expand/collapse the expandable form, it will do nothing, just indicate status
-		var display_link = dom.make('a',element_prefix+'_display_link','expandable_form_display_link', header);
+		var display_link = APP.GUI.icon(header,element_prefix+'_display_link','expandable_form_display_link', "down");
 		APP.GUI.icon(display_link, element_prefix+"_expand_img", "expand_img", "down");
 
 		var content = dom.make('div', element_prefix+'_content', 'expandable_form_content', form);
@@ -116,23 +116,27 @@ APP.GUI.FORMS = (function() {
 			form: form,
 			header: header,
 			label: label,
-			content: content
+			content: content,
+			delete_icon: delete_link,
+			display_icon: display_link
 		};
 	
 	};
 	
 	
 	my.collapseExpandableForm = function (element_prefix){
-	
-		g(element_prefix + "_content").style.display = "none";
-		g(element_prefix + "_expand_img").src = APP.CONF.path_to_icons+"up.png";
+
+		dom.hideElement(g(element_prefix + "_content"));
+		APP.GUI.setIcon(g(element_prefix + "_display_link"), "up");
 
 	};
 	
 
 	my.expandableFormViewChange = function(element_prefix, on_expand_collapse, id){
 	
-		if (g(element_prefix + "_content").style.display != "none"){
+		var content = g(element_prefix + "_content");
+	
+		if (content.style.display != "none"){
 		
 			my.collapseExpandableForm(element_prefix);
 			
@@ -146,8 +150,8 @@ APP.GUI.FORMS = (function() {
 		
 		else {
 		
-			g(element_prefix + "_content").style.display = "block";
-			g(element_prefix + "_expand_img").src = APP.CONF.path_to_icons + "down.png";
+			dom.unhideElement(content);
+			APP.GUI.setIcon(g(element_prefix + "_display_link"), "down");
 			
 			var event = {
 				id: id,

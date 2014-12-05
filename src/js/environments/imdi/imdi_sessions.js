@@ -30,45 +30,76 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		icon: "edit",
 	};
 	
-	my.sessions = [];
-	my.id_counter = 0;
+	my.sessions = new ObjectList();
 	my.resource_id_counter = 0;
 	
 	my.dom_element_prefix = "session_";
 
-	my.reset = function(){ my.eraseAll(); };
+	my.reset = function(){ my.sessions.reset(); refresh();};
 	
-	my.init = function(){
+	my.init = function(view){
 	
-		my.displayNoSessionText();
-		
-		my.sessions = [];
-		my.id_counter = 0;
+		my.sessions.reset();
 		my.resource_id_counter = 0;
 		
 		session_form = my.parent.session_form();
 		
-		my.createCopySessionOptions();
+		var actions = {
+			deleteSession: my.userErase,
+			newSession: my.newSession,
+			addActor: my.addActor,
+			addResource: my.addResource,
+			removeActor: my.removeActor,
+			removeResource: my.removeResource
+			
+		};
+		
+		
+		my.GUI.init(view, actions);
+		
+		my.GUI.createCopySessionOptions(session_form.fields_to_copy);
+		
+		refresh();
 
 	};
 	
 	
+	my.deleteSession = function(session_id){
+	
+		my.refreshSessionsArray();
+		my.sessions.removeByID(session_id);
+		refresh();
+	
+	}
+	
+	
 	my.view = function(){
 	
-		APP.GUI.scrollTop();
+		my.GUI.view();
 	
 	};
 	
 	
 	my.recall = function(data){
+	
+		//check if legacy data array
+		if (Array.isArray(data) == true){
 		
-		for (var s=0; s<data.length; s++){
+			for (var s = 0; s < data.length; s++){
+			
+				my.sessions.add(data[s]);
+			
+			}
 		
-			my.sessions.push(data[s]);
-			my.sessions[s].id = my.getNewSessionID();
 		}
 		
-		my.refreshSessionsDisplay();
+		else {
+		
+			my.sessions.setState(data);
+			
+		}
+		
+		refresh();
 	
 	};
 	
@@ -77,7 +108,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 		my.refreshSessionsArray();
 	
-		return my.sessions;
+		return my.sessions.getState();
 	
 	};
 	
@@ -86,45 +117,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 		var array = [];
 	
-		forEach(my.sessions, function(session){
+		my.sessions.forEach(function(session){
 		
-			var session_object = session;
+			APP.forms.fillObjectWithFormData(session, my.dom_element_prefix+session.id+"_", session_form);		
 			
-			APP.forms.fillObjectWithFormData(session_object, my.dom_element_prefix+session.id+"_", session_form);		
-			
-			array.push(session_object);
 		});
 		
-		my.sessions = array;	
-	
-	};
-	
-	
-	my.createCopySessionOptions = function (){
-	
-		var sf = session_form;
-
-		var div = g("copy_sessions_select");
-		
-		if (!sf.fields_to_copy){
-		
-			dom.span(div, "", "", l("function_currently_unavailable"));
-			return;
-			
-		}
-
-		var options = sf.fields_to_copy;
-
-		forEach(options, function(option){
-		
-			var input = dom.input(div, APP.CONF.copy_checkbox_element_prefix+option.name, "", "", "checkbox");
-			input.checked = true;
-			
-			dom.spanBR(div, "", "", " "+option.label);
-		
-		});
-
-
 	};
 	
 	
@@ -190,63 +188,19 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 	
 
-	my.refreshResources = function(session_index){
-	//refresh resources for one session
-	
-		var add_resource_div = g(my.dom_element_prefix + my.sessions[session_index].id + "_resources_add_mf_div");
-
-		add_resource_div.innerHTML = "";
-
-		var select = document.createElement("select");
-		
-		dom.setSelectOptions(select, resources.available_resources, "name", "take_index");
-
-		if (resources.available_resources.length > 0){
-		
-			add_resource_div.appendChild(select);
-			dom.br(add_resource_div);
-			dom.button(add_resource_div, l("session", "add_to_session"), function(num) { 
-				return function(){ my.addResource(num, select.selectedIndex);  };
-			}(my.sessions[session_index].id) );
-			
-		}
-
-		if (resources.available_resources.length === 0){
-		
-			var h5 = dom.h5(add_resource_div, l("session", "no_files_have_been_added") + "<br>");
-			dom.link(h5,"","",l("session", "add_some_files"), function(){APP.view(resources);});
-			
-		}
-		
-	};
-
-
 	my.newSession = function(){
 
 		var session_object = APP.forms.createEmptyObjectFromTemplate(session_form);
-		session_object.id = my.getNewSessionID();
 		
 		//new sessions are always expanded
 		session_object.expanded = true;
 		
 		//push new session object into sessions array
-		my.sessions.push(session_object);
+		my.sessions.add(session_object);
 
-		my.drawNewSession(session_object);
+		my.GUI.drawNewSession(session_object);
 		
 		return session_object.id;
-	};
-	
-	
-	my.getNewSessionID = function(){
-	
-		//this is the id, always unique, even if session created after one is deleted
-		var session_id = my.id_counter;
-		
-		my.id_counter += 1;
-		
-		return session_id;
-	
 	};
 	
 	
@@ -255,8 +209,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		var session_object = APP.forms.createEmptyObjectFromTemplate(session_form);
 		session_object.session.name = removeCharactersFromString(name, my.parent.not_allowed_chars);
 		session_object.expanded = expanded;
-		session_object.id = my.getNewSessionID();
-		my.sessions.push(session_object);
+
+		my.sessions.add(session_object);
 		
 		my.drawNewSession(session_object);
 		
@@ -274,283 +228,29 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 	
 	
-	my.refreshSessionsDisplay = function(){
+	var refresh = function(){
 	
-		var sessions_view = g(APP.CONF.view_id_prefix + my.identity.id);
+		my.GUI.refresh(my.sessions.getAll());
 		
-		sessions_view.innerHTML = "";
-		
-		if (my.sessions.length === 0){
-	
-			my.displayNoSessionText();
-			return;
-	
-		}
-		
-		forEach(my.sessions, my.drawNewSession);
-	
-	};
-	
-	
-	my.drawNewSession = function(session_object){
-		var session_id = session_object.id;
-		var session_expanded = session_object.expanded;
-		var sessions_view = g(APP.CONF.view_id_prefix + my.identity.id);
-		var dom_prefix = my.dom_element_prefix + session_id;
-	
-		//remove no sessions message before drawing new session
-		if (g("no_session_text")) {
-			sessions_view.innerHTML = "";
-		}
-		
-		var session_div = dom.div(sessions_view, dom_prefix, 'session_div'); 
-		my.drawSessionHeader(session_div, session_id, session_object);
-		var session_content = dom.div(session_div, dom_prefix + '_content','session_content');
-
-		//create the form
-		APP.forms.make(session_content, session_form, dom_prefix + "_", my.dom_element_prefix, session_object, my.makeSpecialFormInput);
-		
-		g(dom_prefix + "_session_name").addEventListener("blur", function(num){
-			return function(){
-				my.refreshSessionHeading(num);
-			};
-		}(session_id) );
-		
-		my.getActorsFromSessionObjectAndAddToSession(session_object, session_id);		
-		my.getResourcesFromSessionObjectAndAddToSession(session_object, session_id);
-		
-		var all_available_actor_ids = map(actor.actors, function(actor){
-			return actor.id;
-		});   // find a better place for that
-
-		my.refreshActorListInSession(my.getSessionIndexFromID(session_id), all_available_actor_ids);
-		
-		if (session_expanded === false){
-			my.display(session_id);
-		}
-	
-	};
-	
-	
-	my.getActorsFromSessionObjectAndAddToSession = function(session_object, session_id){
-	
-		if (typeof(session_object.actors.actors) != "undefined"){
-		
-			forEach(session_object.actors.actors, function(actor_id){
-				
-				if (actor.getIndexByID(actor_id) == undefined){
-					return;
-				}
-				
-				my.renderActor(session_id, actor_id);
-		
-			});
-		}
-		
-	};
-	
-	
-	my.drawSessionHeader = function(session_div, session_id, session_object){
-	
-		var session_header = dom.make('div', my.dom_element_prefix+session_id+'_header','session_header',session_div);
-		session_header.addEventListener('click', function(num) { 
-			return function(){
-				my.display(num);  
-			};
-		}(session_id) );
-
-		var session_label = dom.make("h1", my.dom_element_prefix+session_id+'_label', 'session_heading', session_header);
-		
-		if ((!session_object.session) || (!session_object.session.name) || (session_object.session.name === "")){
-			session_label.innerHTML = l("session", "unnamed_session");
-			my.sessions[my.getSessionIndexFromID(session_id)].session.name = "";
-		}
-		
-		else {
-			session_label.innerHTML = l("session", "session") + ": " + session_object.session.name;
-			my.sessions[my.getSessionIndexFromID(session_id)].session.name = session_object.session.name;
-		}
-
-		//create icon for deleting the session
-		var icon = APP.GUI.icon(session_header, my.dom_element_prefix + session_id + '_delete_img','delete_img', "reset", function(num) {
-			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
-				event.stopPropagation();
-				my.userErase(num);  
-			};
-		}(session_id));
-		icon.alt = l("session", "delete_session");
-		icon.title = l("session", "delete_session");
-		
-		icon = APP.GUI.icon(session_header, my.dom_element_prefix+session_id+"_expand_img", "expand_img", "down");
-		icon.alt = l("session", "expand_collapse_session");
-		icon.title = l("session", "expand_collapse_session");
-		
-		
-	};
-
-
-	my.getResourcesFromSessionObjectAndAddToSession = function (session_object, session_id){
-	
-		if (typeof (session_object.resources.resources.writtenResources) != "undefined"){
-			
-			forEach(session_object.resources.resources.writtenResources, function(file){
-			
-				file.id = my.resource_id_counter;
-				my.renderResource(my.resource_id_counter, session_id, "wr", file.name, file.size);
-				my.resource_id_counter += 1;
-		
-			});
-		
-		}
-		
-		
-		if (typeof (session_object.resources.resources.mediaFiles) != "undefined"){
-			
-			forEach(session_object.resources.resources.mediaFiles, function(file){
-			
-				file.id = my.resource_id_counter;
-				my.renderResource(file.id, session_id, "mf", file.name, file.size);
-				my.resource_id_counter += 1;
-				
-			});
-		
-		}
-		
-		my.refreshResources(my.getSessionIndexFromID(session_id));
-	
-	};
-	
-	
-	my.makeSpecialFormInput = function(field, parent, element_id_prefix, element_class_prefix){
-		
-		if (field.name == "actors"){
-			
-			dom.br(parent);
-			
-			dom.make("div",element_id_prefix+"actors", "actors", parent);
-			dom.make("div",element_id_prefix+"addActors_div", "actors", parent);
-		
-		}
-		
-		if (field.name == "resources"){
-		
-			dom.make("div",element_id_prefix+"resources", "mfs", parent);
-			dom.make("div",element_id_prefix+"add_mf_div", "", parent);
-		
-		}
-		
-	};
-	
-	
-	my.refreshActorName = function(session_id, actor_id){
-	
-		var actor_index = actor.getIndexByID(actor_id);
-		
-		var actor_name = (actor.actors[actor_index].name != "") ? actor.actors[actor_index].name : l("actors", "unnamed_actor");
-
-		var div = g(my.dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
-		div.innerHTML = "<h2 class='actor_name_disp'>" + actor_name + "</h2>";  //display name of actor
-		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor_index].role + "</p>";   //display role of actor
-
-
 	};
 	
 	
 	my.getName = function(session_index){
 
-		if (my.sessions[session_index].name === ""){
+		if (my.sessions.get(session_index).name === ""){
 		
 			return l("session", "unnamed_session");
 			
 		}
 		
 		else {
-			return l("session", "session") + ": " + my.sessions[session_index].name;
+			return l("session", "session") + ": " + my.sessions.get(session_index).name;
 		
 		}
 		
 	};
 	
 	
-	my.getSessionIndexFromID = function(session_id){
-		
-		var index = getIndex(my.sessions, "id", session_id);
-		
-		if (typeof index == "undefined"){
-			console.error("An error has occured.\nCould not find session index from session_id!\n\nsession_id = " + session_id);
-			console.error(sessions);
-		}
-		
-		return index;
-
-	};
-	
-	
-	my.refreshActorListInSession = function(s,all_available_actor_ids){
-
-		var aad = g(my.dom_element_prefix+my.sessions[s].id+"_actors_addActors_div");
-		
-		aad.innerHTML = "";
-
-		var select = document.createElement("select");
-		
-		forEach(actor.actors, function(actor, index){
-		
-			var actor_name = (actor.name != "") ? actor.name : l("actors", "unnamed_actor");
-		
-			var text = actor_name + " (" + actor.role + ")";
-			dom.appendOption(select, text, index);
-			
-		});
-
-		if (actor.actors.length > 0){
-		
-			aad.appendChild(select);
-		
-			select.selectedIndex = 0;	
-			
-			dom.br(aad);	
-			
-			dom.button(aad, l("session", "add_to_session"), function(num) { 
-				return function(){ my.addActor(num, actor.actors[select.selectedIndex].id);  };
-			}(my.sessions[s].id) );
-			
-		}
-		
-		if (actor.actors.length === 0){
-		
-			var h5 = dom.h5(aad, l("session", "no_actors_in_db_yet") + "<br>");	
-			
-			dom.link(h5,"","",l("session", "create_some_actors"), function() { 
-				APP.view(actor);  
-			} );
-			
-		}
-		
-		
-		console.log("Refreshing Actor List of Session "+s);
-		
-		
-		//check if actor in session is part of actors[...].id(s)? if not, remove it immediately!
-		forEach(my.sessions[s].actors.actors, function(actor){
-			
-			console.log("Trying to find id " + actor + " in actors of session "+s);
-			
-			// if an actor k is not in all available actors, remove it in the session!
-			if (all_available_actor_ids.indexOf(actor) == -1){
-				
-				console.log("There is an actor in session "+s+" that does not exist anymore. Deleting!");
-				my.removeActor(my.sessions[s].id, actor);
-			
-			}
-		
-		
-		});
-
-
-	};
-
-
 	my.refreshActorLists = function(actors){
 		//Offer possibility to add every available actor to all session
 		//refresh all sessions with available actors
@@ -559,7 +259,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
 		
-			my.refreshActorListInSession(s,all_available_actor_ids);
+			my.GUI.refreshActorListInSession(my.sessions.get(s));
 
 		}
 
@@ -571,8 +271,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//Before we sort the sessions, we save the newest user input
 		my.refreshSessionsArray();
 		
-		my.sessions = sortBySubKey(my.sessions,["session","name"]);
-		my.refreshSessionsDisplay();
+		my.sessions.sortBySubKey("session", "name");
+		refresh();
 		
 		console.log("Sessions sorted by name");
 		
@@ -590,7 +290,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			else {
 				// user clicked "cancel"
-				my.erase(session_id);
+				
+				my.refreshSessionsArray();
+				my.sessions.removeByID(session_id);
+				refresh();
 
 				APP.log(l("session", "session_deleted"));
 			}
@@ -599,36 +302,22 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 
 
-	my.erase = function (session_id){
-
-		dom.remove(my.dom_element_prefix+session_id);
-		
-		my.sessions.splice(my.getSessionIndexFromID(session_id),1);
-		
-		if (my.sessions.length === 0) {
-			my.displayNoSessionText();
-		} 
-
-
-	};
-	
-	
 	my.getIndexFromResourceID = function (resource_id){
 		var r;
 
 		for (var s=0;s<my.sessions.length;s++){
 		
-			for (r=0; r<my.sessions[s].resources.resources.writtenResources.length; r++){
+			for (r=0; r<my.sessions.get(s).resources.resources.writtenResources.length; r++){
 		
-				if (my.sessions[s].resources.resources.writtenResources[r].id == resource_id){
+				if (my.sessions.get(s).resources.resources.writtenResources[r].id == resource_id){
 					return r;
 				}
 			
 			}
 			
-			for (r=0; r<my.sessions[s].resources.resources.mediaFiles.length; r++){
+			for (r=0; r<my.sessions.get(s).resources.resources.mediaFiles.length; r++){
 		
-				if (my.sessions[s].resources.resources.mediaFiles[r].id == resource_id){
+				if (my.sessions.get(s).resources.resources.mediaFiles[r].id == resource_id){
 					return r;
 				}
 			
@@ -641,60 +330,6 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	};
 	
-
-	my.displayNoSessionText = function(){
-
-		console.log("Showing no session text");
-
-		var sessions_view = g(APP.CONF.view_id_prefix + my.identity.id);
-		
-		sessions_view.innerHTML = "";
-
-		var no_sessions_message = dom.make("h2","no_session_text","no_session_text",sessions_view);
-		no_sessions_message.innerHTML = l("session", "this_corpus_contains_no_sessions_yet") + " " + 
-		l("session", "why_not_create_one__before_link");
-
-		var new_session_link = dom.make("a","new_session_link","new_session_link",no_sessions_message);
-
-		new_session_link.innerHTML = l("session", "why_not_create_one__link");
-
-		no_sessions_message.innerHTML += l("session", "why_not_create_one__after_link");
-
-		g("new_session_link").addEventListener('click', function() {my.newSession(); });
-		//we have to use g here instead of no_sessions_link, because letter isn't there anymore. it has been overwritten by ...innerHTML --> logically!
-		
-		sessions_view.scrollTop = 0;
-
-	};
-
-
-	my.eraseAll = function (){
-
-		while (my.sessions.length > 0){
-		
-			my.eraseLast();
-		
-		}
-
-	};
-
-
-
-	my.eraseLast = function(){
-
-		if (my.sessions.length > 0){
-		
-			my.erase(my.sessions[my.sessions.length-1].id);
-
-		}
-		
-		else {
-		
-			alert("There is no session to be erased!\nTo erase one, you have to create one first.");
-		
-		}
-	};
-
 
 	my.addActor = function(session_id, actor_id){
 	//add existing actor to session
@@ -702,13 +337,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 
 		//if session doesn't already contain this actor
-		if (my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id) == -1){
+		if (my.sessions.getByID(session_id).actors.actors.indexOf(actor_id) == -1){
 		
 			if (actor.actors[actor.getIndexByID(actor_id)]){  //check if actor still exists before adding
 		
-				my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.push(actor_id);
-			
-				my.renderActor(session_id, actor_id);
+				my.sessions.getByID(session_id).actors.actors.push(actor_id);
+				refresh();
 				
 			}
 			
@@ -729,32 +363,16 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 
 
-	my.renderActor = function(session_id, actor_id){
-
-		dom.make("div", my.dom_element_prefix + session_id + "_actor_" + actor_id, "actor_in_session_wrap", g(my.dom_element_prefix+session_id+"_actors_actors"));
-		var div = dom.make("div", my.dom_element_prefix+session_id+"_actor_" + actor_id + "_label", "actor_in_session", g(my.dom_element_prefix+session_id+"_actor_" + actor_id));
-		
-		my.refreshActorName(session_id, actor_id);
-		
-		APP.GUI.icon(g(my.dom_element_prefix+session_id+"_actor_" + actor_id),
-		"delete_actor_" + actor_id + "_icon", "delete_actor_icon", "reset", function(num, num2) { 
-			return function(){ my.removeActor(num, num2);  
-			};
-		}(session_id, actor_id));
-
-	};
-
-
 	my.removeActor = function(session_id, actor_id){
 
-		var position_in_array = my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.indexOf(actor_id);
+		var position_in_array = my.sessions.getByID(session_id).actors.actors.indexOf(actor_id);
 		
 		console.log("Removing actor. Position in array: " + position_in_array);
 
 		//remove actor_id in array
-		my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.splice(position_in_array,1);
+		my.sessions.getByID(session_id).actors.actors.splice(position_in_array,1);
 		
-		dom.remove(my.dom_element_prefix+session_id+"_actor_"+actor_id);
+		refresh();
 		
 	};
 
@@ -778,7 +396,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			resource_type = "mf";
 		
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.push({
+			my.sessions.getByID(session_id).resources.resources.mediaFiles.push({
 				name: resources.available_resources[resource_file_index].name,
 				size: resources.available_resources[resource_file_index].size,
 				id: my.resource_id_counter,
@@ -791,7 +409,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			resource_type = "wr";
 		
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
+			my.sessions.getByID(session_id).resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index].name,
 				size: resources.available_resources[resource_file_index].size,
 				id: my.resource_id_counter,
@@ -812,7 +430,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			resource_type = "wr";
 			
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.push({
+			my.sessions.getByID(session_id).resources.resources.writtenResources.push({
 				name: resources.available_resources[resource_file_index].name,
 				size: resources.available_resources[resource_file_index].size,
 				id: my.resource_id_counter,
@@ -844,7 +462,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			g(my.dom_element_prefix+session_id+"_session_name").value = name;
 			
-			my.refreshSessionHeading(session_id);
+			my.GUI.refreshSessionHeading(session_id);
 		
 			APP.log(l("session", "session_name_taken_from_eaf"));
 		
@@ -871,7 +489,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		}
 		
-		my.renderResource(resource_id, session_id, resource_type, filename, filesize);
+		my.GUI.renderResource(resource_id, session_id, resource_type, filename, filesize);
 
 		my.resource_id_counter += 1;
 		
@@ -880,70 +498,20 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 
 
-	my.renderResource = function(resource_id, session_id, type, name, size){
-
-		var div = dom.make('div', my.dom_element_prefix+session_id+"_mediafile_" + resource_id, type, g(my.dom_element_prefix+session_id+"_resources_resources"));
-
-		var h3 = dom.h3(div);
-		
-		if (type == "wr"){
-			h3.innerHTML = "Written Resource";
-		}
-		
-		else if (type == "mf"){
-			h3.innerHTML = "Media File";	
-		}
-		
-		else {
-			console.log("ERROR: Strange File type!");
-			return;
-		}
-		
-		APP.GUI.icon(div,"delete_resource_" + resource_id +"_icon","delete_resource_icon","reset", function(num, num2) { 
-			return function(){ my.removeResource(num, num2);  
-			};
-		}(session_id,resource_id));
-		
-		dom.span(div, "", "resource_file_content_span",
-		"File Name<br><input type=\"text\" name=\""+my.dom_element_prefix+session_id+"_mediafile_" + resource_id + "_name\" value=\"\"><br>"+
-		"Size<br><input type=\"text\" name=\""+my.dom_element_prefix+session_id+"_mediafile_" + resource_id + "_size\" value=\"\">");
-		
-		div.getElementsByTagName("input")[0].value = name;
-		div.getElementsByTagName("input")[1].value = size;
-
-
-	};
-
-
-	my.refreshSessionHeading = function(session_id){
-
-		if (get(my.dom_element_prefix+session_id+"_session_name") === ""){
-			g(my.dom_element_prefix+session_id+"_label").innerHTML = l("session", "unnamed_session");
-		}
-		
-		else {
-		
-			g(my.dom_element_prefix+session_id+"_label").innerHTML = l("session", "session") + ": " + get(my.dom_element_prefix+session_id+"_session_name");
-
-		}
-
-	};
-
-
 	my.removeResource = function(session_id, resource_id){
 	
-		var ids_of_sessions_media_files = getArrayWithIDs(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles);
-		var ids_of_sessions_written_resources = getArrayWithIDs(my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources);
+		var ids_of_sessions_media_files = getArrayWithIDs(my.sessions.getByID(session_id).resources.resources.mediaFiles);
+		var ids_of_sessions_written_resources = getArrayWithIDs(my.sessions.getByID(session_id).resources.resources.writtenResources);
 
 		if (ids_of_sessions_written_resources.indexOf(resource_id) != -1){
 
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
+			my.sessions.getByID(session_id).resources.resources.writtenResources.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
 		if (ids_of_sessions_media_files.indexOf(resource_id) != -1){
 
-			my.sessions[my.getSessionIndexFromID(session_id)].resources.resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
+			my.sessions.getByID(session_id).resources.resources.mediaFiles.splice(my.getIndexFromResourceID(resource_id),1);
 		
 		}
 		
@@ -969,11 +537,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 				if (session_form_template.fields_to_copy[i].name == "actors"){  //special case: actors!
 				
 					for (var s=1; s<my.sessions.length; s++){
-						my.removeAllActors(my.sessions[s].id);
+						my.removeAllActors(my.sessions.idOf(s));
 			
 						// copy actors from session 1 to session session
-						forEach(my.sessions[0].actors.actors, function (actor){
-							my.addActor(my.sessions[s].id, actor);
+						forEach(my.sessions.get(0).actors.actors, function (actor){
+							my.addActor(my.sessions.idOf(s), actor);
 						});
 					
 					}
@@ -999,8 +567,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			forEach(fields_to_copy, function(field_to_copy){
 				APP.GUI.copyField(
-					my.dom_element_prefix+my.sessions[s].id+"_"+field_to_copy,
-					my.dom_element_prefix+my.sessions[0].id+"_"+field_to_copy
+					my.dom_element_prefix + my.sessions.idOf(s) + "_" + field_to_copy,
+					my.dom_element_prefix + my.sessions.idOf(0) + "_" + field_to_copy
 				);
 			});
 		
@@ -1011,8 +579,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.removeAllActors = function(session_id){
 	//Remove all actors from respective session
 		
-		while (my.sessions[my.getSessionIndexFromID(session_id)].actors.actors.length > 0){
-			my.removeActor(session_id,my.sessions[my.getSessionIndexFromID(session_id)].actors.actors[0]);
+		while (my.sessions.getByID(session_id).actors.actors.length > 0){
+			my.removeActor(session_id, my.sessions.getByID(session_id).actors.actors[0]);
 			//Remove always the first actor of this session because every actor is at some point the first	
 		}
 	};
@@ -1022,11 +590,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	//Offer possibility to add every available media file to all session
 	//refresh all sessions with available media files
 
-		for (var s=0;s<my.sessions.length;s++){
+		my.sessions.forEach(function(sess){
 		
-			my.refreshResources(s);
+			my.GUI.refreshResources(sess.id);
 			
-		}
+		});
 
 	};
 	
@@ -1035,7 +603,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 		for (var i=0;i<my.sessions.length;i++){
 		
-			if (get(my.dom_element_prefix+my.sessions[i].id+"_session_name") === ""){
+			if (get(my.dom_element_prefix+my.sessions.idOf(i) + "_session_name") === ""){
 			
 				return false;
 			
@@ -1052,7 +620,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		for (var i=0;i<my.sessions.length;i++){
 		
-			if (get(my.dom_element_prefix+my.sessions[i].id+"_session_name") === ""){
+			if (get(my.dom_element_prefix + my.sessions.idOf(i) + "_session_name") === ""){
 			
 				return false;
 			
@@ -1060,7 +628,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			for (var c=0; c<my.parent.not_allowed_chars.length; c++){
 		
-				if (get(my.dom_element_prefix+my.sessions[i].id+"_session_name").indexOf(my.parent.not_allowed_chars[c]) != -1){
+				if (get(my.dom_element_prefix + my.sessions.idOf(i) + "_session_name").indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				
@@ -1077,9 +645,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.doesEverySessionHaveAProjectName = function(){
 
-		for (var i=0;i<my.sessions.length;i++){
+		for (var i=0; i<my.sessions.length; i++){
 		
-			if (get(my.dom_element_prefix+my.sessions[i].id+"_project_name") === ""){
+			if (get(my.dom_element_prefix + my.sessions.idOf(i) + "_project_name") === ""){
 			
 				return false;
 			
@@ -1089,26 +657,6 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		return true;
 
-	};
-	
-	
-	my.display = function(session_id){
-	
-		var element_prefix = my.dom_element_prefix + session_id + "_";
-		var content = g(element_prefix + "content");
-		
-		if (content.style.display != "none"){
-		
-			dom.hideElement(content);
-			APP.GUI.setIcon(g(element_prefix + "expand_img"), "up");
-			my.sessions[my.getSessionIndexFromID(session_id)].expanded = false;
-		}
-		
-		else {
-			dom.unhideElement(content);
-			APP.GUI.setIcon(g(element_prefix + "expand_img"), "down");
-			my.sessions[my.getSessionIndexFromID(session_id)].expanded = true;
-		}
 	};
 	
 	
@@ -1132,7 +680,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.checkAllSessionNamesForInvalidChars = function(){
 	
 		forEach(my.sessions, my.checkSessionNameForInvalidChar);
-		my.refreshSessionsDisplay();
+		refresh();
 		
 	}
 	
@@ -1142,10 +690,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		var session_name = get("session_" + session.id + "_session_name");
 
 		session_name = replaceAccentBearingLettersWithASCISubstitute(session_name);
-		
 		session_name = removeAllCharactersFromStringExcept(session_name, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
 		
 		session.session.name = session_name;
+		
+		refresh();
 	
 	}
 

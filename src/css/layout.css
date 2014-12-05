@@ -745,3 +745,28 @@ white-space: nowrap;
 color: #FFFFFF;
 	
 }
+
+
+.expandable_form_display_link{
+	
+height: 25px;
+width: 25px;
+margin: 0px;
+margin-right: 5px;
+padding: 0px;
+
+float: right;
+}
+
+
+.expandable_form_delete_link{
+	
+height: 25px;
+width: 25px;
+margin: 0px;
+margin-right: 5px;
+padding: 0px;
+
+float: right;
+
+}

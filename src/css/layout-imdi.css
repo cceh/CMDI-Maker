@@ -27,8 +27,6 @@ color: #4D87C7;
 }
 
 
-
-
 #lang_search_div{
 
 background: darkturquoise;
@@ -37,7 +35,6 @@ border-radius: 15px;
 width: 530px;
 margin-bottom: 20px;
 }
-
 
 
 .generator_div select {
@@ -409,43 +406,10 @@ padding: 5px 10px;
 
 /*--- Sessions ---*/
 
-.session_header{
-
-	padding: 15px;
-	cursor: pointer;
-
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-
-}
-
 .session_table, .actor_table{
 	
 	border: none;
 	margin-top: 0px;
-	
-}
-
-.session_content{
-	
-	background-color: #9999FF;
-	display: block;
-	
-}
-
-.session_content a{
-	
-	color: #1111EE;
-	
-}
-
-.session_content a:hover{
-	
-color: #FFFFFF;
 	
 }
 
@@ -474,54 +438,11 @@ color: #FFFFFF;
 
 }
 
-#crps_filetype_select{
-
-	display: none;
-
-}
-
-#copy_sessions_div:hover #copy_sessions_select{
-
-	display: block;
-
-}
-
 
 .session_table tr td, .actor_table tr td{
 
 border-top: none;
 
-}
-
-.expand_img{
-	
-height: 25px;
-width: 25px;
-margin: 0px;
-margin-right: 5px;
-padding: 0px;
-
-float: right;
-}
-
-
-.delete_img{
-	
-height: 25px;
-width: 25px;
-margin: 0px;
-margin-right: 5px;
-padding: 0px;
-
-float: right;
-
-}
-
-.session_heading{
-	
-display: inline;
-white-space: nowrap;
-	
 }
 
 .actors{
@@ -578,17 +499,6 @@ cursor: pointer;
 
 }
 
-.session_div{
-
-overflow: hidden;
-display: block;
-width: 100%;
-float: left;
-margin-bottom: 20px;
-background-color: lightskyblue;
-border-radius: 10px;
-
-}
 
 .session_project_td{
 	

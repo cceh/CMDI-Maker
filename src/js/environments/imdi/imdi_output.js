@@ -21,6 +21,7 @@ imdi_environment.workflow[4] = (function (){
 	var my = {};
 	var corpus;
 	var session;
+	var resources;
 	
 	my.parent = imdi_environment;
 	var l = my.parent.l;
@@ -38,6 +39,7 @@ imdi_environment.workflow[4] = (function (){
 	
 		corpus = imdi_environment.workflow[0];
 		session = imdi_environment.workflow[3];
+		resources = imdi_environment.workflow[1].available_resources;
 		my.createOutputFormatSelect(my.formats());
 	
 	};
@@ -160,8 +162,13 @@ imdi_environment.workflow[4] = (function (){
 		//get index of selected output format
 		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		
+		var data = {
+			resources: resources.available_resources
+		}
+		
+		
 		// initiate object for imdi_structure class
-		var xml_strings = new my.formats()[output_format_index].generator_object();
+		var xml_strings = new my.formats()[output_format_index].generator_object(data);
 		var output_format = my.formats()[output_format_index].output_name;
 		var file_ending = my.formats()[output_format_index].file_ending;
 		
