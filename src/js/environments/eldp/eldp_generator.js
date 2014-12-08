@@ -25,6 +25,7 @@ eldp_environment.eldp_generator = function(data){
 	
 	
 	var IDREFS = [];
+	var IDREF_index;
 	
 	var createIDREFS = function(){
 
@@ -402,13 +403,13 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 
-	var insertBundleResource = function(res_in_bun, resource, languages, persons_in_bundle, persons, bundle){
+	var insertBundleResource = function(res_in_bun, resource, languages, persons_in_bundle, persons, bundle, IDREF){
 
 		var rs = "";
 		
 		console.log(res_in_bun);
 		
-		rs += xml.open("Resource");
+		rs += xml.open("Resource", [["ref", IDREF]]);
 		rs += xml.element("Title", resource.name);
 		
 		rs += xml.element("ID", "");
@@ -445,10 +446,79 @@ eldp_environment.eldp_generator = function(data){
 		
 		rs += xml.close("AccessInformation");
 		
+		rs += insertFileElement(resource);
+		
 		rs += xml.close("Resource");
 		
 		return rs;
 		
+	};
+	
+	
+	var insertFileElement = function(resource){
+	
+		var file_types = {
+			"eaf": "TextFile",
+			"txt": "TextFile",
+			"jpg": "ImageFile",
+			"png": "ImageFile",
+			"tif": "ImageFile",
+			"bmp": "ImageFile",
+			"wav": "AudioFile",
+			"mp4": "VideoFile",
+			"avi": "VideoFile",
+			
+			
+		};
+	
+	
+		var file_ending = getFileTypeFromFilename(resource.name);
+		
+		if (file_types[file_ending]){
+			var file_type = file_types[file_ending];
+		}
+		
+		else {
+		
+			file_type = "TextFile";
+		
+		}
+	
+		var rs = "";
+	
+		rs += xml.open("File");
+		
+		rs += xml.open(file_type);
+		
+		rs += xml.open("General");
+		rs += xml.element("Name", resource.name);
+		
+		var date = parseDate(resource.lastModified);
+		
+		if (date != null){
+			var date_string = dateAsString(date);
+		}
+		
+		else {
+		
+			date_string = "1977-01-01";
+		
+		}
+		
+		rs += xml.element("Date", date_string);
+		
+		
+		rs += xml.close("General");
+		
+		rs += xml.element("Checksum", "");
+		
+		rs += xml.close(file_type);
+		
+	
+		rs += xml.close("File");
+		
+		return rs;
+	
 	};
 	
 	
@@ -494,7 +564,9 @@ eldp_environment.eldp_generator = function(data){
 		
 			var res = resources.getByID(res_in_bun.resource_id);
 		
-			rs += insertBundleResource(res_in_bun, res, languages, persons_in_bundle, persons, bundle);
+			rs += insertBundleResource(res_in_bun, res, languages, persons_in_bundle, persons, bundle, IDREFS[IDREF_index]);
+			
+			IDREF_index += 1;
 			
 		});
 		
@@ -510,6 +582,8 @@ eldp_environment.eldp_generator = function(data){
 
 	my.bundles = map(data.bundles, function (bundle){
 		xml.reset();
+		IDREF_index = 0;
+		
 		return createBundle(bundle, data.persons, data.resources);
 	});
 
