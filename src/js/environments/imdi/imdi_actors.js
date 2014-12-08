@@ -31,7 +31,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		g(my.element_id_prefix + 'list').innerHTML = "";
 
-		forEach(my.actors, renderActorListEntry);
+		my.actors.forEach(renderActorListEntry);
 		
 		if (my.actors.length == 0){
 			my.showNoActorsMessage();

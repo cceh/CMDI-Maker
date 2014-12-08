@@ -212,14 +212,12 @@ imdi_environment.workflow[3].GUI = (function() {
 
 
 	my.refreshActorName = function(session_id, actor_id){
-	
-		var actor_index = actor.getIndexByID(actor_id);
 		
-		var actor_name = (actor.actors[actor_index].name != "") ? actor.actors[actor_index].name : l("actors", "unnamed_actor");
+		var actor_name = (actor.actors.getByID(actor_id).name != "") ? actor.actors.getByID(actor_id).name : l("actors", "unnamed_actor");
 
 		var div = g(my.dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
 		div.innerHTML = "<h2 class='actor_name_disp'>" + actor_name + "</h2>";  //display name of actor
-		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors[actor_index].role + "</p>";   //display role of actor
+		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors.getByID(actor_id).role + "</p>";   //display role of actor
 
 
 	};
@@ -234,7 +232,7 @@ imdi_environment.workflow[3].GUI = (function() {
 
 		var select = document.createElement("select");
 		
-		forEach(actors, function(actor, index){
+		actors.forEach(function(actor, index){
 		
 			var actor_name = (actor.name != "") ? actor.name : l("actors", "unnamed_actor");
 		
@@ -252,7 +250,10 @@ imdi_environment.workflow[3].GUI = (function() {
 			dom.br(aad);	
 			
 			dom.button(aad, l("session", "add_to_session"), function(num) { 
-				return function(){ actions.addActor(num, actors[select.selectedIndex].id);  };
+				return function(){
+					var actor_id = actors.IDof(select.selectedIndex);
+					actions.addActor(num, actor_id);
+				};
 			}(session.id) );
 			
 		}
@@ -272,7 +273,7 @@ imdi_environment.workflow[3].GUI = (function() {
 		forEach(session.actors.actors, function(ac){
 		
 			// if an actor k is not in all available actors, remove it in the session!
-			if (all_available_actor_ids.indexOf(ac) == -1){
+			if (actors.getArrayWithIDs().indexOf(ac) == -1){
 				
 				console.log("There is an actor in a session that does not exist anymore. Deleting!");
 				actions.removeActor(session.id, ac);
@@ -312,7 +313,7 @@ imdi_environment.workflow[3].GUI = (function() {
 
 	my.renderActor = function(session_id, actor_id){
 	
-		if (actor.getIndexByID(actor_id) == undefined){
+		if (actor.actors.getIndexByID(actor_id) == undefined){
 			return;
 		}
 		

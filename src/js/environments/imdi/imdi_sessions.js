@@ -251,18 +251,12 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 	
 	
-	my.refreshActorLists = function(actors){
+	my.refreshActorLists = function(){
 		//Offer possibility to add every available actor to all session
 		//refresh all sessions with available actors
 
-		var all_available_actor_ids = getArrayWithIDs(actors);
+		my.sessions.forEach(my.GUI.refreshActorListInSession);
 		
-		forEach(my.sessions, function(sess){   //for all existing sessions
-		
-			my.GUI.refreshActorListInSession(sess);
-
-		});
-
 	};
 	
 	
@@ -646,29 +640,19 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.doesEverySessionHaveAProjectName = function(){
 
-		for (var i=0; i<my.sessions.length; i++){
+		return (!(my.sessions.isThereAnyItemWhereSubKeyIsValue("project", "name", "")));
 		
-			if (get(my.dom_element_prefix + my.sessions.idOf(i) + "_project_name") === ""){
-			
-				return false;
-			
-			}
-			
-		}
-		
-		return true;
-
 	};
 	
 	
 	my.updateActorNameInAllSessions = function(actor_id){
 	
-		forEach(my.sessions, function(session){
+		my.sessions.forEach(function(sess){
 	
 			//search for actor_id in this session's actors
-			if (session.actors.actors.indexOf(actor_id) != -1){
+			if (sess.actors.actors.indexOf(actor_id) != -1){
 				
-				my.refreshActorName(session.id, actor_id);
+				my.refreshActorName(sess.id, actor_id);
 	
 			}
 			

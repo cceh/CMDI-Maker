@@ -66,7 +66,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.clearActiveActorLanguages = function(){
 		
-		my.languages_of_active_person.reset();
+		my.languages_of_active_actor.reset();
 		
 		g(my.element_id_prefix + "display").innerHTML = "";
 

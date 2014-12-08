@@ -210,6 +210,7 @@ var ObjectList = function() {
 		return list[index].id;
 		
 	};
+	this.IDof = this.idOf;
 	
 	
 	//REMOVE METHODS
@@ -502,6 +503,39 @@ var ObjectList = function() {
 	
 		for (var i = 0; i < list.length; i++){
 			if (self.get(i)[key] != value){
+				return true;
+			}
+		}
+		
+		return false;	
+	
+	};
+	
+	
+	this.isKeyValueInEveryItem = function(key, value){
+	
+		return (!(self.isThereAnyItemWhereKeyIsNotValue(key, value)));
+	
+	};
+	
+	
+	this.isThereAnyItemWhereSubKeyIsValue = function(key, subkey, value){
+	
+		for (var i = 0; i < list.length; i++){
+			if (self.get(i)[key][subkey] == value){
+				return true;
+			}
+		}
+		
+		return false;	
+	
+	};
+	
+	
+	this.isThereAnyItemWhereSubKeyIsNotValue = function(key, subkey, value){
+	
+		for (var i = 0; i < list.length; i++){
+			if (self.get(i)[key][subkey] != value){
 				return true;
 			}
 		}
