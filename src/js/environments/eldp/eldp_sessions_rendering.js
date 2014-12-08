@@ -239,7 +239,10 @@ eldp_environment.workflow[2].render = (function() {
 			
 			forEach(bundle_object.resources.resources, function (resource_in_bundle){
 				my.renderResource(resource_in_bundle, bundle_id);
-				bundle.resource_id_counter += resource_in_bundle.id;  //DIRTY!
+				
+				if (resource_in_bundle.id >= bundle.resource_id_counter){
+					bundle.resource_id_counter = resource_in_bundle.id + 1;  //DIRTY!
+				}
 			});
 		
 		}

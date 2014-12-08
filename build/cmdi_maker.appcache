@@ -6,11 +6,11 @@ index.html
 img/busy.svg
 img/favicon.ico
 img/logo-128.png
+styles/styles.css
 js/LanguageIndex.js
 js/deflate.js
 js/inflate.js
 js/script.js
-styles/styles.css
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -66,4 +66,4 @@ img/logos/LOGO_Uni_Koeln.png
 NETWORK:
 *
 
-# hash: b653772057d71548a44374e91b146af9ccdbe1ae7adc9162aa75f90270ef4dc6
+# hash: 3bf16a11515c8b29209d2c7d7b42a168ef6cae73209932bcb9ceb4b13a22b130
