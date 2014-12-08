@@ -11,13 +11,6 @@ js/deflate.js
 js/inflate.js
 js/script.js
 styles/styles.css
-img/logos/LOGO_BMBF.jpg
-img/logos/LOGO_CCeH.png
-img/logos/LOGO_CLARIN-D.png
-img/logos/LOGO_CLASS.png
-img/logos/LOGO_HRELP.png
-img/logos/LOGO_SOAS.png
-img/logos/LOGO_Uni_Koeln.png
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -61,9 +54,16 @@ img/icons/up.png
 img/icons/user.png
 img/icons/warning.png
 img/icons/wrench.png
+img/logos/LOGO_BMBF.jpg
+img/logos/LOGO_CCeH.png
+img/logos/LOGO_CLARIN-D.png
+img/logos/LOGO_CLASS.png
+img/logos/LOGO_HRELP.png
+img/logos/LOGO_SOAS.png
+img/logos/LOGO_Uni_Koeln.png
 
 
 NETWORK:
 *
 
-# hash: 6e7e1fc2c827de407552926da6edb2f216541dd680f8491fc7475b0dea886ed2
+# hash: b653772057d71548a44374e91b146af9ccdbe1ae7adc9162aa75f90270ef4dc6
