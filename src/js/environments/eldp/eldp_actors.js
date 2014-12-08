@@ -144,7 +144,7 @@ eldp_environment.workflow[1] = (function(){
 	
 		my.languages.init();
 		
-		my.refreshListDisplay(true);
+		my.refresh(true);
 		
 	};
 	
@@ -198,7 +198,7 @@ eldp_environment.workflow[1] = (function(){
 			my.persons.setState(data.persons);
 		}
 		
-		my.refreshListDisplay();
+		my.refresh();
 		
 		my.show(my.persons.getPointer());
 	
@@ -236,7 +236,7 @@ eldp_environment.workflow[1] = (function(){
 			
 					var key = dom.getSelectedRadioValue(dom.getByName("sa_by"));
 					my.persons.sortByKey(key);
-					my.refreshListDisplay();
+					my.refresh();
 		
 					APP.log(l("persons_alphabetically_sorted"));
 					
@@ -249,7 +249,7 @@ eldp_environment.workflow[1] = (function(){
 				onclick: function() {
 					my.saveActivePerson();
 					my.persons.duplicateActive();
-					my.refreshListDisplay();
+					my.refresh();
 				
 					APP.log(l("person_saved_and_duplicated"),"success");
 			
@@ -275,7 +275,7 @@ eldp_environment.workflow[1] = (function(){
 
 				APP.log(l("all_persons_deleted"));
 				
-				my.refreshListDisplay();
+				my.refresh();
 
 			}
 		}, l("no"), l("yes_delete_all_persons"));
@@ -391,7 +391,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.save(person_to_put);
 
-		my.refreshListDisplay();
+		my.refresh();
 		
 		my.refreshFormTitle();
 		
@@ -416,9 +416,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	my.createNewPerson = function(person_to_put){
 	
-		if (typeof my.active_person_index != "undefined"){
-			my.saveActivePerson();
-		}	
+		my.saveActivePerson();
 		
 		//after the current person is saved, check, if all persons have a name
 		if (!isEveryPersonNamed()){
@@ -436,7 +434,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.createFormIfNotExistent();
 
-		my.refreshListDisplay();
+		my.refresh();
 		
 		//show this created person
 		my.show(person_id);
@@ -487,7 +485,7 @@ eldp_environment.workflow[1] = (function(){
 	my.deleteActivePerson = function(){
 
 		my.persons.removeActive();
-		my.refreshListDisplay();
+		my.refresh();
 
 	};
 	
@@ -536,7 +534,7 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 
-	my.refreshListDisplay = function(not_in_bundles){
+	my.refresh = function(not_in_bundles){
 		
 		if (!g(my.element_id_prefix + 'list')){
 			my.module_view.innerHTML = "";

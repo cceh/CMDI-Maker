@@ -81,9 +81,9 @@ imdi_environment.workflow[3].GUI = (function() {
 
 		var select = document.createElement("select");
 		
-		dom.setSelectOptions(select, resources.available_resources, "name", "take_index");
+		dom.setSelectOptions(select, resources.resources.getAll(), "name", "take_index");
 
-		if (resources.available_resources.length > 0){
+		if (resources.resources.length > 0){
 		
 			add_resource_div.appendChild(select);
 			dom.br(add_resource_div);
@@ -93,7 +93,7 @@ imdi_environment.workflow[3].GUI = (function() {
 			
 		}
 
-		if (resources.available_resources.length === 0){
+		if (resources.resources.length === 0){
 		
 			var h5 = dom.h5(add_resource_div, l("session", "no_files_have_been_added") + "<br>");
 			dom.link(h5,"","",l("session", "add_some_files"), function(){APP.view(resources);});
@@ -116,12 +116,12 @@ imdi_environment.workflow[3].GUI = (function() {
 	
 		}
 		
-		forEach(sessions, my.drawNewSession);
+		forEach(sessions, my.renderSession);
 	
 	};
 	
 	
-	my.drawNewSession = function(session_object){
+	my.renderSession = function(session_object){
 		var session_id = session_object.id;
 		var expanded = session_object.expanded;
 		var dom_prefix = my.dom_element_prefix + session_id;

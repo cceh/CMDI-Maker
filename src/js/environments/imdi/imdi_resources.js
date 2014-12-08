@@ -21,8 +21,7 @@ imdi_environment.workflow[1] = (function(){
 	var my = {};
 	var session;
 	
-	my.available_resources = [];
-	// 0=file name, 1=mime type, 2=size, 3=(exif_)(last modified)date
+	my.resources = new ObjectList();
 	// this array only contains file metadata retrieved by file upload form / drag and drop
 
 	my.identity = {
@@ -168,15 +167,15 @@ imdi_environment.workflow[1] = (function(){
 	
 	my.recall = function(data){
 	
-		my.available_resources = data;
-		my.refreshFileListDisplay();
+		my.resources.setState(data);
+		my.refresh();
 	
 	};
 	
 	
 	my.getSaveData = function(){
 	
-		return my.available_resources;
+		return my.resources.getState();
 	
 	};
 	
@@ -202,7 +201,12 @@ imdi_environment.workflow[1] = (function(){
 				id: "link_sort_alphabetically",
 				icon: "az",
 				label: l("resources", "sort_alphabetically"),
-				onclick: function() { my.sortAlphabetically(); }
+				onclick: function() {
+				
+					my.resources.sortByKey("name");
+					my.refresh();
+				
+				}
 			},
 			{
 				id: "link_remove_files",
@@ -214,7 +218,7 @@ imdi_environment.workflow[1] = (function(){
 				id: "link_clear_file_list",
 				icon: "reset",
 				label: l("resources", "clear_file_list"),
-				onclick: function() { my.clearFileList(); }
+				onclick: function() { my.resources.reset(); my.refresh(); }
 			}
 		];
 	};
@@ -245,11 +249,11 @@ imdi_environment.workflow[1] = (function(){
 			"file_entry_", 
 			"selected_file",
 			function(event){
-				my.available_resources[event.index].selected = event.selected;
+				my.resources.get(event.index).selected = event.selected;
 			}
 		);
 		
-		my.refreshFileListDisplay(true);
+		my.refresh(true);
 		
 	};
 
@@ -309,7 +313,7 @@ imdi_environment.workflow[1] = (function(){
 	};
 
 	
-	my.refreshFileListDisplay = function(not_in_sessions) {
+	my.refresh = function(not_in_sessions) {
 		var file_vailidity;
 
 		// files is a FileList of File objects. List some properties.
@@ -319,25 +323,25 @@ imdi_environment.workflow[1] = (function(){
 		
 		list.innerHTML = "";
 
-		for (var i = 0; i < my.available_resources.length; i++) {
+		my.resources.forEach(function(res, i){
 		
-			file_vailidity = my.getValidityOfFile(my.available_resources[i].name);
+			file_vailidity = my.getValidityOfFile(res.name);
 		
 			my.renderResource(
 				i,
-				my.available_resources[i].name,
-				my.available_resources[i].mime_type,
-				my.available_resources[i].size,
-				my.available_resources[i].last_change,
-				"file_entry_"+i,
+				res.name,
+				res.mime_type,
+				res.size,
+				res.lastModified,
+				"file_entry_" + i,
 				"file_entry " + file_vailidity.file_entry_class,
 				list,
 				file_vailidity.compatibility_warning
 			);
 			
-		}
+		});
 		
-		if (my.available_resources.length === 0){
+		if (my.resources.length === 0){
 			dom.h2(list, l("resources", "no_resource_files_imported"));
 		}
 
@@ -350,14 +354,14 @@ imdi_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.renderResource = function(number, title, mime_type, file_size, last_change, id, className, parent, compatibility_warning){
+	my.renderResource = function(number, title, mime_type, file_size, lastModified, id, className, parent, compatibility_warning){
 	
 		var div = dom.make("div", id, className, parent);
 		var title = dom.make("h2", "", "file_entry_title", div, title);
 		var p = dom.make("p", "", "", div, mime_type +
 		'<br><span class="size_span">' + l("resources", "size") + ': ' + file_size + '</span><br>'+
 		'<span name="date_span" class="date_span">' + l("resources", "last_modified") + ': ' +
-		last_change + '</span>');
+		lastModified + '</span>');
 		
 		if (typeof compatibility_warning != "undefined"){
 			my.addCompatibilityWarning(div, compatibility_warning);
@@ -381,23 +385,15 @@ imdi_environment.workflow[1] = (function(){
 		// files is a FileList of File objects. List some properties.
 		var output = [];
 		for (var i = 0, f; !!(f = FileList[i]); i++) {
-			my.available_resources.push({
+			my.resources.add({
 				name: f.name,
 				mime_type: f.type || 'n/a',
 				size: bytesToSize(f.size,1),
-				last_change: f.lastModifiedDate.toLocaleDateString()
+				lastModified: f.lastModifiedDate.toLocaleDateString()
 			});
 		}
 		
-		my.refreshFileListDisplay();
-	};
-  
-
-	my.sortAlphabetically = function(){
-
-		my.available_resources = sortByKey(my.available_resources, "name");
-		my.refreshFileListDisplay();
-		
+		my.refresh();
 	};
   
 
@@ -414,22 +410,29 @@ imdi_environment.workflow[1] = (function(){
 		
 		if (chosen_file_type == "selected"){
 		
-			forEach(my.fileSelection.selected_files, my.createSessionForResource);
+			forEach(my.fileSelection.selected_files, function(sel_file_index){
+			
+				var id = my.resources.idOf(sel_file_index);
+			
+				my.createSessionForResource(id);
+				
+			});
+			
 			return;
 		
 		}
 		
 		else {    //for all media files of filetype
 		
-			for (f=0; f<my.available_resources.length; f++){
+			my.resources.forEach(function(res){
 			
-				if (getFileTypeFromFilename(my.available_resources[f].name) == chosen_file_type){
+				if (getFileTypeFromFilename(res.name) == chosen_file_type){
 				
-					my.createSessionForResource(f);
+					my.createSessionForResource(res.id);
 				
 				}
 				
-			}
+			});
 			
 		}
 
@@ -438,76 +441,43 @@ imdi_environment.workflow[1] = (function(){
 	
 	
 	my.removeSelectedFiles = function(){
-		var f;
-		
-		for (f = 0; f<my.fileSelection.selected_files.length; f++){
-		
-			my.available_resources[my.fileSelection.selected_files[f]] = null;
-		
-		
-		}
-		
-		f = 0;
-		
-		while (f < my.available_resources.length){
-		
-			if (my.available_resources[f] === null){
-				my.available_resources.splice(f,1);
-			}
-			
-			else {
-				f++;
-			}
 	
-		}
+		var selected_files = my.fileSelection.selected_files;
+		var IDs = my.resources.mapIndexesToIDs(selected_files);
+		my.resources.removeByID(IDs);
+		my.refresh();
 		
-		my.refreshFileListDisplay();
 	};
 	
-	
-	my.removeFile = function(index){
-	
-		my.available_resources.splice(index,1);
-		my.refreshFileListDisplay();
-	
-	};
 
+	my.createSessionForResource = function(id){
 
-	my.createSessionForResource = function(resource_index){
-
-		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.available_resources[resource_index].name));
+		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.resources.getByID(id).name));
 		session_name = replaceCharactersInStringWithSubstitute(name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
 		
 		var expanded = false; //collapse automatically generated session
 		
-		var resources = [];
-		resources.push(resource_index);
+		var this_resource = my.resources.getByID(id);
 		
-		//if another file's name of available_resources starts with the same name as this file, add it to the session, too!
-		for (var f2=0; f2<my.available_resources.length; f2++){
+		var hits = [];
+		hits.push(id);
 		
-			if (resource_index == f2){
+		//if another file's name of resources starts with the same name as this file, add it to the session, too!
+		for (var f=0; f < my.resources.length; f++){
+		
+			if (my.resources.indexOf(id) == f){
 				continue;
 			}
 		
-			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.available_resources[f2].name), removeEndingFromFilename(my.available_resources[resource_index].name))) {
+			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.resources.get(f).name), removeEndingFromFilename(this_resource.name))) {
 			
-				resources.push(f2);
+				hits.push(f);
 			
 			}
 		
 		}
 		
-		session.createNewSessionWithResources(session_name, expanded, resources);
-
-	};
-
-
-	my.clearFileList = function(){
-
-		my.available_resources = [];
-
-		my.refreshFileListDisplay();
+		session.createNewSessionWithResources(session_name, expanded, hits);
 
 	};
 

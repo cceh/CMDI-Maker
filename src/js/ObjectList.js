@@ -57,7 +57,7 @@ var ObjectList = function() {
 	
 	var checkPointerValidity = function(){
 	
-		if (!self.idExists(pointer)){
+		if (!self.IDexists(pointer)){
 		
 			pointer = 0;
 		
@@ -77,7 +77,7 @@ var ObjectList = function() {
 	this.length = 0;
 	
 	
-	this.idExists = function(id){
+	this.IDexists = function(id){
 	
 		for (var i = 0; i < list.length; i++){
 		
@@ -366,8 +366,12 @@ var ObjectList = function() {
 	//UTILS
 	this.forEach = function(action){
 	
-		list.forEach(action);
+		for (var i = 0; i < list.length; i++){
+		
+			action(list[i], i);
 	
+		}
+		
 	};
 	
 	
@@ -514,7 +518,7 @@ var ObjectList = function() {
 	//POINTER METHODS
 	this.setPointer = function(id){
 	
-		if (self.idExists(id)){
+		if (self.IDexists(id)){
 			pointer = id;
 		}
 	

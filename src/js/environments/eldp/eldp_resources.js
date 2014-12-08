@@ -80,7 +80,7 @@ eldp_environment.workflow[0] = (function(){
 			}
 		);
 		
-		my.refreshFileListDisplay(true);
+		my.refresh(true);
 		
 	};
 	
@@ -205,7 +205,7 @@ eldp_environment.workflow[0] = (function(){
 	my.recall = function(data){
 	
 		my.resources.setState(data);
-		my.refreshFileListDisplay();
+		my.refresh();
 	
 	};
 	
@@ -271,7 +271,7 @@ eldp_environment.workflow[0] = (function(){
 	
 		my.resources.setForAll("stable", g("stable_for_all").checked);
 		my.resources.setForAll("inProgress", g("inProgress_for_all").checked);
-		my.refreshFileListDisplay();
+		my.refresh();
 	
 	}
 	
@@ -310,7 +310,7 @@ eldp_environment.workflow[0] = (function(){
 	};
 
 	
-	my.refreshFileListDisplay = function(not_in_bundles) {
+	my.refresh = function(not_in_bundles) {
 		var file_entry_class;
 		//var compatibility_warning;
 
@@ -432,7 +432,7 @@ eldp_environment.workflow[0] = (function(){
 			});
 		}
 		
-		my.refreshFileListDisplay();
+		my.refresh();
 		
 	};
   
@@ -440,7 +440,7 @@ eldp_environment.workflow[0] = (function(){
 	my.sortAlphabetically = function(){
 	
 		my.resources.sortByKey("name");
-		my.refreshFileListDisplay();
+		my.refresh();
 		
 	};
   
@@ -497,7 +497,7 @@ eldp_environment.workflow[0] = (function(){
 		var selected_files = my.fileSelection.selected_files;
 		var IDs = my.resources.mapIndexesToIDs(selected_files);
 		my.resources.removeByID(IDs);
-		my.refreshFileListDisplay();
+		my.refresh();
 		
 	};
 	
@@ -634,7 +634,7 @@ eldp_environment.workflow[0] = (function(){
 					
 				});
 				
-				my.refreshFileListDisplay();
+				my.refresh();
 				
 			}
 			
@@ -652,7 +652,7 @@ eldp_environment.workflow[0] = (function(){
 	my.reset = function(){
 
 		my.resources.reset();
-		my.refreshFileListDisplay();
+		my.refresh();
 
 	};
 	

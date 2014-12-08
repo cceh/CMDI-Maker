@@ -21,9 +21,45 @@ imdi_environment.workflow[2] = (function(){
 	
 	//PRIVATE
 	
+	
+	var refresh = function(not_in_sessions){
+		
+		if (!g(my.element_id_prefix + 'list')){
+			my.module_view.innerHTML = "";
+			my.createListDIV(my.module_view);
+		}
+		
+		g(my.element_id_prefix + 'list').innerHTML = "";
+
+		forEach(my.actors, renderActorListEntry);
+		
+		if (my.actors.length == 0){
+			my.showNoActorsMessage();
+			
+			APP.environments.disableFunction("link_delete_active_actor");
+			APP.environments.disableFunction("link_sort_actors_alphabetically");
+			APP.environments.disableFunction("link_duplicateActiveActor");
+			
+		}
+		
+		else {
+			highlightActiveActorInList(my.active_actor_index);
+			
+			APP.environments.enableFunction("link_delete_active_actor");
+			APP.environments.enableFunction("link_sort_actors_alphabetically");
+			APP.environments.enableFunction("link_duplicateActiveActor");
+		}
+
+		if ((session) && (!not_in_sessions)){
+			session.refreshActorLists(my.actors.getAll());
+		}
+		
+	};
+	
+
 	var showLanguagesOfActiveActor = function(){
 
-		forEach(my.actors[my.active_actor_index].languages, my.languages.set);
+		forEach(my.actors.getActive().languages, my.languages.set);
 
 	};
 	
@@ -72,9 +108,6 @@ imdi_environment.workflow[2] = (function(){
 		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, actor_form);
 		
 		object.languages = getLanguagesOfActiveActorFromForm();  //PRELIMINARY OVERWRITE!
-
-		object.id = my.actors[my.active_actor_index].id;
-		console.log("Saving actor with id "+object.id);
 		
 		return object;
 	 
@@ -173,7 +206,7 @@ imdi_environment.workflow[2] = (function(){
 	
 		my.saveActiveActor();
 		
-		my.show(my.actors[index].id);
+		my.show(my.actors.idOf(index));
 	
 	};
 	
@@ -186,13 +219,7 @@ imdi_environment.workflow[2] = (function(){
 
 	var isEveryActorNamed = function(){
 	
-		for (var i=0; i<my.actors.length; i++){
-			if (my.actors[i].name == ""){
-				return false;
-			}
-		}
-		
-		return true;
+		return !(my.actors.isThereAnyItemWhereKeyIsValue("name", ""));
 	
 	};
 
@@ -204,7 +231,7 @@ imdi_environment.workflow[2] = (function(){
 	
 	var actor_form = my.parent.actor_form;
 	
-	my.actors = [];
+	my.actors = new ObjectList();
 	
 	my.element_id_prefix = "actor_";
 	
@@ -217,16 +244,11 @@ imdi_environment.workflow[2] = (function(){
 		icon: "user"
 	};
 	
-	my.id_counter = 0;
-	my.active_actor_index;
-	
 	my.module_view;
 	
 	my.init = function(view){
 	
-		my.actors = [];
-		my.id_counter = 0;
-		my.active_actor_index = undefined;  //Necessary!
+		my.actors.reset();
 		
 		my.module_view = view;
 		
@@ -237,7 +259,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		my.languages.init(view);
 		
-		my.refreshListDisplay(true);
+		refresh(true);
 		
 	};
 	
@@ -255,9 +277,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		my.saveActiveActor();
 		
-		object.actors = my.actors;
-		object.id_counter = my.id_counter;
-		object.active_actor_index = my.active_actor_index;
+		object.actors = my.actors.getState();
 		
 		return object;
 	
@@ -276,14 +296,6 @@ imdi_environment.workflow[2] = (function(){
 		}
 	
 	};*/
-	
-	
-	my.exists = function(actor_id){
-	
-		
-	
-	
-	};
 	
 	
 	my.showNoActorsMessage = function(){
@@ -312,27 +324,12 @@ imdi_environment.workflow[2] = (function(){
 	my.recall = function(data){
 	
 		if (data.actors){
-			my.actors = data.actors;
+			my.actors.setState(data.actors);
 		}
 		
-		if (data.id_counter){
-			my.id_counter = data.id_counter;
-		}
+		refresh();
 		
-		if (data.active_actor_index){
-			my.active_actor_index = data.active_actor_index;
-		}
-		
-		//if active_actor_index cannot be recalled but there are actors, set it to 0
-		else if (my.actors.length > 0){
-			my.active_actor_index = 0;
-		}
-		
-		my.refreshListDisplay();
-		
-		if (typeof my.active_actor_index != "undefined"){
-			my.show(my.actors[my.active_actor_index].id);
-		}
+		my.show(my.actors.getPointer());
 	
 	};
 	
@@ -355,7 +352,13 @@ imdi_environment.workflow[2] = (function(){
 				id: "link_sort_actors_alphabetically",
 				icon: "az",
 				label: l("sort_actors_alphabetically"),
-				onclick: function() { my.sortAlphabetically(); }
+				onclick: function() { 
+					my.actors.sortByKey("name");
+
+					refresh();
+		
+					APP.log(l("actors_alphabetically_sorted"));
+				}
 			},
 			{
 				id: "link_duplicateActiveActor",
@@ -385,14 +388,11 @@ imdi_environment.workflow[2] = (function(){
 			else {
 				// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button
 				
-				my.id_counter = 0;
-				my.actors = [];
-				
-				my.active_actor_index = undefined;
+				my.actors.reset();
 
 				APP.log(l("all_actors_deleted"));
 				
-				my.refreshListDisplay();
+				refresh();
 
 			}
 		}, l("no"), l("yes_delete_all_actors"));
@@ -401,16 +401,16 @@ imdi_environment.workflow[2] = (function(){
 
 	my.show = function(actor_id){
 	
-		var actor_index = my.getIndexByID(actor_id);
+		if (my.actors.length == 0){
+			console.info("actor.show: No actors to show!");
+			return;
+		}
+		
+		var actor_index = my.actors.getIndexByID(actor_id);
 		
 		if (typeof actor_index == "undefined"){
 			console.error("actor.show: Undefined actor_id!");
 			actor_index = 0;
-		}
-		
-		if (my.actors.length == 0){
-			console.info("actor.show: No actors to show!");
-			return;
 		}
 		
 		console.log("Showing actor " + actor_index);
@@ -424,7 +424,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		my.refreshFormTitle();
 		
-		var actor_to_display = my.actors[actor_index];
+		var actor_to_display = my.actors.getActive();
 		
 		APP.forms.fill(actor_form, my.element_id_prefix, actor_to_display);
 		
@@ -437,7 +437,7 @@ imdi_environment.workflow[2] = (function(){
 	
 		var form_title = g(my.element_id_prefix + "form_title");
 		
-		var actor_name = my.actors[my.active_actor_index].name;
+		var actor_name = my.actors.getActive().name;
 		
 		if (actor_name == ""){
 			form_title.innerHTML = l("unnamed_actor");
@@ -450,24 +450,11 @@ imdi_environment.workflow[2] = (function(){
 	}
 	
 	
-	my.getIndexByID = function(actor_id) {
-
-		var index = getIndex(my.actors, "id", actor_id);
-		
-		if (typeof index == "undefined"){
-			console.warn("ERROR: Could not find actors cache index from actor id!\n\nactor_id = " + actor_id);
-		}
-		
-		return index;
-		
-	};
-	
-	
 	my.export_actors = function(){
 		
 		if (my.actors.length !== 0){
 		
-			var actors_json = JSON.stringify(my.actors);
+			var actors_json = JSON.stringify(my.actors.getState());
 			
 			APP.save_file(actors_json, "actors.json", APP.CONF.file_download_header);
 			
@@ -523,7 +510,7 @@ imdi_environment.workflow[2] = (function(){
 				my.save(imported_actors[a], true);
 			}
 			
-			my.refreshListDisplay();
+			refresh();
 			
 			APP.log(imported_actors.length + " " + l("actors_imported"));
 		
@@ -559,13 +546,10 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.duplicateActiveActor = function(){
 		
-		//first, save changes to the current actor
-		var actor_object = my.saveActiveActor();
+		my.actors.duplicateActive();
+		refresh();
 		
-		//then create a new actor with this object
-		my.createNewActor(actor_object);
-		
-		APP.log(l("actor_saved_and_duplicated"),"success");
+		APP.log(l("actor_saved_and_duplicated"), "success");
 
 	};
 
@@ -580,7 +564,7 @@ imdi_environment.workflow[2] = (function(){
 
 		my.save(actor_to_put);
 
-		my.refreshListDisplay();
+		refresh();
 		
 		my.refreshFormTitle();
 		
@@ -593,10 +577,7 @@ imdi_environment.workflow[2] = (function(){
 	my.save = function(actor_to_put){
 	//this will always overwrite an existing actor
 		
-		//create array with all actor ids
-		var actor_ids = getArrayWithIDs(my.actors);
-
-		my.actors.splice(my.getIndexByID(actor_to_put.id),1,actor_to_put);
+		my.actors.replaceActive(actor_to_put);
 		
 		//if the actor does already exist, check if it is in a session and correct the actor name in the session, if required
 		session.updateActorNameInAllSessions(actor_to_put.id);
@@ -608,9 +589,7 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.createNewActor = function(actor_to_put){
 	
-		if (typeof my.active_actor_index != "undefined"){
-			my.saveActiveActor();
-		}	
+		my.saveActiveActor();
 		
 		//after the current actor is saved, check, if all actors have a name
 		if (!isEveryActorNamed()){
@@ -624,29 +603,27 @@ imdi_environment.workflow[2] = (function(){
 			actor_to_put = APP.forms.createEmptyObjectFromTemplate(actor_form);
 		}
 		
-		actor_to_put.id = my.id_counter;
-		console.log("Saving actor with id " + actor_to_put.id);
-		my.id_counter++;
-		
-		my.actors.push(actor_to_put);
+		var actor_id = my.actors.add(actor_to_put);
 	 
-		console.log('Yeah, dude inserted! insertId is: ' + actor_to_put.id);
+		console.log('Yeah, dude inserted! insertId is: ' + actor_id);
+		
+		my.createFormIfNotExistent();		
 
-		my.refreshListDisplay();
+		refresh();
 		
 		//show this created actor
-		my.show(actor_to_put.id);
+		my.show(actor_id);
 	};
 
 	
 	my.handleClickOnDeleteActor = function(){
 	
-		if (typeof my.active_actor_index == "undefined"){
+		if (typeof my.actors.pointer == -1){
 			console.warn("Active Actor is undefined. Don't know what to delete!");
 			return;
 		}
 	
-		var name_of_actor = my.actors[my.active_actor_index].name;
+		var name_of_actor = my.actors.getActive().name;
 		var confirm_message;
 		
 		if (name_of_actor == ""){
@@ -682,43 +659,23 @@ imdi_environment.workflow[2] = (function(){
 
 	my.deleteActiveActor = function(){
 
-		my.deleteActor(my.active_actor_index);
+		my.actors.removeActive();
+		refresh();
 
 	};
 	
 	
-	my.deleteActor = function(actor_index){
-	
-		my.actors.splice(actor_index,1);
-		
-		if (my.actors.length == 0){
-			my.active_actor_index = undefined;
-		}		
-		
-		if (my.active_actor_index > 0){
-			my.show(my.actors[my.active_actor_index - 1].id);
-		}
-		
-		else if (my.actors.length > 0){
-			my.show(my.actors[0].id)
-		}
-		
-		my.refreshListDisplay();		
-	
-	}
-	
-	
 	my.getAge = function (session_id, actor_id){
 
-		var i = my.getIndexByID(actor_id);
+		var ac = my.actors.getByID(actor_id);
 		
 		if (my.actors[i].age === ""){   //at first, check, if actor's age hasn't been specified yet
 		
 			if (g("radio_age_calc").on){  //then, check if auto calculate feature in settings is activated
 				
-				var birthDate = my.actors[i].birth_date.year + "-" + my.actors[i].birth_date.month + "-" + my.actors[i].birth_date.day;
-				var sessionDate = get(session.dom_element_prefix+session_id+"_session_date_year") + "-" +
-				get(session.dom_element_prefix+session_id+"_session_date_month") + "-" + get(session.dom_element_prefix+session_id+"_session_date_day"); 
+				var birthDate = ac.birth_date.year + "-" + ac.birth_date.month + "-" + ac.birth_date.day;
+				var sessionDate = get(session.dom_element_prefix + session_id +"_session_date_year") + "-" +
+				get(session.dom_element_prefix + session_id + "_session_date_month") + "-" + get(session.dom_element_prefix + session_id + "_session_date_day"); 
 				var age_calc_result = calcAgeAtDate(sessionDate,birthDate);
 				
 				if (age_calc_result !== 0){
@@ -745,59 +702,13 @@ imdi_environment.workflow[2] = (function(){
 		
 		else { //if actor's age has been specified
 		
-			return my.actors[i].age;
+			return ac.age;
 		
 		}
 
 	};
 	
 
-	my.sortAlphabetically = function(){
-
-		my.actors = sortByKey(my.actors,"name");
-
-		my.refreshListDisplay();
-		
-		APP.log(l("actors_alphabetically_sorted"));
-
-	};
-
-
-	my.refreshListDisplay = function(not_in_sessions){
-		
-		if (!g(my.element_id_prefix + 'list')){
-			my.module_view.innerHTML = "";
-			my.createListDIV(my.module_view);
-		}
-		
-		g(my.element_id_prefix + 'list').innerHTML = "";
-
-		forEach(my.actors, renderActorListEntry);
-		
-		if (my.actors.length == 0){
-			my.showNoActorsMessage();
-			
-			APP.environments.disableFunction("link_delete_active_actor");
-			APP.environments.disableFunction("link_sort_actors_alphabetically");
-			APP.environments.disableFunction("link_duplicateActiveActor");
-			
-		}
-		
-		else {
-			highlightActiveActorInList(my.active_actor_index);
-			
-			APP.environments.enableFunction("link_delete_active_actor");
-			APP.environments.enableFunction("link_sort_actors_alphabetically");
-			APP.environments.enableFunction("link_duplicateActiveActor");
-		}
-
-		if ((session) && (!not_in_sessions)){
-			session.refreshActorLists(my.actors);
-		}
-		
-	};
-	
-	
 	var renderActorListEntry = function(actor, i){
 	
 		var div = dom.make('div', my.element_id_prefix + "list_entry_" + i, my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));

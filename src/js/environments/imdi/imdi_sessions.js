@@ -198,7 +198,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//push new session object into sessions array
 		my.sessions.add(session_object);
 
-		my.GUI.drawNewSession(session_object);
+		my.GUI.renderSession(session_object);
 		
 		return session_object.id;
 	};
@@ -212,7 +212,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		my.sessions.add(session_object);
 		
-		my.drawNewSession(session_object);
+		my.GUI.renderSession(session_object);
 		
 		forEach(resources, function(resource){
 		
@@ -257,11 +257,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var all_available_actor_ids = getArrayWithIDs(actors);
 		
-		for (var s=0;s<my.sessions.length;s++){   //for all existing sessions
+		forEach(my.sessions, function(sess){   //for all existing sessions
 		
-			my.GUI.refreshActorListInSession(my.sessions.get(s));
+			my.GUI.refreshActorListInSession(sess);
 
-		}
+		});
 
 	};
 	
@@ -339,7 +339,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//if session doesn't already contain this actor
 		if (my.sessions.getByID(session_id).actors.actors.indexOf(actor_id) == -1){
 		
-			if (actor.actors[actor.getIndexByID(actor_id)]){  //check if actor still exists before adding
+			if (actor.actors.IDexists(actor_id) == true){  //check if actor still exists before adding
 		
 				my.sessions.getByID(session_id).actors.actors.push(actor_id);
 				refresh();
@@ -384,23 +384,24 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 		var resource_type;
 
-		if (resource_file_index >= resources.available_resources.length){
+		if (resource_file_index >= resources.resources.length){
 			return;
 		}
 		
 		var resource_id = my.resource_id_counter;
+		var res = resources.resources.get(resource_file_index);
 		
-		var file_type = resources.getValidityOfFile(resources.available_resources[resource_file_index].name).type;
+		var file_type = resources.getValidityOfFile(res.name).type;
 
 		if (file_type == "Media File"){
 			
 			resource_type = "mf";
 		
 			my.sessions.getByID(session_id).resources.resources.mediaFiles.push({
-				name: resources.available_resources[resource_file_index].name,
-				size: resources.available_resources[resource_file_index].size,
+				name: res.name,
+				size: res.size,
 				id: my.resource_id_counter,
-				resource_file_index: resource_file_index
+				resource_id: resource_id
 			});
 
 		}
@@ -410,10 +411,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			resource_type = "wr";
 		
 			my.sessions.getByID(session_id).resources.resources.writtenResources.push({
-				name: resources.available_resources[resource_file_index].name,
-				size: resources.available_resources[resource_file_index].size,
+				name: res.name,
+				size: res.size,
 				id: my.resource_id_counter,
-				resource_file_index: resource_file_index
+				resource_id: resource_id
 			});
 			
 		}
@@ -423,7 +424,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			if (!without_questions){
 			
 				APP.alert(l("session", "unknown_file_problem__before_filename") + "<br>" +
-				resources.available_resources[resource_file_index].name + 
+				res.name + 
 				"<br>" + l("session", "unknown_file_problem__after_filename"));
 			
 			}
@@ -431,10 +432,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			resource_type = "wr";
 			
 			my.sessions.getByID(session_id).resources.resources.writtenResources.push({
-				name: resources.available_resources[resource_file_index].name,
-				size: resources.available_resources[resource_file_index].size,
+				name: res.name,
+				size: res.size,
 				id: my.resource_id_counter,
-				resource_file_index: resource_file_index
+				resource_id: resource_id
 			});
 			
 		}
@@ -442,10 +443,10 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		var filename;
 		var filesize;
 		
-		if (resource_file_index!=-1){
+		if (resource_file_index != -1){
 		// if an existing media file is added, adopt its name and date to the input fields
-			filename = resources.available_resources[resource_file_index].name;
-			filesize = resources.available_resources[resource_file_index].size;
+			filename = res.name;
+			filesize = res.size;
 
 		}
 		
@@ -456,11 +457,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		
 		//Rename the session if an EAF file is added for the first time and session has no name yet
-		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+session_id+"_session_name") === "")){
+		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix + session_id + "_session_name") === "")){
 		
-			var name = removeEndingFromFilename(resources.available_resources[resource_file_index].name);
+			var name = removeEndingFromFilename(res.name);
 			
-			g(my.dom_element_prefix+session_id+"_session_name").value = name;
+			g(my.dom_element_prefix + session_id + "_session_name").value = name;
 			
 			my.GUI.refreshSessionHeading(session_id);
 		
@@ -473,7 +474,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//only, if session date is still YYYY
 		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
 			
-			var date = parseDate(resources.available_resources[resource_file_index].name);
+			var date = parseDate(res.name);
 			
 			if (date !== null){
 			
