@@ -96,6 +96,12 @@ eldp_environment.workflow[3] = (function (){
 				icon: "download",
 				label: "Download All Bundles",
 				onclick: function(){APP.saveAllOutputFiles();}
+			},
+			{
+				id: "link_export_bundles_as_zip",
+				icon: "download",
+				label: l("output", "download_zip_archive"),
+				onclick: function(){ APP.zipAllOutputFiles(); }
 			}
 		
 		];
@@ -109,9 +115,6 @@ eldp_environment.workflow[3] = (function (){
 		var xml_window = g('VIEW_xml_output');
 		
 		xml_window.innerHTML = "";
-		
-		APP.save(); //BAD HERE. has to be there so that all values in objects are up-to-date. must happen before eldp_generator is called.
-		
 		
 		var data = {
 			bundles: bundle.bundles.getAll(),

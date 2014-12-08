@@ -22,6 +22,7 @@ imdi_environment.workflow[4] = (function (){
 	var corpus;
 	var session;
 	var resources;
+	var actors;
 	
 	my.parent = imdi_environment;
 	var l = my.parent.l;
@@ -39,7 +40,9 @@ imdi_environment.workflow[4] = (function (){
 	
 		corpus = imdi_environment.workflow[0];
 		session = imdi_environment.workflow[3];
-		resources = imdi_environment.workflow[1].available_resources;
+		resources = imdi_environment.workflow[1];
+		actors = imdi_environment.workflow[2];
+		
 		my.createOutputFormatSelect(my.formats());
 	
 	};
@@ -74,6 +77,8 @@ imdi_environment.workflow[4] = (function (){
 	
 	
 	my.view = function(){
+	
+		APP.save();
 	
 		//when there is no corpus to be created and no sessions either, return
 		if ((get("corpus_name") === "") && (session.sessions.length === 0)){
@@ -139,13 +144,13 @@ imdi_environment.workflow[4] = (function (){
 				id: "link_export_corpus",
 				icon: "download",
 				label: l("output", "download_corpus_including_all_sessions"),
-				onclick: function(){APP.saveAllOutputFiles();}
+				onclick: function(){ APP.saveAllOutputFiles(); }
 			},
 			{
 				id: "link_export_corpus_as_zip",
 				icon: "download",
 				label: l("output", "download_zip_archive"),
-				onclick: function(){APP.zipAllOutputFiles();}
+				onclick: function(){ APP.zipAllOutputFiles(); }
 			}
 		
 		];
@@ -163,7 +168,9 @@ imdi_environment.workflow[4] = (function (){
 		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		
 		var data = {
-			resources: resources.available_resources
+			resources: resources.resources,
+			sessions: sessions.sessions,
+			actors: actors.actors
 		}
 		
 		

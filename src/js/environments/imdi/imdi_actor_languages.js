@@ -22,7 +22,7 @@ imdi_environment.workflow[2].languages = (function (){
 	var my = {};
 	var actor = imdi_environment.workflow[2];
 
-	my.languages_of_active_actor = undefined;
+	my.languages_of_active_actor = new ObjectList();
 	
 	my.parent = imdi_environment;
 	var l = my.parent.l;
@@ -33,7 +33,7 @@ imdi_environment.workflow[2].languages = (function (){
 	
 	my.init = function(view){
 
-		my.languages_of_active_actor = [];
+		return;
 		
 	};
 	
@@ -57,9 +57,7 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.remove = function (al_id){
 
-		var index = my.getActorLanguageObjectIndexFromID(al_id);
-
-		my.languages_of_active_actor.splice(index,1);
+		my.languages_of_active_actor.removeByID(al_id);
 		
 		dom.remove(my.element_id_prefix + al_id + "_div");
 
@@ -68,65 +66,50 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.clearActiveActorLanguages = function(){
 		
-		while (my.languages_of_active_actor.length > 0){
-			
-			console.log("removing " + my.languages_of_active_actor[0].id);
-			
-			my.remove(my.languages_of_active_actor[0].id);
-			
-		}
+		my.languages_of_active_person.reset();
 		
-		my.id_counter = 0;
+		g(my.element_id_prefix + "display").innerHTML = "";
 
 	};
 	
 
-	my.getActorLanguageObjectIndexFromID = function (al_id){
+	my.set = function(ALO){
 
-		return getIndex(my.languages_of_active_actor, "id", al_id);
+		my.languages_of_active_actor.add(ALO);
+		my.renderActorLanguage(g(my.element_id_prefix + "display"), ALO);
 
 	};
-
-
-	my.set = function(ActorLanguageObject){
-
-		//LanguageObject is only a reference to the original array in the LanguageIndex.
-		// We have to clone our Language Object from the DB first.
-		// Otherwise we would overwrite the DB array which we do not want.
-		// More info: http://davidwalsh.name/javascript-clone-array
-		var LanguageObject = ActorLanguageObject.LanguageObject.slice(0);
-
-		ActorLanguageObject.id = my.id_counter;
-		
-		my.languages_of_active_actor.push(ActorLanguageObject);
-		
-		var div = dom.newElement("div", my.element_id_prefix + my.id_counter+"_div",my.element_id_prefix + "entry",g(my.element_id_prefix + "display"));
+	
+	
+	
+	my.renderActorLanguage = function(parent, ALO){
+	
+		var div = dom.newElement("div", my.element_id_prefix + ALO.id + "_div", my.element_id_prefix + "entry", parent);
 		APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num) {
-			return function(){ actor.languages.remove(num);  
+			return function(){
+				actor.languages.remove(num);  
 			};
-		}(my.id_counter) );
+		}(ALO.id) );
 		
-		dom.spanBR(div,"","", "ISO639-3 Code: " + LanguageObject[0]);
-		dom.spanBR(div,"","", "Name: " + LanguageObject[3]);
-		dom.spanBR(div,"","", "Country ID: " + LanguageObject[1]);
+		dom.spanBR(div,"","", "ISO639-3 Code: " + ALO.iso_code);
+		dom.spanBR(div,"","", "Name: " + ALO.name);
+		dom.spanBR(div,"","", "Country ID: " + ALO.country_id);
 		
-		var input = dom.input(div, "mothertongue_" + my.id_counter, "", "", "checkbox");
+		var input = dom.input(div, "mothertongue_" + ALO.id, "", "", "checkbox");
 		
-		if (ActorLanguageObject.MotherTongue === true){
+		if (ALO.MotherTongue === true){
 			input.checked = true;
 		}
 
 		dom.span(div,"","", l("languages", "mother_tongue") + "  ");
-		input = dom.input(div, "primarylanguage_" + my.id_counter, "", "", "checkbox");
+		input = dom.input(div, "primarylanguage_" + ALO.id, "", "", "checkbox");
 		
-		if (ActorLanguageObject.PrimaryLanguage === true){
+		if (ALO.PrimaryLanguage === true){
 			input.checked = true;
 		}
 		
-		dom.span(div,"","",l("languages", "primary_language"));
-
-		my.id_counter += 1;
-
+		dom.span(div,"","",l("languages", "primary_language"));	
+	
 	};
 
 
@@ -143,15 +126,18 @@ imdi_environment.workflow[2].languages = (function (){
 		}			
 		
 		//Let's create a new ActorLanguageObject
-		var ActorLanguageObject = {
+		var ALO = {
 		
-			LanguageObject: LanguageObject,
+			name: LanguageObject[3],
+			iso_code: LangaugeObject[0],
+			country_code: LanguageObject[1],
+			type: LanguageObject[2],
 			MotherTongue: first_added_language,
 			PrimaryLanguage: first_added_language
 
 		};
 
-		my.set(ActorLanguageObject);  
+		my.set(ALO);  
 
 	};
 	

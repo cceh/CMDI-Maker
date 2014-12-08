@@ -194,6 +194,7 @@ eldp_environment.languages[0] = {
 		spaces_are_not_allowed_either: "Space characters are not allowed either.",
 		persons_must_have_valid_birth_year: "Every person must have a valid birth year!",
 		bundles_must_have_one_language: "Every bundle must have at least one language.",
+		download_zip_archive: "Download ZIP archive"
 	},
 	
 	really_overwrite_data: "Do you really want to overwrite data?",
@@ -357,7 +358,8 @@ eldp_environment.languages[1] = {
 		not_allowed_chars_are: "Nicht erlaubte Zeichen sind: ",
 		spaces_are_not_allowed_either: "Leerzeichen sind auch nicht erlaubt.",
 		bundles_must_have_one_language: "Jedes Bundle muss mindestens eine Language haben.",
-		persons_must_have_valid_birth_year: "Jede Person muss ein valides Birth Year haben!"
+		persons_must_have_valid_birth_year: "Jede Person muss ein valides Birth Year haben!",
+		download_zip_archive: "ZIP-Archiv herunterladen"
 	},
 	
 	really_overwrite_data: "Möchtest Du wirklich Daten überschreiben?",

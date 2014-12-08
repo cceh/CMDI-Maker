@@ -516,7 +516,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		}
 		
-		dom.remove(my.dom_element_prefix+session_id+"_mediafile_"+resource_id);
+		dom.remove(my.dom_element_prefix + session_id + "_mediafile_" + resource_id);
 
 	};
 
@@ -531,7 +531,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 		}
 		
-		for (var i=0; i<session_form_template.fields_to_copy.length; i++){
+		for (var i = 0; i < session_form_template.fields_to_copy.length; i++){
 		
 			if (g(APP.CONF.copy_checkbox_element_prefix+session_form_template.fields_to_copy[i].name).checked){  //if checkbox is checked
 			

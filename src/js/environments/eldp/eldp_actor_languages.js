@@ -30,7 +30,9 @@ eldp_environment.workflow[1].languages = (function (){
 	my.l = my.parent.l;
 	
 	my.init = function(){
+	
 		return;
+		
 	};
 	
 	
@@ -53,7 +55,7 @@ eldp_environment.workflow[1].languages = (function (){
 
 	my.remove = function (al_id){
 
-		my.languages_of_active_person.remove(al_id);
+		my.languages_of_active_person.removeByID(al_id);
 		
 		dom.remove(my.element_id_prefix + al_id + "_div");
 
