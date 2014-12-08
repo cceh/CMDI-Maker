@@ -43,7 +43,7 @@ imdi_environment.workflow[2] = (function(){
 		}
 		
 		else {
-			highlightActiveActorInList(my.active_actor_index);
+			highlightActiveActorInList(my.persons.getActiveIndex());
 			
 			APP.environments.enableFunction("link_delete_active_actor");
 			APP.environments.enableFunction("link_sort_actors_alphabetically");
@@ -556,7 +556,7 @@ imdi_environment.workflow[2] = (function(){
 
 	my.saveActiveActor = function(){
 	
-		if (typeof my.active_actor_index == "undefined"){
+		if (my.actors.getPointer() == -1){
 			return;
 		}
 	
