@@ -75,12 +75,13 @@ eldp_environment.workflow[3] = (function (){
 			return;
 		}
 		
-		
+		/*
 		if (!person.doesEveryPersonHaveValidBirthYear()){
 			APP.view(person);
 			APP.alert(l("output", "persons_must_have_valid_birth_year"));
 			return;
 		}
+		*/
 		
 		
 		

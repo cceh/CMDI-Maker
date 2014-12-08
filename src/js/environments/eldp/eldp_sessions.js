@@ -768,6 +768,8 @@ eldp_environment.workflow[2] = (function() {
 			
 			}
 			
+			//ELDP Bundle Titles may contain everything
+			/*
 			for (var c = 0; c < my.parent.not_allowed_chars.length; c++){
 		
 				if (my.bundles.get(i).bundle.title.indexOf(my.parent.not_allowed_chars[c]) != -1){
@@ -776,7 +778,7 @@ eldp_environment.workflow[2] = (function() {
 				
 				}
 		
-			}
+			}*/
 			
 		}
 		

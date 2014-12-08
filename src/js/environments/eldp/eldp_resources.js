@@ -260,17 +260,16 @@ eldp_environment.workflow[0] = (function(){
 				type: "function_wrap",
 				sub_div: "sfa_select",
 				onclick: function() { my.setForAll(); },
-				sub_div_innerHTML: '<input type="checkbox" name="stable_for_all" id="stable_for_all" value="stable_for_all" checked> Stable<br>'+
-							'<input type="checkbox" name="inProgress_for_all" id="inProgress_for_all" value="inProgress_for_all"> In Progress<br>',
+				sub_div_innerHTML: '<input type="radio" name="status_for_all" id="stable_for_all" value="stable" checked> Stable<br>'+
+							'<input type="radio" name="status_for_all" id="inProgress_for_all" value="in-progress"> In Progress<br>',
 			},
 		];
 	};
 	
 	
 	my.setForAll = function(){
-	
-		my.resources.setForAll("stable", g("stable_for_all").checked);
-		my.resources.setForAll("inProgress", g("inProgress_for_all").checked);
+		console.log(dom.getSelectedRadioValue("status_for_all"));
+		my.resources.setForAll("status", dom.getSelectedRadioValue("status_for_all"));
 		my.refreshFileListDisplay();
 	
 	}
@@ -332,8 +331,7 @@ eldp_environment.workflow[0] = (function(){
 				id: "file_entry_"+i,
 				className: "file_entry media_file_entry",
 				parent: list,
-				stable: res.stable,
-				inProgress: res.inProgress,
+				status: res.status,
 				path: res.path
 				//opacity: 1
 			});
@@ -355,15 +353,14 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.refreshFileStateValues = function(file_index){
 	
-		my.resources.get(file_index).stable = g("f_stable_"+file_index).checked;
-		my.resources.get(file_index).inProgress = g("f_inProgress_"+file_index).checked;
+		my.resources.get(file_index).status = dom.getSelectedRadioValue("f_" + file_index + "_status");
 	
 	};
 	
 	
 	my.renderResource = function(options){
 		//possible options:
-		//number, title, mimeType, file_size, lastModified, id, className, parent, compatibility_warning, stable, inProgress, path
+		//number, title, mimeType, file_size, lastModified, id, className, parent, compatibility_warning, status, path
 	
 		var div = dom.make("div", options.id, options.className, options.parent);
 		var title = dom.make("h2", "", "file_entry_title", div, options.title);
@@ -374,7 +371,9 @@ eldp_environment.workflow[0] = (function(){
 		);
 		
 		var cb1 = dom.make("input","f_stable_"+options.number,"",div);
-		cb1.type = "checkbox";
+		cb1.type = "radio";
+		cb1.value = "stable";
+		cb1.name = "f_" + options.number + "_status";
 		cb1.addEventListener("click",function(event){ 
 			event.stopPropagation();
 			
@@ -384,7 +383,7 @@ eldp_environment.workflow[0] = (function(){
 		});
 		var span1 = dom.make("span","","",div, " Stable");
 		
-		if (options.stable == true){
+		if (options.status == "stable"){
 			cb1.checked = true;
 		}
 		
@@ -392,7 +391,9 @@ eldp_environment.workflow[0] = (function(){
 		dom.br(div);
 		
 		var cb2 = dom.make("input","f_inProgress_"+options.number,"",div);
-		cb2.type = "checkbox";
+		cb2.type = "radio";
+		cb2.value = "in-progress";
+		cb2.name = "f_" + options.number + "_status";
 		cb2.addEventListener("click",function(event){
 			event.stopPropagation();
 			my.refreshFileStateValues(options.number);
@@ -401,7 +402,7 @@ eldp_environment.workflow[0] = (function(){
 		});
 		var span2 = dom.make("span","","",div, " In Progress");	
 		
-		if (options.inProgress == true){
+		if (options.status == "in-progress"){
 			cb2.checked = true;
 		}
 
@@ -428,7 +429,8 @@ eldp_environment.workflow[0] = (function(){
 				name: f.name,
 				type: f.type || 'n/a',
 				size: bytesToSize(f.size,1),
-				lastModified: f.lastModifiedDate.toLocaleDateString()
+				lastModified: f.lastModifiedDate.toLocaleDateString(),
+				status: "stable"
 			});
 		}
 		
@@ -627,7 +629,8 @@ eldp_environment.workflow[0] = (function(){
 					
 						my.resources.add({
 							name: getFilenameFromFilePath(file_string),
-							path: getDirectoryFromFilePath(file_string)
+							path: getDirectoryFromFilePath(file_string),
+							status: "stable"
 						});
 					
 					}
