@@ -42,6 +42,10 @@ var ObjectList = function() {
 	
 	var cloneObject = function(obj) {
 		var clone = {};
+		
+		if (Array.isArray(obj)){
+			clone = [];
+		}
 
 		for (var i in obj) {
 			if (obj[i] && typeof obj[i] == 'object') {

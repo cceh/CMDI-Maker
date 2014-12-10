@@ -30,7 +30,6 @@ imdi_environment.workflow[2] = (function(){
 		}
 		
 		g(my.element_id_prefix + 'list').innerHTML = "";
-
 		my.actors.forEach(renderActorListEntry);
 		
 		if (my.actors.length == 0){
@@ -44,6 +43,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		else {
 			highlightActiveActorInList(my.actors.getActiveIndex());
+			my.show(my.actors.getPointer());
 			
 			APP.environments.enableFunction("link_delete_active_actor");
 			APP.environments.enableFunction("link_sort_actors_alphabetically");
@@ -71,7 +71,7 @@ imdi_environment.workflow[2] = (function(){
 			return;
 		}
 		
-		for (var i=0;i<my.actors.length;i++){
+		for (var i = 0; i < my.actors.length; i++){
 			g(my.element_id_prefix + "list_entry_" + i).style.background = my.unhighlightColor;
 		}
 		
@@ -230,13 +230,10 @@ imdi_environment.workflow[2] = (function(){
 	my.init = function(view){
 	
 		my.actors.reset();
-		
 		my.module_view = view;
-		
 		session = my.parent.workflow[3];
 		
-		my.createListDIV(view);
-		var ac_view = dom.make("div", my.element_id_prefix + "view","",view);
+		dom.div(view, my.element_id_prefix + "view", "");
 		
 		my.languages.init(view);
 		
@@ -539,7 +536,6 @@ imdi_environment.workflow[2] = (function(){
 		
 		my.actors.duplicateActive();
 		refresh();
-		
 		APP.log(l("actor_saved_and_duplicated"), "success");
 
 	};
@@ -616,17 +612,12 @@ imdi_environment.workflow[2] = (function(){
 	
 		var name_of_actor = my.actors.getActive().name;
 		var confirm_message;
-		
 		if (name_of_actor == ""){
-		
 			confirm_message = l("really_erase_this_actor");
-		
 		}
 		
 		else {
-		
 			confirm_message = l("really_erase_before_name") + name_of_actor + l("really_erase_after_name");
-		
 		}
 
 		APP.confirm(confirm_message, function (e) {
