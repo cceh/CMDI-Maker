@@ -165,6 +165,26 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
+	my.clickableListSmall = function(parent, array, title_key, subtitle_key, action, highlighted_index){
+	
+		parent.innerHTML = "";
+	
+		forEach(array, function(item){
+		
+			var div = dom.make('div', "", "clickable_list_entry", parent);
+			
+			dom.h2(div, item[title_key]);
+			dom.p(div, item[subtitle_key]);
+			
+			div.addEventListener('click', function(num) { 
+				return function(){ action(num); }; 
+			}(i), false );	
+
+		});
+	
+	}
+	
+	
 	return my;
 	
 })();

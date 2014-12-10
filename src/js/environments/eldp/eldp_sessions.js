@@ -770,7 +770,7 @@ eldp_environment.workflow[2] = (function() {
 		for (var i = 0; i < my.bundles.length; i++){
 		
 			if (my.bundles.get(i).languages.bundle_languages.length == 0){
-			
+				console.log("FAFAFA " + i);
 				return false;
 			
 			}

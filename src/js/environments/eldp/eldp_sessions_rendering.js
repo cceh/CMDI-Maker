@@ -63,7 +63,6 @@ eldp_environment.workflow[2].render = (function() {
 	my.view = function(){
 	
 		APP.GUI.scrollTop();
-		
 		my.pager.refresh(bundle.bundles.getAll());
 	
 	};
@@ -357,16 +356,17 @@ eldp_environment.workflow[2].render = (function() {
 		}(bundle_id, lang_id, element_id));
 	};
 	
-	
+	//refreshes the name of a person (by id of person_in_bundle) in a specific bundle
 	my.refreshPersonName = function(bundle, id){
 	
 		var bundle_id = bundle.id;
 		
 		var h2_id = my.dom_element_prefix + bundle_id + "_person_" + id + "_name_disp";
-
 		var h2 = g(h2_id);
-		
+		console.log("SEARCHING FOR " + id);
 		var person_in_bundle = getObjectByID(bundle.persons.persons, id);
+		console.log(bundle.persons.persons);
+		console.log(person_in_bundle);
 		var person_id = person_in_bundle.person_id;
 		
 		var display_name = person.getDisplayName(person_id);

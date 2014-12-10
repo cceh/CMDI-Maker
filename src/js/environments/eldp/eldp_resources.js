@@ -427,7 +427,7 @@ eldp_environment.workflow[0] = (function(){
 			my.resources.add({
 				name: f.name,
 				type: f.type || 'n/a',
-				size: strings.strings.bytesToSize(f.size,1),
+				size: strings.bytesToSize(f.size,1),
 				lastModified: f.lastModifiedDate.toLocaleDateString()
 			});
 		}
@@ -627,7 +627,7 @@ eldp_environment.workflow[0] = (function(){
 					
 						my.resources.add({
 							name: strings.getFilenameFromFilePath(file_string),
-							path: getDirectoryFromFilePath(file_string)
+							path: strings.getDirectoryFromFilePath(file_string)
 						});
 					
 					}

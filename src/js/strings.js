@@ -116,7 +116,7 @@ var strings = (function(){
 		
 		for (var i = 0; i < array.length; i++){
 		
-			array[i] = removeCharactersFromString(array[i], "\r");
+			array[i] = my.removeCharactersFromString(array[i], "\r");
 		
 		}
 		

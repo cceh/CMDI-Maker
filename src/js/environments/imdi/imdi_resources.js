@@ -391,7 +391,7 @@ imdi_environment.workflow[1] = (function(){
 			my.resources.add({
 				name: f.name,
 				mime_type: f.type || 'n/a',
-				size: strings.strings.bytesToSize(f.size,1),
+				size: strings.bytesToSize(f.size,1),
 				lastModified: f.lastModifiedDate.toLocaleDateString()
 			});
 		}
