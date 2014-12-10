@@ -22,7 +22,9 @@ imdi_environment.workflow[0].content_languages = (function() {
 	var corpus;
 	
 	var refresh = function(){
-	
+		
+		g("content_languages_display").innerHTML = "";
+		
 		my.content_languages.forEach(my.render);	
 	
 	};
@@ -55,8 +57,10 @@ imdi_environment.workflow[0].content_languages = (function() {
 			my.choose
 		);
 		
-		var ccld = dom.div(cl, "content_languages_display", "");
+		var ccld = dom.div(cl, "content_languages_wrapper", "");
 		dom.h1(ccld, my.l("languages", "current_content_languages"));
+		
+		dom.div(ccld, "content_languages_display", "");
 	
 	};
 	
@@ -112,7 +116,8 @@ imdi_environment.workflow[0].content_languages = (function() {
 		var img = APP.GUI.icon(div,"delete_lang_"+id+"_icon","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) { 
 			return function(){
-				corpus.content_languages.removeByID(num);  
+				my.content_languages.removeByID(num);  
+				refresh();
 			};
 		}(id) );
 		

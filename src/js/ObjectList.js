@@ -442,7 +442,8 @@ var ObjectList = function() {
 		var state = {
 			id_counter: id_counter,
 			list: list,
-			pointer: pointer
+			pointer: pointer,
+			info: "ObjectList state"
 		};
 		
 		return state;

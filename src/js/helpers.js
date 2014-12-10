@@ -46,7 +46,7 @@ function cloneObject(obj) {
 
     for (var i in obj) {
         if (obj[i] && typeof obj[i] == 'object') {
-            clone[i] = cloneObj(obj[i]);
+            clone[i] = cloneObject(obj[i]);
         } else {
             clone[i] = obj[i];
         }

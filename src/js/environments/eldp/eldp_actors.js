@@ -71,9 +71,7 @@ eldp_environment.workflow[1] = (function(){
 
 		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, person_form);
 		
-		object.languages.actor_languages = getLanguagesOfActivePersonFromForm();  //PRELIMINARY OVERWRITE!
-
-		//console.log("Saving person with id " + object.id);
+		object.languages.actor_languages = getLanguagesOfActivePersonFromForm();
 
 		return object;
 	 

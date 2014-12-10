@@ -79,35 +79,16 @@ imdi_environment.workflow[2] = (function(){
 
 	};
 	
-	
-	var getLanguagesOfActiveActorFromForm = function(){
-	
-		var array = map(my.languages.languages_of_active_actor, function(AL){
-		
-			var ActorLanguageObject = {
-				
-				LanguageObject: AL.LanguageObject,
-				MotherTongue: g("mothertongue_" + AL.id).checked,
-				PrimaryLanguage: g("primarylanguage_" + AL.id).checked
-				
-			};
-			
-			return ActorLanguageObject;
-			
-		});
-		
-		return array;
-	
-	};
-	
-	
+
 	var makeActorObjectFromFormInput = function(){
 
 		var object = APP.forms.createEmptyObjectFromTemplate(actor_form);
 
 		APP.forms.fillObjectWithFormData(object, my.element_id_prefix, actor_form);
 		
-		object.languages = getLanguagesOfActiveActorFromForm();  //PRELIMINARY OVERWRITE!
+		my.languages.refreshLanguagesOfActiveActorInArray();
+		
+		object.languages = cloneObject(my.languages.LOAA.getAll());
 		
 		return object;
 	 
@@ -428,7 +409,7 @@ imdi_environment.workflow[2] = (function(){
 		highlightActiveActorInList(actor_index);
 		my.languages.clearActiveActorLanguages();
 		
-		my.active_actor_index = actor_index;
+		my.actors.setPointer(actor_id);
 		
 		my.refreshFormTitle();
 		

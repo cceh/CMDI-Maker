@@ -22,14 +22,12 @@ imdi_environment.workflow[2].languages = (function (){
 	var my = {};
 	var actor = imdi_environment.workflow[2];
 
-	my.languages_of_active_actor = new ObjectList();
+	my.LOAA = new ObjectList();  //Languages of active actor
 	
 	my.parent = imdi_environment;
 	var l = my.parent.l;
 	
 	my.element_id_prefix = actor.element_id_prefix + "languages_";
-	
-	my.id_counter = 0;
 	
 	my.init = function(view){
 
@@ -57,16 +55,28 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.remove = function (al_id){
 
-		my.languages_of_active_actor.removeByID(al_id);
+		my.LOAA.removeByID(al_id);
 		
 		dom.remove(my.element_id_prefix + al_id + "_div");
 
+	};
+	
+	
+	my.refreshLanguagesOfActiveActorInArray = function(){
+	
+		my.LOAA.forEach(function(ALO){
+		
+			ALO.MotherTongue = g("mothertongue_" + ALO.id).checked;
+			ALO.PrimaryLanguage = g("primarylanguage_" + ALO.id).checked;
+		
+		});
+		
 	};
 
 
 	my.clearActiveActorLanguages = function(){
 		
-		my.languages_of_active_actor.reset();
+		my.LOAA.reset();
 		
 		g(my.element_id_prefix + "display").innerHTML = "";
 
@@ -75,7 +85,8 @@ imdi_environment.workflow[2].languages = (function (){
 
 	my.set = function(ALO){
 
-		my.languages_of_active_actor.add(ALO);
+		my.LOAA.add(ALO);
+		actor.actors.getActive().languages.actor_languages = my.LOAA.getAll();
 		my.renderActorLanguage(g(my.element_id_prefix + "display"), ALO);
 
 	};
@@ -84,7 +95,7 @@ imdi_environment.workflow[2].languages = (function (){
 	
 	my.renderActorLanguage = function(parent, ALO){
 	
-		var div = dom.newElement("div", my.element_id_prefix + ALO.id + "_div", my.element_id_prefix + "entry", parent);
+		var div = dom.make("div", my.element_id_prefix + ALO.id + "_div", my.element_id_prefix + "entry", parent);
 		APP.GUI.icon(div,"","delete_lang_icon", "reset", function(num) {
 			return function(){
 				actor.languages.remove(num);  
@@ -117,7 +128,7 @@ imdi_environment.workflow[2].languages = (function (){
 	//if actor language is added by user
 		var first_added_language;
 
-		if (my.languages_of_active_actor.length === 0){
+		if (my.LOAA.length === 0){
 			first_added_language = true;
 		}
 		
@@ -129,7 +140,7 @@ imdi_environment.workflow[2].languages = (function (){
 		var ALO = {
 		
 			name: LanguageObject[3],
-			iso_code: LangaugeObject[0],
+			iso_code: LanguageObject[0],
 			country_code: LanguageObject[1],
 			type: LanguageObject[2],
 			MotherTongue: first_added_language,

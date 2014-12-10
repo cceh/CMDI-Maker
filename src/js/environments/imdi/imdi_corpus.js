@@ -52,7 +52,7 @@ imdi_environment.workflow[0] = (function(){
 
 		my.content_languages.init(view);
 		
-	}
+	};
 	
 	
 	my.recall = function(corpus){
@@ -61,7 +61,7 @@ imdi_environment.workflow[0] = (function(){
 		
 		my.content_languages.recall(corpus.content_languages);
 	
-	}
+	};
 	
 	
 	my.getSaveData = function(){
@@ -72,11 +72,6 @@ imdi_environment.workflow[0] = (function(){
 		
 		return object;
 	
-	}
-	
-	
-	my.functions = function(){
-		return [];
 	};
 	
 	
@@ -100,7 +95,7 @@ imdi_environment.workflow[0] = (function(){
 
 		return true;
 
-	}
+	};
 
 	return my;
 	

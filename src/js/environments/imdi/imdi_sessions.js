@@ -200,8 +200,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 		});
 		
-		APP.log(l("session", "new_session_has_been_created") + "<br>" +
-		l("session", "name") + ": " + name);
+		APP.log(l("session", "new_session_has_been_created"));
 		
 		refresh();
 		
