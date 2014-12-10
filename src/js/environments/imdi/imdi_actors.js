@@ -59,7 +59,7 @@ imdi_environment.workflow[2] = (function(){
 
 	var showLanguagesOfActiveActor = function(){
 
-		forEach(my.actors.getActive().languages, my.languages.set);
+		forEach(my.actors.getActive().languages.actor_languages, my.languages.set);
 
 	};
 	
@@ -88,7 +88,7 @@ imdi_environment.workflow[2] = (function(){
 		
 		my.languages.refreshLanguagesOfActiveActorInArray();
 		
-		object.languages = cloneObject(my.languages.LOAA.getAll());
+		object.languages.actor_languages = cloneObject(my.languages.LOAA.getAll());
 		
 		return object;
 	 
@@ -343,9 +343,7 @@ imdi_environment.workflow[2] = (function(){
 				label: l("sort_actors_alphabetically"),
 				onclick: function() { 
 					my.actors.sortByKey("name");
-
 					refresh();
-		
 					APP.log(l("actors_alphabetically_sorted"));
 				}
 			},
@@ -353,13 +351,17 @@ imdi_environment.workflow[2] = (function(){
 				id: "link_duplicateActiveActor",
 				icon: "duplicate_user",
 				label: l("duplicate_this_actor"),
-				onclick: function() { my.duplicateActiveActor(); }
+				onclick: function() {
+					my.duplicateActiveActor();
+				}
 			},
 			{
 				id: "link_eraseAll",
 				icon: "reset",
 				label: l("delete_all_actors"),
-				onclick: function() { my.eraseAll(); }
+				onclick: function() {
+					my.eraseAll();
+				}
 			}
 		];
 	};

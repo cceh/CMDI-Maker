@@ -43,6 +43,11 @@ function ajax_get(url, success_callback){
 
 function cloneObject(obj) {
     var clone = {};
+	
+	if (Array.isArray(obj)){
+		clone = [];
+	}
+	
 
     for (var i in obj) {
         if (obj[i] && typeof obj[i] == 'object') {
