@@ -194,8 +194,6 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		my.sessions.add(session_object);
 		
-		my.GUI.renderSession(session_object);
-		
 		forEach(resources, function(resource){
 		
 			my.addResource(session_object.id, resource);
@@ -204,6 +202,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		APP.log(l("session", "new_session_has_been_created") + "<br>" +
 		l("session", "name") + ": " + name);
+		
+		refresh();
 		
 		return session_object.id;
 		
@@ -242,13 +242,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.sortAlphabetically = function(){
 		
-		//Before we sort the sessions, we save the newest user input
 		my.refreshSessionsArray();
-		
 		my.sessions.sortBySubKey("session", "name");
 		refresh();
-		
-		console.log("Sessions sorted by name");
 		
 	};
 
@@ -279,9 +275,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.getIndexFromResourceID = function (resource_id){
 		var r;
 
-		for (var s=0;s<my.sessions.length;s++){
+		for (var s = 0; s < my.sessions.length; s++){
 		
-			for (r=0; r<my.sessions.get(s).resources.resources.writtenResources.length; r++){
+			for (r = 0; r < my.sessions.get(s).resources.resources.writtenResources.length; r++){
 		
 				if (my.sessions.get(s).resources.resources.writtenResources[r].id == resource_id){
 					return r;
@@ -289,7 +285,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 			}
 			
-			for (r=0; r<my.sessions.get(s).resources.resources.mediaFiles.length; r++){
+			for (r = 0; r < my.sessions.get(s).resources.resources.mediaFiles.length; r++){
 		
 				if (my.sessions.get(s).resources.resources.mediaFiles[r].id == resource_id){
 					return r;
@@ -355,6 +351,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	// resource_file_index is the index of the available media file, that is to be added to the session
 	// if resource_file_index is -1, a new empty field with no available media file is created
 	//if without_questions == true, no alerts will be thrown (e.g. when resources are added at start up)
+	
+	
+		my.refreshSessionsArray();
 	
 		var resource_type;
 
@@ -475,6 +474,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 	my.removeResource = function(session_id, resource_id){
 	
+		
+	
 		var ids_of_sessions_media_files = getArrayWithIDs(my.sessions.getByID(session_id).resources.resources.mediaFiles);
 		var ids_of_sessions_written_resources = getArrayWithIDs(my.sessions.getByID(session_id).resources.resources.writtenResources);
 
@@ -490,12 +491,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		}
 		
-		dom.remove(my.dom_element_prefix + session_id + "_mediafile_" + resource_id);
+		refresh();
 
 	};
 
 
 	my.assignSession1Metadata = function(){
+	
 		var session_form_template = session_form;
 
 		if (my.sessions.length < 2){
@@ -511,7 +513,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 				if (session_form_template.fields_to_copy[i].name == "actors"){  //special case: actors!
 				
-					for (var s=1; s<my.sessions.length; s++){
+					for (var s = 1; s < my.sessions.length; s++){
 						my.removeAllActors(my.sessions.idOf(s));
 			
 						// copy actors from session 1 to session session
@@ -538,7 +540,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	//fields_to_copy is an array
 	//it is indeed html conform to get textarea.value
 		
-		for (var s=1;s<my.sessions.length;s++){   //important to not include the first session in this loop
+		for (var s = 1; s < my.sessions.length; s++){   //important to not include the first session in this loop
 		
 			forEach(fields_to_copy, function(field_to_copy){
 				APP.GUI.copyField(
@@ -558,6 +560,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			my.removeActor(session_id, my.sessions.getByID(session_id).actors.actors[0]);
 			//Remove always the first actor of this session because every actor is at some point the first	
 		}
+		
 	};
 
 
@@ -578,34 +581,24 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.areAllSessionsNamed = function(){
 	
-		for (var i=0;i<my.sessions.length;i++){
-		
-			if (get(my.dom_element_prefix+my.sessions.idOf(i) + "_session_name") === ""){
-			
-				return false;
-			
-			}
-			
-		}
-		
-		return true;	
+		return (!(my.sessions.isThereAnyItemWhereSubKeyIsValue("session", "name", "")));		
 	
 	}
 
 
 	my.areAllSessionsProperlyNamed = function(){
+	
+		if (my.areAllSessionsNamed() == false){
+		
+			return false;
+		
+		}	
 
-		for (var i=0;i<my.sessions.length;i++){
+		for (var i = 0; i < my.sessions.length; i++){
 		
-			if (get(my.dom_element_prefix + my.sessions.idOf(i) + "_session_name") === ""){
-			
-				return false;
-			
-			}
-			
-			for (var c=0; c<my.parent.not_allowed_chars.length; c++){
+			for (var c = 0; c < my.parent.not_allowed_chars.length; c++){
 		
-				if (get(my.dom_element_prefix + my.sessions.idOf(i) + "_session_name").indexOf(my.parent.not_allowed_chars[c]) != -1){
+				if (my.sessions.idOf(i).session.name.indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				

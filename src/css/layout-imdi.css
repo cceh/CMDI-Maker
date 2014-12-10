@@ -426,18 +426,6 @@ padding: 5px 10px;
 	border-color: indigo;
 }
 
-#copy_sessions_select{
-
-	display: none;
-	bottom: 44px;
-	position: absolute;
-	background: cornflowerblue;
-	color: black;
-	padding: 15px;
-	cursor: default;
-
-}
-
 
 .session_table tr td, .actor_table tr td{
 
