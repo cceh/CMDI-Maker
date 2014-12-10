@@ -54,7 +54,6 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 			
 		};
 		
-		
 		my.GUI.init(view, actions);
 		
 		my.GUI.createCopySessionOptions(session_form.fields_to_copy);
@@ -112,7 +111,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 	
 	
-	my.refreshSessionsArray = function(){
+	my.refreshVisibleSessionsInArray = function(){
 
 		forEach(
 			my.GUI.pager.visible_items,
@@ -180,7 +179,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		//push new session object into sessions array
 		my.sessions.add(session_object);
 
-		my.GUI.renderSession(session_object);
+		refresh();
 		
 		return session_object.id;
 	};
@@ -210,9 +209,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	
 	var refresh = function(){
-	
 		my.GUI.refresh(my.sessions.getAll());
-		
 	};
 	
 	
@@ -245,6 +242,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		my.sessions.sortBySubKey("session", "name");
 		refresh();
 		
+	};
+	
+	
+	my.refreshSessionsArray = function(){
+	
+		forEach(my.GUI.pager.visible_items, my.refreshSessionInArray);
+	
 	};
 
 

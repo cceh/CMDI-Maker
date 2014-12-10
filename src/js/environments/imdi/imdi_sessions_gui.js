@@ -127,7 +127,7 @@ imdi_environment.workflow[3].GUI = (function() {
 		
 		my.pager.refresh(sessions);
 		
-		forEach(sessions, my.renderSession);
+		forEach(my.pager.visible_items, my.renderSession);
 		
 		if (sessions.length === 0){
 	

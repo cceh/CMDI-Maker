@@ -49,7 +49,6 @@ eldp_environment.workflow[2] = (function() {
 	var resources;
 	var person;
 	
-	
 	var l = my.parent.l;
 
 	my.init = function(view){
