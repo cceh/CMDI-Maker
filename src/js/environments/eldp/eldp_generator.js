@@ -242,8 +242,8 @@ eldp_environment.eldp_generator = function(data){
 			
 			rs += xml.element("BiographicalNote", pers.biographical_note);
 			
-			var ethnicities = linesToArray(pers.ethnicity);
-			var ethnicities_add_infos = linesToArray(pers.ethnicity_additional_info);
+			var ethnicities = strings.linesToArray(pers.ethnicity);
+			var ethnicities_add_infos = strings.linesToArray(pers.ethnicity_additional_info);
 			
 			if (ethnicities.length == ethnicities_add_infos.length && ethnicities.length != 0){
 			
@@ -307,8 +307,8 @@ eldp_environment.eldp_generator = function(data){
 			rs += insertPersonLanguages(pers.languages.actor_languages);
 
 			
-			var nationalities = linesToArray(pers.nationality);
-			var nationalities_add_infos = linesToArray(pers.nationality_additional_info);
+			var nationalities = strings.linesToArray(pers.nationality);
+			var nationalities_add_infos = strings.linesToArray(pers.nationality_additional_info);
 			
 			if (nationalities.length == nationalities_add_infos.length && nationalities.length != 0){
 			

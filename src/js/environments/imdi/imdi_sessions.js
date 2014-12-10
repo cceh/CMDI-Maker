@@ -188,7 +188,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.createNewSessionWithResources = function(name, expanded, resources){
 	
 		var session_object = APP.forms.createEmptyObjectFromTemplate(session_form);
-		session_object.session.name = removeCharactersFromString(name, my.parent.not_allowed_chars);
+		session_object.session.name = strings.removeCharactersFromString(name, my.parent.not_allowed_chars);
 		session_object.expanded = expanded;
 
 		my.sessions.add(session_object);
@@ -433,9 +433,9 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		
 		//Rename the session if an EAF file is added for the first time and session has no name yet
-		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix + session_id + "_session_name") === "")){
+		if ((strings.getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix + session_id + "_session_name") === "")){
 		
-			var name = removeEndingFromFilename(res.name);
+			var name = strings.removeEndingFromFilename(res.name);
 			
 			g(my.dom_element_prefix + session_id + "_session_name").value = name;
 			
@@ -448,7 +448,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 		//Check, if there is a date string in the form of YYYY-MM-DD in the filename of an eaf file. If so, adopt it for the session date
 		//only, if session date is still YYYY
-		if ((getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
+		if ((strings.getFileTypeFromFilename(filename) == "eaf") && (get(my.dom_element_prefix+session_id+"_session_date_year") == "YYYY")){
 			
 			var date = parseDate(res.name);
 			
@@ -601,7 +601,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 		
 			for (var c = 0; c < my.parent.not_allowed_chars.length; c++){
 		
-				if (my.sessions.idOf(i).session.name.indexOf(my.parent.not_allowed_chars[c]) != -1){
+				if (my.sessions.get(i).session.name.indexOf(my.parent.not_allowed_chars[c]) != -1){
 			
 					return false;
 				
@@ -625,7 +625,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.updateActorNameInAllSessions = function(actor_id){
 	
-		my.GUI.updateActorNameInAllSessions(actor_id, my.sessions.getAll());
+		my.GUI.updateActorNameInAllSessions(actor_id);
 		
 	};
 	
@@ -643,8 +643,8 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 
 		var session_name = get("session_" + session.id + "_session_name");
 
-		session_name = replaceAccentBearingLettersWithASCISubstitute(session_name);
-		session_name = removeAllCharactersFromStringExcept(session_name, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
+		session_name = strings.replaceAccentBearingLettersWithASCISubstitute(session_name);
+		session_name = strings.removeAllCharactersFromStringExcept(session_name, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
 		
 		session.session.name = session_name;
 		

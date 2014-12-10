@@ -18,11 +18,12 @@ var manifest = require('gulp-manifest');
 
 var source_scripts = [
 /* Dependencies */
+"./src/js/helpers.js",
 "./src/js/alertify.js",
 "./src/js/zip.js",
 "./src/js/FileSaver.js",
+"./src/js/strings.js",
 "./src/js/xml.js",
-"./src/js/helpers.js",
 "./src/js/dom.js",
 "./src/js/ObjectList.js",
 //"./src/js/LanguageIndex.js",  //is loaded dynamically

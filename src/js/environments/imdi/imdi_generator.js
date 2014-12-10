@@ -21,7 +21,7 @@ imdi_environment.imdi_generator = function(data){
 	var corpus = imdi_environment.workflow[0];
 	
 	var resources = data.resources;
-	var actors = data.actors;;
+	var actors = data.actors;
 	var sessions = data.sessions;
 	
 	var parent = imdi_environment;
@@ -32,61 +32,58 @@ imdi_environment.imdi_generator = function(data){
 
 	var imdi_version = "IMDI 3.04";
 	
-	var get_metadata_language = function(){
+	var getMetadataLanguage = function(){
 
-		var return_string = APP.CONF.LanguageCodePrefix;	
-		return_string += g("metadata_language_select").options[g("metadata_language_select").options.selectedIndex].value;
+		var rs = APP.CONF.LanguageCodePrefix;	
+		rs += g("metadata_language_select").options[g("metadata_language_select").options.selectedIndex].value;
 
-		return return_string;
+		return rs;
 
 	}
 	
-	var create_imdi_corpus = function () {
+	var create_imdi_corpus = function (corpus, sessions) {
     
-		var return_string = "";
-		return_string += xml.header;
-		return_string += create_imdi_header("CORPUS", APP.CONF.originator, "1.0", today());
-		return_string += xml.open("Corpus");
-        return_string += xml.element("Name", get('corpus_name'));
-		return_string += xml.element("Title", get('corpus_title'));   
-		return_string += xml.element("Description",get('corpus_description'),[["LanguageId",get_metadata_language()]]);       
+		var rs = "";
+		rs += xml.header;
+		rs += create_imdi_header("CORPUS", APP.CONF.originator, "1.0", today());
+		rs += xml.open("Corpus");
+        rs += xml.element("Name", corpus.name);
+		rs += xml.element("Title", corpus.title);   
+		rs += xml.element("Description", corpus.description, [["LanguageId",getMetadataLanguage()]]);       
     
-        for (var i=0; i<session.sessions.length; i++){
-			return_string += xml.element("CorpusLink", get(session.dom_element_prefix+session.sessions[i].id + "_session_name") + ".imdi",
-			[["Name", get(session.dom_element_prefix + session.sessions[i].id+"_session_name")]]);
+        for (var i = 0; i < sessions.length; i++){
+			rs += xml.element("CorpusLink", sessions[i].session.name + ".imdi",
+			[["Name", sessions[i].session.name]]);
 		}
     
-		return_string += xml.close("Corpus");
-		return_string += xml.close("METATRANSCRIPT");
+		rs += xml.close("Corpus");
+		rs += xml.close("METATRANSCRIPT");
     
-		return return_string;
+		return rs;
     
 	};
 	
 	
-	var create_imdi_session = function (session_id) {
+	var createIMDISession = function (session, content_languages) {
 	
-		var session_prefix = session.dom_element_prefix + session_id;
+		var rs = "";
     
-		var return_string = "";
-    
-		return_string += xml.header;
-		return_string += create_imdi_header("SESSION",APP.CONF.originator,"1.0",today());
-		return_string += xml.open("Session");
-		return_string += xml.element("Name",get(session_prefix+"_session_name"));
-		return_string += xml.element("Title",get(session_prefix+"_session_title"));
+		rs += xml.header;
+		rs += create_imdi_header("SESSION",APP.CONF.originator,"1.0",today());
+		rs += xml.open("Session");
+		rs += xml.element("Name", session.session.name);
+		rs += xml.element("Title", session.session.title);
 
 
-		return_string += xml.open("Date");
-		return_string += APP.forms.getDateStringByDateInput(session_prefix+"_session_date") || "Unspecified";
-		return_string += xml.close("Date");
-		
+		rs += xml.open("Date");
+		rs += APP.forms.getDateStringByDateObject(session.session.date) || "Unspecified";
+		rs += xml.close("Date");
 		
 		
 		// if a valid session date cannot be parsed from the form BUT there has been some input by the user
 		// AND the user has not been warned before about that, warn him or her
 		if (
-			APP.forms.isUserDefinedDateInvalid(session_prefix+"_session_date")
+			APP.forms.isUserDefinedDateInvalid(session_prefix+"_session_date")  //TO DO: CHECK NOT BY ELEMENT; BUT BY OBJECT!!!
 			&& (already_warned_for_invalid_dates == false)
 		){
 		
@@ -100,163 +97,153 @@ imdi_environment.imdi_generator = function(data){
 		}
 		
 		
-		return_string += xml.element("Description",get(session_prefix+"_session_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
+		rs += xml.element("Description", session.session.description,[["LanguageId",getMetadataLanguage()],["Link",""]]);
 
-		return_string += xml.open("MDGroup");
-		return_string += xml.open("Location");
-		return_string += xml.element("Continent",get(session_prefix+"_session_location_continent"),[["Link","http://www.mpi.nl/IMDI/Schema/Continents.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Country",get(session_prefix+"_session_location_country"),[["Link","http://www.mpi.nl/IMDI/Schema/Countries.xml"],["Type","OpenVocabulary"]]);
-		return_string += xml.element("Region",get(session_prefix+"_session_location_region"));
-		return_string += xml.element("Address",get(session_prefix+"_session_location_address"));
-		return_string += xml.close("Location");
+		rs += xml.open("MDGroup");
+		rs += xml.open("Location");
+		rs += xml.element("Continent", session.session.location.continent, [["Link","http://www.mpi.nl/IMDI/Schema/Continents.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("Country", session.session.location.country, [["Link","http://www.mpi.nl/IMDI/Schema/Countries.xml"],["Type","OpenVocabulary"]]);
+		rs += xml.element("Region", session.session.location.region);
+		rs += xml.element("Address", session.session.location.address);
+		rs += xml.close("Location");
 
-		return_string += xml.open("Project");
-		return_string += xml.element("Name",get(session_prefix+"_project_name"));
-		return_string += xml.element("Title",get(session_prefix+"_project_title"));
-		return_string += xml.element("Id",get(session_prefix+"_project_id"));
-		return_string += xml.open("Contact");
-		return_string += xml.element("Name",get(session_prefix+"_project_contact_name"));
-		return_string += xml.element("Address",get(session_prefix+"_project_contact_address"));
-		return_string += xml.element("Email",get(session_prefix+"_project_contact_email"));
-		return_string += xml.element("Organisation",get(session_prefix+"_project_contact_organisation"));
-		return_string += xml.close("Contact");
-		return_string += xml.element("Description",get(session_prefix+"_project_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string += xml.close("Project");
+		rs += xml.open("Project");
+		rs += xml.element("Name", session.project.name);
+		rs += xml.element("Title", session.project.title);
+		rs += xml.element("Id", session.project.id);
+		rs += xml.open("Contact");
+		rs += xml.element("Name", session.project.contact.name);
+		rs += xml.element("Address", session.project.contact.address);
+		rs += xml.element("Email", session.project.contact.email);
+		rs += xml.element("Organisation", session.project.contact.organisation);
+		rs += xml.close("Contact");
+		rs += xml.element("Description", session.project.description, [["LanguageId",getMetadataLanguage()],["Link",""]]);
+		rs += xml.close("Project");
 		
-		return_string += xml.open("Keys");
-		return_string += xml.close("Keys");
+		rs += xml.open("Keys");
+		rs += xml.close("Keys");
 		
-		return_string += insert_session_content(session_id);
+		rs += insertSessionContent(session.content, content_languages);
 
 		//Actors
-		return_string += xml.open("Actors");
+		rs += xml.open("Actors");
 		
 		//Actors Description
-		return_string += xml.element("Description",get(session_prefix+"_actors_description"),[["LanguageId",get_metadata_language()],["Link",""]]);
+		rs += xml.element("Description", session.actors.description, [["LanguageId", getMetadataLanguage()], ["Link", ""]]);
     
-		forEach(session.sessions[session.getSessionIndexFromID(session_id)].actors.actors, function(actor){
-			return_string += insert_actor(session_id, actor);
+		forEach(session.actors.actors, function(actor){
+			rs += insertActor(actor);
 		});
 
-		return_string += xml.close("Actors");
-		return_string += xml.close("MDGroup");
-		return_string += xml.open("Resources");
+		rs += xml.close("Actors");
+		rs += xml.close("MDGroup");
+		rs += xml.open("Resources");
 
-		forEach(session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.mediaFiles, function(mediaFile){
-	
-			var id = mediaFile.id;
-			console.log("looking for mediafile with id " + id);
-			return_string += insert_mediafile(get(session_prefix+'_mediafile_'+id+"_name"),get(session_prefix+'_mediafile_'+id+"_size"));
-		
+		forEach(session.resources.resources.mediaFiles, function(mf){
+			rs += insertMediafile(mf.name, mf.size);
 		});
 	
-		forEach(session.sessions[session.getSessionIndexFromID(session_id)].resources.resources.writtenResources, function(writtenResource){
-
-			var id = writtenResource.id;	
-			console.log("looking for wr with id " + id);
-			return_string += insert_written_resource(get(session_prefix+'_mediafile_'+id+"_name"),get(session_prefix+'_mediafile_'+id+"_size"));
-		
+		forEach(session.resources.resources.writtenResources, function(wr){
+			rs += insertWrittenResource(wr.name, wr.size);
 		});
     
-		return_string+=xml.close("Resources");
-		return_string+=xml.tag("References",2);
-		return_string+=xml.close("Session");
-		return_string+=xml.close("METATRANSCRIPT");
+		rs += xml.close("Resources");
+		rs += xml.element("References", "");
+		rs += xml.close("Session");
+		rs += xml.close("METATRANSCRIPT");
    
-		return return_string;
+		return rs;
     
-	}	
+	};
 	
 	
-	var insert_session_content = function (session_id) {
+	var insertSessionContent = function (content, content_languages) {
 
-		var return_string = "";
-		return_string += xml.open("Content");
-		return_string += xml.element("Genre",get(session.dom_element_prefix+session_id+"_content_genre"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Genre.xml"],["Type","OpenVocabulary"]]);
-		return_string += xml.element("SubGenre",get(session.dom_element_prefix+session_id+"_content_subgenre"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-SubGenre.xml"],["Type","OpenVocabularyList"]]);
-		return_string += xml.element("Task",get(session.dom_element_prefix+session_id+"_content_task"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Task.xml"],["Type","OpenVocabulary"]]);
+		var rs = "";
+		rs += xml.open("Content");
+		rs += xml.element("Genre", content.genre, [["Link","http://www.mpi.nl/IMDI/Schema/Content-Genre.xml"],["Type","OpenVocabulary"]]);
+		rs += xml.element("SubGenre", content.subgenre, [["Link","http://www.mpi.nl/IMDI/Schema/Content-SubGenre.xml"],["Type","OpenVocabularyList"]]);
+		rs += xml.element("Task", content.task, [["Link","http://www.mpi.nl/IMDI/Schema/Content-Task.xml"],["Type","OpenVocabulary"]]);
 	
-		return_string += xml.element("Modalities","",[["Link","http://www.mpi.nl/IMDI/Schema/Content-Modalities.xml"],["Type","OpenVocabulary"]]);
-		//no input yet
-		return_string += xml.element("Subject","",[["Link","http://www.mpi.nl/IMDI/Schema/Content-Subject.xml"],["Type","OpenVocabularyList"]]);
-		//no input yet
+		rs += xml.element("Modalities", "", [["Link","http://www.mpi.nl/IMDI/Schema/Content-Modalities.xml"],["Type","OpenVocabulary"]]);
+		//no input
+		rs += xml.element("Subject","",[["Link","http://www.mpi.nl/IMDI/Schema/Content-Subject.xml"],["Type","OpenVocabularyList"]]);
+		//no input
 
-		return_string += xml.open("CommunicationContext");
-		return_string += xml.element(
+		rs += xml.open("CommunicationContext");
+		rs += xml.element(
 			"Interactivity",
-			get(session.dom_element_prefix + session_id + "_content_communication_context_interactivity"),
+			content.communication_context.interactivity,
 			[
 				["Link","http://www.mpi.nl/IMDI/Schema/Content-Interactivity.xml"],
 				["Type","ClosedVocabulary"]
 			]
 		);
-		return_string += xml.element("PlanningType", get(session.dom_element_prefix+session_id+"_content_communication_context_planningtype"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-PlanningType.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Involvement", get(session.dom_element_prefix+session_id+"_content_communication_context_involvement"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-Involvement.xml"],["Type","ClosedVocabulary"]]);	
-		return_string += xml.element("SocialContext", get(session.dom_element_prefix+session_id+"_content_communication_context_socialcontext"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-SocialContext.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("EventStructure", get(session.dom_element_prefix+session_id+"_content_communication_context_eventstructure"),[["Link","http://www.mpi.nl/IMDI/Schema/Content-EventStructure.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("PlanningType", content.communication_context.planningtype, [["Link","http://www.mpi.nl/IMDI/Schema/Content-PlanningType.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("Involvement", content.communication_context.involvement, [["Link","http://www.mpi.nl/IMDI/Schema/Content-Involvement.xml"],["Type","ClosedVocabulary"]]);	
+		rs += xml.element("SocialContext", content.communication_context.socialcontext, [["Link","http://www.mpi.nl/IMDI/Schema/Content-SocialContext.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("EventStructure", content.communication_context.eventstructure, [["Link","http://www.mpi.nl/IMDI/Schema/Content-EventStructure.xml"],["Type","ClosedVocabulary"]]);
 
-		return_string += xml.element("Channel","",[["Link","http://www.mpi.nl/IMDI/Schema/Content-Channel.xml"],["Type","ClosedVocabulary"]]);
-		//no input yet
+		rs += xml.element("Channel", "", [["Link","http://www.mpi.nl/IMDI/Schema/Content-Channel.xml"],["Type","ClosedVocabulary"]]);
+		//no input
 
-		return_string += xml.close("CommunicationContext");
-		return_string += xml.open("Languages");
+		rs += xml.close("CommunicationContext");
+		rs += xml.open("Languages");
 	
-		return_string+=xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
-		//no input yet
+		rs += xml.element("Description", "", [["LanguageId", getMetadataLanguage()], ["Link",""]]);
+		//no input
 
-		return_string += insert_content_languages(session);
-		return_string += xml.close("Languages");
-		return_string += xml.element("Keys", "");
-		return_string += xml.element(
+		rs += insertContentLanguages(content_languages);
+		rs += xml.close("Languages");
+		rs += xml.element("Keys", "");
+		rs += xml.element(
 			"Description",
-			get(session.dom_element_prefix + session_id + "_content_description"),
+			content.description,
 			[
-				["LanguageId", get_metadata_language()],
+				["LanguageId", getMetadataLanguage()],
 				["Link",""]
 			]
 		);
-		return_string += xml.close("Content");
+		rs += xml.close("Content");
 
-		return return_string;
+		return rs;
 
 	}
 	
 
-	var insert_content_languages = function () {
+	var insertContentLanguages = function (CLs) {
 
-		var return_string = "";
-		
-		var languages = corpus.content_languages.content_languages;
+		var rs = "";
 	
-		for (var l=0; l<languages.length; l++){  //for all content languages // no session separate languages yet
+		forEach(CLs, function(CL){  //for all content languages // no session separate languages yet
 	
-			return_string += xml.open("Language");
-			return_string += xml.element("Id",APP.CONF.LanguageCodePrefix+languages[l][0]);
-			return_string += xml.element("Name",languages[l][3],[["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
-			//return_string += xml.element("Dominant","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
-			//return_string += xml.element("SourceLanguage","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
-			//return_string += xml.element("TargetLanguage","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
-			return_string+=xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
+			rs += xml.open("Language");
+			rs += xml.element("Id", APP.CONF.LanguageCodePrefix + CL[0]);
+			rs += xml.element("Name", CL[3], [["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
+			//rs += xml.element("Dominant","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
+			//rs += xml.element("SourceLanguage","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
+			//rs += xml.element("TargetLanguage","###true or false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
+			rs += xml.element("Description","",[["LanguageId", getMetadataLanguage()], ["Link",""]]);
 			//no input yet
-			return_string += xml.close("Language");
+			rs += xml.close("Language");
 	
-		}
+		});
 
-		return return_string;
+		return rs;
 		
 	}
 	
 	
 	var create_imdi_header = function (imdi_type, originator, version, date) {
     
-		return xml.open("METATRANSCRIPT",[
-			["xmlns","http://www.mpi.nl/IMDI/Schema/IMDI"],
-			["xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance"],
-			["Date",date],
-			["FormatId",imdi_version],
-			["Originator",originator],
-			["Type",imdi_type],
-			["Version",version],
+		return xml.open("METATRANSCRIPT", [
+			["xmlns", "http://www.mpi.nl/IMDI/Schema/IMDI"],
+			["xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance"],
+			["Date", date],
+			["FormatId", imdi_version],
+			["Originator", originator],
+			["Type", imdi_type],
+			["Version", version],
 			["xsi:schemaLocation","http://www.mpi.nl/IMDI/Schema/IMDI ./IMDI_3.0.xsd"]
 		]);
 
@@ -264,130 +251,128 @@ imdi_environment.imdi_generator = function(data){
 	
 	
 	
-	var insert_written_resource = function (link,size) {
+	var insertWrittenResource = function (link, size) {
 
-		var return_string = "";
-		return_string += xml.open("WrittenResource");
-		return_string += xml.element("ResourceLink",link);
-		return_string += xml.element("MediaResourceLink","");
-		return_string += xml.element("Date","Unspecified"); //no input yet
-	    return_string += xml.element("Type", resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Type.xml"],["Type","OpenVocabulary"]]);
-		return_string += xml.element("SubType", resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-SubType.xml"],["Type","OpenVocabularyList"]]);
-		return_string += xml.element("Format", resources.getFileType(link).mimetype,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Format.xml"],["Type","OpenVocabulary"]]);
-		return_string += xml.element("Size", size);
-		return_string += xml.open("Validation");
-		return_string += xml.element("Type","",[["Link","http://www.mpi.nl/IMDI/Schema/Validation-Type.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Methodology","",[["Link","http://www.mpi.nl/IMDI/Schema/Validation-Methodology.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Level","Unspecified");
-		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string += xml.close("Validation");
-		return_string += xml.element("Derivation","",[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Derivation.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("CharacterEncoding","");
-		return_string += xml.element("ContentEncoding","");
-		return_string += xml.element("LanguageId","");
-		return_string += xml.element("Anonymized","Unspecified",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
+		var rs = "";
+		rs += xml.open("WrittenResource");
+		rs += xml.element("ResourceLink", link);
+		rs += xml.element("MediaResourceLink","");
+		rs += xml.element("Date","Unspecified"); //no input yet
+	    rs += xml.element("Type", resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Type.xml"],["Type","OpenVocabulary"]]);
+		rs += xml.element("SubType", resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-SubType.xml"],["Type","OpenVocabularyList"]]);
+		rs += xml.element("Format", resources.getFileType(link).mimetype,[["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Format.xml"],["Type","OpenVocabulary"]]);
+		rs += xml.element("Size", size);
+		rs += xml.open("Validation");
+		rs += xml.element("Type", "", [["Link","http://www.mpi.nl/IMDI/Schema/Validation-Type.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("Methodology", "",[["Link","http://www.mpi.nl/IMDI/Schema/Validation-Methodology.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("Level","Unspecified");
+		rs += xml.element("Description", "", [["LanguageId", getMetadataLanguage()],["Link",""]]);
+		rs += xml.close("Validation");
+		rs += xml.element("Derivation", "", [["Link","http://www.mpi.nl/IMDI/Schema/WrittenResource-Derivation.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("CharacterEncoding", "");
+		rs += xml.element("ContentEncoding", "");
+		rs += xml.element("LanguageId", "");
+		rs += xml.element("Anonymized", "Unspecified", [["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
 		
-		return_string += xml.open("Access");
-		return_string += xml.tag("Availability",2);
-		return_string += xml.tag("Date",2);
-		return_string += xml.tag("Owner",2);
-		return_string += xml.tag("Publisher",2);
+		rs += xml.open("Access");
+		rs += xml.element("Availability", "");
+		rs += xml.element("Date", "");
+		rs += xml.element("Owner", "");
+		rs += xml.element("Publisher", "");
 		
-		return_string += xml.open("Contact");
-		return_string += xml.tag("Name",2);
-		return_string += xml.tag("Address",2);
-		return_string += xml.tag("Email",2);
-		return_string += xml.tag("Organisation",2);
-		return_string += xml.close("Contact");
+		rs += xml.open("Contact");
+		rs += xml.element("Name", "");
+		rs += xml.element("Address", "");
+		rs += xml.element("Email", "");
+		rs += xml.element("Organisation", "");
+		rs += xml.close("Contact");
 		
-		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string += xml.close("Access");
+		rs += xml.element("Description","",[["LanguageId", getMetadataLanguage()],["Link",""]]);
+		rs += xml.close("Access");
 		
-		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string += xml.element("Keys","");
-		return_string += xml.close("WrittenResource");
-		return return_string;
+		rs += xml.element("Description","",[["LanguageId", getMetadataLanguage()],["Link",""]]);
+		rs += xml.element("Keys","");
+		rs += xml.close("WrittenResource");
+		return rs;
 	
 	}
 	
 	
-	var insert_mediafile = function (link,size) {
+	var insertMediafile = function (link, size) {
 
-		var return_string = "";
-		return_string += xml.open("MediaFile");
-		return_string += xml.element("ResourceLink",link);
-		return_string += xml.element("Type",resources.getFileType(link).type,[["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Type.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Format",resources.getFileType(link).mimetype,[["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Format.xml"],["Type","OpenVocabulary"]]);
-		return_string += xml.element("Size",size);
-		return_string += xml.element("Quality","Unspecified",[["Link","http://www.mpi.nl/IMDI/Schema/Quality.xml"],["Type","ClosedVocabulary"]]); // no input
-		return_string += xml.tag("RecordingConditions",2);
-		return_string += xml.open("TimePosition");
-		return_string += xml.element("Start","Unspecified");
-		return_string += xml.element("End","Unspecified"); //no input
-		return_string += xml.close("TimePosition");
-		return_string += xml.open("Access");
-		return_string += xml.tag("Availability",2);
-		return_string += xml.tag("Date",2);
-		return_string += xml.tag("Owner",2);
-		return_string += xml.tag("Publisher",2);
-		return_string += xml.open("Contact");
-		return_string += xml.tag("Name",2);
-		return_string += xml.tag("Address",2);
-		return_string += xml.tag("Email",2);
-		return_string += xml.tag("Organisation",2); 
-		return_string += xml.close("Contact");
-		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string += xml.close("Access");
-		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string += xml.element("Keys","");
-		return_string += xml.close("MediaFile");
-		return return_string;
+		var rs = "";
+		rs += xml.open("MediaFile");
+		rs += xml.element("ResourceLink", link);
+		rs += xml.element("Type", resources.getFileType(link).type, [["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Type.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("Format", resources.getFileType(link).mimetype, [["Link","http://www.mpi.nl/IMDI/Schema/MediaFile-Format.xml"],["Type","OpenVocabulary"]]);
+		rs += xml.element("Size", size);
+		rs += xml.element("Quality","Unspecified",[["Link","http://www.mpi.nl/IMDI/Schema/Quality.xml"],["Type","ClosedVocabulary"]]); // no input
+		rs += xml.element("RecordingConditions", "");
+		rs += xml.open("TimePosition");
+		rs += xml.element("Start","Unspecified");
+		rs += xml.element("End","Unspecified"); //no input
+		rs += xml.close("TimePosition");
+		rs += xml.open("Access");
+		rs += xml.element("Availability", "");
+		rs += xml.element("Date", "");
+		rs += xml.element("Owner", "");
+		rs += xml.element("Publisher", "");
+		rs += xml.open("Contact");
+		rs += xml.element("Name", "");
+		rs += xml.element("Address", "");
+		rs += xml.element("Email", "");
+		rs += xml.element("Organisation", ""); 
+		rs += xml.close("Contact");
+		rs += xml.element("Description","",[["LanguageId", getMetadataLanguage()],["Link",""]]);
+		rs += xml.close("Access");
+		rs += xml.element("Description","",[["LanguageId", getMetadataLanguage()],["Link",""]]);
+		rs += xml.element("Keys","");
+		rs += xml.close("MediaFile");
+		return rs;
 		
 	}
 
 
-	var insert_actor = function (session_id, actor_id) {
+	var insertActor = function (actor, session_id) {
 
-		var i = actor.getIndexByID(actor_id);
-
-		var return_string = "";
-		return_string += xml.open("Actor");
-		return_string += xml.element("Role",actor.actors[i].role,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Role.xml"],["Type","OpenVocabularyList"]]);
-		return_string += xml.element("Name",actor.actors[i].name);
-		return_string += xml.element("FullName",actor.actors[i].full_name);
-		return_string += xml.element("Code",actor.actors[i].code);
-		return_string += xml.element("FamilySocialRole",actor.actors[i].family_social_role,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-FamilySocialRole.xml"],["Type","OpenVocabularyList"]]);
-		return_string += xml.open("Languages");
-		return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
+		var rs = "";
+		rs += xml.open("Actor");
+		rs += xml.element("Role", actor.role, [["Link","http://www.mpi.nl/IMDI/Schema/Actor-Role.xml"],["Type","OpenVocabularyList"]]);
+		rs += xml.element("Name", actor.name);
+		rs += xml.element("FullName", actor.full_name);
+		rs += xml.element("Code", actor.code);
+		rs += xml.element("FamilySocialRole", actor.family_social_role, [["Link","http://www.mpi.nl/IMDI/Schema/Actor-FamilySocialRole.xml"], ["Type","OpenVocabularyList"]]);
+		rs += xml.open("Languages");
+		rs += xml.element("Description", "", [["LanguageId", getMetadataLanguage()], ["Link",""]]);
 	
-		for (var l=0; l<actor.actors[i].languages.length; l++){
+		forEach(actor.languages.actor_languages, function(lang){
 	
-			return_string += xml.open("Language");
-			return_string += xml.element("Id",APP.CONF.LanguageCodePrefix+actor.actors[i].languages[l].LanguageObject[0]);
-			return_string += xml.element("Name",actor.actors[i].languages[l].LanguageObject[3],[["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
-			return_string += xml.element("MotherTongue",(actor.actors[i].languages[l].MotherTongue) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
-			return_string += xml.element("PrimaryLanguage",(actor.actors[i].languages[l].PrimaryLanguage) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);		
-			return_string += xml.element("Description","",[["LanguageId",get_metadata_language()],["Link",""]]);
-			return_string += xml.close("Language");
+			rs += xml.open("Language");
+			rs += xml.element("Id", APP.CONF.LanguageCodePrefix + lang.LanguageObject[0]);
+			rs += xml.element("Name", lang.LanguageObject[3],[["Link","http://www.mpi.nl/IMDI/Schema/MPI-Languages.xml"],["Type","OpenVocabulary"]]);
+			rs += xml.element("MotherTongue",(lang.MotherTongue) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);
+			rs += xml.element("PrimaryLanguage",(lang.PrimaryLanguage) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]);		
+			rs += xml.element("Description","",[["LanguageId", getMetadataLanguage()],["Link",""]]);
+			rs += xml.close("Language");
 	
-		}
+		});
 	
-		return_string += xml.close("Languages");
-		return_string += xml.element("EthnicGroup",actor.actors[i].ethnic_group);   
+		rs += xml.close("Languages");
+		rs += xml.element("EthnicGroup", actor.ethnic_group);   
 	
 		//Age field
-		return_string += xml.open("Age");
-		return_string += actor.getAge(session_id,actor_id);
-		return_string += xml.close("Age");	
+		rs += xml.open("Age");
+		rs += actor.getAge(session_id, actor_id);
+		rs += xml.close("Age");	
 		//End of age field
 	
-		return_string += xml.open("BirthDate");
-		return_string += APP.forms.getDateStringByDateObject(actor.actors[i].birth_date) || "Unspecified";
-		return_string += xml.close("BirthDate");
+		rs += xml.open("BirthDate");
+		rs += APP.forms.getDateStringByDateObject(actor.birth_date) || "Unspecified";
+		rs += xml.close("BirthDate");
 		
 		
 		if (
-			APP.forms.isUserDefinedDateInvalid(actor.actors[i].birth_date)
+			APP.forms.isUserDefinedDateInvalid(actor.birth_date)
 			&& (already_warned_for_invalid_birth_dates == false)
 		){
 		
@@ -400,19 +385,19 @@ imdi_environment.imdi_generator = function(data){
 			already_warned_for_invalid_birth_dates = true;
 		}
 		
-		return_string += xml.element("Sex",actor.actors[i].sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
-		return_string += xml.element("Education",(actor.actors[i].education != "") ? actor.actors[i].education : "Unspecified" );
-		return_string += xml.element("Anonymized",(actor.actors[i].anonymized) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]); 
-		return_string += xml.open("Contact");
-		return_string += xml.element("Name",actor.actors[i].contact.name);   
-		return_string += xml.element("Address",actor.actors[i].contact.address);   
-		return_string += xml.element("Email",actor.actors[i].contact.email);   
-		return_string += xml.element("Organisation",actor.actors[i].contact.organisation);   
-		return_string += xml.close("Contact");
-		return_string += xml.tag("Keys",2);
-		return_string += xml.element("Description",actor.actors[i].description,[["LanguageId",get_metadata_language()],["Link",""]]);
-		return_string += xml.close("Actor");
-		return return_string;
+		rs += xml.element("Sex", actor.sex,[["Link","http://www.mpi.nl/IMDI/Schema/Actor-Sex.xml"],["Type","ClosedVocabulary"]]);
+		rs += xml.element("Education",(actor.education != "") ? actor.education : "Unspecified" );
+		rs += xml.element("Anonymized",(actor.anonymized) ? "true" : "false",[["Link","http://www.mpi.nl/IMDI/Schema/Boolean.xml"],["Type","ClosedVocabulary"]]); 
+		rs += xml.open("Contact");
+		rs += xml.element("Name", actor.contact.name);   
+		rs += xml.element("Address", actor.contact.address);   
+		rs += xml.element("Email", actor.contact.email);   
+		rs += xml.element("Organisation", actor.contact.organisation);   
+		rs += xml.close("Contact");
+		rs += xml.element("Keys", "");
+		rs += xml.element("Description", actor.description, [["LanguageId",getMetadataLanguage()],["Link",""]]);
+		rs += xml.close("Actor");
+		return rs;
     
 	}
 	
@@ -421,11 +406,11 @@ imdi_environment.imdi_generator = function(data){
 
 	xml.reset();
 	
-	my.corpus = create_imdi_corpus();
+	my.corpus = create_imdi_corpus(data.corpus, data.sessions);
 	
-	forEach(session.sessions, function(session){   
+	forEach(data.sessions, function(session){   
 		xml.reset();
-		my.sessions.push(create_imdi_session(session.id));
+		my.sessions.push(createIMDISession(session, data.actors, data.resources, data.content_languages));
 	});
 
 	return my;

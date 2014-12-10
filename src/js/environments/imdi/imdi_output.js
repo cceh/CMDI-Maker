@@ -168,9 +168,15 @@ imdi_environment.workflow[4] = (function (){
 		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
 		
 		var data = {
-			resources: resources.resources,
-			sessions: sessions.sessions,
-			actors: actors.actors
+			corpus: {
+				name: get("corpus_name"),
+				title: get("corpus_title"),
+				description: get("corpus_description")
+			},
+			content_languages: [],   //TO DO!!!
+			resources: resources.resources.getAll(),
+			sessions: session.sessions.getAll(),
+			actors: actors.actors.getAll()
 		}
 		
 		
@@ -182,16 +188,17 @@ imdi_environment.workflow[4] = (function (){
 		//if corpus is to be created
 		if (get("corpus_name") !== ""){
 
-			filename = get("corpus_name")+"."+file_ending;
+			filename = get("corpus_name") + "." + file_ending;
 			APP.GUI.createXMLOutputDIV(xml_window, output_format + " Corpus", "textarea_corpus",
 			xml_strings.corpus, filename);
+			
 		}
 		
-		for (var s=0;s<session.sessions.length;s++){
+		for (var s = 0; s < session.sessions.length; s++){
 
-			filename = get(session.dom_element_prefix+session.sessions[s].id+"_session_name")+"."+file_ending;
-			APP.GUI.createXMLOutputDIV(xml_window, output_format + " Session " + (s+1), "textarea_session_"+s,
-			xml_strings.sessions[s],filename);
+			filename = get(session.dom_element_prefix + session.sessions[s].id + "_session_name") + "." + file_ending;
+			APP.GUI.createXMLOutputDIV(xml_window, output_format + " Session " + (s+1), "textarea_session_" + s,
+			xml_strings.sessions[s], filename);
 			
 		}
 		

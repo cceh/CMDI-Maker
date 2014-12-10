@@ -440,9 +440,9 @@ eldp_environment.workflow[2] = (function() {
 		my.bundles.getByID(bundle_id).resources.resources.push(resource_in_bundle);
 		
 		//Rename the bundle if an EAF file is added for the first time and bundle has no name yet
-		if ((getFileTypeFromFilename(res.name) == "eaf") && (get(my.dom_element_prefix+bundle_id+"_bundle_title") === "")){
+		if ((strings.getFileTypeFromFilename(res.name) == "eaf") && (get(my.dom_element_prefix+bundle_id+"_bundle_title") === "")){
 		
-			var name = removeEndingFromFilename(res.name);
+			var name = strings.removeEndingFromFilename(res.name);
 			
 			my.bundles.getByID(bundle_id).bundle.title = name;
 		

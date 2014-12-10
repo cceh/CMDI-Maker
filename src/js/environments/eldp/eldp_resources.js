@@ -279,7 +279,7 @@ eldp_environment.workflow[0] = (function(){
 	my.getValidityOfFile = function(filename){
 	// returns 0=valid media file, 1=valid written resource, 2=invalid media file, 3=invalid written resource, -1=unknown file
 		var j;
-		var file_type = getFileTypeFromFilename(filename);
+		var file_type = strings.getFileTypeFromFilename(filename);
 		
 		for (j=0;j<my.file_types.valid_lamus_media_file_types.length; j++){
 			if (file_type == my.file_types.valid_lamus_media_file_types[j][0]) {
@@ -427,7 +427,7 @@ eldp_environment.workflow[0] = (function(){
 			my.resources.add({
 				name: f.name,
 				type: f.type || 'n/a',
-				size: bytesToSize(f.size,1),
+				size: strings.strings.bytesToSize(f.size,1),
 				lastModified: f.lastModifiedDate.toLocaleDateString()
 			});
 		}
@@ -474,7 +474,7 @@ eldp_environment.workflow[0] = (function(){
 		
 			for (f = 0; f < my.resources.length; f++){
 			
-				var file_type = getFileTypeFromFilename(my.resources.get(f).name);
+				var file_type = strings.getFileTypeFromFilename(my.resources.get(f).name);
 			
 				if (file_type == chosen_file_type){
 				
@@ -504,8 +504,8 @@ eldp_environment.workflow[0] = (function(){
 	
 	my.createBundleWithResourceAndCheckForAdditionalResourcesToAdd = function(id){
 
-		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.resources.getByID(id).name));
-		session_name = replaceCharactersInStringWithSubstitute(session_name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
+		var session_name = strings.replaceAccentBearingLettersWithASCISubstitute(strings.removeEndingFromFilename(my.resources.getByID(id).name));
+		session_name = strings.replaceCharactersInStringWithSubstitute(session_name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
 		
 		var expanded = false; //collapse automatically generated bundle
 		
@@ -537,9 +537,9 @@ eldp_environment.workflow[0] = (function(){
 			}
 		
 			if (
-				isSubstringAStartOfAWordInString(
-					removeEndingFromFilename(res.name),
-					removeEndingFromFilename(this_resource.name)
+				strings.isSubstringAStartOfAWordInString(
+					strings.removeEndingFromFilename(res.name),
+					strings.removeEndingFromFilename(this_resource.name)
 				)
 			){
 			
@@ -619,14 +619,14 @@ eldp_environment.workflow[0] = (function(){
 		
 			try {
 			
-				file_list = linesToArray(result);
+				file_list = strings.linesToArray(result);
 				
 				forEach(file_list, function(file_string){
 				
 					if (file_string.length > 0 && file_string != " "){
 					
 						my.resources.add({
-							name: getFilenameFromFilePath(file_string),
+							name: strings.getFilenameFromFilePath(file_string),
 							path: getDirectoryFromFilePath(file_string)
 						});
 					

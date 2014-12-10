@@ -33,11 +33,11 @@ imdi_environment.cmdi_generator = function(){
 
 	var createIDREFS = function(){
 
-		var rString1 = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString2 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString3 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString4 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString5 = randomString(12, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString1 = strings.randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString2 = strings.randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString3 = strings.randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString4 = strings.randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString5 = strings.randomString(12, '0123456789abcdefghijklmnopqrstuvwxyz');
 
 		return "res_"+rString1+"_"+rString2+"_"+rString3+"_"+rString4+"_"+rString5;
 

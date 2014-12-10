@@ -265,7 +265,7 @@ imdi_environment.workflow[1] = (function(){
 	// returns 0=valid media file, 1=valid written resource, 2=invalid media file, 3=invalid written resource, -1=unknown file
 		var j;
 		
-		var file_type = getFileTypeFromFilename(filename);
+		var file_type = strings.getFileTypeFromFilename(filename);
 		
 		for (j=0; j<my.file_types.valid_lamus_media_file_types.length; j++){
 			if (file_type == my.file_types.valid_lamus_media_file_types[j][0]) {
@@ -391,7 +391,7 @@ imdi_environment.workflow[1] = (function(){
 			my.resources.add({
 				name: f.name,
 				mime_type: f.type || 'n/a',
-				size: bytesToSize(f.size,1),
+				size: strings.strings.bytesToSize(f.size,1),
 				lastModified: f.lastModifiedDate.toLocaleDateString()
 			});
 		}
@@ -429,7 +429,7 @@ imdi_environment.workflow[1] = (function(){
 		
 			my.resources.forEach(function(res){
 			
-				if (getFileTypeFromFilename(res.name) == chosen_file_type){
+				if (strings.getFileTypeFromFilename(res.name) == chosen_file_type){
 				
 					my.createSessionForResource(res.id);
 				
@@ -455,8 +455,8 @@ imdi_environment.workflow[1] = (function(){
 
 	my.createSessionForResource = function(id){
 
-		var session_name = replaceAccentBearingLettersWithASCISubstitute(removeEndingFromFilename(my.resources.getByID(id).name));
-		session_name = replaceCharactersInStringWithSubstitute(name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
+		var session_name = strings.replaceAccentBearingLettersWithASCISubstitute(strings.removeEndingFromFilename(my.resources.getByID(id).name));
+		session_name = strings.replaceCharactersInStringWithSubstitute(name, my.parent.not_allowed_chars, my.substitute_for_bad_chars);
 		
 		var expanded = false; //collapse automatically generated session
 		
@@ -472,7 +472,7 @@ imdi_environment.workflow[1] = (function(){
 				continue;
 			}
 		
-			if (isSubstringAStartOfAWordInString(removeEndingFromFilename(my.resources.get(f).name), removeEndingFromFilename(this_resource.name))) {
+			if (strings.isSubstringAStartOfAWordInString(strings.removeEndingFromFilename(my.resources.get(f).name), strings.removeEndingFromFilename(this_resource.name))) {
 			
 				hits.push(f);
 			

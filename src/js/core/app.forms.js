@@ -573,7 +573,7 @@ APP.forms = (function () {
 			};
 			
 			input.addEventListener("blur", function(e){
-				var string = removeCharactersFromString(e.target.value, field.not_allowed_chars);
+				var string = strings.removeCharactersFromString(e.target.value, field.not_allowed_chars);
 				input.value = string;
 			});
 			
@@ -602,10 +602,10 @@ APP.forms = (function () {
 					field.replace_accent_bearing_letters_with_asci_substitute &&
 					field.replace_accent_bearing_letters_with_asci_substitute == true
 				){
-					string = replaceAccentBearingLettersWithASCISubstitute(string);
+					string = strings.replaceAccentBearingLettersWithASCISubstitute(string);
 				}
 				
-				string = removeAllCharactersFromStringExcept(string, field.allowed_chars);
+				string = strings.removeAllCharactersFromStringExcept(string, field.allowed_chars);
 				
 				input.value = string;
 			});
@@ -786,15 +786,15 @@ APP.forms = (function () {
 	
 		var valid_chars = "0123456789";
 	
-		if (date_object.year.length != 4 || !areOnlyTheseCharsInString(date_object.year, valid_chars)){
+		if (date_object.year.length != 4 || !strings.areOnlyTheseCharsInString(date_object.year, valid_chars)){
 			return undefined;
 		}
 
-		if (date_object.month.length != 2 || !areOnlyTheseCharsInString(date_object.month, valid_chars)){
+		if (date_object.month.length != 2 || !strings.areOnlyTheseCharsInString(date_object.month, valid_chars)){
 			return undefined;
 		}
 
-		if (date_object.day.length != 2 || !areOnlyTheseCharsInString(date_object.day, valid_chars)){
+		if (date_object.day.length != 2 || !strings.areOnlyTheseCharsInString(date_object.day, valid_chars)){
 			return undefined;
 		}		
 	
@@ -811,9 +811,9 @@ APP.forms = (function () {
 		if (typeof element_prefix_or_date_object == "string"){
 			var element_prefix = element_prefix_or_date_object;
 			
-			year = get(element_prefix+"_year");
-			month = get(element_prefix+"_month");
-			day = get(element_prefix+"_day");
+			year = get(element_prefix + "_year");
+			month = get(element_prefix + "_month");
+			day = get(element_prefix + "_day");
 			
 			typeOfDate = typeof my.getDateStringByDateInput(element_prefix);
 		}

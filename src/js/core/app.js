@@ -646,7 +646,7 @@ var APP = (function () {
 	
 	my.save_file = function (text, filename, mime_type){
 
-		var clean_filename = replaceAccentBearingLettersWithASCISubstitute(filename);
+		var clean_filename = strings.replaceAccentBearingLettersWithASCISubstitute(filename);
 		
 		if (!mime_type){
 			mime_type = APP.CONF.file_download_header;
@@ -791,7 +791,7 @@ var APP = (function () {
 		for (var i=0;i<LanguageIndex.length;i++){
 			
 			//if input is start of a word in string, add it to name_hits
-			if (isSubstringAStartOfAWordInString(LanguageIndex[i][3], input)){
+			if (strings.isSubstringAStartOfAWordInString(LanguageIndex[i][3], input)){
 				
 				//get an array with all relevant ISO codes
 				name_hits.push(LanguageIndex[i][0]);

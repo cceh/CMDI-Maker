@@ -146,7 +146,7 @@ var xml = (function () {
 			
 			illegal_char = illegal_chars[i][1];
 			entity_reference = illegal_chars[i][0];
-			string = replaceCharactersInStringWithSubstitute(string, illegal_char, entity_reference);
+			string = strings.replaceCharactersInStringWithSubstitute(string, illegal_char, entity_reference);
 			
 		}
 	
