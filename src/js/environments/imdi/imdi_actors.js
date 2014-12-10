@@ -273,13 +273,8 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.getSaveData = function(){
 	
-		var object = {};
-		
 		my.saveActiveActor();
-		
-		object.actors = my.actors.getState();
-		
-		return object;
+		return my.actors.getState();;
 	
 	};
 	
@@ -323,12 +318,21 @@ imdi_environment.workflow[2] = (function(){
 	
 	my.recall = function(data){
 	
-		if (data.actors){
-			//TO DO: check for legacy data objects and convert
+		//check if legacy data structure and convert
+		if (data.actors && Array.isArray(data.actors) == true){
+		
+			for (var s = 0; s < data.length; s++){
 			
+				my.actors.add(data.actors[s]);
 			
+			}
+		
+		}
+		
+		else {			
 			
-			my.actors.setState(data.actors);
+			my.actors.setState(data);
+			
 		}
 		
 		refresh();
