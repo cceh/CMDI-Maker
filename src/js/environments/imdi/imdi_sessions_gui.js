@@ -248,10 +248,12 @@ imdi_environment.workflow[3].GUI = (function() {
 		
 		var actor_name = (actor.actors.getByID(actor_id).name != "") ? actor.actors.getByID(actor_id).name : l("actors", "unnamed_actor");
 
-		var div = g(my.dom_element_prefix + session_id + "_actor_" + actor_id + "_label");
+		
+		var div_id = my.dom_element_prefix + session_id + "_actor_" + actor_id + "_label"
+		var div = g(div_id);
+		console.log(div_id);
 		div.innerHTML = "<h2 class='actor_name_disp'>" + actor_name + "</h2>";  //display name of actor
 		div.innerHTML += "<p class='actor_role_disp'>" + actor.actors.getByID(actor_id).role + "</p>";   //display role of actor
-
 
 	};
 	
@@ -417,6 +419,23 @@ imdi_environment.workflow[3].GUI = (function() {
 			
 		}
 
+	};
+	
+	
+	my.updateActorNameInAllSessions = function(actor_id){
+	
+		my.pager.visible_items.forEach(function(sess){
+	
+			//search for actor_id in this session's actors
+			if (sess.actors.actors.indexOf(actor_id) != -1){
+				
+				my.refreshActorName(sess.id, actor_id);
+		
+			}
+	
+			
+		});
+		
 	};
 
 	

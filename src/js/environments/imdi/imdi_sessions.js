@@ -625,16 +625,7 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	
 	my.updateActorNameInAllSessions = function(actor_id){
 	
-		my.sessions.forEach(function(sess){
-	
-			//search for actor_id in this session's actors
-			if (sess.actors.actors.indexOf(actor_id) != -1){
-				
-				my.refreshActorName(sess.id, actor_id);
-	
-			}
-			
-		});
+		my.GUI.updateActorNameInAllSessions(actor_id, my.sessions.getAll());
 		
 	};
 	

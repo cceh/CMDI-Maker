@@ -366,16 +366,10 @@ eldp_environment.workflow[2].render = (function() {
 
 		var h2 = g(h2_id);
 		
-		console.log(h2);
-		
 		var person_in_bundle = getObjectByID(bundle.persons.persons, id);
 		var person_id = person_in_bundle.person_id;
 		
-		console.log(person_id);
-		
 		var display_name = person.getDisplayName(person_id);
-		
-		console.log(display_name);
 		
 		h2.innerHTML = display_name;
 		//display name of person
