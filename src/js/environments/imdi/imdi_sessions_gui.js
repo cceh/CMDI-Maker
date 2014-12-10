@@ -24,6 +24,8 @@ imdi_environment.workflow[3].GUI = (function() {
 	
 	var resources = imdi_environment.workflow[1];
 	var actor = imdi_environment.workflow[2];
+	var session = imdi_environment.workflow[3];
+	
 	
 	my.dom_element_prefix = "session_";
 
@@ -36,12 +38,26 @@ imdi_environment.workflow[3].GUI = (function() {
 		session_form = my.parent.session_form();
 		sessions_view = view;
 		actions = GUI_actions;
+		
+		var pager_config = {
+			render: my.renderSession,
+			on_page_change: my.refresh,
+			items_list: session.sessions.getAll(),
+			view: view,
+			items_per_page: 10,
+			before_page_change: session.refreshVisibleBundlesInArray
+		};
+		
+		my.pager = new APP.GUI.pager(pager_config);
+		
 	
 	}
 
 	my.view = function(){
 	
 		APP.GUI.scrollTop();
+		
+		my.pager.refresh(session.sessions.getAll());
 	
 	};
 	
@@ -109,15 +125,32 @@ imdi_environment.workflow[3].GUI = (function() {
 		
 		sessions_view.innerHTML = "";
 		
+		my.pager.refresh(sessions);
+		
+		forEach(sessions, my.renderSession);
+		
 		if (sessions.length === 0){
 	
 			my.displayNoSessionText();
-			return;
 	
 		}
-		
-		forEach(sessions, my.renderSession);
 	
+	};
+	
+
+	my.refreshActorLists = function(sessions, persons){
+		//Offer possibility to add every available actor to all session
+		//refresh all sessions with available actors
+
+		var all_available_actor_ids = getArrayWithIDs(persons);
+		
+		// for all visible bundles
+		for (var i = 0; i < my.pager.visible_items.length; i++){
+		
+			my.refreshActorListInSession(my.pager.visible_items[i], all_available_actor_ids);
+
+		}
+		
 	};
 	
 	

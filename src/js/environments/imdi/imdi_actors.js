@@ -43,7 +43,7 @@ imdi_environment.workflow[2] = (function(){
 		}
 		
 		else {
-			highlightActiveActorInList(my.persons.getActiveIndex());
+			highlightActiveActorInList(my.actors.getActiveIndex());
 			
 			APP.environments.enableFunction("link_delete_active_actor");
 			APP.environments.enableFunction("link_sort_actors_alphabetically");
@@ -324,6 +324,10 @@ imdi_environment.workflow[2] = (function(){
 	my.recall = function(data){
 	
 		if (data.actors){
+			//TO DO: check for legacy data objects and convert
+			
+			
+			
 			my.actors.setState(data.actors);
 		}
 		

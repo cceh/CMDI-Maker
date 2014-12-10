@@ -67,6 +67,10 @@ APP.languages[0] = {
 	export_to_file: "Export Project to File",
 	open_file: "Open Project File",
 	abort: "Abort",
+	reset_form: "Reset Form",
+	really_reset_form: "Do you really want to delete all form data?",
+	yes_delete_form: "Yes, delete Form",
+	no: "No",
 	
 	start: {
 		greeting_text: "Welcome to CMDI Maker!<br>Please note, that this is an offline web application. You can use it without an internet connection.<br>"+
@@ -270,6 +274,10 @@ APP.languages[2] = {
 	export_to_file: "Exportar a archivo",
 	open_file: "Abrir archivo",
 	abort: "Annular",
+	reset_form: "Formular zurücksetzen",
+	really_reset_form: "Möchtest Du wirklich alle Formulareingaben löschen?",
+	yes_delete_form: "Ja, löschen",
+	no: "Nein",
 	
 	start: {
 		greeting_text: "Bienvenidos al CMDI Maker!<br>Fígese, ésta es una aplicación que se puede utilizar también sin conexión.<br>Cuando cargue esta página, podrá reanudar su trabajo en el punto donde lo interrumpió.",

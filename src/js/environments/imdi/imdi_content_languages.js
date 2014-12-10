@@ -16,16 +16,25 @@ limitations under the License.
 
 
 imdi_environment.workflow[0].content_languages = (function() {
+
+	//PRIVATE
+
 	var corpus;
+	
+	var refresh = function(){
+	
+		my.content_languages.forEach(my.render);	
+	
+	};
+	
+	
+	//PUBLIC
 	
 	var my = {};
 	
-	my.content_languages = [];
-	
-	my.id_counter = 0;
+	my.content_languages = new ObjectList();
 	
 	my.parent = imdi_environment;
-	
 	my.l = my.parent.l;
 	
 
@@ -52,16 +61,17 @@ imdi_environment.workflow[0].content_languages = (function() {
 	};
 	
 	
-	my.recall = function(LanguageObjects){
+	my.recall = function(data){
 	
-		forEach(LanguageObjects, my.set);
+		my.content_languages.setState(data);
+		refresh();
 		
 	};
 	
 	
 	my.getSaveData = function(){
 	
-		return my.content_languages;
+		return my.content_languages.getState();
 		
 	};
 
@@ -80,48 +90,20 @@ imdi_environment.workflow[0].content_languages = (function() {
 		//LanguageObjectFromDB is only a reference to the original array in the LanguageIndex.
 		// We have to clone our Language Object from the DB first.
 		// Otherwise we would overwrite the DB array which we do not want.
-		var LanguageObject = LanguageObjectFromDB.slice(0);
+		var CLO = cloneObject(LanguageObjectFromDB);
 
-		//add an id to the object before it goes to content_languages
+		my.content_languages.add(CLO);
 		
-		switch (LanguageObject.length){
-		
-			case 4: {
-			
-				LanguageObject.push(my.id_counter);
-				break;
-			}
-			
-			case 5: {
-			
-				LanguageObject[4] = my.id_counter;
-				break;
-				
-			}
-			
-			default: {
-			
-				console.log("Error: LanguageObject.length = " + LanguageObject.length);
-				break;
-			
-			}
-		
-		}
-		
-		console.log("Chosen Content Language: " + LanguageObject);
-		
-		my.content_languages.push(LanguageObject);
-		
-		my.render(LanguageObject, my.id_counter);
-		
-		my.id_counter+=1;
+		refresh();
 		
 		return true;
 		
 	};
 	
 	
-	my.render = function(LanguageObject, id){
+	my.render = function(LanguageObject){
+	
+		var id = LanguageObject.id;
 
 		var div = dom.make("div","content_language_"+id+"_div","content_language_entry", g("content_languages_display"));
 		
@@ -130,7 +112,7 @@ imdi_environment.workflow[0].content_languages = (function() {
 		var img = APP.GUI.icon(div,"delete_lang_"+id+"_icon","delete_lang_icon", "reset");
 		img.addEventListener('click', function(num) { 
 			return function(){
-				corpus.content_languages.remove(num);  
+				corpus.content_languages.removeByID(num);  
 			};
 		}(id) );
 		
@@ -143,40 +125,10 @@ imdi_environment.workflow[0].content_languages = (function() {
 	
 	my.removeAll = function(){
 
-		while (my.content_languages.length > 0){
-		
-			my.remove(my.content_languages[0][4]);  //remove always the first element of content_languages, until there are no elements anymore
+		my.content_languages.reset();
+		refresh();
 
-		}
-		
-		my.id_counter = 0;
-
-	};
-
-	
-	my.remove = function(cl_id){
-
-		var index = my.getLanguageObjectIndexByID(cl_id);
-
-		APP.log(
-			my.l("languages", "content_language_removed__before_lang") +
-			my.content_languages[index][3] +
-			my.l("languages", "content_language_removed__after_lang")
-		);
-
-		my.content_languages.splice(index, 1);
-		
-		dom.remove("content_language_"+cl_id+"_div");
-
-	};
-
-
-	my.getLanguageObjectIndexByID = function(cl_id){
-		
-		return getIndex(my.content_languages, 4, cl_id)
-
-	};
-	
+	};	
 	
 	return my;
 	

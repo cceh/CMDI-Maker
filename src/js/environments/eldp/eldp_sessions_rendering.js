@@ -165,9 +165,6 @@ eldp_environment.workflow[2].render = (function() {
 		var bundles_view = my.view_element;
 		
 		bundles_view.innerHTML = "";
-		
-		//console.log("render.refresh: bundles: ");
-		//console.log(bundles);
 
 		my.pager.refresh(bundles);
 		

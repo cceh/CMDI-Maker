@@ -300,6 +300,28 @@ var APP = (function () {
 				onclick: function(){ my.save_and_recall.saveActiveEnvironmentStateToFile(); }
 			},
 			{
+				title: my.l("reset_form"),
+				icon: "reset",
+				id: "LINK_reset_form",
+				onclick: function() {     
+
+					APP.confirm(my.l("really_reset_form"), function (e) {
+						if (e) {
+							// user clicked "ok"
+						}
+				
+						else {
+							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
+							APP.environments.resetActive();
+							APP.log(my.l("form_reset"));
+							
+						}
+						
+					}, my.l("no"), my.l("yes_delete_form"));
+					
+				}
+			},
+			{
 				title: my.l("settings", "settings"),
 				id: "VIEWLINK_settings",
 				icon:	"wrench",

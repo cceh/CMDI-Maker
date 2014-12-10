@@ -93,6 +93,10 @@ eldp_environment.workflow[2] = (function() {
 			return;
 		}
 		
+		//check for legacy data and convert
+		
+		
+		
 		my.bundles.setState(data.bundles);
 
 		if (data.person_id_counter){
@@ -194,27 +198,6 @@ eldp_environment.workflow[2] = (function() {
 				sub_div: "copy_bundles_select",
 				onclick: function() { my.handleClickOnCopyMetadata(); },
 				after_that: my.render.createCopyBundleOptions
-			},
-			{
-				label: l("bundle", "reset_form"),
-				icon: "reset",
-				id: "bundle_link_reset_form",
-				onclick: function() {       
-					APP.confirm(l("bundle", "really_reset_form"), function (e) {
-						if (e) {
-							// user clicked "ok"
-						}
-				
-						else {
-							// user clicked "cancel" (as cancel is always the red 
-							//button, the red button is chosen to be the executive 
-							//button
-							APP.environments.resetActive();
-							APP.log(l("bundle", "form_reset"));
-						}
-					},
-					l("bundle", "no"), l("bundle", "yes_delete_form"));
-				}
 			},
 			{
 				label: l("bundle", "sort_by_name"),
@@ -744,10 +727,7 @@ eldp_environment.workflow[2] = (function() {
 		});
 		
 	
-
 		var visible_bundles = my.render.pager.visible_items;
-		//console.log("VISIBLE ITEMS");
-		//console.log(visible_bundles);
 	
 		for (var s = 0; s < visible_bundles.length; s++){
 		

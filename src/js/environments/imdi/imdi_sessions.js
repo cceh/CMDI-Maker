@@ -107,23 +107,26 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	my.getSaveData = function(){
 	
 		my.refreshSessionsArray();
-	
 		return my.sessions.getState();
 	
 	};
 	
 	
 	my.refreshSessionsArray = function(){
-	
-		var array = [];
-	
-		my.sessions.forEach(function(session){
-		
-			APP.forms.fillObjectWithFormData(session, my.dom_element_prefix+session.id+"_", session_form);		
-			
-		});
+
+		forEach(
+			my.GUI.pager.visible_items,
+			my.refreshSessionInArray
+		);
 		
 	};
+	
+	
+	my.refreshSessionInArray = function(session){
+	
+		APP.forms.fillObjectWithFormData(session, my.dom_element_prefix + session.id + "_", session_form);		
+	
+	}
 	
 	
 	my.functions = function(){
@@ -155,27 +158,6 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 						}
 					}, l("no"), l("yes_overwrite_data"));
 				
-				}
-			},
-			{
-				label: l("session", "reset_form"),
-				icon: "reset",
-				id: "session_link_reset_form",
-				onclick: function() {
-				
-					APP.confirm(l("really_reset_form"), function (e) {
-						if (e) {
-							// user clicked "ok"
-						}
-				
-						else {
-							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
-							APP.environments.resetActive();
-							APP.log(l("form_reset"));
-							
-						}
-					}, l("no"), l("yes_delete_form"));
-					
 				}
 			},
 			{
@@ -251,13 +233,11 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	};
 	
 	
-	my.refreshActorLists = function(){
-		//Offer possibility to add every available actor to all session
-		//refresh all sessions with available actors
-
-		my.sessions.forEach(my.GUI.refreshActorListInSession);
-		
-	};
+	my.refreshActorLists = function(actors){
+	
+		my.GUI.refreshActorLists(my.sessions.getAll(), actors);
+	
+	};	
 	
 	
 	my.sortAlphabetically = function(){
@@ -585,11 +565,13 @@ imdi_environment.workflow[3] = (function(resources, actor) {
 	//Offer possibility to add every available media file to all session
 	//refresh all sessions with available media files
 
-		my.sessions.forEach(function(sess){
-		
-			my.GUI.refreshResources(sess.id);
+		var visible_bundles = my.GUI.pager.visible_items;
+	
+		for (var s = 0; s < visible_bundles.length; s++){
+
+			my.GUI.refreshResources(visible_bundles[s].id);
 			
-		});
+		}
 
 	};
 	
