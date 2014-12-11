@@ -268,18 +268,10 @@ eldp_environment.workflow[0] = (function(){
 	
 	
 	my.setForAll = function(){
-<<<<<<< HEAD
-	
-		my.resources.setForAll("stable", g("stable_for_all").checked);
-		my.resources.setForAll("inProgress", g("inProgress_for_all").checked);
-		my.refresh();
-=======
 		console.log(dom.getSelectedRadioValue("status_for_all"));
 		my.resources.setForAll("status", dom.getSelectedRadioValue("status_for_all"));
-		my.refreshFileListDisplay();
->>>>>>> origin/master
-	
-	}
+		my.refresh();
+	};
 	
 
 	my.getValidityOfFile = function(filename){
@@ -435,14 +427,9 @@ eldp_environment.workflow[0] = (function(){
 			my.resources.add({
 				name: f.name,
 				type: f.type || 'n/a',
-<<<<<<< HEAD
-				size: strings.bytesToSize(f.size,1),
-				lastModified: f.lastModifiedDate.toLocaleDateString()
-=======
-				size: bytesToSize(f.size,1),
+				size: strings.bytesToSize(f.size, 1),
 				lastModified: f.lastModifiedDate.toLocaleDateString(),
 				status: "stable"
->>>>>>> origin/master
 			});
 		}
 		
@@ -641,7 +628,7 @@ eldp_environment.workflow[0] = (function(){
 					
 						my.resources.add({
 							name: strings.getFilenameFromFilePath(file_string),
-							path: strings.getDirectoryFromFilePath(file_string)
+							path: strings.getDirectoryFromFilePath(file_string),
 							status: "stable"
 						});
 					

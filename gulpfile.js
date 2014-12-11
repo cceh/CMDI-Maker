@@ -13,6 +13,7 @@ var minifyCSS = require('gulp-minify-css');
 var htmlreplace = require('gulp-html-replace');
 var header = require('gulp-header');
 var manifest = require('gulp-manifest');
+var notify = require('gulp-notify');
 //var imageResize = require('gulp-image-resize');
 
 
@@ -71,9 +72,6 @@ var source_scripts = [
 	"./src/js/environments/eldp/eldp_output.js",
 	"./src/js/environments/eldp/eldp_generator.js",
 
-
-
-
 ];
  
  
@@ -81,19 +79,21 @@ var source_scripts = [
 gulp.task('jshint', function() {
   gulp.src('./src/js/*.js')
     .pipe(jshint())
-    .pipe(jshint.reporter('default'));
+    .pipe(jshint.reporter('default'))
+	.pipe(notify({message: 'JSHINT task complete'}));;
 });
 
 
 // minify new images
 gulp.task('imagemin', function() {
-  var imgSrc = './src/img/**/*',
-      imgDst = './build/img';
+	var imgSrc = './src/img/**/*',
+		imgDst = './build/img';
  
-  gulp.src(imgSrc)
-    .pipe(changed(imgDst))
-    .pipe(imagemin())
-    .pipe(gulp.dest(imgDst));
+	gulp.src(imgSrc).on('error', errorHandler)
+		.pipe(changed(imgDst)).on('error', errorHandler)
+		.pipe(imagemin()).on('error', errorHandler)
+		.pipe(gulp.dest(imgDst)).on('error', errorHandler)
+		.pipe(notify({message: 'Imagemin task complete'}));
 });
 
 
@@ -115,38 +115,19 @@ gulp.task('htmlminify', function() {
         'js': 'js/script.js'
     }))
     .pipe(minifyHTML())
-    .pipe(gulp.dest(htmlDst));
+    .pipe(gulp.dest(htmlDst))
+	.pipe(notify({message: 'HTML minify task complete'}));
 });
-
-
-
-
-
-var header_text = '/*\n'+
-'Copyright 2014 Sebastian Zimmer\n'+
-'\n'+
-'Licensed under the Apache License, Version 2.0 (the "License");\n'+
-'you may not use this file except in compliance with the License.\n'+
-'You may obtain a copy of the License at\n'+
-'\n'+
-'    http://www.apache.org/licenses/LICENSE-2.0\n'+
-'\n'+
-'Unless required by applicable law or agreed to in writing, software\n'+
-'distributed under the License is distributed on an "AS IS" BASIS,\n'+
-'WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n'+
-'See the License for the specific language governing permissions and\n'+
-'limitations under the License.\n'+
-'*/\n';
 
 
 // JS concat, strip debugging, minify, and add header
 gulp.task('scripts', function() {
   gulp.src(source_scripts)
-    .pipe(concat('script.js'))
+    .pipe(concat('script.js')).on('error', errorHandler)
     //.pipe(stripDebug())
-    .pipe(uglify())
-	.pipe(header(header_text))
-    .pipe(gulp.dest('./build/js/'));
+    .pipe(uglify()).on('error', errorHandler)
+    .pipe(gulp.dest('./build/js/')).on('error', errorHandler)
+	.pipe(notify({message: 'Scripts task complete'}));
 });
 
 
@@ -159,7 +140,8 @@ var worker_and_dynamic_scripts = [
 
 gulp.task('script-workers', function() {
   gulp.src(worker_and_dynamic_scripts)
-    .pipe(gulp.dest('./build/js/'));
+    .pipe(gulp.dest('./build/js/'))
+	.pipe(notify({message: 'Script workers task complete'}));
 });
 
 
@@ -179,7 +161,8 @@ gulp.task('styles', function() {
   gulp.src(style_sources)
     .pipe(concat('styles.css'))
     .pipe(minifyCSS())
-    .pipe(gulp.dest('./build/styles/'));
+    .pipe(gulp.dest('./build/styles/'))
+	.pipe(notify({message: 'Styles task complete'}));
 });
 
 
@@ -191,7 +174,8 @@ gulp.task('manifest', function(){
 	  network: ["*"],  //important, so that network stuff like version checker works
       exclude: ['cmdi_maker.appcache', 'img/logos/Thumbs.db']
      }))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build'))
+	.pipe(notify({message: 'Manifest task complete'}));
 });
 
 
@@ -213,5 +197,12 @@ gulp.task('resize', function () {
 
 // default gulp task
 gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'script-workers', 'styles', 'manifest'], function() {});
+
+
+// Error handler
+function errorHandler (error) {
+  console.log(error.toString());
+  this.emit('end');
+}
 
 
