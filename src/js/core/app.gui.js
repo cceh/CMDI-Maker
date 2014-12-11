@@ -26,7 +26,7 @@ APP.GUI = (function() {
 	var my = {};
 	
 /**
- * Displays a busy indicator.
+ * Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)
  * @param parent Parent element
  * @method showBusyIndicator
  */	
@@ -52,24 +52,38 @@ APP.GUI = (function() {
 	}
 
 /**
- * Hides the busy indicator again.
+ * Hides the busy indicator again.  (This feature is in pre-alpha state. Do not use it yet.)
  * @method showBusyIndicator
- */		/*
+ */
 	my.hideBusyIndicator = function(){
 	
 		dom.remove("busy_div");
 		
 		g("environment_view").style.display = "block";
 	
-	}*/
+	}
 
+	
+/**
+ * Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)
+ * @method setIcon
+ * @param element DOM element of the icon (has to be be img)
+ * @param icon_id Name of the icon.
+ */	
 	my.setIcon = function (element, icon_id){
 	
 		element.src = APP.CONF.path_to_icons + icon_id + ".png";
 	
 	};
+
 	
-	
+/**
+ * Sets a value to a form element
+ * @method setFormValue
+ * @param element_id ID of DOM element
+ * @param value Value
+ * @param open_vocabulary If element is an open vocabulary, it should be provided here, too.
+ */		
 	my.setFormValue = function (element_id, value, open_vocabulary){
 
 		var element = g(element_id);

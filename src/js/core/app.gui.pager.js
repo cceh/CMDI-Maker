@@ -143,18 +143,15 @@ APP.GUI.pager = function(config){
 		
 		self.hide();
 		
-		if (self.items_count > self.items_per_page || self.show_always == true){
+		if ((self.items_count > self.items_per_page || self.show_always == true) && (g(APP.active_view) == self.view)){
 		
 			var div = dom.div(g("environment_view"), "pager", "pager", "Page: ");
 			g("content_wrapper").style.bottom = "84px";
 
-			//console.log("pager: YES");
-			//console.log(g("pager"));
 		}
 		
 		else {
 		
-			//console.log("pager: NO");
 			return;
 		
 		}

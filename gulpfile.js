@@ -89,11 +89,10 @@ gulp.task('imagemin', function() {
 	var imgSrc = './src/img/**/*',
 		imgDst = './build/img';
  
-	gulp.src(imgSrc).on('error', errorHandler)
-		.pipe(changed(imgDst)).on('error', errorHandler)
-		.pipe(imagemin()).on('error', errorHandler)
-		.pipe(gulp.dest(imgDst)).on('error', errorHandler)
-		.pipe(notify({message: 'Imagemin task complete'}));
+	gulp.src(imgSrc)
+		//.pipe(changed(imgDst))
+		.pipe(imagemin())
+		.pipe(gulp.dest(imgDst));
 });
 
 

@@ -134,7 +134,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.refreshBundlesArray = function(){
 	
-		forEach(my.bundles.getAll(), my.refreshBundleInArray);
+		forEach(my.render.pager.visible_items, my.refreshBundleInArray);
 	
 	};
 	
@@ -446,8 +446,6 @@ eldp_environment.workflow[2] = (function() {
 			
 			my.bundles.getByID(bundle_id).bundle.title = name;
 		
-			APP.log(l("bundle", "bundle_title_taken_from_eaf"));
-		
 		}
 		
 		refresh();
@@ -460,7 +458,6 @@ eldp_environment.workflow[2] = (function() {
 
 
 	my.removeResource = function(bundle_id, id){
-		var m;
 
 		var ids_of_bundle_resources = getArrayWithIDs(my.bundles.getByID(bundle_id).resources.resources);
 		
@@ -472,7 +469,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 		
-		dom.remove(my.dom_element_prefix + bundle_id + "_resource_" + id);
+		refresh();
 
 	};
 	
@@ -725,14 +722,7 @@ eldp_environment.workflow[2] = (function() {
 			
 		});
 		
-	
-		var visible_bundles = my.render.pager.visible_items;
-	
-		for (var s = 0; s < visible_bundles.length; s++){
-		
-			my.render.refreshResources(visible_bundles[s].id);
-			
-		}
+		refresh();
 
 	};
 
@@ -786,7 +776,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.updatePersonNameInAllBundles = function(person_id){
 	
-		return my.render.updatePersonNameInAllBundles(person_id, my.bundles.getAll());
+		refresh();
 	
 	};
 	

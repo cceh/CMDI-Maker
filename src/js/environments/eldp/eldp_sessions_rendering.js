@@ -366,10 +366,9 @@ eldp_environment.workflow[2].render = (function() {
 		
 		var h2_id = my.dom_element_prefix + bundle_id + "_person_" + id + "_name_disp";
 		var h2 = g(h2_id);
-		console.log("SEARCHING FOR " + id);
+
 		var person_in_bundle = getObjectByID(bundle.persons.persons, id);
-		console.log(bundle.persons.persons);
-		console.log(person_in_bundle);
+
 		var person_id = person_in_bundle.person_id;
 		
 		var display_name = person.getDisplayName(person_id);
@@ -377,25 +376,6 @@ eldp_environment.workflow[2].render = (function() {
 		h2.innerHTML = display_name;
 		//display name of person
 
-	};
-	
-	
-	my.updatePersonNameInAllBundles = function(person_id, bundles){
-	
-		forEach(bundles, function(bundle){
-		
-			var person_ids_in_bundle = map(bundle.persons.persons, function(pers){
-				return pers.person_id;
-			});
-			
-			//search for person_id in this bundles' persons
-			if (person_ids_in_bundle.indexOf(person_id) != -1){
-
-				my.refreshPersonName(bundle, person_id);
-	
-			}
-			
-		});
 	};
 	
 	
@@ -557,7 +537,7 @@ eldp_environment.workflow[2].render = (function() {
 		
 		var name = resources.resources.getByID(resource_in_bundle.resource_id).name;
 
-		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_resource_" + id, "mf", g(my.dom_element_prefix+bundle_id+"_resources_resources"));
+		var div = dom.make('div', my.dom_element_prefix+bundle_id+"_resource_" + id, "mf", g(my.dom_element_prefix + bundle_id + "_resources_resources"));
 
 		var h3 = dom.h3(div);
 

@@ -182,6 +182,37 @@ var forEach = function(array, action) {
 };
 
 
+//this method is also in dom, but has to be here too to avoid circular dependencies
+var getSelectedRadioIndex = function (radios){
+
+	for (var r = 0; r < radios.length; r++){
+		
+		if (radios[r].checked === true){
+			
+			return r;
+			
+		}
+		
+	}
+	
+	return 0;
+	
+};
+
+
+//this method is also in dom, but has to be here too to avoid circular dependencies
+var getSelectedRadioValue = function (radios){
+	
+	if (typeof radios == "string"){
+		
+		radios = document.getElementsByName(radios);
+		
+	}
+	
+	return radios[getSelectedRadioIndex(radios)].value;
+	
+};
+
 
 function get(name){
 
@@ -480,19 +511,3 @@ var dateAsString = function(date){
 	return year + "-" + month + "-" + day;
 
 };
-
-
-
-var areOnlyTheseCharsInString = function(string, chars){
-
-	for (var i=0; i<string.length; i++){
-
-		if (chars.indexOf(string[i]) == -1){
-			return false;
-		}
-		
-	}
-
-	return true;
-
-}
