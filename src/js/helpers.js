@@ -374,6 +374,10 @@ function sortByKey(array, key) {
 
 function parseDate(str){
 
+	if (typeof str == "undefined"){
+		return null;
+	}
+
 	var t = str.match(/([1-2][0-9][0-9][0-9])\-([0-1][0-9])\-([0-3][0-9])/);
 	
 	if(t!==null){
@@ -417,7 +421,8 @@ function parseDate(str){
 	
 	return null;
 	
-}
+};
+
 
 /*
 var parse_birth_date = function(string){
@@ -453,6 +458,30 @@ var parse_birth_date = function(string){
 
 };
 */
+
+var dateAsString = function(date){
+
+	var year = date.year;
+	var month = date.month;
+	var day = date.day;
+
+	if (month < 10){
+	
+		month = "0" + month;
+		
+	}
+	
+	if (day < 10){
+	
+		day = "0" + day;
+		
+	}
+
+	return year + "-" + month + "-" + day;
+
+};
+
+
 
 var areOnlyTheseCharsInString = function(string, chars){
 

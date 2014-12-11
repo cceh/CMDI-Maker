@@ -475,21 +475,21 @@ imdi_environment.cmdi_generator = function(){
 			
 				IDREFS.push(createIDREFS());
 				
-				return_string+=xml.tag("ResourceProxy",0,[["id",IDREFS[i-1]]]);
-				return_string+=xml.element("ResourceType","Metadata");
-				return_string+=xml.element("ResourceRef",get(session.dom_element_prefix+session.sessions[i-1].id+"_session_name")+".cmdi");
-				return_string+=xml.tag("ResourceProxy",1);
+				return_string += xml.tag("ResourceProxy",0,[["id",IDREFS[i-1]]]);
+				return_string += xml.element("ResourceType","Metadata");
+				return_string += xml.element("ResourceRef",get(session.dom_element_prefix+session.sessions[i-1].id+"_session_name")+".cmdi");
+				return_string += xml.tag("ResourceProxy",1);
 			}
 			
-			return_string+=xml.tag("ResourceProxyList",1);
+			return_string += xml.tag("ResourceProxyList",1);
 		}
 		
 		else {
-			return_string+=xml.element("ResourceProxyList",2);
+			return_string += xml.element("ResourceProxyList",2);
 		}
 		
-		return_string+=xml.tag("JournalFileProxyList",2);
-		return_string+=xml.tag("ResourceRelationList",2);
+		return_string += xml.tag("JournalFileProxyList",2);
+		return_string += xml.tag("ResourceRelationList",2);
 		return_string+=xml.tag("Resources",1);
 		return_string+=xml.tag("Components",0);
 

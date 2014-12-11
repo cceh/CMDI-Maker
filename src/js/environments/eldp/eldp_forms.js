@@ -60,6 +60,12 @@ eldp_environment.bundle_form = {
 					type: "subarea",
 					fields: [
 						{
+							heading: "Name",
+							name: "name",
+							type: "text",
+							comment: "",
+						},
+						{
 							heading: "Continent",
 							name: "continent",
 							type: "select",
@@ -79,12 +85,6 @@ eldp_environment.bundle_form = {
 							name: "region",
 							type: "text",
 							comment: "This element can also be used to describe sub-regions. Examples: europe, the netherlands, gelderland, achterhoek.",
-						},
-						{
-							heading: "Address",
-							name: "address",
-							type: "text",
-							comment: "For instance if recording bundles took place at an institution, the address of the institute is meant.",
 						}
 					]
 				},

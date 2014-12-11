@@ -38,7 +38,13 @@ var dom = (function() {
 	
 	
 	my.getSelectedRadioValue = function (radios){
-	
+		
+		if (typeof radios == "string"){
+		
+			radios = document.getElementsByName(radios);
+			
+		}
+		
 		return radios[my.getSelectedRadioIndex(radios)].value;
 	
 	};

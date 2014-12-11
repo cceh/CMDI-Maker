@@ -22,6 +22,22 @@ eldp_environment.eldp_generator = function(data){
 	//var eldp_bundle_profile="clarin.eu:cr1:p_1271859438204";
 	var eldp_bundle_profile="clarin.eu:cr1:p_1407745711992";
 	var language_code_prefix = "ISO639-3:";
+	
+	
+	var IDREFS = [];
+	var IDREF_index;
+	
+	var createIDREFS = function(){
+
+		var rString1 = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString2 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString3 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString4 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString5 = randomString(12, '0123456789abcdefghijklmnopqrstuvwxyz');
+
+		return "res_"+rString1+"_"+rString2+"_"+rString3+"_"+rString4+"_"+rString5;
+
+	};
 
 	var insert_cmdi_header = function(MdCreator,MdCreationDate,MdProfile){
 		
@@ -100,7 +116,31 @@ eldp_environment.eldp_generator = function(data){
 		
 		//in resources is nothing, as this is a session and no corpus. attached media files in a cmdi session are further down
 		rs += xml.open("Resources");
-		rs += xml.tag("ResourceProxyList",2);
+		
+		
+		if (bundle.resources.resources.length > 0){
+		
+			rs += xml.open("ResourceProxyList");
+			
+			for (var i = 0; i < bundle.resources.resources.length; i++){  
+			
+				IDREFS.push(createIDREFS());
+				
+				rs += xml.open("ResourceProxy", [["id",IDREFS[i]]]);
+				rs += xml.element("ResourceType", "Resource");  //MIMETYPE AS ATTRIBUTE!
+				console.log(resources);
+				rs += xml.element("ResourceRef", resources.getByID(bundle.resources.resources[i].resource_id).name);
+				rs += xml.close("ResourceProxy");
+			}
+			
+			rs += xml.close("ResourceProxyList");
+		}
+		
+		else {
+			rs += xml.element("ResourceProxyList",2);
+		}
+		
+		
 		rs += xml.tag("JournalFileProxyList",2);
 		rs += xml.tag("ResourceRelationList",2);
 		rs += xml.close("Resources");
@@ -111,7 +151,7 @@ eldp_environment.eldp_generator = function(data){
 		rs += xml.open("ELDP_Bundle");
 
 		rs += xml.element("Title", bundle.bundle.title);		
-		rs += xml.element("ID", ""); //no input
+		rs += xml.element("ID", bundle.bundle.id_element);
 		rs += xml.element("Description", bundle.bundle.description, [getXMLLangAttribute()]);
 		
 		rs += xml.open("StatusInfo");
@@ -124,6 +164,8 @@ eldp_environment.eldp_generator = function(data){
 
 		
 		rs += insertLanguages(bundle.languages.bundle_languages);
+		rs += insertGenres(bundle.content.genre);
+		rs += insertKeywords(bundle.content.keywords);
 		rs += insertPersons(bundle.persons.persons, persons, bundle);
 
 		rs += xml.open("ProjectLocations");
@@ -148,6 +190,28 @@ eldp_environment.eldp_generator = function(data){
 		return rs;
 		
 	};
+	
+	
+	var insertGenres = function(genre){
+	
+		var rs = "";
+		
+		if (genre == ""){
+			return "";
+		}
+		
+		
+		rs += xml.open("Genres");
+		
+		rs += xml.element("Genre", genre);
+		
+		rs += xml.close("Genres");
+		
+		return rs;
+	
+	
+	};
+	
 	
 	
 	var insertDummyDepositor = function(){
@@ -339,19 +403,19 @@ eldp_environment.eldp_generator = function(data){
 	};
 	
 
-	var insertBundleResource = function(res_in_bun, resource, languages, persons_in_bundle, persons, bundle){
+	var insertBundleResource = function(res_in_bun, resource, languages, persons_in_bundle, persons, bundle, IDREF){
 
 		var rs = "";
 		
 		console.log(res_in_bun);
 		
-		rs += xml.open("Resource");
+		rs += xml.open("Resource", [["ref", IDREF]]);
 		rs += xml.element("Title", resource.name);
 		
 		rs += xml.element("ID", "");
 		rs += xml.element("Host", "");
 		rs += xml.open("StatusInfo");
-		rs += xml.element("Status", (resource.stable == true) ? "stable" : "in-progress");
+		rs += xml.element("Status", resource.status);
 		
 		rs += xml.element("ChangeDate", today());
 		rs += xml.close("StatusInfo");
@@ -362,6 +426,8 @@ eldp_environment.eldp_generator = function(data){
 		
 		
 		rs += insertLanguages(languages);
+		rs += insertGenres(bundle.content.genre);
+		rs += insertKeywords(bundle.content.keywords);
 		rs += insertPersons(persons_in_bundle, persons, bundle);
 		
 		
@@ -380,10 +446,105 @@ eldp_environment.eldp_generator = function(data){
 		
 		rs += xml.close("AccessInformation");
 		
+		rs += insertFileElement(resource);
+		
 		rs += xml.close("Resource");
 		
 		return rs;
 		
+	};
+	
+	
+	var insertFileElement = function(resource){
+	
+		var file_types = {
+			"eaf": "TextFile",
+			"txt": "TextFile",
+			"jpg": "ImageFile",
+			"png": "ImageFile",
+			"tif": "ImageFile",
+			"bmp": "ImageFile",
+			"wav": "AudioFile",
+			"mp4": "VideoFile",
+			"avi": "VideoFile",
+			
+			
+		};
+	
+	
+		var file_ending = getFileTypeFromFilename(resource.name);
+		
+		if (file_types[file_ending]){
+			var file_type = file_types[file_ending];
+		}
+		
+		else {
+		
+			file_type = "TextFile";
+		
+		}
+	
+		var rs = "";
+	
+		rs += xml.open("File");
+		
+		rs += xml.open(file_type);
+		
+		rs += xml.open("General");
+		rs += xml.element("Name", resource.name);
+		
+		var date = parseDate(resource.lastModified);
+		
+		if (date != null){
+			var date_string = dateAsString(date);
+		}
+		
+		else {
+		
+			date_string = "1977-01-01";
+		
+		}
+		
+		rs += xml.element("Date", date_string);
+		
+		
+		rs += xml.close("General");
+		
+		rs += xml.element("Checksum", "");
+		
+		rs += xml.close(file_type);
+		
+	
+		rs += xml.close("File");
+		
+		return rs;
+	
+	};
+	
+	
+	var insertKeywords = function(keywords){
+	
+		keywords = linesToArray(keywords);
+		
+		
+		if ((keywords.length == 0) || (keywords.length == 1 && keywords[0] == "")){
+			return "";
+		}
+		
+		var rs = "";
+		
+		rs += xml.open("Keywords");
+		
+		for (var i = 0; i < keywords.length; i++){
+		
+			rs += xml.element("Keyword", keywords[i]);
+			
+		}
+		
+		rs += xml.close("Keywords");
+		
+		return rs;	
+	
 	};
 	
 	
@@ -403,7 +564,9 @@ eldp_environment.eldp_generator = function(data){
 		
 			var res = resources.getByID(res_in_bun.resource_id);
 		
-			rs += insertBundleResource(res_in_bun, res, languages, persons_in_bundle, persons, bundle);
+			rs += insertBundleResource(res_in_bun, res, languages, persons_in_bundle, persons, bundle, IDREFS[IDREF_index]);
+			
+			IDREF_index += 1;
 			
 		});
 		
@@ -419,6 +582,8 @@ eldp_environment.eldp_generator = function(data){
 
 	my.bundles = map(data.bundles, function (bundle){
 		xml.reset();
+		IDREF_index = 0;
+		
 		return createBundle(bundle, data.persons, data.resources);
 	});
 
