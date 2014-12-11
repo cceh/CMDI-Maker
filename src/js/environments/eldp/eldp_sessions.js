@@ -464,7 +464,6 @@ eldp_environment.workflow[2] = (function() {
 		if (ids_of_bundle_resources.indexOf(id) != -1){
 		
 			var index = my.getIndexFromResourceID(id);
-			console.log(index);
 
 			my.bundles.getByID(bundle_id).resources.resources.splice(index, 1);
 		
@@ -700,25 +699,38 @@ eldp_environment.workflow[2] = (function() {
 	};
 
 
-	my.refreshResourcesOfAllBundles = function(resources){
+	my.refreshResourcesOfAllBundles = function(){
 	//Offer possibility to add every available media file to all bundle
 	//refresh all bundles with available media files
 	
-		var all_available_resource_ids = getArrayWithIDs(resources);
-
+		var resources_to_delete;
+	
 		my.bundles.forEach(function(bun){
 		//check for added resources that have been deleted in resource tab and delete them here too
-			bun.resources.resources.forEach(function(res_in_bun){
 			
+			resources_to_delete = [];
+			
+			forEach(bun.resources.resources, function(res_in_bun){
+
 				// if a person is not in available persons, remove it from the bundle!
-				if (all_available_resource_ids.indexOf(res_in_bun.resource_id) == -1){
+				if (!resources.resources.IDexists(res_in_bun.resource_id)){
 					
-					console.log("There is a resource in bundle with id " + res_in_bun.resource_id + " that does not exist anymore. Deleting!");
-					my.removeResource(bun.id, res_in_bun.id);
+					console.log("There is a resource in bundle " + bun.id + " with resource_id " + res_in_bun.resource_id + " that does not exist anymore. Deleting!");
+					resources_to_delete.push({
+						bun_id: bun.id,
+						id: res_in_bun.id
+					});
 				
 				}
 			
 			
+			});
+			
+			console.log(resources_to_delete);
+			
+			forEach(resources_to_delete, function(rtd){
+				my.removeResource(rtd.bun_id, rtd.id);
+				log("DELETED");
 			});
 			
 		});
@@ -763,7 +775,7 @@ eldp_environment.workflow[2] = (function() {
 		for (var i = 0; i < my.bundles.length; i++){
 		
 			if (my.bundles.get(i).languages.bundle_languages.length == 0){
-				console.log("FAFAFA " + i);
+
 				return false;
 			
 			}

@@ -200,6 +200,13 @@ var getSelectedRadioIndex = function (radios){
 };
 
 
+var log = function(item){
+
+	console.log(item);
+
+};
+
+
 //this method is also in dom, but has to be here too to avoid circular dependencies
 var getSelectedRadioValue = function (radios){
 	
