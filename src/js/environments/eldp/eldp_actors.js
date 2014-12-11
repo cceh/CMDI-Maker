@@ -428,6 +428,8 @@ eldp_environment.workflow[1] = (function(){
 			person_to_put = APP.forms.createEmptyObjectFromTemplate(person_form);
 		}
 		
+		person_to_put.display_name = my.getDisplayName(person_to_put);
+		
 		var person_id = my.persons.add(person_to_put);
 		
 		my.createFormIfNotExistent();

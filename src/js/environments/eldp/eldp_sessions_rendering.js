@@ -208,7 +208,6 @@ eldp_environment.workflow[2].render = (function() {
 		
 		g(my.dom_element_prefix+bundle_id+"_bundle_title").addEventListener("blur", function(num){
 			return function(){
-			
 				my.refreshBundleHeading(num);
 			};
 		}(bundle_id));

@@ -464,6 +464,7 @@ eldp_environment.workflow[2] = (function() {
 		if (ids_of_bundle_resources.indexOf(id) != -1){
 		
 			var index = my.getIndexFromResourceID(id);
+			console.log(index);
 
 			my.bundles.getByID(bundle_id).resources.resources.splice(index, 1);
 		
@@ -712,7 +713,7 @@ eldp_environment.workflow[2] = (function() {
 				// if a person is not in available persons, remove it from the bundle!
 				if (all_available_resource_ids.indexOf(res_in_bun.resource_id) == -1){
 					
-					console.log("There is a resource in bundle with id" + res_in_bun.resource_id + " that does not exist anymore. Deleting!");
+					console.log("There is a resource in bundle with id " + res_in_bun.resource_id + " that does not exist anymore. Deleting!");
 					my.removeResource(bun.id, res_in_bun.id);
 				
 				}
