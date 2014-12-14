@@ -95,7 +95,7 @@ APP.forms = (function () {
 			input = APP.GUI.makeTextInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : ""),
+				(data_object && data_object[field.name] ? data_object[field.name] : (field.default_value || "")),
 				field.comment,
 				field.maxLength
 			);
@@ -207,7 +207,7 @@ APP.forms = (function () {
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : ""),
+				(data_object && data_object[field.name] ? data_object[field.name] : (field.default_value || "")),
 				field.comment
 			);
 			
