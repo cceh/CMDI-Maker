@@ -413,12 +413,9 @@ eldp_environment.workflow[2].render = (function() {
 		}
 		
 		
-		//console.log("Refreshing Person List of Bundle with id" + bundle_id);
-		
-		
 		//check if person in bundle is part of persons[...].id(s)? if not, remove it immediately!
-		bundle.persons.persons.forEach(function(person_in_bundle){
-			
+		forAllItems(bundle.persons.persons, function(person_in_bundle){
+
 			// if a person is not in available persons, remove it from the bundle!
 			if (all_available_person_ids.indexOf(person_in_bundle.person_id) == -1){
 				
@@ -426,7 +423,6 @@ eldp_environment.workflow[2].render = (function() {
 				actions.removePerson(bundle_id, person_in_bundle.id);
 			
 			}
-		
 		
 		});
 

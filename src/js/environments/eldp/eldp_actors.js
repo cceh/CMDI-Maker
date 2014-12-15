@@ -31,15 +31,19 @@ eldp_environment.workflow[1] = (function(){
 	var highlightActivePersonInList = function(person_index){
 
 		if (typeof person_index == "undefined"){
-			console.error("I shall highlight a person with index = undefined! Returning!");
+			console.info("I shall highlight a person with index = undefined! Returning!");
 			return;
 		}
 	
-		for (var i=0;i<my.persons.length;i++){
+		for (var i = 0; i < my.persons.length; i++){
 			g(my.element_id_prefix + "list_entry_"+i).style.background = "lightskyblue";
 		}
-
-		g(my.element_id_prefix + "list_entry_"+person_index).style.background = "#FF8BC7";
+		
+		var element_to_highlight = g(my.element_id_prefix + "list_entry_" + person_index);
+		
+		if (element_to_highlight){
+			element_to_highlight.style.background = "#FF8BC7";
+		}
 
 	};
 	

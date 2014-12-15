@@ -132,18 +132,11 @@ eldp_environment.workflow[2] = (function() {
 	}
 	
 	
-	my.refreshBundlesArray = function(){
-	
-		forEach(my.render.pager.visible_items, my.refreshBundleInArray);
-	
-	};
-	
-	
 	my.refreshBundleInArray = function(bun){
 	
 		var bundle_object = bun;
 		
-		APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix+bun.id+"_", bundle_form);
+		APP.forms.fillObjectWithFormData(bundle_object, my.dom_element_prefix + bun.id+"_", bundle_form);
 		
 		//Refresh persons' roles
 		forEach(bundle_object.persons.persons, function(person_in_bundle){
@@ -203,7 +196,7 @@ eldp_environment.workflow[2] = (function() {
 				icon: "az",
 				id: "bundle_link_sort_by_name",
 				onclick: function() {
-					my.refreshBundlesArray();
+					my.refreshVisibleBundlesInArray();
 					my.bundles.sortBySubKey("bundle", "name");
 					refresh();
 				}
@@ -363,7 +356,7 @@ eldp_environment.workflow[2] = (function() {
 		
 			if (person.persons.getByID(person_id)){  //check if person still exists before adding
 				
-				my.refreshBundlesArray();
+				my.refreshVisibleBundlesInArray();
 				
 				console.log("adding person in bundle with id " + bundle_id);
 				
@@ -381,7 +374,7 @@ eldp_environment.workflow[2] = (function() {
 			
 				refresh();
 				
-				my.person_id_counter++;
+				my.person_id_counter = my.person_id_counter + 1;
 				
 			}
 			
@@ -788,7 +781,8 @@ eldp_environment.workflow[2] = (function() {
 	
 	
 	my.updatePersonNameInAllBundles = function(person_id){
-	
+		
+		my.refreshVisibleBundlesInArray();
 		refresh();
 	
 	};

@@ -133,6 +133,29 @@ var getObjectByID = function(array, id){
 };
 
 
+//iterates really through ALL items, even if some of them are deleted along the way
+var forAllItems = function(array, action){
+
+	var i = array.length;
+
+	for (;;){
+	
+		if (i != 0) {
+			i = i - 1;
+		}
+		
+		else {
+			return;
+		}
+	
+		action(array[i]);
+	
+	}
+
+
+};
+
+
 var map = function(array, transform) {
 	var mapped = [];
 	

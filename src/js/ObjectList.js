@@ -581,7 +581,7 @@ var ObjectList = function() {
 	
 	
 	this.getIndexOfActiveObject = function(){
-	
+		
 		return self.getIndexByID(pointer);
 	
 	};
