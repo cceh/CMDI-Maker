@@ -232,12 +232,26 @@ eldp_environment.workflow[2].render = (function() {
 		
 		if (typeof(bundle_object.resources.resources) != "undefined"){
 			
+			forAllItems(bundle_object.resources.resources, function (resource_in_bundle){
+			
+				// if a person is not in available persons, remove it from the bundle!
+				if (!resources.resources.IDexists(resource_in_bundle.resource_id)){
+					
+					log("There is a resource in bundle " + bundle_object.id + " with resource_id " + resource_in_bundle.resource_id + " that does not exist anymore. Deleting!");
+					actions.removeResource(bundle_object.id, resource_in_bundle.id);
+				
+				}
+				
+			});
+			
 			forEach(bundle_object.resources.resources, function (resource_in_bundle){
+			
 				my.renderResource(resource_in_bundle, bundle_id);
 				
 				if (resource_in_bundle.id >= bundle.resource_id_counter){
 					bundle.resource_id_counter = resource_in_bundle.id + 1;  //DIRTY!
 				}
+		
 			});
 		
 		}
@@ -540,7 +554,7 @@ eldp_environment.workflow[2].render = (function() {
 
 		var img = APP.GUI.icon(div,"delete_resource_" + id +"_icon","delete_resource_icon","reset");
 		img.addEventListener('click', function(num, num2) { 
-			return function(){ actions.removeResource(num, num2);
+			return function(){ actions.removeResourceAndRefresh(num, num2);
 			};
 		}(bundle_id, id) );
 		

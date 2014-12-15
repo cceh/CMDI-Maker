@@ -219,14 +219,14 @@ var ObjectList = function() {
 	
 	//REMOVE METHODS
 	this.removeByID = function(id){
-	
-		if (typeof id == "array"){
 		
-			id.forEach(self.removeByID);
+		if (Array.isArray(id) == true){
+		
+			forEach(id, self.removeByID);
 			return;
 		
 		}
-	
+
 		var index = self.getIndexByID(id);
 	
 		list.splice(index, 1);

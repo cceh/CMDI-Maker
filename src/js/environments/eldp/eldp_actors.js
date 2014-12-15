@@ -322,7 +322,7 @@ eldp_environment.workflow[1] = (function(){
 	
 		var form_title = g(my.element_id_prefix + "form_title");
 		
-		var person_name = my.getDisplayName(my.persons.getPointer());
+		var person_name = my.getDisplayName(my.persons.getActive());
 		
 		if (person_name == ""){
 			form_title.innerHTML = l("unnamed_person");
@@ -588,7 +588,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		
 		if (!person){
-			return console.error("Person undefined! Person_id = " + person_id);
+			return console.warn("Person undefined!");
 		}
 		
 		

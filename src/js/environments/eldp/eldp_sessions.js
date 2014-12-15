@@ -23,7 +23,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	var bundle_form = my.parent.bundle_form;
 	
-	var refresh = function(){
+	my.refresh = function(){
 		my.render.refresh(my.bundles.getAll());
 	}
 	
@@ -43,7 +43,7 @@ eldp_environment.workflow[2] = (function() {
 	
 	my.reset = function(){
 		my.bundles.eraseAll();
-		refresh();
+		my.refresh();
 	};
 	
 	var resources;
@@ -70,6 +70,7 @@ eldp_environment.workflow[2] = (function() {
 			removePerson: my.removePerson,
 			addResource: my.addResource,
 			removeResource: my.removeResource,
+			removeResourceAndRefresh: my.removeResourceAndRefresh,
 			removeLanguage: my.removeLanguage
 		
 		};
@@ -102,7 +103,7 @@ eldp_environment.workflow[2] = (function() {
 			my.person_id_counter = data.person_id_counter;
 		}
 		
-		refresh();
+		my.refresh();
 	
 	};
 	
@@ -198,7 +199,7 @@ eldp_environment.workflow[2] = (function() {
 				onclick: function() {
 					my.refreshVisibleBundlesInArray();
 					my.bundles.sortBySubKey("bundle", "name");
-					refresh();
+					my.refresh();
 				}
 			}
 		];
@@ -214,7 +215,7 @@ eldp_environment.workflow[2] = (function() {
 		
 		my.bundles.add(bundle_object);
 
-		refresh();
+		my.refresh();
 		
 		return bundle_object.id;
 	};
@@ -318,7 +319,7 @@ eldp_environment.workflow[2] = (function() {
 				// user clicked "cancel"
 				my.bundles.eraseByID(bundle_id);
 				APP.log(l("bundle", "bundle_deleted"));
-				refresh();
+				my.refresh();
 			}
 		}, l("bundle", "no"), l("bundle", "yes_delete_bundle"));
 
@@ -372,7 +373,7 @@ eldp_environment.workflow[2] = (function() {
 				
 				my.bundles.getByID(bundle_id).persons.persons.push(person_in_bundle);
 			
-				refresh();
+				my.refresh();
 				
 				my.person_id_counter = my.person_id_counter + 1;
 				
@@ -441,16 +442,23 @@ eldp_environment.workflow[2] = (function() {
 		
 		}
 		
-		refresh();
+		my.refresh();
 
 		my.resource_id_counter += 1;
 		
 		return id;
 		
 	};
+	
+	
+	my.removeResourceAndRefresh = function(bundle_id, id){
+		my.refreshResource(bundle_id, id);
+		my.refresh();
+	};
 
 
 	my.removeResource = function(bundle_id, id){
+		console.log("SHALL REMOVE RES. bun_id=" + bundle_id + ", RES_IN_BUN_ID = " + id);
 
 		var ids_of_bundle_resources = getArrayWithIDs(my.bundles.getByID(bundle_id).resources.resources);
 		
@@ -461,8 +469,6 @@ eldp_environment.workflow[2] = (function() {
 			my.bundles.getByID(bundle_id).resources.resources.splice(index, 1);
 		
 		}
-		
-		refresh();
 
 	};
 	
@@ -479,7 +485,7 @@ eldp_environment.workflow[2] = (function() {
 			my.copyMetadataFrom2ndLastToLast();
 		}
 		
-		refresh();
+		my.refresh();
 	
 	};
 	
@@ -687,49 +693,8 @@ eldp_environment.workflow[2] = (function() {
 	//Remove all persons from respective bundle
 		
 		my.bundles.getByID(bundle_id).persons.persons = [];
-		refresh();
+		my.refresh();
 		
-	};
-
-
-	my.refreshResourcesOfAllBundles = function(){
-	//Offer possibility to add every available media file to all bundle
-	//refresh all bundles with available media files
-	
-		var resources_to_delete;
-	
-		my.bundles.forEach(function(bun){
-		//check for added resources that have been deleted in resource tab and delete them here too
-			
-			resources_to_delete = [];
-			
-			forEach(bun.resources.resources, function(res_in_bun){
-
-				// if a person is not in available persons, remove it from the bundle!
-				if (!resources.resources.IDexists(res_in_bun.resource_id)){
-					
-					console.log("There is a resource in bundle " + bun.id + " with resource_id " + res_in_bun.resource_id + " that does not exist anymore. Deleting!");
-					resources_to_delete.push({
-						bun_id: bun.id,
-						id: res_in_bun.id
-					});
-				
-				}
-			
-			
-			});
-			
-			console.log(resources_to_delete);
-			
-			forEach(resources_to_delete, function(rtd){
-				my.removeResource(rtd.bun_id, rtd.id);
-				log("DELETED");
-			});
-			
-		});
-		
-		refresh();
-
 	};
 
 
@@ -783,7 +748,7 @@ eldp_environment.workflow[2] = (function() {
 	my.updatePersonNameInAllBundles = function(person_id){
 		
 		my.refreshVisibleBundlesInArray();
-		refresh();
+		my.refresh();
 	
 	};
 	

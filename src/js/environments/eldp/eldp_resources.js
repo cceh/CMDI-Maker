@@ -342,7 +342,7 @@ eldp_environment.workflow[0] = (function(){
 		}
 
 		if ((bundle) && (!not_in_bundles)){
-			bundle.refreshResourcesOfAllBundles(my.resources.getAll());
+			bundle.refresh();
 		}
 		
 		my.fileSelection.selected_files = [];
@@ -622,29 +622,32 @@ eldp_environment.workflow[0] = (function(){
 			
 				file_list = strings.linesToArray(result);
 				
-				forEach(file_list, function(file_string){
-				
-					if (file_string.length > 0 && file_string != " "){
-					
-						my.resources.add({
-							name: strings.getFilenameFromFilePath(file_string),
-							path: strings.getDirectoryFromFilePath(file_string),
-							status: "stable"
-						});
-					
-					}
-					
-				});
-				
-				my.refresh();
-				
 			}
+
 			
 			catch (e) {
 			//if file list parsing is not possible
 				console.info("No files found! Maybe this file list is not valid!");
 				return;
 			}
+			
+			
+			forEach(file_list, function(file_string){
+				
+				if (file_string.length > 0 && file_string != " "){
+				
+					my.resources.add({
+						name: strings.getFilenameFromFilePath(file_string),
+						path: strings.getDirectoryFromFilePath(file_string),
+						status: "stable"
+					});
+					
+				}
+				
+			});
+			
+			
+			my.refresh();
 		
 		});
 		

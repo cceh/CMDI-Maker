@@ -524,7 +524,7 @@ eldp_environment.eldp_generator = function(data){
 	
 	var insertKeywords = function(keywords){
 	
-		keywords = linesToArray(keywords);
+		keywords = strings.linesToArray(keywords);
 		
 		
 		if ((keywords.length == 0) || (keywords.length == 1 && keywords[0] == "")){
