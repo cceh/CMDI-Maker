@@ -144,12 +144,12 @@ eldp_environment.bundle_form = {
 			type: "column",
 			name: "persons",
 			fields: [
-				{
+				/*{
 					heading: "Description of Persons",
 					type: "textarea",
 					comment: "Note that this description concerns all Persons and should be used to describe interactions and interrelations between Persons.",
 					name: "description",
-				},
+				},*/
 				{
 					type: "special",
 					name: "persons",

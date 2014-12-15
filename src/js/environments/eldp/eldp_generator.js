@@ -29,11 +29,11 @@ eldp_environment.eldp_generator = function(data){
 	
 	var createIDREFS = function(){
 
-		var rString1 = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString2 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString3 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString4 = randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
-		var rString5 = randomString(12, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString1 = strings.randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString2 = strings.randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString3 = strings.randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString4 = strings.randomString(4, '0123456789abcdefghijklmnopqrstuvwxyz');
+		var rString5 = strings.randomString(12, '0123456789abcdefghijklmnopqrstuvwxyz');
 
 		return "res_"+rString1+"_"+rString2+"_"+rString3+"_"+rString4+"_"+rString5;
 
@@ -472,7 +472,7 @@ eldp_environment.eldp_generator = function(data){
 		};
 	
 	
-		var file_ending = getFileTypeFromFilename(resource.name);
+		var file_ending = strings.getFileTypeFromFilename(resource.name);
 		
 		if (file_types[file_ending]){
 			var file_type = file_types[file_ending];

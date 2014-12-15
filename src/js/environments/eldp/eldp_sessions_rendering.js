@@ -290,7 +290,6 @@ eldp_environment.workflow[2].render = (function() {
 	
 		if (field.name == "persons"){
 		
-			dom.br(parent);
 			dom.make("div",element_id_prefix+"persons", "persons", parent);
 			dom.make("div",element_id_prefix+"addPersons_div", "persons", parent);
 		
