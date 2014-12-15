@@ -27,11 +27,77 @@ limitations under the License.
  */
 var APP = (function () {
 	'use strict';
+	
+	//PRIVATE
+	var renderStartPage = function (){
+	
+		var view = g("VIEW_start");
 
+		var random_index = Math.floor(Math.random() * APP.CONF.hellos.length);
+		g("hello").innerHTML = APP.CONF.hellos[random_index][0];
+		g("hello").addEventListener("click", function () {
+			my.log(my.l("start", "this_is","before_language") + APP.CONF.hellos[random_index][1] + my.l("start", "this_is","after_language"));
+		});
+
+		g("greeting_text").innerHTML = my.l("start","greeting_text");
+		g("start_select_profile_span").innerHTML = my.l("start","select_your_profile");
+		
+		g("before_lets_go").innerHTML = my.l("start","and_lets_go__before_link");
+		g("link_lets_go").innerHTML = my.l("start","and_lets_go__link");
+		g("after_lets_go").innerHTML = my.l("start","and_lets_go__after_link");
+		
+		g("supported_by_label").innerHTML = my.l("start","is_supported_by");
+		g("need_help_label").innerHTML = my.l("start","need_help");
+		g("help_pages_description").innerHTML = my.l("start","help_pages_description");
+		
+		var lang_links = g("lang_links");
+		
+		forEach(my.languages, function(language, counter){
+			
+			dom.link(lang_links, "", "", language.code.toUpperCase(), function(){
+				APP.changeLanguage(counter);
+			});
+			
+			dom.span(lang_links, "", "", "  ");
+		
+		});
+		
+		
+		g('link_lets_go').addEventListener('click', function() {
+		
+			if (typeof my.environments.active_environment == "undefined"){
+				my.environments.create(my.environments.get(0));	
+			}
+			
+			if (my.environments.active_environment.workflow[0]){
+				my.view(my.environments.active_environment.workflow[0]);
+			}
+			
+			else {
+			
+				console.error("ERROR: The active profile does not have a workflow!");
+				
+			}
+			
+		});
+		
+	};
+	
+	
+	var displayLanguages = function (){
+		
+		var select = g("language_select");
+		dom.setSelectOptions(select, my.languages, "name", "id", false);
+
+	};
+	
+
+	//PUBLIC
+	
 	var my = {};
 	
 /**
- * Initializes the app.
+ * Initializes the app. This method is called on "DOMContentLoaded".
  * @method init
  * @param {Boolean} no_recall If true, the app will not attempt to recall saved data from the application cache.
  * @static 
@@ -61,13 +127,13 @@ var APP = (function () {
 			}
 		}
 		
-		my.renderStartPage();
+		renderStartPage();
 		my.checkIfFirstStart();
 		g("version_span").innerHTML = APP.CONF.version;
 		
 		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.settings.init(my.coreSettings(), g("core_settings"));
-		my.displayLanguages();
+		displayLanguages();
 		
 
 		g("VIEWLINK_start").addEventListener("click", function() { my.view("VIEW_start"); });
@@ -100,7 +166,13 @@ var APP = (function () {
 		
 	};
 	
-	
+
+/**
+ * Tries to retrieve the APP language by looking at what language the browser is set (navigator.language).
+ * @method getActiveLanguageByNavigatorLanguageOrTakeDefault
+ * @return {Object} LanguagePack Returns an APP LanguagePack, that matches the browser language or returns the default LanguagePack of the APP.
+ * @static 
+ */	
 	my.getActiveLanguageByNavigatorLanguageOrTakeDefault = function(){
 		//check if there is a LanguagePack whose code property is equal to the browser language
 		
@@ -238,7 +310,17 @@ var APP = (function () {
 	
 	};
 	
-	
+/**
+ * Tries to get a term in a specific language. This method is called by environments each time a language dependent term is displayed by an environment.
+ * @method getTermInActiveLanguage
+ * @param {array} LanguagePacksArray An array with all the available LanguagePacks of the environment.
+ * @param {string} arg1 First key in LanguagePack to look at.
+ * @param {string} arg2 Second key in LanguagePack to look at.
+ * @param {string} arg3 Third key in LanguagePack to look at.
+ * @param {string} arg4 Fourth key in LanguagePack to look at.
+ * @return {string} term Returns the term in the specific language. If there is no term in that language, the term in the default language is returned. If there is no term in the default language, APP.CONF.language_error_placeholder is returned.
+ * @static 
+ */	
 	my.getTermInActiveLanguage = function(LanguagePacksArray, arg1, arg2, arg3, arg4){
 	
 		//Look in the LanguagesArray, that's been given by the APP or by one environment and then search for the language that has the id of the APP's active language
@@ -424,14 +506,12 @@ var APP = (function () {
 	};
 	
 	
-	my.displayLanguages = function (){
-		
-		var select = g("language_select");
-		dom.setSelectOptions(select, my.languages, "name", "id", false);
 
-	};
-	
-	
+/**
+ * Checks if the app is started for the first time or not and fires a fitting welcome note. (TO DO: The check in this method should be replaced by a check, if a data object can be retrieved or not.
+ * @method checkIfFirstStart
+ * @static 
+ */	
 	my.checkIfFirstStart = function (){
 
 		var first_start = localStorage.getItem("first_start");
@@ -456,7 +536,14 @@ var APP = (function () {
 
 	};
 	
-	
+
+/**
+ * Shows a log message to the user
+ * @method log
+ * @param {string} message The message to display.
+ * @param {string} type Type of the log message resulting in different colors ("error" => red flag, "success" => green flag, else: black flag).
+ * @static 
+ */		
 	my.log = function(message, type){
 		
 		if (!type){
@@ -466,8 +553,17 @@ var APP = (function () {
 		alertify.log(message, type, APP.CONF.log_message_period);
 	
 	};
+
 	
-	
+/**
+ * Shows a confirm dialog to the user
+ * @method confirm
+ * @param {string} message The message to display.
+ * @param {function} callback The function to be called when the user makes a decision. An bool value is passed to this function: true when user pressed ok, false when user pressed cancel.
+ * @param {function} ok_label The text of the OK button.
+ * @param {function} cancel_label The text of the cancel button.
+ * @static 
+ */	
 	my.confirm = function(message, callback, ok_label, cancel_label){
 	
 		alertify.set({ labels: {
@@ -479,7 +575,13 @@ var APP = (function () {
 	
 	};
 	
-	
+
+/**
+ * Shows an alert message to the user.
+ * @method alert
+ * @param {string} message The message to display.
+ * @static 
+ */		
 	my.alert = function(message) {
 	
 		alertify.set({ labels: {
@@ -491,61 +593,11 @@ var APP = (function () {
 	};
 
 
-	my.renderStartPage = function (){
-	
-		var view = g("VIEW_start");
-
-		var random_index = Math.floor(Math.random() * APP.CONF.hellos.length);
-		g("hello").innerHTML = APP.CONF.hellos[random_index][0];
-		g("hello").addEventListener("click", function () {
-			my.log(my.l("start", "this_is","before_language") + APP.CONF.hellos[random_index][1] + my.l("start", "this_is","after_language"));
-		});
-
-		g("greeting_text").innerHTML = my.l("start","greeting_text");
-		g("start_select_profile_span").innerHTML = my.l("start","select_your_profile");
-		
-		g("before_lets_go").innerHTML = my.l("start","and_lets_go__before_link");
-		g("link_lets_go").innerHTML = my.l("start","and_lets_go__link");
-		g("after_lets_go").innerHTML = my.l("start","and_lets_go__after_link");
-		
-		g("supported_by_label").innerHTML = my.l("start","is_supported_by");
-		g("need_help_label").innerHTML = my.l("start","need_help");
-		g("help_pages_description").innerHTML = my.l("start","help_pages_description");
-		
-		var lang_links = g("lang_links");
-		
-		forEach(my.languages, function(language, counter){
-			
-			dom.link(lang_links, "", "", language.code.toUpperCase(), function(){
-				APP.changeLanguage(counter);
-			});
-			
-			dom.span(lang_links, "", "", "  ");
-		
-		});
-		
-		
-		g('link_lets_go').addEventListener('click', function() {
-		
-			if (typeof my.environments.active_environment == "undefined"){
-				my.environments.create(my.environments.get(0));	
-			}
-			
-			if (my.environments.active_environment.workflow[0]){
-				my.view(my.environments.active_environment.workflow[0]);
-			}
-			
-			else {
-			
-				console.error("ERROR: The active profile does not have a workflow!");
-				
-			}
-			
-		});
-		
-	};
-	
-	
+/**
+ * This method deletes all saved data and reloads the app. It is quite DANGEROUS!
+ * @method hard_reset
+ * @static 
+ */	
 	my.hard_reset = function(){
 
 		my.save_and_recall.deleteAllData();
@@ -554,12 +606,13 @@ var APP = (function () {
 
 	};
 
-	/**
-	* This method changes the view of the app. A view can be a view of the app, 
-	* or of a module of an environment.
-	* @method view
-	* @param {Mixed} module_or_id It can be a module or an id of a view element.
-	*/
+	
+/**
+* This method changes the view of the app. A view can be a view of the app, 
+* or of a module of an environment.
+* @method view
+* @param {Mixed} module_or_id It can be a module or an id of a view element.
+*/
 	my.view = function (module_or_id){
 		var module;
 		var id;
@@ -636,14 +689,27 @@ var APP = (function () {
 		
 	};
 	
-	
+
+/**
+* Saves the current state of the APP and the active environment.
+* @method save
+* @static
+*/
 	my.save = function(){
 	
 		my.save_and_recall.save();
 	
 	};
 	
-	
+
+/**
+* Saves a file with text content. For the user, it looks like a download.
+* @method save_file
+* @param {string} text Content of file as string
+* @param {string} filename Filename
+* @param {string} mime_type Mime type for download
+* @static
+*/	
 	my.save_file = function (text, filename, mime_type){
 
 		var clean_filename = strings.replaceAccentBearingLettersWithASCISubstitute(filename);

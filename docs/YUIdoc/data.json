@@ -1,0 +1,912 @@
+{
+    "project": {},
+    "files": {
+        "core\\app.gui.js": {
+            "name": "core\\app.gui.js",
+            "modules": {},
+            "classes": {
+                "APP.GUI": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "core\\app.gui.pager.js": {
+            "name": "core\\app.gui.pager.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "core\\app.js": {
+            "name": "core\\app.js",
+            "modules": {
+                "CORE": 1
+            },
+            "classes": {
+                "APP": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "alertify.js": {
+            "name": "alertify.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "helpers.js": {
+            "name": "helpers.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "CORE": {
+            "name": "CORE",
+            "submodules": {},
+            "classes": {
+                "APP.GUI": 1,
+                "APP": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "core\\app.js",
+            "line": 23,
+            "description": "The main module for the app."
+        }
+    },
+    "classes": {
+        "APP.GUI": {
+            "name": "APP.GUI",
+            "shortname": "APP.GUI",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "file": "core\\app.gui.js",
+            "line": 17,
+            "description": "A sub module of APP that deals with the GUI."
+        },
+        "APP": {
+            "name": "APP",
+            "shortname": "APP",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "namespace": "",
+            "file": "core\\app.js",
+            "line": 23,
+            "description": "The main module for the app."
+        }
+    },
+    "classitems": [
+        {
+            "file": "core\\app.gui.js",
+            "line": 28,
+            "description": "Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element"
+                }
+            ],
+            "itemtype": "method",
+            "name": "showBusyIndicator",
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 54,
+            "description": "Hides the busy indicator again.  (This feature is in pre-alpha state. Do not use it yet.)",
+            "itemtype": "method",
+            "name": "showBusyIndicator",
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 67,
+            "description": "Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)",
+            "itemtype": "method",
+            "name": "setIcon",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "DOM element of the icon (has to be be img)"
+                },
+                {
+                    "name": "icon_id",
+                    "description": "Name of the icon."
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 80,
+            "description": "Sets a value to a form element",
+            "itemtype": "method",
+            "name": "setFormValue",
+            "params": [
+                {
+                    "name": "element_id",
+                    "description": "ID of DOM element"
+                },
+                {
+                    "name": "value",
+                    "description": "Value"
+                },
+                {
+                    "name": "open_vocabulary",
+                    "description": "If element is an open vocabulary, it should be provided here, too."
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.pager.js",
+            "line": 70,
+            "class": "APP"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 99,
+            "description": "Initializes the app. This method is called on \"DOMContentLoaded\".",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "no_recall",
+                    "description": "If true, the app will not attempt to recall saved data from the application cache.",
+                    "type": "Boolean"
+                }
+            ],
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 170,
+            "description": "Tries to retrieve the APP language by looking at what language the browser is set (navigator.language).",
+            "itemtype": "method",
+            "name": "getActiveLanguageByNavigatorLanguageOrTakeDefault",
+            "return": {
+                "description": "LanguagePack Returns an APP LanguagePack, that matches the browser language or returns the default LanguagePack of the APP.",
+                "type": "Object"
+            },
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 313,
+            "description": "Tries to get a term in a specific language. This method is called by environments each time a language dependent term is displayed by an environment.",
+            "itemtype": "method",
+            "name": "getTermInActiveLanguage",
+            "params": [
+                {
+                    "name": "LanguagePacksArray",
+                    "description": "An array with all the available LanguagePacks of the environment.",
+                    "type": "Array"
+                },
+                {
+                    "name": "arg1",
+                    "description": "First key in LanguagePack to look at.",
+                    "type": "String"
+                },
+                {
+                    "name": "arg2",
+                    "description": "Second key in LanguagePack to look at.",
+                    "type": "String"
+                },
+                {
+                    "name": "arg3",
+                    "description": "Third key in LanguagePack to look at.",
+                    "type": "String"
+                },
+                {
+                    "name": "arg4",
+                    "description": "Fourth key in LanguagePack to look at.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "term Returns the term in the specific language. If there is no term in that language, the term in the default language is returned. If there is no term in the default language, APP.CONF.language_error_placeholder is returned.",
+                "type": "String"
+            },
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 510,
+            "description": "Checks if the app is started for the first time or not and fires a fitting welcome note. (TO DO: The check in this method should be replaced by a check, if a data object can be retrieved or not.",
+            "itemtype": "method",
+            "name": "checkIfFirstStart",
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 540,
+            "description": "Shows a log message to the user",
+            "itemtype": "method",
+            "name": "log",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message to display.",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "Type of the log message resulting in different colors (\"error\" => red flag, \"success\" => green flag, else: black flag).",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 558,
+            "description": "Shows a confirm dialog to the user",
+            "itemtype": "method",
+            "name": "confirm",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message to display.",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The function to be called when the user makes a decision. An bool value is passed to this function: true when user pressed ok, false when user pressed cancel.",
+                    "type": "Function"
+                },
+                {
+                    "name": "ok_label",
+                    "description": "The text of the OK button.",
+                    "type": "Function"
+                },
+                {
+                    "name": "cancel_label",
+                    "description": "The text of the cancel button.",
+                    "type": "Function"
+                }
+            ],
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 579,
+            "description": "Shows an alert message to the user.",
+            "itemtype": "method",
+            "name": "alert",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message to display.",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 596,
+            "description": "This method deletes all saved data and reloads the app. It is quite DANGEROUS!",
+            "itemtype": "method",
+            "name": "hard_reset",
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 610,
+            "description": "This method changes the view of the app. A view can be a view of the app, \nor of a module of an environment.",
+            "itemtype": "method",
+            "name": "view",
+            "params": [
+                {
+                    "name": "module_or_id",
+                    "description": "It can be a module or an id of a view element.",
+                    "type": "Mixed"
+                }
+            ],
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 693,
+            "description": "Saves the current state of the APP and the active environment.",
+            "itemtype": "method",
+            "name": "save",
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "core\\app.js",
+            "line": 705,
+            "description": "Saves a file with text content. For the user, it looks like a download.",
+            "itemtype": "method",
+            "name": "save_file",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "Content of file as string",
+                    "type": "String"
+                },
+                {
+                    "name": "filename",
+                    "description": "Filename",
+                    "type": "String"
+                },
+                {
+                    "name": "mime_type",
+                    "description": "Mime type for download",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "APP",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 17,
+            "description": "Markup pieces",
+            "type": "{Object}",
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 33,
+            "description": "Return the proper transitionend event",
+            "return": {
+                "description": "Transition type string",
+                "type": "String"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 63,
+            "description": "Shorthand for document.getElementById()",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "A specific element ID",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "HTML element",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 73,
+            "description": "Alertify private object",
+            "type": "{Object}",
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 79,
+            "description": "Labels object",
+            "type": "{Object}",
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 88,
+            "description": "Delay number",
+            "type": "{Number}",
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 94,
+            "description": "Whether buttons are reversed (default is secondary/primary)",
+            "type": "{Boolean}",
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 100,
+            "description": "Which button should be focused by default",
+            "type": "{String}\t\"ok\" (default), \"cancel\", or \"none\"",
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 106,
+            "description": "Set the transition event on load",
+            "type": "{[type]}",
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 112,
+            "description": "Set the proper button click events",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "[Optional] Callback function",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 189,
+            "description": "Bind events to elements",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "HTML Object",
+                    "type": "Object"
+                },
+                {
+                    "name": "event",
+                    "description": "Event to attach to element",
+                    "type": "Event"
+                },
+                {
+                    "name": "fn",
+                    "description": "Callback function",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 206,
+            "description": "Use alertify as the global error handler (using window.onerror)",
+            "return": {
+                "description": "success",
+                "type": "Boolean"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 223,
+            "description": "Append button HTML strings",
+            "params": [
+                {
+                    "name": "secondary",
+                    "description": "The secondary button HTML string",
+                    "type": "String"
+                },
+                {
+                    "name": "primary",
+                    "description": "The primary button HTML string",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The appended button HTML strings",
+                "type": "String"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 235,
+            "description": "Build the proper message box",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "Current object in the queue",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "An HTML string of the message box",
+                "type": "String"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 291,
+            "description": "Close the log messages",
+            "params": [
+                {
+                    "name": "elem",
+                    "description": "HTML Element of log message to close",
+                    "type": "Object"
+                },
+                {
+                    "name": "wait",
+                    "description": "[optional] Time (in ms) to wait before automatically hiding the message, if 0 never hide",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 340,
+            "description": "Create a dialog box",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message passed from the callee",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "Type of dialog to create",
+                    "type": "String"
+                },
+                {
+                    "name": "fn",
+                    "description": "[Optional] Callback function",
+                    "type": "Function"
+                },
+                {
+                    "name": "placeholder",
+                    "description": "[Optional] Default value for prompt input field",
+                    "type": "String"
+                },
+                {
+                    "name": "cssClass",
+                    "description": "[Optional] Class(es) to append to dialog box",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 376,
+            "description": "Extend the log method to create custom methods",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Custom method name",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Function"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 391,
+            "description": "Hide the dialog and rest to defaults",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 426,
+            "description": "Initialize Alertify\nCreate the 2 main elements",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 468,
+            "description": "Show a new log message box",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message passed from the callee",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "[Optional] Optional type of log message",
+                    "type": "String"
+                },
+                {
+                    "name": "wait",
+                    "description": "[Optional] Time (in ms) to wait before auto-hiding the log",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 493,
+            "description": "Add new log message\nIf a type is passed, a class name \"alertify-log-{type}\" will get added.\nThis allows for custom look and feel for various types of notifications.",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message passed from the callee",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "[Optional] Type of log message",
+                    "type": "String"
+                },
+                {
+                    "name": "wait",
+                    "description": "[Optional] Time (in ms) to wait before auto-hiding",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 515,
+            "description": "Set properties",
+            "params": [
+                {
+                    "name": "args",
+                    "description": "Passing parameters",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 534,
+            "description": "Common place to set focus to proper element",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 547,
+            "description": "Initiate all the required pieces for the dialog box",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 586,
+            "description": "Unbind events to elements",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "HTML Object",
+                    "type": "Object"
+                },
+                {
+                    "name": "event",
+                    "description": "Event to detach to element",
+                    "type": "Event"
+                },
+                {
+                    "name": "fn",
+                    "description": "Callback function",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "",
+            "module": "CORE"
+        },
+        {
+            "file": "helpers.js",
+            "line": 318,
+            "description": "Remove an element and provide a function that inserts it into its original position",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "The element to be temporarily removed",
+                    "type": "Element"
+                }
+            ],
+            "return": {
+                "description": "A function that inserts the element into its original position",
+                "type": "Function"
+            },
+            "class": "",
+            "module": "CORE"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type",
+            "line": " core\\app.gui.pager.js:70"
+        },
+        {
+            "message": "Missing item type\nMarkup pieces",
+            "line": " alertify.js:17"
+        },
+        {
+            "message": "Missing item type\nReturn the proper transitionend event",
+            "line": " alertify.js:33"
+        },
+        {
+            "message": "Missing item type\nShorthand for document.getElementById()",
+            "line": " alertify.js:63"
+        },
+        {
+            "message": "Missing item type\nAlertify private object",
+            "line": " alertify.js:73"
+        },
+        {
+            "message": "Missing item type\nLabels object",
+            "line": " alertify.js:79"
+        },
+        {
+            "message": "Missing item type\nDelay number",
+            "line": " alertify.js:88"
+        },
+        {
+            "message": "Missing item type\nWhether buttons are reversed (default is secondary/primary)",
+            "line": " alertify.js:94"
+        },
+        {
+            "message": "Missing item type\nWhich button should be focused by default",
+            "line": " alertify.js:100"
+        },
+        {
+            "message": "Missing item type\nSet the transition event on load",
+            "line": " alertify.js:106"
+        },
+        {
+            "message": "Missing item type\nSet the proper button click events",
+            "line": " alertify.js:112"
+        },
+        {
+            "message": "Missing item type\nBind events to elements",
+            "line": " alertify.js:189"
+        },
+        {
+            "message": "Missing item type\nUse alertify as the global error handler (using window.onerror)",
+            "line": " alertify.js:206"
+        },
+        {
+            "message": "Missing item type\nAppend button HTML strings",
+            "line": " alertify.js:223"
+        },
+        {
+            "message": "Missing item type\nBuild the proper message box",
+            "line": " alertify.js:235"
+        },
+        {
+            "message": "Missing item type\nClose the log messages",
+            "line": " alertify.js:291"
+        },
+        {
+            "message": "Missing item type\nCreate a dialog box",
+            "line": " alertify.js:340"
+        },
+        {
+            "message": "Missing item type\nExtend the log method to create custom methods",
+            "line": " alertify.js:376"
+        },
+        {
+            "message": "Missing item type\nHide the dialog and rest to defaults",
+            "line": " alertify.js:391"
+        },
+        {
+            "message": "Missing item type\nInitialize Alertify\nCreate the 2 main elements",
+            "line": " alertify.js:426"
+        },
+        {
+            "message": "Missing item type\nShow a new log message box",
+            "line": " alertify.js:468"
+        },
+        {
+            "message": "Missing item type\nAdd new log message\nIf a type is passed, a class name \"alertify-log-{type}\" will get added.\nThis allows for custom look and feel for various types of notifications.",
+            "line": " alertify.js:493"
+        },
+        {
+            "message": "Missing item type\nSet properties",
+            "line": " alertify.js:515"
+        },
+        {
+            "message": "Missing item type\nCommon place to set focus to proper element",
+            "line": " alertify.js:534"
+        },
+        {
+            "message": "Missing item type\nInitiate all the required pieces for the dialog box",
+            "line": " alertify.js:547"
+        },
+        {
+            "message": "Missing item type\nUnbind events to elements",
+            "line": " alertify.js:586"
+        },
+        {
+            "message": "Missing item type\nRemove an element and provide a function that inserts it into its original position",
+            "line": " helpers.js:318"
+        }
+    ]
+}
