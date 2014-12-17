@@ -628,12 +628,12 @@ eldp_environment.workflow[2] = (function() {
 					my.bundles.get(s).persons.description = my.bundles.getFirst().persons.description;
 				}
 
-				if (fields_to_copy[k] == "resources_recording_equipment"){
-					my.bundles.get(s).resources.recording_equipment = my.bundles.getFirst().resources.recording_equipment;
+				if (fields_to_copy[k] == "resources_access_restrictions"){
+					my.bundles.get(s).resources.access_restrictions = my.bundles.getFirst().resources.access_restrictions;
 				}	
 
-				if (fields_to_copy[k] == "resources_recording_conditions"){
-					my.bundles.get(s).resources.recording_conditions = my.bundles.getFirst().resources.recording_conditions;
+				if (fields_to_copy[k] == "resources_access_conditions"){
+					my.bundles.get(s).resources.access_conditions = my.bundles.getFirst().resources.access_conditions;
 				}	
 				
 			}
@@ -676,12 +676,12 @@ eldp_environment.workflow[2] = (function() {
 				last_bundle.persons.description = second_last_bundle.persons.description;
 			}	
 
-			if (fields_to_copy[k] == "resources_recording_equipment"){
-				last_bundle.resources.recording_equipment = second_last_bundle.resources.recording_equipment;
+			if (fields_to_copy[k] == "resources_access_restrictions"){
+				last_bundle.resources.access_restrictions = second_last_bundle.resources.access_restrictions;
 			}	
 
-			if (fields_to_copy[k] == "resources_recording_conditions"){
-				last_bundle.resources.recording_conditions = second_last_bundle.resources.recording_conditions;
+			if (fields_to_copy[k] == "resources_access_conditions"){
+				last_bundle.resources.access_conditions = second_last_bundle.resources.access_conditions;
 			}				
 			
 		}

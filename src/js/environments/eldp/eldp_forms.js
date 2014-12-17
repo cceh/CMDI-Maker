@@ -210,9 +210,9 @@ eldp_environment.bundle_form = {
 			fields: []
 		},
 		{
-			name: "recording_equipment_conditions",
-			label: "Recording Equipment/Conditions",
-			fields: ["resources_recording_equipment", "resources_recording_conditions"]
+			name: "restrictions_conditions_of_access",
+			label: "Restrictions/Conditions Of Access",
+			fields: ["resources_access_restrictions", "resources_access_conditions"]
 		},		
 	]
 };
@@ -322,14 +322,14 @@ eldp_environment.person_form = {
 					type: "text"
 				},
 				{
-					heading: "Additional Information (Person)",
-					name: "person_additional_information",
-					type: "textarea"
-				},
-				{
 					heading: "Biographical Note",
 					name: "biographical_note",
 					type: "textarea",
+				},
+				{
+					heading: "Additional Information (Person)",
+					name: "person_additional_information",
+					type: "textarea"
 				},
 				{
 					heading: "Anonymized",
