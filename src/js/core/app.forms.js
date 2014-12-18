@@ -235,7 +235,7 @@ APP.forms = (function () {
 					element_id_prefix += field.name + "_";
 				}
 				
-				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, data_object[field.name], on_special);
+				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, (data_object ? data_object[field.name] : undefined), on_special);
 				
 			}
 		},
