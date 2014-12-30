@@ -384,7 +384,7 @@ input[type="checkbox"], input[type="radio"]{
 	font-size: 8pt;
 	text-align: center;
 	padding: 0px 12px;
-	width: 70px;
+	min-width: 70px;
 	cursor: pointer;
 	color: #4D87C7;
 }

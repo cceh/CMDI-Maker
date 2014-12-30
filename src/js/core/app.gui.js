@@ -88,6 +88,11 @@ APP.GUI = (function() {
 
 		var element = g(element_id);
 		var new_element;
+		
+		if (!element){
+			console.error("setFormValue: No element found! element_id = " + element_id);
+			return;
+		}
 
 		if (element.nodeName == "SELECT"){
 		

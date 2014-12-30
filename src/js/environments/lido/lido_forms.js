@@ -4,35 +4,159 @@
 	type: "form",
 	fields: [
 		{
-			heading: "Source",
-			name: "source",
-			type: "text",
-			comment: "Source of the information given here. This is probably you or your institution.",
-			default_value: "Theaterwissenschaftliche Sammlung Schloss Wahn"
+			type: "column",
+			fields: [
+				{
+					heading: "Source",
+					name: "source",
+					type: "text",
+					comment: "Source of the information given here. This is probably you or your institution.",
+					default_value: "Theaterwissenschaftliche Sammlung Schloss Wahn"
+				},
+				{
+					heading: "ID",
+					name: "object_id",
+					type: "text",
+					comment: "Identifier of this object. Maybe something like DE-Wahn2014/lido-obj00154983"
+				},
+				{
+					heading: "Legal Body",
+					name: "legal_body",
+					type: "textarea",
+					default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln\nGrafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln\nSzenische Grafik ,Grafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln"
+				},
+				{
+					heading: "Type",
+					name: "type",
+					type: "select",
+					comment: "This is an easy one! Just select the type of the object.",
+					vocabulary: ["Programmhefte", "Kritiken", "Noten", "Libretti", "Szenische Grafik", "Porträtgrafik",
+					"Theaterbaugrafik", "Papiertheater", "Gemälde", "Theaterplakate", "Inszenierungsfotografien",
+					"Personenfotografien", "Theaterbaufotografien", "Tanzfotografien", "Glasplattennegative", "Fotoalben",
+					"Bühnenmodelle", "Masken", "Puppen", "Schattenspielfiguren", "Marionetten", "Plastiken", "Filmfotos",
+					"Filmplakate"],
+				},
+				{
+					heading: "Classification",
+					name: "classification",
+					type: "text",
+					//comment: ""
+				},		
+			],
 		},
 		{
-			heading: "ID",
-			name: "object_id",
-			type: "text",
-			comment: "Identifier of this object. Maybe something like DE-Wahn2014/lido-obj00154983"
+			type: "column",
+			title: "Record",
+			name: "record",
+			fields: [
+				{
+					heading: "Record ID",
+					name: "id",
+					type: "text",
+					comment: "Source of the information given here. This is probably you or your institution.",
+					default_value: "Theaterwissenschaftliche Sammlung Schloss Wahn"
+				},
+				{
+					heading: "Record Type",
+					name: "type",
+					type: "text",
+					comment: "Source of the information given here. This is probably you or your institution.",
+					default_value: "Theaterwissenschaftliche Sammlung Schloss Wahn"
+				},
+				{
+					heading: "Record Rights",
+					type: "subarea",
+					fields: [
+						{
+							heading: "Rights Type",
+							name: "type",
+							type: "text",
+							comment: "Definition: The specific type of right being recorded.",
+						},
+						{
+							heading: "Rights Date",
+							name: "type",
+							type: "text",
+							comment: "Definition: The date on which a right is or was current.",
+						},
+						{
+							heading: "Rights Holder",
+							name: "type",
+							type: "text",
+							comment: "Definition: The holder of the right.",
+						},	
+						{
+							heading: "Credit Line",
+							name: "type",
+							type: "text",
+							comment: "Definition: Acknowledgement of the rights associated with the physical and/or digital object as requested.",
+						},	
+					]
+				}
+			]
 		},
 		{
-			heading: "Legal Body",
-			name: "legal_body",
-			type: "textarea",
-			default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln\nGrafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln\nSzenische Grafik ,Grafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln"
-		},
-		{
-			heading: "Type",
-			name: "type",
-			type: "select",
-			comment: "This is an easy one! Just select the type of the object.",
-			vocabulary: ["Programmhefte", "Kritiken", "Noten", "Libretti", "Szenische Grafik", "Porträtgrafik",
-			"Theaterbaugrafik", "Papiertheater", "Gemälde", "Theaterplakate", "Inszenierungsfotografien",
-			"Personenfotografien", "Theaterbaufotografien", "Tanzfotografien", "Glasplattennegative", "Fotoalben",
-			"Bühnenmodelle", "Masken", "Puppen", "Schattenspielfiguren", "Marionetten", "Plastiken", "Filmfotos",
-			"Filmplakate"],
-		},
+			type: "column",
+			title: "Resource",
+			name: "resource",
+			fields: [
+				{
+					heading: "Resource ID",
+					name: "id",
+					type: "text",
+					comment: "Source of the information given here. This is probably you or your institution.",
+				},
+				{
+					heading: "Link Resource",
+					name: "link",
+					type: "text",
+					comment: "Source of the information given here. This is probably you or your institution.",
+				},
+				{
+					heading: "Resource Type",
+					name: "type",
+					type: "text",
+					comment: "Source of the information given here. This is probably you or your institution.",
+				},
+{
+					heading: "Resource Source",
+					name: "type",
+					type: "text",
+					comment: "Source of the information given here. This is probably you or your institution.",
+					default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln"
+				},				
+				{
+					heading: "Rights Resource",
+					type: "subarea",
+					fields: [
+						{
+							heading: "Rights Type",
+							name: "type",
+							type: "text",
+							comment: "Definition: The specific type of right being recorded.",
+						},
+						{
+							heading: "Rights Date",
+							name: "type",
+							type: "text",
+							comment: "Definition: The date on which a right is or was current.",
+						},
+						{
+							heading: "Rights Holder",
+							name: "type",
+							type: "text",
+							comment: "Definition: The holder of the right.",
+						},	
+						{
+							heading: "Credit Line",
+							name: "type",
+							type: "text",
+							comment: "Definition: Acknowledgement of the rights associated with the physical and/or digital object as requested.",
+						},	
+					]
+				}
+			]
+		}		
 	]
 
 };
@@ -42,21 +166,22 @@ lido_environment.object_form = {
 
 	title: "lido-object",
 	type: "form",
+	heading: "Object Identification",
 	fields: [
 		{
 			type: "column",
-			heading: "Object Classification",
+			title: "Object Classification",
 			fields: [
 				{
-					heading: "Titles (one value per line)",
+					heading: "Title",
 					name: "title",
-					type: "textarea",
+					type: "text",
 				},
 				{
 					heading: "Legal Body",
 					name: "legal_body",
-					type: "textarea",
-					default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln\nGrafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln\nSzenische Grafik ,Grafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln"
+					type: "text",
+					default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln"
 				},
 				{
 					heading: "Inventory Number",
@@ -73,13 +198,32 @@ lido_environment.object_form = {
 					heading: "Display Object Measurements",
 					name: "display_object_measurements",
 					type: "text"
-				}
+				},
+				{
+					heading: "Measurement Unit",
+					name: "measurement_unit",
+					type: "text",
+					default_value: "cm"
+				},
+				{
+					heading: "Measurement Type",
+					name: "measurement_type",
+					type: "text",
+					default_value: "H x B x T",
+				},				
 			]
-		},
+		}
+	]
+};
+
+
+lido_environment.object_relation_form = {
+	name: "object_relation",
+	type: "form",
+	heading: "Object Relation",
+	fields: [
 		{
 			type: "column",
-			heading: "Object Relation",
-			name: "object_relation",
 			fields: [
 				{
 					heading: "Display Subject",
@@ -88,22 +232,102 @@ lido_environment.object_form = {
 					comment: "Kurzbeschreibung \"Worum gehts?\", \"Was/Wenn dokumentiert das Objekt?\"",				
 				},
 				{
+					heading: "Subject Concept",
+					name: "subject_concept",
+					type: "textarea",
+					comment: "How to record: May include iconography, themes from literature, or generic terms describing the material world, or topics (e.g., concepts, themes, or issues). However, references to people, dates, events, places, objects are indicated in the the respective sub-elements Subject Actor Set, Subject Date Set, Subject Event Set, Subject Place Set, and Subject Object Set.Preferably taken from a published controlled vocabulary.",				
+				},				
+				{
 					heading: "Actor Identifier",
 					name: "actor_identifier",
 					type: "text",
 					comment: "Identifier assigned to a person, group of people.",				
 				},
 				{
+					heading: "Subject Date",
+					name: "subject_date",
+					type: "text",
+					comment: "Datum (JJJJ-MM-TT) oder nur Jahr",				
+				},	
+				{
+					heading: "Subject Place",
+					name: "subject_place",
+					type: "text",
+					comment: "Z. B. \"Bayreuth, Festspielhaus\""
+				}
+			],
+		},
+		{
+			type: "column",
+			title: "Event",
+			name: "event",
+			fields: [
+				{
+					heading: "Event Name",
+					name: "title",
+					type: "text",
+					comment: "The nature of the event associated with an object / work."
+				},
+				{
+					heading: "Event Type",
+					name: "type",
+					type: "text",
+					//comment: "The nature of the event associated with an object / work."
+				},		
+				{
+					heading: "Earliest Date",
+					name: "earliest_date",
+					type: "year"
+				},
+				{
+					heading: "Latest Date",
+					name: "latest_date",
+					type: "year"
+				},
+				{
+					heading: "Culture",
+					name: "culture",
+					type: "text",
+					comment: "Wichtig z.B. bei Masken, Figuren"
+				},
+				{
 					type: "subarea",
-					heading: "Event",
-					name: "event",
-					fields: []
+					heading: "Actor",
+					name: "actor",
+					fields: [
+						{
+							heading: "Name",
+							name: "name",
+							type: "text",
+						},
+						{
+							heading: "Earliest Date",
+							name: "earliest_date",
+							type: "year",
+						},
+						{
+							heading: "Latest Date",
+							name: "latest_date",
+							type: "year",
+						},
+						{
+							heading: "Role",
+							name: "role",
+							type: "text",
+						},
+						{
+							heading: "Gender",
+							name: "gender",
+							type: "select",
+							vocabulary: ["male", "female", "other"]
+						},
+					],
 				}
 			]
 		}
-
 	]
 
+	
 };
 
 
@@ -119,6 +343,12 @@ lido_environment.event_form = {
 			type: "text",
 			comment: "The nature of the event associated with an object / work."
 		},
+		{
+			heading: "Event Type",
+			name: "type",
+			type: "text",
+			//comment: "The nature of the event associated with an object / work."
+		},		
 		{
 			heading: "Earliest Date",
 			name: "earliest_date",
@@ -142,7 +372,7 @@ lido_environment.event_form = {
 			fields: [
 				{
 					heading: "Name",
-					name: "actor_name",
+					name: "name",
 					type: "text",
 				},
 				{
@@ -160,6 +390,12 @@ lido_environment.event_form = {
 					name: "role",
 					type: "text",
 				},
+				{
+					heading: "Gender",
+					name: "gender",
+					type: "select",
+					vocabulary: ["male", "female", "other"]
+				},				
 			],
 		}
 	]

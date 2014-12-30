@@ -1,4 +1,4 @@
-﻿lido_environment.workflow[3] = (function (){
+﻿lido_environment.workflow.push((function (){
 	'use strict';
 
 	var my = {};
@@ -12,7 +12,7 @@
 	my.identity = {
 		id: "xml_output",
 		title: "XML Output",
-		icon: "data"
+		icon: "submit"
 	};
 	
 	
@@ -58,4 +58,4 @@
 	
 	return my;
 	
-})();
+})());

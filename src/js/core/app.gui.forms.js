@@ -165,25 +165,70 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
-	my.clickableListSmall = function(parent, array, title_key, subtitle_key, action, highlighted_index){
+	//NOT YET READY!!!
+	my.clickableListSmall = function(parent, titles, subtitles, action, id, highlighted_index){
 	
-		parent.innerHTML = "";
+		var list_div;
 	
-		forEach(array, function(item){
+		var renderItem = function(parent, title, subtitle, action, highlighted){
 		
 			var div = dom.make('div', "", "clickable_list_entry", parent);
 			
-			dom.h2(div, item[title_key]);
-			dom.p(div, item[subtitle_key]);
+			if (highlighted){
+				div.className += " clickable_list_entry_highlighted";
+			}
 			
-			div.addEventListener('click', function(num) { 
-				return function(){ action(num); }; 
-			}(i), false );	
+			dom.h2(div, title);
+			dom.p(div, subtitle);
+			
+			div.addEventListener('click', action, false);	
+			
+			return div;
+		
+		};
+		
+		
+		var render = function(parent, titles, subtitles, action, highlighted_index){
+		
+			var elements = [];
+		
+			parent.innerHTML = "";
+			
+			list_div = dom.make("div", id, "", parent);
+		
+			for (var i = 0; i < titles.length; i++){
+				
+				var div = renderItem(
+					list_div,
+					titles[i],
+					subtitles[i],
+					function(num) { 
+						return function(){ action(num); }; 
+					}(i),
+					(highlighted_index == i)
+				);
+				
+				elements.push(div);	
+				
+			}
+			
+			return elements;
+			
+		};
 
-		});
+		
+		return {
+			elements: render(parent, titles, subtitles, action, highlighted_index),
+			list_element: list_div,
+			changeHighlight: function(new_index){
+				render(parent, titles, subtitles, action, new_index);
+			},
+			refresh: function(titles, subtitles){
+				render(parent, titles, subtitles, action, highlighted_index)
+			}
+		}
 	
 	}
-	
 	
 	return my;
 	

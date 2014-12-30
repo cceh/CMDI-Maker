@@ -1,39 +1,34 @@
 ﻿lido_environment.workflow.push((function(){
 	'use strict';
 	
-	
-	//PUBLIC
-	
+
 	var my = {};
 	my.parent = lido_environment;
-	var event_form = my.parent.event_form;
 	var bundle;
 
-	my.element_id_prefix = "event_";
+	my.element_id_prefix = "actor_";
 	
 	my.identity = {
-		id: "event",
-		title: "Event",
-		icon: "clock"
+		id: "object_relation",
+		title: "Object Relation",
+		icon: "network"
 	};
 	
 	my.module_view;
 	
 	my.init = function(view){
 	
-		dom.h3(view, "The LIDO event");
+		dom.h1(view, "Object Relation");
 		dom.br(view);
-		APP.forms.make(view, my.parent.event_form, "event_", "event_", undefined);
 		
-		my.module_view = view;
+		APP.forms.make(view, my.parent.object_relation_form, "object_", "object_", undefined);
 		
 	};
 	
-
+	
 	my.getSaveData = function(){
 	
-		var object = {};
-		return object;
+		return;
 	
 	};
 	
@@ -48,7 +43,7 @@
 	my.functions = function(){
 		return [];
 	};
-	
+
 
 	return my;
 	

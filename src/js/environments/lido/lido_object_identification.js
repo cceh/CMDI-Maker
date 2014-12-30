@@ -1,4 +1,4 @@
-﻿lido_environment.workflow[1] = (function(){
+﻿lido_environment.workflow.push((function(){
 	'use strict';
 	
 
@@ -9,16 +9,16 @@
 	my.element_id_prefix = "actor_";
 	
 	my.identity = {
-		id: "object",
-		title: "Object",
-		icon: "user"
+		id: "object_identification",
+		title: "Object Identification",
+		icon: "blocks"
 	};
 	
 	my.module_view;
 	
 	my.init = function(view){
 	
-		dom.h3(view, "Now it's all about the object!");
+		dom.h1(view, "Object Identification");
 		dom.br(view);
 		
 		APP.forms.make(view, my.parent.object_form, "object_", "object_", undefined);
@@ -47,4 +47,4 @@
 
 	return my;
 	
-})();
+})());

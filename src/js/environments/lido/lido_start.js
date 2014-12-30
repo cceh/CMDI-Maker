@@ -1,4 +1,4 @@
-﻿lido_environment.workflow[0] = (function(){
+﻿lido_environment.workflow.push((function(){
 	'use strict';
 
 	var my = {};
@@ -10,7 +10,7 @@
 	my.identity = {
 		id: "lido_start",
 		title: "Start",
-		icon: "blocks",
+		icon: "right",
 	};
 
 	my.view_id = "VIEW_start";
@@ -53,7 +53,7 @@
 	};
 	
 	
-	my.refresh = function(not_in_bundles) {
+	my.refresh = function() {
 	
 	};
 
@@ -66,5 +66,5 @@
 	
 	return my;
 
-})();
+})());
   
