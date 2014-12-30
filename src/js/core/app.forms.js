@@ -697,6 +697,17 @@ APP.forms = (function () {
 	//field = form template object
 	
 		var sub_object;
+		
+		if (!field){
+			console.error("fillObjectWithFormData: FIELD is undefined. element_id_prefix = " + element_id_prefix)
+			return;
+		}
+
+		if (!object){
+			console.error("fillObjectWithFormData: object is undefined. element_id_prefix = " + element_id_prefix)
+			return;
+		}		
+		
 
 		if ((field.type == "year") || (field.type == "text") || (field.type == "textarea") || (field.type == "select") || (field.type == "open_vocabulary")){
 
@@ -742,7 +753,7 @@ APP.forms = (function () {
 			forEach(field.fields, function(field){
 				
 				//check if a sub object has to be created
-				if (field.name && field.name !== "" && (field.type == "column" || field.type == "subarea")){
+				if (field.name && field.name !== "" && (field.type == "column"/* || field.type == "subarea"*/)){
 					sub_object = object[field.name];
 				}
 				
