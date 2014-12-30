@@ -21,14 +21,14 @@
 		dom.h1(view, "Object Identification");
 		dom.br(view);
 		
-		APP.forms.make(view, my.parent.object_form, "object_", "object_", undefined);
+		APP.forms.make(view, my.parent.object_form, "object_identification_", "object_identification_", undefined);
 		
 	};
 	
 	
 	my.getSaveData = function(){
 	
-		return;
+		return APP.forms.makeObjectWithFormData(my.parent.object_form, "object_identification_");
 	
 	};
 	

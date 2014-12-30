@@ -21,14 +21,14 @@
 		dom.h1(view, "Object Relation");
 		dom.br(view);
 		
-		APP.forms.make(view, my.parent.object_relation_form, "object_", "object_", undefined);
+		APP.forms.make(view, my.parent.object_relation_form, "object_relation_", "object_relation_", undefined);
 		
 	};
 	
 	
 	my.getSaveData = function(){
 	
-		return;
+		return APP.forms.makeObjectWithFormData(my.parent.object_relation_form, "object_relation_");
 	
 	};
 	

@@ -32,8 +32,7 @@
 
 	my.getSaveData = function(){
 	
-		var object = {};
-		return object;
+		return APP.forms.makeObjectWithFormData(my.parent.event_form, "event_");
 	
 	};
 	
