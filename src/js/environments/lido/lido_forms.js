@@ -14,16 +14,21 @@
 					default_value: "Theaterwissenschaftliche Sammlung Schloss Wahn"
 				},
 				{
-					heading: "ID",
+					heading: "RecID",
 					name: "object_id",
 					type: "text",
 					comment: "Identifier of this object. Maybe something like DE-Wahn2014/lido-obj00154983"
 				},
 				{
+					heading: "Concept ID",
+					name: "concept_id",
+					type: "text"
+				},
+				{
 					heading: "Legal Body",
 					name: "legal_body",
-					type: "textarea",
-					default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln\nGrafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln\nSzenische Grafik ,Grafikabteilung, Theaterwissenschaftliche Sammlung, Universität zu Köln"
+					type: "text",
+					default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln"
 				},
 				{
 					heading: "Type",
@@ -41,7 +46,35 @@
 					name: "classification",
 					type: "text",
 					//comment: ""
-				},		
+				},	
+				{
+					heading: "Rights Work",
+					type: "subarea",
+					name: "rights",
+					fields: [
+						{
+							heading: "Rights Type",
+							type: "text",
+							name: "type"
+						},
+						{
+							heading: "Earliest Date",
+							type: "year",
+							name: "earliest_date"
+						},
+						{
+							heading: "Latest Date",
+							type: "year",
+							name: "latest_date"
+						},
+						{
+							heading: "Legal Body Name of Rights Holder",
+							type: "text",
+							name: "legal_body",
+							default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln"
+						}
+					]
+				}
 			],
 		},
 		{
@@ -64,8 +97,14 @@
 					default_value: "Theaterwissenschaftliche Sammlung Schloss Wahn"
 				},
 				{
+					heading: "Record Source",
+					name: "source",
+					type: "text",
+				},
+				{
 					heading: "Record Rights",
 					type: "subarea",
+					name: "rights",
 					fields: [
 						{
 							heading: "Rights Type",
@@ -75,19 +114,19 @@
 						},
 						{
 							heading: "Rights Date",
-							name: "type",
+							name: "date",
 							type: "text",
 							comment: "Definition: The date on which a right is or was current.",
 						},
 						{
 							heading: "Rights Holder",
-							name: "type",
+							name: "holder",
 							type: "text",
 							comment: "Definition: The holder of the right.",
 						},	
 						{
 							heading: "Credit Line",
-							name: "type",
+							name: "credit_line",
 							type: "text",
 							comment: "Definition: Acknowledgement of the rights associated with the physical and/or digital object as requested.",
 						},	
@@ -103,24 +142,26 @@
 				{
 					heading: "Resource ID",
 					name: "id",
-					type: "text",
-					comment: "Source of the information given here. This is probably you or your institution.",
+					type: "text"
 				},
 				{
 					heading: "Link Resource",
 					name: "link",
-					type: "text",
-					comment: "Source of the information given here. This is probably you or your institution.",
+					type: "text"
 				},
+				{
+					heading: "Representation Type",
+					name: "representation_type",
+					type: "text"
+				},				
 				{
 					heading: "Resource Type",
 					name: "type",
-					type: "text",
-					comment: "Source of the information given here. This is probably you or your institution.",
+					type: "text"
 				},
 {
 					heading: "Resource Source",
-					name: "type",
+					name: "source",
 					type: "text",
 					comment: "Source of the information given here. This is probably you or your institution.",
 					default_value: "Theaterwissenschaftliche Sammlung, Universität zu Köln"
@@ -128,6 +169,7 @@
 				{
 					heading: "Rights Resource",
 					type: "subarea",
+					name: "rights",
 					fields: [
 						{
 							heading: "Rights Type",
@@ -137,19 +179,19 @@
 						},
 						{
 							heading: "Rights Date",
-							name: "type",
+							name: "date",
 							type: "text",
 							comment: "Definition: The date on which a right is or was current.",
 						},
 						{
 							heading: "Rights Holder",
-							name: "type",
+							name: "holder",
 							type: "text",
 							comment: "Definition: The holder of the right.",
 						},	
 						{
 							heading: "Credit Line",
-							name: "type",
+							name: "credit_line",
 							type: "text",
 							comment: "Definition: Acknowledgement of the rights associated with the physical and/or digital object as requested.",
 						},	
@@ -201,13 +243,13 @@ lido_environment.object_form = {
 				},
 				{
 					heading: "Measurement Unit",
-					name: "measurement_unit",
+					name: "measurements_unit",
 					type: "text",
 					default_value: "cm"
 				},
 				{
 					heading: "Measurement Type",
-					name: "measurement_type",
+					name: "measurements_type",
 					type: "text",
 					default_value: "H x B x T",
 				},				
@@ -236,13 +278,15 @@ lido_environment.object_relation_form = {
 					name: "subject_concept",
 					type: "textarea",
 					comment: "How to record: May include iconography, themes from literature, or generic terms describing the material world, or topics (e.g., concepts, themes, or issues). However, references to people, dates, events, places, objects are indicated in the the respective sub-elements Subject Actor Set, Subject Date Set, Subject Event Set, Subject Place Set, and Subject Object Set.Preferably taken from a published controlled vocabulary.",				
-				},				
+				},	
+				/*
 				{
 					heading: "Actor Identifier",
 					name: "actor_identifier",
 					type: "text",
 					comment: "Identifier assigned to a person, group of people.",				
 				},
+				*/
 				{
 					heading: "Subject Date",
 					name: "subject_date",
@@ -299,6 +343,12 @@ lido_environment.object_relation_form = {
 							heading: "Name",
 							name: "name",
 							type: "text",
+						},
+						{
+							name: "actor_id",
+							type: "text",
+							comment: "Actor ID taken from http://d-nb.info/gnd/",
+							heading: "Actor ID (DNB File ID)"
 						},
 						{
 							heading: "Earliest Date",
@@ -374,6 +424,12 @@ lido_environment.event_form = {
 					heading: "Name",
 					name: "name",
 					type: "text",
+				},
+				{
+					name: "actor_id",
+					type: "text",
+					comment: "Actor ID taken from http://d-nb.info/gnd/",
+					heading: "Actor ID (DNB File ID)"
 				},
 				{
 					heading: "Earliest Date",

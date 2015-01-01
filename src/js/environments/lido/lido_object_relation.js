@@ -35,7 +35,7 @@
 	
 	my.recall = function(data){
 	
-		return;
+		APP.forms.fill(my.parent.object_relation_form, "object_relation_", data, undefined);
 		
 	};
 	

@@ -620,7 +620,7 @@ APP.forms = (function () {
 		
 		var target;
 		
-		if (field.type == "column"){
+		if (field.type == "column" || field.type == "subarea"){
 		
 			if (field.name && field.name !== ""){
 				element_id_prefix += field.name + "_";

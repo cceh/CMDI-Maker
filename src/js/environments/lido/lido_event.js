@@ -39,7 +39,7 @@
 	
 	my.recall = function(data){
 	
-		return;
+		APP.forms.fill(my.parent.event_form, "event_", data, undefined);
 		
 	};
 	

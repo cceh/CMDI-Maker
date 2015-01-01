@@ -35,7 +35,7 @@
 	
 	my.recall = function(data){
 	
-		return;
+		APP.forms.fill(my.parent.object_form, "object_identification_", data, undefined);
 		
 	};
 	
