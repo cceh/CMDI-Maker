@@ -61,9 +61,10 @@ var ObjectList = function() {
 	
 	var checkPointerValidity = function(){
 	
-		if (!self.IDexists(pointer)){
+		if (!self.IDexists(pointer) && self.length > 0){
 		
-			pointer = 0;
+			//take the id of the first person if invalid pointer
+			pointer = self.IDof(0);
 		
 		}
 		
@@ -94,6 +95,7 @@ var ObjectList = function() {
 		return false;
 	
 	}
+	this.existsByID = this.IDexists;
 	
 	
 	//GET METHODS

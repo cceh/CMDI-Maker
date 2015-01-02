@@ -770,3 +770,53 @@ padding: 0px;
 float: right;
 
 }
+
+
+.clickable_list_small{
+
+	width: 215px;
+	max-height: 500px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: inline;
+	float: left;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+.clickable_list_entry h2{
+
+	line-height: 0em;
+	white-space: nowrap;
+	margin: 0.6em 0 0 0;
+
+}
+
+
+.clickable_list_entry{
+
+	background: rgb(135, 206, 250);
+	line-height: 0em;
+	cursor: pointer;
+	padding: 10px;
+	height: 40px;
+	width: 180px;
+	border-radius: 8px;
+	overflow: hidden;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	float: left;
+}
+
+
+.clickable_list_entry_highlighted{
+
+	background: rgb(255, 139, 199);
+
+}

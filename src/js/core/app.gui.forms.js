@@ -165,14 +165,23 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
-	//NOT YET READY!!!
 	my.clickableListSmall = function(parent, titles, subtitles, action, id, highlighted_index){
 	
-		var list_div;
+		var self = this;
+		
+		this.parent = parent;
+		this.titles = titles;
+		this.subtitles = subtitles;
+		this.action = action;
+		this.id = id;
+		this.highlighted_index = highlighted_index;
 	
+		this.list_div;
+
+		
 		var renderItem = function(parent, title, subtitle, action, highlighted){
 		
-			var div = dom.make('div', "", "clickable_list_entry", parent);
+			var div = dom.make('div', "", "clickable_list_entry", self.list_div);
 			
 			if (highlighted){
 				div.className += " clickable_list_entry_highlighted";
@@ -188,24 +197,34 @@ APP.GUI.FORMS = (function() {
 		};
 		
 		
-		var render = function(parent, titles, subtitles, action, highlighted_index){
+		var render = function(){
+		
+			if (!g(id)){
+				self.list_div = dom.make("div", id, "clickable_list_small", parent);
+			}
 		
 			var elements = [];
 		
-			parent.innerHTML = "";
+			self.list_div.innerHTML = "";
 			
-			list_div = dom.make("div", id, "", parent);
-		
-			for (var i = 0; i < titles.length; i++){
+			for (var i = 0; i < self.titles.length; i++){
+				
+				if (typeof self.subtitles !== "undefined"){
+					var subtitle = self.subtitles[i];
+				}
+				
+				else {
+					subtitle = "";
+				}
 				
 				var div = renderItem(
-					list_div,
-					titles[i],
-					subtitles[i],
+					self.list_div,
+					self.titles[i],
+					subtitle,
 					function(num) { 
-						return function(){ action(num); }; 
+						return function(){ self.action(num); }; 
 					}(i),
-					(highlighted_index == i)
+					(self.highlighted_index == i)
 				);
 				
 				elements.push(div);	
@@ -215,18 +234,21 @@ APP.GUI.FORMS = (function() {
 			return elements;
 			
 		};
-
 		
-		return {
-			elements: render(parent, titles, subtitles, action, highlighted_index),
-			list_element: list_div,
-			changeHighlight: function(new_index){
-				render(parent, titles, subtitles, action, new_index);
-			},
-			refresh: function(titles, subtitles){
-				render(parent, titles, subtitles, action, highlighted_index)
-			}
-		}
+		
+		this.elements = render(parent, titles, subtitles, action, highlighted_index);
+		
+		
+		this.changeHighlight = function(new_index){
+			self.highlighted_index = new_index;
+			render();
+		};
+		
+		this.refresh = function(titles, subtitles){
+			self.titles = titles;
+			self.subtitles = subtitles;
+			render();
+		};
 	
 	}
 	
