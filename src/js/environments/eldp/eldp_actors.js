@@ -309,26 +309,6 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.export_persons = function(){
-		
-		if (my.persons.length !== 0){
-		
-			var persons_json = JSON.stringify(my.persons.getState());
-			
-			APP.save_file(persons_json, "persons.json", APP.CONF.file_download_header);
-			
-		}
-		
-		else {
-		
-			APP.alert(l("there_are_no_persons"));
-		
-		}
-
-
-	};
-	
-
 	my.createFormIfNotExistent = function(){
 	
 		var ac_view = g("person_view");

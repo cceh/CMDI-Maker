@@ -175,6 +175,8 @@ APP.GUI.FORMS = (function() {
 		this.action = action;
 		this.id = id;
 		this.highlighted_index = highlighted_index;
+		
+		this.scrollTop;
 	
 		this.list_div;
 
@@ -201,8 +203,16 @@ APP.GUI.FORMS = (function() {
 		
 			if (!g(id)){
 				self.list_div = dom.make("div", id, "clickable_list_small", parent);
+				
+				self.list_div.addEventListener("scroll", function(event){
+				
+					self.scrollTop = self.list_div.scrollTop;
+					console.log("SCROLL");
+				
+				}, false);
+				
 			}
-		
+			
 			var elements = [];
 		
 			self.list_div.innerHTML = "";
@@ -230,6 +240,8 @@ APP.GUI.FORMS = (function() {
 				elements.push(div);	
 				
 			}
+			
+			self.list_div.scrollTop = self.scrollTop;
 			
 			return elements;
 			

@@ -51,43 +51,59 @@ var dom = (function() {
 	
 	
 	my.makeRadios = function(parent, array, name, id_prefix, title_key, value_key, start_value, on_change){
-		var input;
+		var radios = [];
+		var radio;
 		var span;
 		
 		for (var f = 0; f < array.length; f++){
 		
-			input = my.input(parent, id_prefix+f, "", name, "radio", array[f][value_key]);
-			
-			span = my.span(parent, "", "", " " + array[f][title_key]);
-			
-			if (f === start_value){
-				input.checked = true;
+			radio = my.makeRadio(
+				parent, array[f][value_key], array[f][title_key], id_prefix + f, name, on_change
+			);
+		
+			if (f === start_value || start_value == array[f][value_key]){
+				radio.checked = true;
 			}
 			
 			my.br(parent);
 			
-			span.addEventListener("click", function (input) {
-				return function(){
-					input.checked = true;
-				}
-			}(input), false);
-			
-
-			if (on_change) {
-				input.addEventListener("click", function (num) {
-					return function () {
-						on_change(array[num].value);
-					};
-				}(f), false);
-				
-				span.addEventListener("click", function (num) {
-					return function () {
-						on_change(array[num].value);
-					};
-				}(f), false);
-			}
+			radios.push(radio);
 			
 		}
+		
+		return radios;
+	
+	};
+	
+	
+	my.makeRadio = function(parent, value, title, id, name, on_click){
+	
+		var radio = my.input(parent, id, "", name, "radio", value);
+		var span = my.span(parent, "", "", " " + title);
+		
+		span.addEventListener("click", function (radio) {
+			return function(){
+				radio.checked = true;
+			}
+		}(radio), false);
+
+		if (on_click) {
+			radio.addEventListener("click", function (event) {
+			
+				event.stopPropagation();
+				on_click(value);
+	
+			}, false);
+			
+			span.addEventListener("click", function (event) {
+			
+				event.stopPropagation();
+				on_click(value);
+
+			}, false);
+		}	
+	
+		return radio;
 	
 	};
 	
