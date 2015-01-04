@@ -75,7 +75,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	var handleClickOnPersonList = function(index){
 
-		my.saveActivePerson();
+		my.saveActivePerson("without_refreshing");
 		
 		my.show(my.persons.idOf(index));
 	
@@ -335,7 +335,7 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.saveActivePerson = function(){
+	my.saveActivePerson = function(flag){
 	
 		if (my.persons.getPointer() == -1){
 			return;
@@ -347,9 +347,10 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.save(person_to_put);
 
-		my.refresh();
-		
-		my.refreshFormTitle();
+		if (flag != "without_refreshing"){
+			my.refresh();
+			my.refreshFormTitle();
+		}
 		
 		return person_to_put;
 
@@ -499,8 +500,6 @@ eldp_environment.workflow[1] = (function(){
 		var display_names = my.persons.map(function(pers){
 			return my.getDisplayName(pers.id);
 		});
-		
-		console.log(display_names);
 		
 		my.gui_list.refresh(display_names);
 		
