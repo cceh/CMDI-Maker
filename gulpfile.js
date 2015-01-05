@@ -136,8 +136,6 @@ var style_sources = [
 "./src/css/yaml.css",
 "./src/css/layout.css",
 "./src/css/typography.css",
-"./src/css/layout-eldp.css",
-"./src/css/layout-imdi.css",
 "./src/css/alertify.core.css",
 "./src/css/alertify.default.css"
 ];
