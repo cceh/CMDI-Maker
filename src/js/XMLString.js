@@ -86,15 +86,15 @@ var XMLString = function () {
 				return_string+="\n";
 				return_string += addTabs(self.tab);
                
-				for (var j=0;j<length_of_element_name;j++){
-					return_string+=" ";
+				for (var j = 0; j < length_of_element_name; j++){
+					return_string += " ";
 				}
 				
 				return_string += "  ";
 				
 			}
 			
-			/*when this is the first attribute to add, just make a space and start*/
+			//when this is the first attribute to add, just make a space and start with it
 			if (i === 0){
 				return_string += " ";
 			}
@@ -121,7 +121,9 @@ var XMLString = function () {
 		var return_string = "";
 		
 		for (var x = 0; x < number; x++){
-			return_string += "   ";
+			for (var y = 0; y < self.spaces_per_tab; y++){
+				return_string += " ";
+			}
 		}
 		
 		return return_string;
@@ -138,6 +140,7 @@ var XMLString = function () {
 
 	self.last_mode = null;
 	self.tab = 0;
+	self.spaces_per_tab = 3;
 	
 	self.reset = function(){
 	
