@@ -46,6 +46,20 @@
 }
 
 
+.icon_div:hover, .icon_div_hover:hover, #main_menu_icon:hover{
+
+background-color: pink;
+
+}
+
+
+.icon_div:hover a{
+
+color: #4D87C7;
+}
+
+
+
 #start_profile_select{
 	font-size: 16.5pt;
 	height: 26px;
