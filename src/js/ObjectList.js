@@ -595,9 +595,22 @@ var ObjectList = function() {
 	
 		return self.getByID(pointer);
 	
-	}
+	};
 	
 	this.getActive = this.getActiveObject;
+	
+	
+	this.activeItemExists = function(){
+	
+		if (pointer != -1){
+			return true;
+		}
+		
+		else {
+			return false;
+		}
+	
+	}
 	
 
 	/////

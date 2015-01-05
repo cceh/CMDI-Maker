@@ -90,7 +90,11 @@ APP.environments = (function () {
 	
 	my.resetActive = function(){
 	
-		if (my.active_environment && my.active_environment.reset){
+		if (!my.active_environment){
+			return;
+		}
+	
+		if (my.active_environment.reset){
 			my.active_environment.reset();
 		}
 		

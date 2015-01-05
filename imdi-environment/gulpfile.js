@@ -41,6 +41,25 @@ var source_scripts = [
 "./src/js/core/app.save_and_recall.js",
 "./src/js/core/app.settings.js",
 "./src/js/core/app.config.js",
+
+	
+/* Environments */
+	/* IMDI */
+	"./src/js/environments/imdi/imdi_environment.js",
+	"./src/js/environments/imdi/imdi_LanguagePacks.js",
+	"./src/js/environments/imdi/imdi_generator.js",
+	"./src/js/environments/imdi/cmdi_generator.js",
+	"./src/js/environments/imdi/imdi_forms.js",
+	"./src/js/environments/imdi/imdi_corpus.js",
+		"./src/js/environments/imdi/imdi_content_languages.js",
+	"./src/js/environments/imdi/imdi_resources.js",
+	"./src/js/environments/imdi/imdi_actors.js",
+		"./src/js/environments/imdi/imdi_actor_languages.js",
+	"./src/js/environments/imdi/imdi_sessions.js",
+		"./src/js/environments/imdi/imdi_sessions_gui.js",
+	"./src/js/environments/imdi/imdi_output.js",
+	
+
 ];
  
  
