@@ -24,7 +24,7 @@ var source_scripts = [
 "./src/js/zip.js",
 "./src/js/FileSaver.js",
 "./src/js/strings.js",
-"./src/js/xml.js",
+"./src/js/XMLString.js",
 "./src/js/dom.js",
 "./src/js/ObjectList.js",
 //"./src/js/LanguageIndex.js",  //is loaded dynamically
@@ -71,6 +71,18 @@ var source_scripts = [
 		"./src/js/environments/eldp/eldp_sessions_rendering.js",
 	"./src/js/environments/eldp/eldp_output.js",
 	"./src/js/environments/eldp/eldp_generator.js",
+	
+	
+	/*LIDO */
+	"./src/js/environments/lido/lido_environment.js",
+	"./src/js/environments/lido/lido_forms.js",	
+	"./src/js/environments/lido/lido_start.js",
+	"./src/js/environments/lido/lido_object_identification.js",
+	"./src/js/environments/lido/lido_event.js",	
+	"./src/js/environments/lido/lido_object_relation.js",	
+	"./src/js/environments/lido/lido_output.js",
+	"./src/js/environments/lido/lido_generator.js",
+	
 
 ];
  

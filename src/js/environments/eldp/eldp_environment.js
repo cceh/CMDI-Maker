@@ -16,6 +16,7 @@ limitations under the License.
 
 
 var eldp_environment = (function(){
+	"use strict";
 
 	var my = {};
 
@@ -102,6 +103,7 @@ var eldp_environment = (function(){
 	
 	my.recall = function (settings){
 		
+		APP.GUI.setToggleValue(g("radio_age_calc"), settings.calc_actors_age);
 		return;
 	
 	};
@@ -110,7 +112,7 @@ var eldp_environment = (function(){
 	
 		var object = {};
 
-		object.calc_actors_age = (document.getElementsByName("radio_age_calc")[0].checked ? true : false);
+		object.calc_actors_age = g("radio_age_calc").on;
 	
 		return object;
 	

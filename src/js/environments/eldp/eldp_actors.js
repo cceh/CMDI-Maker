@@ -28,26 +28,6 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	var highlightActivePersonInList = function(person_index){
-
-		if (typeof person_index == "undefined"){
-			console.info("I shall highlight a person with index = undefined! Returning!");
-			return;
-		}
-	
-		for (var i = 0; i < my.persons.length; i++){
-			g(my.element_id_prefix + "list_entry_"+i).style.background = "lightskyblue";
-		}
-		
-		var element_to_highlight = g(my.element_id_prefix + "list_entry_" + person_index);
-		
-		if (element_to_highlight){
-			element_to_highlight.style.background = "#FF8BC7";
-		}
-
-	};
-	
-	
 	var getLanguagesOfActivePersonFromForm = function(){
 	
 		var array = my.languages.languages_of_active_person.map(function(ALO){
@@ -95,7 +75,7 @@ eldp_environment.workflow[1] = (function(){
 	
 	var handleClickOnPersonList = function(index){
 
-		my.saveActivePerson();
+		my.saveActivePerson("without_refreshing");
 		
 		my.show(my.persons.idOf(index));
 	
@@ -141,7 +121,8 @@ eldp_environment.workflow[1] = (function(){
 		
 		bundle = my.parent.workflow[2];
 		
-		my.createListDIV(view);
+		my.gui_list = new APP.GUI.FORMS.clickableListSmall(view, [], [], handleClickOnPersonList, my.element_id_prefix + "list", 0);
+		
 		var ac_view = dom.make("div", my.element_id_prefix + "view","",view);
 	
 		my.languages.init();
@@ -149,13 +130,6 @@ eldp_environment.workflow[1] = (function(){
 		my.refresh(true);
 		
 	};
-	
-	
-	my.createListDIV = function(view){
-	
-		dom.make("div",my.element_id_prefix + "list","",view);
-		
-	}
 	
 	
 	my.getSaveData = function(){
@@ -294,7 +268,7 @@ eldp_environment.workflow[1] = (function(){
 		var person_index = my.persons.getIndexByID(person_id);
 		
 		if (typeof person_index == "undefined"){
-			console.error("person.show: Undefined person_id!");
+			console.warn("person.show: Undefined person_id! Showing person 0");
 			person_index = 0;
 		}
 
@@ -302,7 +276,7 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.createFormIfNotExistent();
 		
-		highlightActivePersonInList(person_index);
+		my.gui_list.changeHighlight(person_index);
 		my.languages.clearActivePersonLanguages();
 		
 		my.persons.setPointer(person_id);
@@ -335,26 +309,6 @@ eldp_environment.workflow[1] = (function(){
 	};
 	
 	
-	my.export_persons = function(){
-		
-		if (my.persons.length !== 0){
-		
-			var persons_json = JSON.stringify(my.persons.getState());
-			
-			APP.save_file(persons_json, "persons.json", APP.CONF.file_download_header);
-			
-		}
-		
-		else {
-		
-			APP.alert(l("there_are_no_persons"));
-		
-		}
-
-
-	};
-	
-
 	my.createFormIfNotExistent = function(){
 	
 		var ac_view = g("person_view");
@@ -381,7 +335,7 @@ eldp_environment.workflow[1] = (function(){
 	};
 
 
-	my.saveActivePerson = function(){
+	my.saveActivePerson = function(flag){
 	
 		if (my.persons.getPointer() == -1){
 			return;
@@ -393,9 +347,10 @@ eldp_environment.workflow[1] = (function(){
 		
 		my.save(person_to_put);
 
-		my.refresh();
-		
-		my.refreshFormTitle();
+		if (flag != "without_refreshing"){
+			my.refresh();
+			my.refreshFormTitle();
+		}
 		
 		return person_to_put;
 
@@ -540,15 +495,13 @@ eldp_environment.workflow[1] = (function(){
 
 	my.refresh = function(not_in_bundles){
 		
-		if (!g(my.element_id_prefix + 'list')){
-			my.module_view.innerHTML = "";
-			my.createListDIV(my.module_view);
-		}
+		my.module_view.innerHTML = "";
 		
+		var display_names = my.persons.map(function(pers){
+			return my.getDisplayName(pers.id);
+		});
 		
-		g(my.element_id_prefix + 'list').innerHTML = "";
-
-		my.persons.forEach(renderPersonListEntry);
+		my.gui_list.refresh(display_names);
 		
 		if (my.persons.length == 0){
 			my.showNoPersonsMessage();
@@ -560,7 +513,11 @@ eldp_environment.workflow[1] = (function(){
 		}
 		
 		else {
-			highlightActivePersonInList(my.persons.getActiveIndex());
+		
+			my.createFormIfNotExistent();
+			my.show(my.persons.getActiveIndex());
+		
+			my.gui_list.changeHighlight(my.persons.getActiveIndex());
 			
 			APP.environments.enableFunction("link_delete_active_person");
 			APP.environments.enableFunction("sa_div");
@@ -582,15 +539,13 @@ eldp_environment.workflow[1] = (function(){
 			person = person_or_person_id;
 		}
 		
-		else {		
+		else if (my.persons.existsByID(person_or_person_id)){		
 			person = my.persons.getByID(person_or_person_id);
 		}
-		
 		
 		if (!person){
 			return console.warn("Person undefined!");
 		}
-		
 		
 		if (person.fullName && person.fullName != ""){
 			return person.fullName;
@@ -605,22 +560,6 @@ eldp_environment.workflow[1] = (function(){
 		}
 
 		return l("unnamed_person");
-	
-	};
-	
-	
-	var renderPersonListEntry = function(person, i){
-	
-		var div = dom.make('div', my.element_id_prefix + "list_entry_" + i, my.element_id_prefix + "list_entry", g(my.element_id_prefix + 'list'));
-		
-		var name_display = my.getDisplayName(person.id);
-		
-		dom.h2(div, name_display);
-		dom.p(div, person.role);
-		
-		div.addEventListener('click', function(num) { 
-			return function(){ handleClickOnPersonList(num); }; 
-		}(i), false );
 	
 	};
 	

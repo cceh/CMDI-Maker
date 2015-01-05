@@ -95,7 +95,7 @@ APP.forms = (function () {
 			input = APP.GUI.makeTextInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : ""),
+				(data_object && data_object[field.name] ? data_object[field.name] : (field.default_value || "")),
 				field.comment,
 				field.maxLength
 			);
@@ -207,7 +207,7 @@ APP.forms = (function () {
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : ""),
+				(data_object && data_object[field.name] ? data_object[field.name] : (field.default_value || "")),
 				field.comment
 			);
 			
@@ -235,7 +235,7 @@ APP.forms = (function () {
 					element_id_prefix += field.name + "_";
 				}
 				
-				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, data_object[field.name], on_special);
+				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, (data_object ? data_object[field.name] : undefined), on_special);
 				
 			}
 		},
@@ -620,7 +620,7 @@ APP.forms = (function () {
 		
 		var target;
 		
-		if (field.type == "column"){
+		if (field.type == "column" || field.type == "subarea"){
 		
 			if (field.name && field.name !== ""){
 				element_id_prefix += field.name + "_";
@@ -697,6 +697,17 @@ APP.forms = (function () {
 	//field = form template object
 	
 		var sub_object;
+		
+		if (!field){
+			console.error("fillObjectWithFormData: FIELD is undefined. element_id_prefix = " + element_id_prefix)
+			return;
+		}
+
+		if (!object){
+			console.error("fillObjectWithFormData: object is undefined. element_id_prefix = " + element_id_prefix)
+			return;
+		}		
+		
 
 		if ((field.type == "year") || (field.type == "text") || (field.type == "textarea") || (field.type == "select") || (field.type == "open_vocabulary")){
 
@@ -742,7 +753,7 @@ APP.forms = (function () {
 			forEach(field.fields, function(field){
 				
 				//check if a sub object has to be created
-				if (field.name && field.name !== "" && (field.type == "column" || field.type == "subarea")){
+				if (field.name && field.name !== "" && (field.type == "column"/* || field.type == "subarea"*/)){
 					sub_object = object[field.name];
 				}
 				

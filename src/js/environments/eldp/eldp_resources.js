@@ -369,42 +369,23 @@ eldp_environment.workflow[0] = (function(){
 		'<span name="path_span" class="date_span">' + my.l("resources", "path") + ': ' + options.path + '</span>'
 		);
 		
-		var cb1 = dom.make("input","f_stable_"+options.number,"",div);
-		cb1.type = "radio";
-		cb1.value = "stable";
-		cb1.name = "f_" + options.number + "_status";
-		cb1.addEventListener("click",function(event){ 
-			event.stopPropagation();
-			
+		var radio_config = [
+			{
+				title: "Stable",
+				value: "stable"
+			},
+			{
+				title: "In Progress",
+				value: "in-progress"
+			}
+		];
+		
+		var radios = dom.makeRadios(div, radio_config, "f_" + options.number + "_status",
+		"f_" + options.number + "_status_", "title", "value", options.status, function(value){
 			my.refreshFileStateValues(options.number);
-			
 			return;
 		});
-		var span1 = dom.make("span","","",div, " Stable");
 		
-		if (options.status == "stable"){
-			cb1.checked = true;
-		}
-		
-		
-		dom.br(div);
-		
-		var cb2 = dom.make("input","f_inProgress_"+options.number,"",div);
-		cb2.type = "radio";
-		cb2.value = "in-progress";
-		cb2.name = "f_" + options.number + "_status";
-		cb2.addEventListener("click",function(event){
-			event.stopPropagation();
-			my.refreshFileStateValues(options.number);
-			
-			return;
-		});
-		var span2 = dom.make("span","","",div, " In Progress");	
-		
-		if (options.status == "in-progress"){
-			cb2.checked = true;
-		}
-
 		div.addEventListener("click", function(num){
 			
 			return function(){

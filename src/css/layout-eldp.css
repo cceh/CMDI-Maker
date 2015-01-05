@@ -193,16 +193,6 @@ color: #4D87C7;
 
 }
 
-#list{
-
-	float: left;
-	position: absolute;
-	left: 270px;
-	right:30px;
-	top:30px;
-
-}
-
 
 .warning_icon{
 
@@ -259,36 +249,6 @@ color: #4D87C7;
 
 }
 
-#person_list{
-
-	width: 215px;
-	position: fixed;
-	top: 80px;
-	bottom: 60px;
-	overflow-x: hidden;
-	overflow-y: auto;
-	display: inline;
-	float: left;
-	margin-right: 30px;
-	padding-right: 10px;
-	padding-bottom: 10px;
-
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-
-}
-
-.person_list_entry h2{
-
-	line-height: 0em;
-	white-space: nowrap;
-	margin: 0.6em 0 0 0;
-
-}
 
 #person_title_div{
 
@@ -314,18 +274,6 @@ color: #4D87C7;
 
 }
 
-.person_list_entry{
-
-	background: rgb(255, 139, 199);
-	line-height: 0em;
-	cursor: pointer;
-	padding: 10px;
-	height: 40px;
-	width: 180px;
-	border-radius: 8px;
-	overflow: hidden;
-	margin-bottom: 10px;
-}
 
 #person_options_div{
 	width: 300px;

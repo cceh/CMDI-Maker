@@ -165,25 +165,104 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
-	my.clickableListSmall = function(parent, array, title_key, subtitle_key, action, highlighted_index){
+	my.clickableListSmall = function(parent, titles, subtitles, action, id, highlighted_index){
 	
-		parent.innerHTML = "";
-	
-		forEach(array, function(item){
+		var self = this;
 		
-			var div = dom.make('div', "", "clickable_list_entry", parent);
-			
-			dom.h2(div, item[title_key]);
-			dom.p(div, item[subtitle_key]);
-			
-			div.addEventListener('click', function(num) { 
-				return function(){ action(num); }; 
-			}(i), false );	
+		this.parent = parent;
+		this.titles = titles;
+		this.subtitles = subtitles;
+		this.action = action;
+		this.id = id;
+		this.highlighted_index = highlighted_index;
+		
+		this.scrollTop;
+	
+		this.list_div;
 
-		});
+		
+		var renderItem = function(parent, title, subtitle, action, highlighted){
+		
+			var div = dom.make('div', "", "clickable_list_entry", self.list_div);
+			
+			if (highlighted){
+				div.className += " clickable_list_entry_highlighted";
+			}
+			
+			dom.h2(div, title);
+			dom.p(div, subtitle);
+			
+			div.addEventListener('click', action, false);	
+			
+			return div;
+		
+		};
+		
+		
+		var render = function(){
+		
+			if (!g(id)){
+				self.list_div = dom.make("div", id, "clickable_list_small", parent);
+				
+				self.list_div.addEventListener("scroll", function(event){
+				
+					self.scrollTop = self.list_div.scrollTop;
+					console.log("SCROLL");
+				
+				}, false);
+				
+			}
+			
+			var elements = [];
+		
+			self.list_div.innerHTML = "";
+			
+			for (var i = 0; i < self.titles.length; i++){
+				
+				if (typeof self.subtitles !== "undefined"){
+					var subtitle = self.subtitles[i];
+				}
+				
+				else {
+					subtitle = "";
+				}
+				
+				var div = renderItem(
+					self.list_div,
+					self.titles[i],
+					subtitle,
+					function(num) { 
+						return function(){ self.action(num); }; 
+					}(i),
+					(self.highlighted_index == i)
+				);
+				
+				elements.push(div);	
+				
+			}
+			
+			self.list_div.scrollTop = self.scrollTop;
+			
+			return elements;
+			
+		};
+		
+		
+		this.elements = render(parent, titles, subtitles, action, highlighted_index);
+		
+		
+		this.changeHighlight = function(new_index){
+			self.highlighted_index = new_index;
+			render();
+		};
+		
+		this.refresh = function(titles, subtitles){
+			self.titles = titles;
+			self.subtitles = subtitles;
+			render();
+		};
 	
 	}
-	
 	
 	return my;
 	
