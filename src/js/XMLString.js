@@ -15,18 +15,23 @@ limitations under the License.
 */
 	
 	
-var xml = (function () {
+var XMLString = function () {
+	"use strict";
+
+	//PRIVATE
 
 	var element_prefix;
+	var buffer = "";
+	
 
 	var createTag = function(name, mode, attributes){
 		
-		name = my.escapeIllegalCharacters(name);
+		name = self.escapeIllegalCharacters(name);
 		
 		var return_string = "<";
 		
 		//if it's a closing tag, add closing slash at the beginning
-		if (mode==1){
+		if (mode == "close"){
 			return_string+="/";
 		}
 		
@@ -41,15 +46,24 @@ var xml = (function () {
 		}
 		
 		//if tag is not closing tag, insert attributes
-		if ((mode === 0) || (mode == 2)){
-			return_string += addAttributes(attributes, name.length);
+		if ((mode === "open") || (mode == "self-closing")){
+		
+			//Calculate element name length for addAttributes function
+			var en_length = name.length;
+			
+			if (element_prefix && element_prefix !== ""){
+				en_length = en_length + element_prefix.length + 1;  //+1 because of the colon after the element prefix
+			}
+		
+		
+			return_string += addAttributes(attributes, en_length);
 		}
 		
-		if (mode==2){
+		if (mode == "self-closing"){
 			return_string+="/";
 		}
 	
-		return_string+=">";
+		return_string += ">";
 		
 		return return_string;
 
@@ -60,17 +74,17 @@ var xml = (function () {
 		
 		var return_string = "";
 		
-		for (var i=0;i<attributes.length;i++){
+		for (var i = 0; i < attributes.length; i++){
 			
 			/*
 			when this is not the first and only attribute to add,
-			start a new line and begin in the column where the attribute above began
-			that means after my.tab, <, length_of_element_name and
+			start a new line and begin in the column where the attribute above began,
+			that means after self.tab, <, length_of_element_name and
 			the space between element_name and the first attribute
 			*/
 			if (i !== 0){
 				return_string+="\n";
-				return_string += addTabs(my.tab);
+				return_string += addTabs(self.tab);
                
 				for (var j=0;j<length_of_element_name;j++){
 					return_string+=" ";
@@ -86,13 +100,13 @@ var xml = (function () {
 			}
 			
 			//attribute key
-			return_string += my.escapeIllegalCharacters(attributes[i][0]);
+			return_string += self.escapeIllegalCharacters(attributes[i][0]);
 			
 			return_string += "=";
 			
 			//attribute value in quotation marks
 			return_string += "\"";
-			return_string += my.escapeIllegalCharacters(attributes[i][1]);
+			return_string += self.escapeIllegalCharacters(attributes[i][1]);
 			return_string += "\"";
 			
 		}
@@ -104,32 +118,38 @@ var xml = (function () {
 	
 	
 	var addTabs = function(number){
-		return_string = "";
+		var return_string = "";
 		
-		for (var x=0;x<number;x++){
+		for (var x = 0; x < number; x++){
 			return_string += "   ";
 		}
 		
 		return return_string;
 	};
+	
 
 	
-	var my = {};
-	my.header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+	//PUBLIC
+	var self = this;
+	
+	self.header = function(){
+		buffer += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+	};
 
-	my.last_mode = -1;
-	my.tab = 0;
+	self.last_mode = null;
+	self.tab = 0;
 	
-	my.reset = function(){
+	self.reset = function(){
 	
-		my.last_mode = -1;
-		my.tab = 0;
+		self.last_mode = null;
+		buffer = "";
+		self.tab = 0;
 		element_prefix = undefined;
 	
 	};
 	
 	
-	my.escapeIllegalCharacters = function(string){
+	self.escapeIllegalCharacters = function(string){
 		var illegal_char;
 		var entity_reference;
 		
@@ -142,7 +162,7 @@ var xml = (function () {
 			["&quot;",	"\""]			//quotation mark
 		];
 	
-		for (var i=0; i<illegal_chars.length; i++){
+		for (var i = 0; i < illegal_chars.length; i++){
 			
 			illegal_char = illegal_chars[i][1];
 			entity_reference = illegal_chars[i][0];
@@ -155,7 +175,7 @@ var xml = (function () {
 	};
 	
 	
-	my.setElementPrefix = function(string){
+	self.setElementPrefix = function(string){
 		
 		if ((typeof string == "string") && (string !== "")){
 			element_prefix = string;
@@ -168,10 +188,10 @@ var xml = (function () {
 	};
 	
 
-	my.tag = function(name,mode,keys){   //keys as array
-		//mode 0 = opening tag
-		//mode 1 = closing tag
-		//mode 2 = self-closing tag
+	self.tag = function(name, mode, keys){   //keys as array
+		//mode open = opening tag
+		//mode close = closing tag
+		//mode self-closing = self-closing tag
 		
 		if (!keys){
 			keys = [];
@@ -179,31 +199,44 @@ var xml = (function () {
     
 		var return_string = "";
     
-		if (mode == 1){
-			my.tab -= 1;
+		if (mode == "close"){
+			self.tab -= 1;
 		}
 		
 		//if this is NOT a closing tag just after an opening tag, 
 		//AND if this is not the beginning of all, then start a new line
-		if ((!(mode == 1 && my.last_mode === 0)) && my.last_mode != -1){
+		if ((!(mode == "close" && self.last_mode == "open")) && self.last_mode != null){
 			return_string += "\n";
-			return_string += addTabs(my.tab);
+			return_string += addTabs(self.tab);
 		}
 		
 		return_string += createTag(name, mode, keys);
 		
-		if (mode === 0){
-			my.tab += 1;
+		if (mode === "open"){
+			self.tab += 1;
 		}
 	
-		my.last_mode = mode;
+		self.last_mode = mode;
+		
+		buffer += return_string;
 		
 		return return_string;
 		
 	};
 	
 	
-	my.element = function (name, value, keys){
+	self.insertValue = function(value){
+	
+		value = self.escapeIllegalCharacters(value);
+		
+		buffer += value;
+		
+		return value;	
+	
+	}
+	
+	
+	self.element = function (name, value, keys){
 		
 		var return_string = "";
 		
@@ -212,33 +245,45 @@ var xml = (function () {
 			console.warn("XML.Element: Value of " + name + " is undefined!");
 		}
 		
-		value = my.escapeIllegalCharacters(value);
 		
 		//when there is a value, there must be opening and closing tags
 		if (value !== ""){
 		
-			return_string += my.open(name, keys);
-			return_string += value;
-			return_string += my.close(name);
+			return_string += self.open(name, keys);
+			return_string += self.insertValue(value);
+			return_string += self.close(name);
 		
 		}
 	
 		else {
-			return_string+=my.tag(name,2,keys);
+			return_string += self.tag(name, "self-closing", keys);
 		}
 		
 		return return_string;
 		
 	};
 	
-	my.open = function(name, keys){
-		return my.tag(name, 0, keys);
+	
+	self.open = function(name, keys){
+		return self.tag(name, "open", keys);
 	};
 	
-	my.close = function(name){
-		return my.tag(name, 1);
+	self.close = function(name){
+		return self.tag(name, "close");
 	};
 	
-	return my;
+	self.selfClosing = function(name, keys){
+		return self.tag(name, "self-closing", keys);
+	};
 	
-}());
+	self.getString = function(){
+	
+		var output = buffer;
+		
+		self.reset();
+		
+		return output;
+	
+	};
+	
+};

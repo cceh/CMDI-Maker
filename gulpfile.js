@@ -24,7 +24,7 @@ var source_scripts = [
 "./src/js/zip.js",
 "./src/js/FileSaver.js",
 "./src/js/strings.js",
-"./src/js/xml.js",
+"./src/js/XMLString.js",
 "./src/js/dom.js",
 "./src/js/ObjectList.js",
 //"./src/js/LanguageIndex.js",  //is loaded dynamically
