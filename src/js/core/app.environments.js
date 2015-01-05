@@ -412,6 +412,7 @@ APP.environments = (function () {
 	my.add = function(environment){
 	
 		my.environments.push(environment);
+		my.displayAllInSelect();
 	
 	};
 	
