@@ -4,62 +4,34 @@ var gulp = require('gulp');
 // include plug-ins
 var jshint = require('gulp-jshint');
 var changed = require('gulp-changed');
-var imagemin = require('gulp-imagemin');
-var minifyHTML = require('gulp-minify-html');
+//var imagemin = require('gulp-imagemin');
+//var minifyHTML = require('gulp-minify-html');
 var concat = require('gulp-concat');
 var stripDebug = require('gulp-strip-debug');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
-var htmlreplace = require('gulp-html-replace');
-var header = require('gulp-header');
-var manifest = require('gulp-manifest');
+//var htmlreplace = require('gulp-html-replace');
+//var header = require('gulp-header');
+//var manifest = require('gulp-manifest');
 var notify = require('gulp-notify');
 //var imageResize = require('gulp-image-resize');
 
 
 var source_scripts = [
-/* Dependencies */
-"./src/js/helpers.js",
-"./src/js/alertify.js",
-"./src/js/zip.js",
-"./src/js/FileSaver.js",
-"./src/js/strings.js",
-"./src/js/XMLString.js",
-"./src/js/dom.js",
-"./src/js/ObjectList.js",
-//"./src/js/LanguageIndex.js",  //is loaded dynamically
-
-
-/*Core */
-"./src/js/core/app.js",
-"./src/js/core/LanguagePacks.js",
-"./src/js/core/app.environments.js",
-"./src/js/core/app.forms.js",
-"./src/js/core/app.gui.js",
-"./src/js/core/app.gui.forms.js",
-"./src/js/core/app.gui.pager.js",
-"./src/js/core/app.save_and_recall.js",
-"./src/js/core/app.settings.js",
-"./src/js/core/app.config.js",
-
-	
-/* Environments */
 	/* IMDI */
-	"./src/js/environments/imdi/imdi_environment.js",
-	"./src/js/environments/imdi/imdi_LanguagePacks.js",
-	"./src/js/environments/imdi/imdi_generator.js",
-	"./src/js/environments/imdi/cmdi_generator.js",
-	"./src/js/environments/imdi/imdi_forms.js",
-	"./src/js/environments/imdi/imdi_corpus.js",
-		"./src/js/environments/imdi/imdi_content_languages.js",
-	"./src/js/environments/imdi/imdi_resources.js",
-	"./src/js/environments/imdi/imdi_actors.js",
-		"./src/js/environments/imdi/imdi_actor_languages.js",
-	"./src/js/environments/imdi/imdi_sessions.js",
-		"./src/js/environments/imdi/imdi_sessions_gui.js",
-	"./src/js/environments/imdi/imdi_output.js",
-	
-
+	"./src/js/imdi_main.js",
+	"./src/js/imdi_LanguagePacks.js",
+	"./src/js/imdi_generator.js",
+	"./src/js/cmdi_generator.js",
+	"./src/js/imdi_forms.js",
+	"./src/js/imdi_corpus.js",
+	"./src/js/imdi_content_languages.js",
+	"./src/js/imdi_resources.js",
+	"./src/js/imdi_actors.js",
+	"./src/js/imdi_actor_languages.js",
+	"./src/js/imdi_sessions.js",
+	"./src/js/imdi_sessions_gui.js",
+	"./src/js/imdi_output.js",
 ];
  
  
@@ -110,10 +82,10 @@ gulp.task('htmlminify', function() {
 // JS concat, strip debugging, minify, and add header
 gulp.task('scripts', function() {
   gulp.src(source_scripts)
-    .pipe(concat('script.js')).on('error', errorHandler)
+    .pipe(concat('imdi_environment.js')).on('error', errorHandler)
     //.pipe(stripDebug())
     .pipe(uglify()).on('error', errorHandler)
-    .pipe(gulp.dest('./build/js/')).on('error', errorHandler)
+    .pipe(gulp.dest('./build/')).on('error', errorHandler)
 	.pipe(notify({message: 'Scripts task complete'}));
 });
 
@@ -127,26 +99,22 @@ var worker_and_dynamic_scripts = [
 
 gulp.task('script-workers', function() {
   gulp.src(worker_and_dynamic_scripts)
-    .pipe(gulp.dest('./build/js/'))
+    .pipe(gulp.dest('./build/'))
 	.pipe(notify({message: 'Script workers task complete'}));
 });
 
 
 var style_sources = [
-"./src/css/yaml.css",
-"./src/css/layout.css",
-"./src/css/typography.css",
-"./src/css/alertify.core.css",
-"./src/css/alertify.default.css"
+"./src/css/layout-imdi.css"
 ];
 
 
 // CSS concat and minify
 gulp.task('styles', function() {
   gulp.src(style_sources)
-    .pipe(concat('styles.css'))
+    .pipe(concat('imdi-environment.css'))
     .pipe(minifyCSS())
-    .pipe(gulp.dest('./build/styles/'))
+    .pipe(gulp.dest('./build/'))
 	.pipe(notify({message: 'Styles task complete'}));
 });
 
@@ -181,7 +149,7 @@ gulp.task('resize', function () {
 
 
 // default gulp task
-gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'script-workers', 'styles', 'manifest'], function() {});
+gulp.task('default', ['scripts', 'styles'], function() {});
 
 
 // Error handler
