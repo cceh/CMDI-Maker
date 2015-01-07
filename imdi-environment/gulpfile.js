@@ -19,8 +19,8 @@ var notify = require('gulp-notify');
 
 var source_scripts = [
 	/* IMDI */
-	"./src/js/imdi_main.js",
 	"./src/js/imdi_LanguagePacks.js",
+	"./src/js/imdi_main.js",
 	"./src/js/imdi_generator.js",
 	"./src/js/cmdi_generator.js",
 	"./src/js/imdi_forms.js",
@@ -112,7 +112,7 @@ var style_sources = [
 // CSS concat and minify
 gulp.task('styles', function() {
   gulp.src(style_sources)
-    .pipe(concat('imdi-environment.css'))
+    .pipe(concat('imdi_environment.css'))
     .pipe(minifyCSS())
     .pipe(gulp.dest('./build/'))
 	.pipe(notify({message: 'Styles task complete'}));

@@ -91,6 +91,21 @@ function addScript(url, onloaded){
 }
 
 
+function addStylesheet(filename){
+
+	var fileref = document.createElement("link");
+	fileref.setAttribute("rel", "stylesheet");
+	fileref.setAttribute("type", "text/css");
+	fileref.setAttribute("href", filename);
+
+	if (typeof fileref!="undefined"){
+		document.getElementsByTagName("head")[0].appendChild(fileref);
+	}
+	
+};
+
+
+
 var getIndex = function(array, key, value){
 
 	for (var i=0; i < array.length; i++){

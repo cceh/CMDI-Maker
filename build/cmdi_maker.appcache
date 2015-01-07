@@ -2,8 +2,8 @@ CACHE MANIFEST
 
 
 CACHE:
-eldp_environment.js
-eldp_styles.css
+imdi_environment.js
+imdi_environment.css
 index.html
 img/busy.svg
 img/favicon.ico
@@ -13,7 +13,6 @@ js/deflate.js
 js/inflate.js
 js/script.js
 styles/styles.css
-img/icons/Thumbs.db
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -69,10 +68,9 @@ img/logos/LOGO_CLASS.png
 img/logos/LOGO_HRELP.png
 img/logos/LOGO_SOAS.png
 img/logos/LOGO_Uni_Koeln.png
-img/logos/Thumbs.db
 
 
 NETWORK:
 *
 
-# hash: dbda7d34290326947e7d15ccc2f364818d33428baccede2f9610309871764cb7
+# hash: b2970147f9c7913e9e493ba8a5ca059a352182446049fa8dbc135fe72c159fe4

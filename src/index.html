@@ -1,5 +1,7 @@
 ﻿<!DOCTYPE html>
-<html manifest="cmdi_maker.appcache">
+<html manifest="cmdi-maker.appcache">
+
+
 	<head>
 		<title>CMDI Maker</title>
 		
@@ -7,11 +9,12 @@
 		<link rel="stylesheet" type="text/css" href="css/yaml.css">
 		<link rel="stylesheet" type="text/css" href="css/layout.css">
 		<link rel="stylesheet" type="text/css" href="css/typography.css">
-		<link rel="stylesheet" type="text/css" href="css/layout-imdi.css">
-		<link rel="stylesheet" type="text/css" href="css/layout-eldp.css">
 		
 		<link rel="stylesheet" type="text/css" href="css/alertify.core.css">
 		<link rel="stylesheet" type="text/css" href="css/alertify.default.css">
+		<!-- endbuild -->
+		
+		<!-- build:environment_css -->
 		<!-- endbuild -->
 		
 		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" /> 
@@ -228,45 +231,9 @@
 			<script src="js/core/app.settings.js" type="text/javascript"></script>
 			<script src="js/core/app.config.js" type="text/javascript"></script>
 
+		<!-- endbuild -->
 		
-			<!-- Environments -->
-				<!-- IMDI -->
-				<script src="js/environments/imdi/imdi_environment.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_LanguagePacks.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_generator.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/cmdi_generator.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_forms.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_corpus.js" type="text/javascript"></script>
-					<script src="js/environments/imdi/imdi_content_languages.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_resources.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_actors.js" type="text/javascript"></script>
-					<script src="js/environments/imdi/imdi_actor_languages.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_sessions.js" type="text/javascript"></script>
-					<script src="js/environments/imdi/imdi_sessions_gui.js" type="text/javascript"></script>
-				<script src="js/environments/imdi/imdi_output.js" type="text/javascript"></script>
-				
-				<!-- ELDP -->
-				<script src="js/environments/eldp/eldp_environment.js" type="text/javascript"></script>
-				<script src="js/environments/eldp/eldp_LanguagePacks.js" type="text/javascript"></script>			
-				<script src="js/environments/eldp/eldp_forms.js" type="text/javascript"></script>
-				<script src="js/environments/eldp/eldp_resources.js" type="text/javascript"></script>
-				<script src="js/environments/eldp/eldp_actors.js" type="text/javascript"></script>
-				<script src="js/environments/eldp/eldp_actor_languages.js" type="text/javascript"></script>
-				<script src="js/environments/eldp/eldp_sessions.js" type="text/javascript"></script>
-					<script src="js/environments/eldp/eldp_sessions_rendering.js" type="text/javascript"></script>
-				<script src="js/environments/eldp/eldp_output.js" type="text/javascript"></script>
-				<script src="js/environments/eldp/eldp_generator.js" type="text/javascript"></script>	
-				
-				<!-- LIDO -->
-				<script src="js/environments/lido/lido_environment.js" type="text/javascript"></script>
-				<script src="js/environments/lido/lido_forms.js" type="text/javascript"></script>
-				<script src="js/environments/lido/lido_start.js" type="text/javascript"></script>
-				<script src="js/environments/lido/lido_object_identification.js" type="text/javascript"></script>
-				<script src="js/environments/lido/lido_event.js" type="text/javascript"></script>
-				<script src="js/environments/lido/lido_object_relation.js" type="text/javascript"></script>				
-				<script src="js/environments/lido/lido_output.js" type="text/javascript"></script>
-				<script src="js/environments/lido/lido_generator.js" type="text/javascript"></script>	
-				
+		<!-- build:environment_js -->
 		<!-- endbuild -->
 		
 	</body>

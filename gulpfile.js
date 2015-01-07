@@ -17,39 +17,56 @@ var notify = require('gulp-notify');
 //var imageResize = require('gulp-image-resize');
 
 
+// Here you can specify environment scripts which shall be included in the build/index.html as well as in the build/cmdi-maker.appcache
+// !!! You are responsible for their real existence at their specified position !!!
+var environment_scripts = [
+	"imdi_environment.js"
+];
+
+// Here you can specify environment stylesheets which shall be included in the build/index.html as well as in the build/mdi-maker.appcache
+// !!! You are responsible for their real existence at their specified position !!!
+var environment_stylesheets = [
+	"imdi_environment.css"
+];
+
+
+var environment_files = environment_scripts.concat(environment_stylesheets);
+
+
+var make_appcache = false;
+
 var source_scripts = [
-/* Dependencies */
-"./src/js/helpers.js",
-"./src/js/alertify.js",
-"./src/js/zip.js",
-"./src/js/FileSaver.js",
-"./src/js/strings.js",
-"./src/js/XMLString.js",
-"./src/js/dom.js",
-"./src/js/ObjectList.js",
-//"./src/js/LanguageIndex.js",  //is loaded dynamically
+	/* Dependencies */
+	"./src/js/helpers.js",
+	"./src/js/alertify.js",
+	"./src/js/zip.js",
+	"./src/js/FileSaver.js",
+	"./src/js/strings.js",
+	"./src/js/XMLString.js",
+	"./src/js/dom.js",
+	"./src/js/ObjectList.js",
+	//"./src/js/LanguageIndex.js",  //is loaded dynamically because of performance reasons
 
-
-/*Core */
-"./src/js/core/app.js",
-"./src/js/core/LanguagePacks.js",
-"./src/js/core/app.environments.js",
-"./src/js/core/app.forms.js",
-"./src/js/core/app.gui.js",
-"./src/js/core/app.gui.forms.js",
-"./src/js/core/app.gui.pager.js",
-"./src/js/core/app.save_and_recall.js",
-"./src/js/core/app.settings.js",
-"./src/js/core/app.config.js",
+	/*Core */
+	"./src/js/core/app.js",
+	"./src/js/core/LanguagePacks.js",
+	"./src/js/core/app.environments.js",
+	"./src/js/core/app.forms.js",
+	"./src/js/core/app.gui.js",
+	"./src/js/core/app.gui.forms.js",
+	"./src/js/core/app.gui.pager.js",
+	"./src/js/core/app.save_and_recall.js",
+	"./src/js/core/app.settings.js",
+	"./src/js/core/app.config.js",
 ];
  
  
 // JS hint task
 gulp.task('jshint', function() {
-  gulp.src('./src/js/*.js')
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'))
-	.pipe(notify({message: 'JSHINT task complete'}));;
+	gulp.src('./src/js/*.js')
+		.pipe(jshint())
+		.pipe(jshint.reporter('default'))
+		.pipe(notify({message: 'JSHINT task complete'}));;
 });
 
 
@@ -68,23 +85,39 @@ gulp.task('imagemin', function() {
 
 // minify new or changed HTML pages
 gulp.task('htmlminify', function() {
-  //var htmlSrc = './*.html';
-  var htmlSrc = './src/index.html';
-  //because we first replace script and style tags and then replace the file
-  //at the build direction
+	//var htmlSrc = './*.html';
+	var htmlSrc = './src/index.html';
+	//because we first replace script and style tags and then replace the file
+	//at the build direction
+  
+	var htmlDst = './build';
+  
+	var replacements = {
+		'css': 'styles/styles.css',
+		'js': 'js/script.js',
+		'environment_css': environment_stylesheets,
+		'environment_js': environment_scripts,
+	};
   
   
-  var htmlDst = './build';
+	// There seems to be a weird bug in gulp-html-replace which doesn't let me replace the <html> in the following manner. That is why this is commented out.
+	// So <html manifest="cmdi-maker.appcache"> has to be there from the beginning!
+	/*
+	if (make_appcache){
+		replacements['manifest'] = {
+			src: 'cmdi_maker.appcache',
+			tpl: '<html manifest="%s">'
+		};
+	}
+	*/
  
-  gulp.src(htmlSrc)
-    .pipe(changed(htmlDst))
-    .pipe(htmlreplace({
-        'css': 'styles/styles.css',
-        'js': 'js/script.js'
-    }))
-    .pipe(minifyHTML())
-    .pipe(gulp.dest(htmlDst))
-	.pipe(notify({message: 'HTML minify task complete'}));
+	gulp.src(htmlSrc)
+		//.pipe(changed(htmlDst))
+		.pipe(htmlreplace(replacements))
+		.pipe(minifyHTML())
+		.pipe(gulp.dest(htmlDst))
+		.pipe(notify({message: 'HTML minify task complete'}));
+		
 });
 
 
@@ -132,16 +165,29 @@ gulp.task('styles', function() {
 });
 
 
+var additional_manifest_cache = environment_files;
+
+
 gulp.task('manifest', function(){
-  gulp.src(['build/**/*'])
-    .pipe(manifest({
-      hash: true,
-      filename: 'cmdi_maker.appcache',
-	  network: ["*"],  //important, so that network stuff like version checker works
-      exclude: ['cmdi_maker.appcache', 'img/logos/Thumbs.db']
-     }))
-    .pipe(gulp.dest('build'))
-	.pipe(notify({message: 'Manifest task complete'}));
+	gulp.src(['build/**/*'])
+		.pipe(manifest({
+			hash: true,
+			filename: 'cmdi_maker.appcache',
+			network: ["*"],  //important, so that network stuff like version checker works
+			exclude: [  //It is important here to include file paths in system specific style, i. e. when working on windows, backslashes have to be used
+				'cmdi_maker.appcache',
+				'img\\logos\\Thumbs.db',
+				'img\\icons\\Thumbs.db',
+				'img\\Thumbs.db',
+				'img/logos/Thumbs.db',
+				'img/icons/Thumbs.db',
+				'img/Thumbs.db',
+				'Thumbs.db'
+			],
+			cache: additional_manifest_cache
+		}))
+		.pipe(gulp.dest('build'))
+		.pipe(notify({message: 'Manifest task complete'}));
 });
 
 
@@ -160,9 +206,15 @@ gulp.task('resize', function () {
 });
 */
 
+var tasks = ['imagemin', 'htmlminify', 'scripts', 'script-workers', 'styles'];
+
+if (make_appcache){
+	tasks.push('manifest');
+}
+
 
 // default gulp task
-gulp.task('default', ['imagemin', 'htmlminify', 'scripts', 'script-workers', 'styles', 'manifest'], function() {});
+gulp.task('default', tasks, function() {});
 
 
 // Error handler
