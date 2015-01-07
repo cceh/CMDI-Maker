@@ -129,7 +129,7 @@ var APP = (function () {
 		
 		renderStartPage();
 		my.checkIfFirstStart();
-		g("version_span").innerHTML = APP.CONF.version;
+		g("version_span").innerHTML = "v" + APP.CONF.version;
 		
 		g("settings_heading").innerHTML = my.l("settings","settings");
 		my.settings.init(my.coreSettings(), g("core_settings"));
@@ -163,6 +163,8 @@ var APP = (function () {
 		addScript(APP.CONF.path_to_scripts + APP.CONF.languageIndex_filename, function(){
 			console.log("LanguageIndex ready!");
 		});
+		
+		console.log("Welcome to CMDI Maker v" + APP.CONF.version);
 		
 	};
 	

@@ -22,6 +22,8 @@ var imdi_environment = (function(){
 	my.name = "imdi";
 	my.id = "imdi";
 	my.title = "IMDI";
+	my.version = "2.0.0";
+	
 	my.workflow = [];
 	my.languages = [];
 	

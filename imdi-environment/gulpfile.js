@@ -19,8 +19,8 @@ var notify = require('gulp-notify');
 
 var source_scripts = [
 	/* IMDI */
-	"./src/js/imdi_LanguagePacks.js",
 	"./src/js/imdi_main.js",
+	"./src/js/imdi_LanguagePacks.js",
 	"./src/js/imdi_generator.js",
 	"./src/js/cmdi_generator.js",
 	"./src/js/imdi_forms.js",

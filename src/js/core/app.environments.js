@@ -61,6 +61,13 @@ APP.environments = (function () {
 		var select = g("profile_select");
 		var start_select = g("start_profile_select");
 		
+		// If environments are loaded synchronously with the main app, they could be there when the DOM is not ready yet.
+		// That is why we have to make sure, that these selects are there. If not, nothing happens yet. But no problem:
+		// When the app initializes itself, it will refresh this nonetheless, so everything will be alright.
+		if (!select || !start_select){
+			return;
+		}
+		
 		dom.setSelectOptions(select, my.environments, "title", "id", true);
 		dom.setSelectOptions(start_select, my.environments, "title", "id", false);
 		
@@ -413,6 +420,7 @@ APP.environments = (function () {
 	
 		my.environments.push(environment);
 		my.displayAllInSelect();
+		console.log("Environment available: " + environment.id + ", v" + environment.version);
 	
 	};
 	

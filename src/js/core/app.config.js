@@ -18,7 +18,7 @@ limitations under the License.
 APP.CONF = {
 
 	originator: "CMDI Maker by CLASS - Cologne Language Archive Services",    
-	version: "v2.0.11",
+	version: "2.0.12",
 	LanguageCodePrefix: "ISO639-3:",
 	path_to_images: "img/",
 	path_to_icons: "img/icons/",

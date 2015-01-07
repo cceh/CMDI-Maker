@@ -123,12 +123,14 @@ gulp.task('htmlminify', function() {
 
 // JS concat, strip debugging, minify, and add header
 gulp.task('scripts', function() {
-  gulp.src(source_scripts)
-    .pipe(concat('script.js')).on('error', errorHandler)
-    //.pipe(stripDebug())
-    .pipe(uglify()).on('error', errorHandler)
-    .pipe(gulp.dest('./build/js/')).on('error', errorHandler)
-	.pipe(notify({message: 'Scripts task complete'}));
+
+	gulp.src(source_scripts)
+		.pipe(concat('script.js')).on('error', errorHandler)
+		//.pipe(stripDebug())
+		.pipe(uglify()).on('error', errorHandler)
+		.pipe(gulp.dest('./build/js/')).on('error', errorHandler)
+		.pipe(notify({message: 'Scripts task complete'}));
+		
 });
 
 
@@ -140,18 +142,20 @@ var worker_and_dynamic_scripts = [
 
 
 gulp.task('script-workers', function() {
-  gulp.src(worker_and_dynamic_scripts)
-    .pipe(gulp.dest('./build/js/'))
-	.pipe(notify({message: 'Script workers task complete'}));
+
+	gulp.src(worker_and_dynamic_scripts)
+		.pipe(gulp.dest('./build/js/'))
+		.pipe(notify({message: 'Script workers task complete'}));
+		
 });
 
 
 var style_sources = [
-"./src/css/yaml.css",
-"./src/css/layout.css",
-"./src/css/typography.css",
-"./src/css/alertify.core.css",
-"./src/css/alertify.default.css"
+	"./src/css/yaml.css",
+	"./src/css/layout.css",
+	"./src/css/typography.css",
+	"./src/css/alertify.core.css",
+	"./src/css/alertify.default.css"
 ];
 
 
