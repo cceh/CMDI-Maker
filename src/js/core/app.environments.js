@@ -149,17 +149,17 @@ APP.environments = (function () {
 	};
 	
 	
-	my.create = function (environment){
+	my.load = function (environment){
 		
 		if (typeof environment == "undefined"){
-			console.warn("APP.environments.create: Environment parameter is undefined!");
+			console.warn("APP.environments.load: Environment parameter is undefined!");
 			return;
 		}
 		
 		if (typeof my.active_environment != "undefined"){
 		
 			if (environment.id == my.active_environment.id){
-				console.log("Environment to be created is already active: " + my.active_environment.id);
+				console.log("Environment to be loaded is already active: " + my.active_environment.id);
 				return;
 			}
 			
@@ -306,7 +306,7 @@ APP.environments = (function () {
 		
 		APP.GUI.scrollTop();
 		
-		my.create(my.environments[index]);
+		my.load(my.environments[index]);
 	
 	};
 	
@@ -421,7 +421,7 @@ APP.environments = (function () {
 		my.environments.push(environment);
 		my.displayAllInSelect();
 		console.log("Environment available: " + environment.id + ", v" + environment.version);
-	
+		
 	};
 	
 	

@@ -121,6 +121,38 @@ var addFile = function(filename){
 };
 
 
+var addFiles = function(string_or_array, url_prefix){
+
+	if (typeof string_or_array == "string"){
+		
+		if (url_prefix){
+			string_or_array = url_prefix + string_or_array;
+		}
+		
+		addFile(string_or_array);
+		
+		return;
+	}
+	
+	if (Array.isArray(string_or_array)){
+		
+		forEach(string_or_array, function(file){
+		
+			if (url_prefix){
+				file = url_prefix + file;
+			}
+		
+			addFile(file);
+			
+		});
+		
+		return;
+		
+	}	
+
+};
+
+
 var getIndex = function(array, key, value){
 
 	for (var i=0; i < array.length; i++){

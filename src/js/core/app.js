@@ -66,7 +66,7 @@ var APP = (function () {
 		g('link_lets_go').addEventListener('click', function() {
 		
 			if (typeof my.environments.active_environment == "undefined"){
-				my.environments.create(my.environments.get(0));	
+				my.environments.load(my.environments.get(0));	
 			}
 			
 			if (my.environments.active_environment.workflow[0]){
@@ -816,7 +816,7 @@ var APP = (function () {
 		if (recall_object.active_environment_id){
 		
 			var environment = my.environments.getByID(recall_object.active_environment_id);
-			my.environments.create(environment);
+			my.environments.load(environment);
 			
 			if (typeof environment_data == "undefined"){
 				environment_data = my.save_and_recall.getRecallDataForEnvironment(environment);

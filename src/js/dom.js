@@ -21,6 +21,11 @@ var dom = (function() {
 
 	my.getSelectedRadioIndex = function (radios){
 
+		if (typeof radios == "string"){
+		
+			radios = document.getElementsByName(radios);
+			
+		}		
 
 		for (var r = 0; r < radios.length; r++){
 		
