@@ -84,7 +84,10 @@ function addScript(url, onloaded){
 
 	var script = document.createElement("script");
 	script.src = url;
-	script.addEventListener("load", onloaded, false);
+	
+	if (onloaded){
+		script.addEventListener("load", onloaded, false);
+	}
 	
 	document.head.appendChild(script);
 
@@ -98,12 +101,24 @@ function addStylesheet(filename){
 	fileref.setAttribute("type", "text/css");
 	fileref.setAttribute("href", filename);
 
-	if (typeof fileref!="undefined"){
+	if (typeof fileref != "undefined"){
 		document.getElementsByTagName("head")[0].appendChild(fileref);
 	}
 	
 };
 
+
+var addFile = function(filename){
+
+	if (strings.getFileTypeFromFilename(filename) == "js"){
+		addScript(filename);	
+	}
+	
+	if (strings.getFileTypeFromFilename(filename) == "css"){
+		addStylesheet(filename);	
+	}
+
+};
 
 
 var getIndex = function(array, key, value){

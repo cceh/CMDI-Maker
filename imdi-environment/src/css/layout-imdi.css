@@ -7,26 +7,6 @@ right: 0px;
 
 }
 
-.content h1{
-
-margin: 0px;
-padding-bottom: 15px;
-
-}
-
-.icon_div:hover, .icon_div_hover:hover, #main_menu_icon:hover{
-
-background-color: pink;
-
-}
-
-
-.icon_div:hover a{
-
-color: #4D87C7;
-}
-
-
 #lang_search_div{
 
 background: darkturquoise;

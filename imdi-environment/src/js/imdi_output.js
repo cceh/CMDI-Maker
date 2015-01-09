@@ -165,7 +165,7 @@ imdi_environment.workflow[4] = (function (){
 		xml_window.innerHTML = "";
 		
 		//get index of selected output format
-		var output_format_index = dom.getSelectedRadioIndex(document.getElementsByName("output_format"));
+		var output_format_index = dom.getSelectedRadioIndex("output_format");
 		
 		var data = {
 			corpus: {
@@ -180,10 +180,12 @@ imdi_environment.workflow[4] = (function (){
 		}
 		
 		
+		var format = my.formats()[output_format_index];
+		
 		// initiate object for imdi_structure class
-		var xml_strings = new my.formats()[output_format_index].generator_object(data);
-		var output_format = my.formats()[output_format_index].output_name;
-		var file_ending = my.formats()[output_format_index].file_ending;
+		var xml_strings = new format.generator_object(data);
+		var output_format = format.output_name;
+		var file_ending = format.file_ending;
 		
 		//if corpus is to be created
 		if (get("corpus_name") !== ""){
@@ -194,13 +196,13 @@ imdi_environment.workflow[4] = (function (){
 			
 		}
 		
-		for (var s = 0; s < session.sessions.length; s++){
+		session.sessions.forEach(function(sess, s){
 
-			filename = get(session.dom_element_prefix + session.sessions[s].id + "_session_name") + "." + file_ending;
+			filename = sess.session.name + "." + file_ending;
 			APP.GUI.createXMLOutputDIV(xml_window, output_format + " Session " + (s+1), "textarea_session_" + s,
 			xml_strings.sessions[s], filename);
 			
-		}
+		});
 		
 	};
 
