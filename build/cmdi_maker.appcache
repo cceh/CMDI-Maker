@@ -2,17 +2,22 @@ CACHE MANIFEST
 
 
 CACHE:
-imdi_environment.js
-imdi_environment.css
 index.html
-img/busy.svg
-img/favicon.ico
-img/logo-128.png
+styles/styles.css
 js/LanguageIndex.js
 js/deflate.js
 js/inflate.js
 js/script.js
-styles/styles.css
+img/busy.svg
+img/favicon.ico
+img/logo-128.png
+img/logos/LOGO_BMBF.png
+img/logos/LOGO_CCeH.png
+img/logos/LOGO_CLARIN-D.png
+img/logos/LOGO_CLASS.png
+img/logos/LOGO_HRELP.png
+img/logos/LOGO_SOAS.png
+img/logos/LOGO_Uni_Koeln.png
 img/icons/about.png
 img/icons/addir.png
 img/icons/az.png
@@ -61,16 +66,11 @@ img/icons/up.png
 img/icons/user.png
 img/icons/warning.png
 img/icons/wrench.png
-img/logos/LOGO_BMBF.png
-img/logos/LOGO_CCeH.png
-img/logos/LOGO_CLARIN-D.png
-img/logos/LOGO_CLASS.png
-img/logos/LOGO_HRELP.png
-img/logos/LOGO_SOAS.png
-img/logos/LOGO_Uni_Koeln.png
+imdi_environment.js
+imdi_environment.css
 
 
 NETWORK:
 *
 
-# hash: b2970147f9c7913e9e493ba8a5ca059a352182446049fa8dbc135fe72c159fe4
+# hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855

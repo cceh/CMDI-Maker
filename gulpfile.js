@@ -32,8 +32,7 @@ var environment_stylesheets = [
 
 var environment_files = environment_scripts.concat(environment_stylesheets);
 
-
-var make_appcache = false;
+var make_appcache = true;
 
 var source_scripts = [
 	/* Dependencies */
@@ -59,8 +58,113 @@ var source_scripts = [
 	"./src/js/core/app.settings.js",
 	"./src/js/core/app.config.js",
 ];
+
+
+var style_sources = [
+	"./src/css/yaml.css",
+	"./src/css/layout.css",
+	"./src/css/typography.css",
+	"./src/css/alertify.core.css",
+	"./src/css/alertify.default.css"
+];
+
+
+// These scripts won't be built but just copied to the build.
+var worker_and_dynamic_scripts = [
+	"./src/js/deflate.js",
+	"./src/js/inflate.js",
+	"./src/js/LanguageIndex.js"
+];
+
+
+// Things to replace in the HTML file.
+var html_replacements = {
+	'css': 'styles/styles.css',
+	'js': 'js/script.js',
+	'environment_css': environment_stylesheets,
+	'environment_js': environment_scripts,
+};
+
+
+var manifest_cache_files = [
+	"index.html",
+	
+	"styles/styles.css",
+	
+	"js/LanguageIndex.js",
+	"js/deflate.js",
+	"js/inflate.js",
+	"js/script.js",
+	
+	"img/busy.svg",
+	"img/favicon.ico",
+	"img/logo-128.png",
+	
+	"img/logos/LOGO_BMBF.png",
+	"img/logos/LOGO_CCeH.png",
+	"img/logos/LOGO_CLARIN-D.png",
+	"img/logos/LOGO_CLASS.png",
+	"img/logos/LOGO_HRELP.png",
+	"img/logos/LOGO_SOAS.png",
+	"img/logos/LOGO_Uni_Koeln.png",
+	
+	"img/icons/about.png",
+	"img/icons/addir.png",
+	"img/icons/az.png",
+	"img/icons/blocks.png",
+	"img/icons/bookcase.png",
+	"img/icons/box.png",
+	"img/icons/bubble.png",
+	"img/icons/chat.png",
+	"img/icons/clock.png",
+	"img/icons/cookie.png",
+	"img/icons/copy.png",
+	"img/icons/data.png",
+	"img/icons/data2folder.png",
+	"img/icons/down.png",
+	"img/icons/download.png",
+	"img/icons/duplicate_user.png",
+	"img/icons/edit.png",
+	"img/icons/export.png",
+	"img/icons/flags.png",
+	"img/icons/folder.png",
+	"img/icons/gear.png",
+	"img/icons/gear2.png",
+	"img/icons/hamburger_menu.png",
+	"img/icons/in_box.png",
+	"img/icons/left.png",
+	"img/icons/minus.png",
+	"img/icons/network.png",
+	"img/icons/open.png",
+	"img/icons/pie_chart.png",
+	"img/icons/plus.png",
+	"img/icons/refresh.png",
+	"img/icons/reset.png",
+	"img/icons/right.png",
+	"img/icons/right2.png",
+	"img/icons/right3.png",
+	"img/icons/save.png",
+	"img/icons/search.png",
+	"img/icons/shapes.png",
+	"img/icons/star.png",
+	"img/icons/stop.png",
+	"img/icons/submit.png",
+	"img/icons/text.png",
+	"img/icons/textedit.png",
+	"img/icons/trash.png",
+	"img/icons/up.png",
+	"img/icons/user.png",
+	"img/icons/warning.png",
+	"img/icons/wrench.png"
+];
+
+
+// Add environment files to manifest cache files
+manifest_cache_files = manifest_cache_files.concat(environment_files);
  
- 
+
+// TASKS 
+
 // JS hint task
 gulp.task('jshint', function() {
 	gulp.src('./src/js/*.js')
@@ -92,19 +196,11 @@ gulp.task('htmlminify', function() {
   
 	var htmlDst = './build';
   
-	var replacements = {
-		'css': 'styles/styles.css',
-		'js': 'js/script.js',
-		'environment_css': environment_stylesheets,
-		'environment_js': environment_scripts,
-	};
-  
-  
 	// There seems to be a weird bug in gulp-html-replace which doesn't let me replace the <html> in the following manner. That is why this is commented out.
 	// So <html manifest="cmdi-maker.appcache"> has to be there from the beginning!
 	/*
 	if (make_appcache){
-		replacements['manifest'] = {
+		html_replacements['manifest'] = {
 			src: 'cmdi_maker.appcache',
 			tpl: '<html manifest="%s">'
 		};
@@ -113,7 +209,7 @@ gulp.task('htmlminify', function() {
  
 	gulp.src(htmlSrc)
 		//.pipe(changed(htmlDst))
-		.pipe(htmlreplace(replacements))
+		.pipe(htmlreplace(html_replacements))
 		.pipe(minifyHTML())
 		.pipe(gulp.dest(htmlDst))
 		.pipe(notify({message: 'HTML minify task complete'}));
@@ -134,13 +230,6 @@ gulp.task('scripts', function() {
 });
 
 
-var worker_and_dynamic_scripts = [
-	"./src/js/deflate.js",
-	"./src/js/inflate.js",
-	"./src/js/LanguageIndex.js"
-];
-
-
 gulp.task('script-workers', function() {
 
 	gulp.src(worker_and_dynamic_scripts)
@@ -148,15 +237,6 @@ gulp.task('script-workers', function() {
 		.pipe(notify({message: 'Script workers task complete'}));
 		
 });
-
-
-var style_sources = [
-	"./src/css/yaml.css",
-	"./src/css/layout.css",
-	"./src/css/typography.css",
-	"./src/css/alertify.core.css",
-	"./src/css/alertify.default.css"
-];
 
 
 // CSS concat and minify
@@ -169,26 +249,16 @@ gulp.task('styles', function() {
 });
 
 
-var additional_manifest_cache = environment_files;
-
-
+// Create manifest file. This task does not use a source because all the files to be included to the manifest file are specified manually above.
+// I've tried to do it some other way, with gulp.src taking all the files in the build folder, but this never worked to my complete satisfaction, hence this manual method.
 gulp.task('manifest', function(){
-	gulp.src(['build/**/*'])
+	gulp.src([])
 		.pipe(manifest({
 			hash: true,
 			filename: 'cmdi_maker.appcache',
 			network: ["*"],  //important, so that network stuff like version checker works
-			exclude: [  //It is important here to include file paths in system specific style, i. e. when working on windows, backslashes have to be used
-				'cmdi_maker.appcache',
-				'img\\logos\\Thumbs.db',
-				'img\\icons\\Thumbs.db',
-				'img\\Thumbs.db',
-				'img/logos/Thumbs.db',
-				'img/icons/Thumbs.db',
-				'img/Thumbs.db',
-				'Thumbs.db'
-			],
-			cache: additional_manifest_cache
+			exclude: [],
+			cache: manifest_cache_files
 		}))
 		.pipe(gulp.dest('build'))
 		.pipe(notify({message: 'Manifest task complete'}));
@@ -217,7 +287,7 @@ if (make_appcache){
 }
 
 
-// default gulp task
+// execute default gulp task
 gulp.task('default', tasks, function() {});
 
 
