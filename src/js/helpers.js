@@ -32,7 +32,7 @@ function ajax_get(url, success_callback){
 			success_callback(response);
 			
 		}
-	}
+	};
 	
 	console.log("Sending ajax request to: " + url);
 	
@@ -105,7 +105,7 @@ function addStylesheet(filename){
 		document.getElementsByTagName("head")[0].appendChild(fileref);
 	}
 	
-};
+}
 
 
 var addFile = function(filename){
@@ -202,7 +202,7 @@ var forAllItems = function(array, action){
 
 	for (;;){
 	
-		if (i != 0) {
+		if (i !== 0) {
 			i = i - 1;
 		}
 		
@@ -237,14 +237,14 @@ var getArrayWithValuesByKey = function(array, key){
 
 	return new_array;
 
-}
+};
 
 
 var getArrayWithIDs = function(array){
 
 	return getArrayWithValuesByKey(array, "id");
 
-}
+};
 
 
 var filter = function(array, test) {
@@ -393,7 +393,7 @@ var removeToInsertLater = function(element) {
 			parentNode.appendChild(element);
 		}
 	};
-}
+};
 
 
 function calcAgeAtDate(dateString,birthDate) {
@@ -496,6 +496,8 @@ function sortByKey(array, key) {
 
 
 function parseDate(str){
+	
+	var date;
 
 	if (typeof str == "undefined"){
 		return null;
@@ -506,7 +508,7 @@ function parseDate(str){
 	if(t!==null){
 		
 		var y=+t[1], m=+t[2], d=+t[3];
-		var date = new Date(y,m-1,d);
+		date = new Date(y,m-1,d);
 		
 		if(date.getFullYear()===y && date.getMonth()===m-1){
 			return {
@@ -526,7 +528,7 @@ function parseDate(str){
 	
 	// note parts[1]-1
 	if (parts !== null){
-		var date = new Date(parts[2], parts[1]-1, parts[0]);
+		date = new Date(parts[2], parts[1]-1, parts[0]);
 		
 		if(date.getFullYear()==parts[2] && date.getMonth()==parts[1]-1){
 		
@@ -544,7 +546,7 @@ function parseDate(str){
 	
 	return null;
 	
-};
+}
 
 
 /*

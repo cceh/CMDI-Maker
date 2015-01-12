@@ -160,7 +160,7 @@ var XMLString = function () {
 			["&amp;",	"&"],			//ampersand
 			//ampersand HAS TO BE FIRST in this array, so that the ampersands of the other entity references wont get escaped too.
 			["&lt;",	"<"],			//less than
-			["&gt;",	">"], 			//greater than
+			["&gt;",	">"],			//greater than
 			["&apos;",	"'"],			//apostrophe
 			["&quot;",	"\""]			//quotation mark
 		];
@@ -208,7 +208,7 @@ var XMLString = function () {
 		
 		//if this is NOT a closing tag just after an opening tag, 
 		//AND if this is not the beginning of all, then start a new line
-		if ((!(mode == "close" && self.last_mode == "open")) && self.last_mode != null){
+		if ((!(mode == "close" && self.last_mode == "open")) && self.last_mode !== null){
 			return_string += "\n";
 			return_string += addTabs(self.tab);
 		}
@@ -236,7 +236,7 @@ var XMLString = function () {
 		
 		return value;	
 	
-	}
+	};
 	
 	
 	self.element = function (name, value, keys){

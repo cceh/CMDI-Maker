@@ -29,7 +29,7 @@ var strings = (function(){
 		
 		return file_type;
 
-	}
+	};
 
 
 	my.getFilenameFromFilePath = function(path){
@@ -42,7 +42,7 @@ var strings = (function(){
 			return my.getFilenameFromUNIXFilePath(path);
 		}
 
-	}
+	};
 
 
 	my.getFilenameFromUNIXFilePath = function(path){
@@ -55,7 +55,7 @@ var strings = (function(){
 		
 		return path.substring(pos_of_slash + 1);
 
-	}
+	};
 
 
 	my.getFilenameFromWindowsFilePath = function(path){
@@ -68,7 +68,7 @@ var strings = (function(){
 		
 		return path.substring(pos_of_slash+1);
 
-	}
+	};
 
 
 	my.getDirectoryFromFilePath = function(path){
@@ -81,7 +81,7 @@ var strings = (function(){
 			return my.getDirectoryFromUNIXFilePath(path);
 		}
 
-	}
+	};
 
 
 	my.getDirectoryFromUNIXFilePath = function(path){
@@ -94,7 +94,7 @@ var strings = (function(){
 		
 		return path.substring(0, pos_of_slash+1);
 
-	}
+	};
 
 
 	my.getDirectoryFromWindowsFilePath = function(path){
@@ -107,7 +107,7 @@ var strings = (function(){
 		
 		return path.substring(0, pos_of_slash+1);
 
-	}
+	};
 
 
 	my.linesToArray = function(string){
@@ -129,7 +129,7 @@ var strings = (function(){
 		var result = '';
 		for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
 		return result;
-	}
+	};
 
 
 	my.replaceAccentBearingLettersWithASCISubstitute = function(string){
@@ -170,7 +170,7 @@ var strings = (function(){
 		text = text.replace(/ß/g,"ss").replace(/\s+/g, '_');
 
 		return text;
-	}
+	};
 
 
 	my.removeCharactersFromString = function (string, char_string){
@@ -225,7 +225,7 @@ var strings = (function(){
 
 
 
-	}
+	};
 
 
 	my.replaceCharactersInStringWithSubstitute = function (string, char_string, substitute){
@@ -294,7 +294,7 @@ var strings = (function(){
 
 		}
 
-	}
+	};
 
 
 	my.removeEndingFromFilename = function(filename){
@@ -303,16 +303,16 @@ var strings = (function(){
 		
 		return filename.slice(0,pos_of_dot);
 
-	}
+	};
 
 
 	my.bytesToSize = function(bytes, precision){
-	  
+
 		var kilobyte = 1024;
 		var megabyte = kilobyte * 1024;
 		var gigabyte = megabyte * 1024;
 		var terabyte = gigabyte * 1024;
-	   
+
 		if ((bytes >= 0) && (bytes < kilobyte)) {
 			return bytes + ' B';
 	 

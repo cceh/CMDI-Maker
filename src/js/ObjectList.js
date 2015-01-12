@@ -68,7 +68,7 @@ var ObjectList = function() {
 		
 		}
 		
-		if (self.length == 0){
+		if (self.length === 0){
 		
 			pointer = -1;
 		
@@ -94,7 +94,7 @@ var ObjectList = function() {
 		
 		return false;
 	
-	}
+	};
 	this.existsByID = this.IDexists;
 	
 	
@@ -132,7 +132,7 @@ var ObjectList = function() {
 			
 		}
 	
-	}
+	};
 	
 	
 	this.getLast = function(){
@@ -143,7 +143,7 @@ var ObjectList = function() {
 			
 		}
 	
-	}
+	};
 	
 	
 	this.getFromEnd = function(backwards_index){
@@ -154,7 +154,7 @@ var ObjectList = function() {
 			
 		}
 	
-	}
+	};
 
 	
 	this.getAll = function(){
@@ -201,7 +201,7 @@ var ObjectList = function() {
 
 		return new_array;
 
-	}
+	};
 	
 	
 	this.getArrayWithIDs = function(){
@@ -222,7 +222,7 @@ var ObjectList = function() {
 	//REMOVE METHODS
 	this.removeByID = function(id){
 		
-		if (Array.isArray(id) == true){
+		if (Array.isArray(id) === true){
 		
 			forEach(id, self.removeByID);
 			return;
@@ -327,9 +327,9 @@ var ObjectList = function() {
 	
 		list.splice(index, 1, object);
 		
-	}
-	
+	};
 	this.replace = this.replaceByID;
+	
 	
 	this.replaceActive = function(object){
 	
@@ -425,8 +425,6 @@ var ObjectList = function() {
 	
 	
 	this.setState = function(state){
-	
-		
 	
 		if ((!state) || (!state.list) || (typeof state.list != "object")){
 			console.error("Error setState: Invalid data!");
@@ -610,7 +608,7 @@ var ObjectList = function() {
 			return false;
 		}
 	
-	}
+	};
 	
 
 	/////
@@ -624,7 +622,8 @@ var ObjectList = function() {
 		
 		return IDs;
 	
-	}
+	};
+	
 	
 	this.setForAll = function(key, value){
 	
@@ -634,7 +633,7 @@ var ObjectList = function() {
 		
 		});
 	
-	}
+	};
 
 
 	/*
