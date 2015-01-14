@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-function ajax_get(url, success_callback){
+function getWithAJAX(url, success_callback){
 
 	var http = new XMLHttpRequest();
 	
@@ -23,13 +23,11 @@ function ajax_get(url, success_callback){
 
 	http.onreadystatechange = function() { //Call a function when the state changes.
 
-		if(http.readyState == 4 && http.status == 200) {
+		if (http.readyState == 4 && http.status == 200) {
 			
 			console.log("AJAX successful!");
 			
-			var response = http.responseText;
-
-			success_callback(response);
+			success_callback(http);
 			
 		}
 	};
@@ -37,6 +35,25 @@ function ajax_get(url, success_callback){
 	console.log("Sending ajax request to: " + url);
 	
 	return http.send();
+	
+}
+
+
+function getTextWithAJAX(url, success_callback){
+
+	getWithAJAX(url, function(http){
+		var response = http.responseText;
+		success_callback(response);
+	});
+	
+}
+
+
+function getJSONWithAJAX(url, success_callback){
+	
+	getTextWithAJAX(url, function(responseText){
+		parseJSON(responseText, success_callback, undefined);		
+	});
 	
 }
 
@@ -78,12 +95,53 @@ function readFileAsText(file, onsuccess){
 }
 
 
-function addScript(url, onloaded){
+function parseJSON(string, onsuccess, onerror){
+
+	var object;
+
+	try {
+		object = JSON.parse(string);
+	}
+	
+	catch (e) {
+		log("parseJSON: String is not valid JSON");
+		if (typeof onerror == "function"){
+			onerror(e);
+		}
+		return;
+	}
+	
+	if (typeof object == "undefined"){
+		log("parseJSON: String is not valid JSON");
+		if (typeof onerror == "function"){
+			onerror();
+		}
+		return;
+	}
+	
+	onsuccess(object);
+	
+};
+
+
+function readFileAsJSON(file, onsuccess, onerror){
+
+	readFileAsText(file, function(result){
+		parseJSON(result, onsuccess, onerror);		
+	});
+
+}
+
+
+function addScript(url, onloaded, async){
 
 	console.log("adding script: " + url);
 
 	var script = document.createElement("script");
 	script.src = url;
+	
+	//if async parameter is not defined, load it sync
+	script.async = async || false;
 	
 	if (onloaded){
 		script.addEventListener("load", onloaded, false);

@@ -162,7 +162,7 @@ var APP = (function () {
 		//since this is a very big one, that would slow code parsing and executing, we add it async when everything else is done
 		addScript(APP.CONF.path_to_scripts + APP.CONF.languageIndex_filename, function(){
 			console.log("LanguageIndex ready!");
-		});
+		}, true);
 		
 		console.log("Welcome to CMDI Maker v" + APP.CONF.version);
 		
@@ -706,13 +706,13 @@ var APP = (function () {
 
 /**
 * Saves a file with text content. For the user, it looks like a download.
-* @method save_file
+* @method saveTextfile
 * @param {string} text Content of file as string
 * @param {string} filename Filename
 * @param {string} mime_type Mime type for download
 * @static
 */	
-	my.save_file = function (text, filename, mime_type){
+	my.saveTextfile = function (text, filename, mime_type){
 
 		var clean_filename = strings.replaceAccentBearingLettersWithASCISubstitute(filename);
 		
@@ -788,7 +788,7 @@ var APP = (function () {
 		
 		forEach(textareas, function(textarea){
 		
-			my.save_file(textarea.value, textarea.filename);
+			my.saveTextfile(textarea.value, textarea.filename);
 			
 		});
 	

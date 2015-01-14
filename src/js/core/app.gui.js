@@ -825,7 +825,7 @@ APP.GUI = (function() {
 		textarea.filename = filename;
 		
 		img.addEventListener("click", function(){
-			APP.save_file(textarea.value, filename, APP.CONF.file_download_header);
+			APP.saveTextfile(textarea.value, filename, APP.CONF.file_download_header);
 		});
 		
 		if (mockup && mockup === true){

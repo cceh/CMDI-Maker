@@ -171,7 +171,7 @@ APP.save_and_recall = (function () {
 			CMP_object.environments[APP.environments.active_environment.id] = environment_object;
 		}
 	
-		APP.save_file(JSON.stringify(CMP_object), APP.CONF.project_file_name);
+		APP.saveTextfile(JSON.stringify(CMP_object), APP.CONF.project_file_name);
 	
 	};
 	
@@ -199,7 +199,7 @@ APP.save_and_recall = (function () {
 			CMP_object.environments = {};
 			CMP_object.environments[APP.environments.active_environment.id] = environment_object;
 			
-			APP.save_file(JSON.stringify(CMP_object), file_name);
+			APP.saveTextfile(JSON.stringify(CMP_object), file_name);
 			
 		}
 		
@@ -219,27 +219,11 @@ APP.save_and_recall = (function () {
 	
 	
 	my.loadFromFile = function(file){
-		var project_data;
 		
-		readFileAsText(file, function(result){
-		
-			try {
-				project_data = JSON.parse(result);
-			}
-			
-			catch (e) {
-				APP.log(APP.l("settings","no_project_data_found_in_file"),"error");
-			}
-			
-			if (typeof project_data == "undefined"){
-				return;
-			}
-			
-			
-			my.importProjectData(project_data);
-		
+		readFileAsJSON(file, my.importProjectData, function(){
+			APP.log(APP.l("settings","no_project_data_found_in_file"), "error");
 		});
-		
+
 	};
 
 	
@@ -319,6 +303,9 @@ APP.save_and_recall = (function () {
 				}
 				
 			}, APP.l("confirm","no"), APP.l("confirm","yes_overwrite_data"));
+			
+			return;
+			
 		}
 		
 		console.warn("Tried to import project data, but no vaild data was found!");

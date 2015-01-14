@@ -207,7 +207,6 @@ APP.GUI.FORMS = (function() {
 				self.list_div.addEventListener("scroll", function(event){
 				
 					self.scrollTop = self.list_div.scrollTop;
-					console.log("SCROLL");
 				
 				}, false);
 				
