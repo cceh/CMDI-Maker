@@ -14,7 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+ * Helper functions. These are available in the global namespace!
+ *
+ * @module HELPERS
+ */
 
+/**
+ * Helper functions. These are available in the global namespace!
+ *
+ * @class HELPERS
+ */
+ 
+
+
+/**
+ * Downloads a resource via AJAX, using the HTTP GET method.
+ * @method getWithAJAX
+ * @param {string} url URL of the resource.
+ * @param {function} success_callback Callback function to be called when resource is downloaded and ready. It gets the XMLHttpRequest object.
+ * @return {mixed} http.send() Value of http.send()
+ * @static 
+ */	
 function getWithAJAX(url, success_callback){
 
 	var http = new XMLHttpRequest();
@@ -39,9 +60,17 @@ function getWithAJAX(url, success_callback){
 }
 
 
+/**
+ * Downloads a text resource via AJAX, using the HTTP GET method.
+ * @method getTextWithAJAX
+ * @param {string} url URL of the resource.
+ * @param {function} success_callback Callback function to be called when resource is downloaded and ready. It gets the resource as text string.
+ * @return {mixed} http.send() Value of http.send()
+ * @static 
+ */	
 function getTextWithAJAX(url, success_callback){
 
-	getWithAJAX(url, function(http){
+	return getWithAJAX(url, function(http){
 		var response = http.responseText;
 		success_callback(response);
 	});
@@ -49,6 +78,14 @@ function getTextWithAJAX(url, success_callback){
 }
 
 
+/**
+ * Downloads a JSON resource via AJAX, using the HTTP GET method.
+ * @method getJSONWithAJAX
+ * @param {string} url URL of the resource.
+ * @param {function} success_callback Callback function to be called when resource is downloaded and ready. It gets the resulting javascript object, when JSON parsing was successful.
+ * @return {mixed} http.send() Value of http.send()
+ * @static 
+ */	
 function getJSONWithAJAX(url, success_callback){
 	
 	getTextWithAJAX(url, function(responseText){
@@ -58,6 +95,13 @@ function getJSONWithAJAX(url, success_callback){
 }
 
 
+/**
+ * Clones a javascript object (instead of just copying references of it).
+ * @method cloneObject
+ * @param {mixed} obj Source object.
+ * @return {mixed} clone Clone of the object
+ * @static 
+ */	
 function cloneObject(obj) {
     var clone = {};
 	
@@ -78,6 +122,13 @@ function cloneObject(obj) {
 }
 
 
+/**
+ * Parses a Javascript Blob object for its text. This obviously works only with text files.
+ * @method readFileAsText
+ * @param {mixed} file File as Blob object.
+ * @param {function} onsuccess Callback function to be called when file is parsed. It gets the resulting string, if parsing was successful.
+ * @static 
+ */	
 function readFileAsText(file, onsuccess){
 
 	var reader = new FileReader();
