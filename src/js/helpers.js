@@ -186,19 +186,23 @@ function readFileAsJSON(file, onsuccess, onerror){
 
 function addScript(url, onloaded, async){
 
-	console.log("adding script: " + url);
-
 	var script = document.createElement("script");
 	script.src = url;
 	
 	//if async parameter is not defined, load it sync
 	script.async = async || false;
 	
+	console.log("adding script: " + url + ", async=" + script.async);
+	
 	if (onloaded){
 		script.addEventListener("load", onloaded, false);
 	}
 	
 	document.head.appendChild(script);
+	
+	script.addEventListener("load", function(){
+		console.log("script " + url + " ready!");
+	}, false);
 
 }
 

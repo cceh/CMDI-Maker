@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-var ObjectList = function() {
+var ObjectList = function(start_array) {
 	"use strict";
 
 	var self = this;
@@ -427,8 +427,7 @@ var ObjectList = function() {
 	this.setState = function(state){
 	
 		if ((!state) || (!state.list) || (typeof state.list != "object")){
-			console.error("Error setState: Invalid data!");
-			console.info("typeof state.list = " + typeof state.list);
+			console.error("Error setState: Invalid data! typeof state.list = " + typeof state.list + ", typeof state = " + typeof state);
 			return;
 		}
 	
@@ -647,6 +646,18 @@ var ObjectList = function() {
 
 	}
 	*/
+	
+	
+	//INITIALIZE
+	if (Array.isArray(start_array)){
+	
+		for (var i = 0; i < start_array.length; i++){
+		
+			self.add(start_array[i]);
+		
+		}
+	
+	}
 
 };
 

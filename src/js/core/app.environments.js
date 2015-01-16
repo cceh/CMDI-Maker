@@ -151,8 +151,8 @@ APP.environments = (function () {
 	
 	my.load = function (environment){
 		
-		if (typeof environment == "undefined"){
-			console.warn("APP.environments.load: Environment parameter is undefined!");
+		if (typeof environment != "object"){
+			console.warn("APP.environments.load: Environment parameter is invalid or undefined! typeof environment = " + typeof environment);
 			return;
 		}
 		
