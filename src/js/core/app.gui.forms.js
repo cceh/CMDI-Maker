@@ -65,14 +65,19 @@ APP.GUI.FORMS = (function() {
 		
 		APP.GUI.icon(box,"","delete_lang_icon", "reset", on_delete);
 		
+		var box_content = dom.div(box, "", "redBox_content");
+		
 		forEach(content, function(content_for_line){
-			var span = dom.spanBR(box,"","","");
+			var span = dom.spanBR(box_content, "", "", "");
 			dom.appendHTMLContent(span, content_for_line);
 		});
 		
 		box.style.width = width + "px";
 		
-		return box;
+		return {
+			box: box,
+			content: box_content
+		};
 
 	};
 	
