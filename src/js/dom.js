@@ -55,15 +55,23 @@ var dom = (function() {
 	};
 	
 	
-	my.makeRadios = function(parent, array, name, id_prefix, title_key, value_key, start_value, on_change){
+	my.makeRadios = function(parent, array, name, id_prefix, title_key, value_key, start_value, on_change, hovers){
 		var radios = [];
 		var radio;
 		var span;
 		
 		for (var f = 0; f < array.length; f++){
-		
+			
+			if (hovers){
+				var hover = hovers[f];
+			}
+			
+			else {
+				hover = undefined;
+			}
+			
 			radio = my.makeRadio(
-				parent, array[f][value_key], array[f][title_key], id_prefix + f, name, on_change
+				parent, array[f][value_key], array[f][title_key], id_prefix + f, name, on_change, hover
 			);
 		
 			if (f === start_value || start_value == array[f][value_key]){
@@ -81,10 +89,17 @@ var dom = (function() {
 	};
 	
 	
-	my.makeRadio = function(parent, value, title, id, name, on_click){
+	my.makeRadio = function(parent, value, title, id, name, on_click, hover){
 	
 		var radio = my.input(parent, id, "", name, "radio", value);
+		if (hover){
+			radio.title = hover;
+		}
+		
 		var span = my.span(parent, "", "", " " + title);
+		if (hover){
+			span.title = hover;
+		}
 		
 		span.addEventListener("click", function (radio) {
 			return function(){
