@@ -424,11 +424,30 @@ var ObjectList = function(start_array) {
 	};
 	
 	
-	this.setState = function(state){
+	//If force_array = true and typeof state == array, setState will add array items to list
+	this.setState = function(state, force_array){
 	
 		if ((!state) || (!state.list) || (typeof state.list != "object")){
-			console.error("Error setState: Invalid data! typeof state.list = " + typeof state.list + ", typeof state = " + typeof state);
-			return;
+
+			if (force_array && Array.isArray(state)){
+
+				for (var i = 0; i < state.length; i++){
+				
+					self.add(state[i]);
+				
+				}
+				
+				return;
+			
+			}
+		
+			else {
+			
+				console.error("Error setState: Invalid data! typeof state.list = " + typeof state.list + ", typeof state = " + typeof state);
+				return;
+				
+			}
+			
 		}
 	
 		id_counter = state.id_counter;
