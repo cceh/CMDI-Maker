@@ -177,7 +177,7 @@ var XMLString = function () {
 		
 		//Remove not allowed UTF-8 chars from string
 		// XML PCDATA does not allow some Unicode-Chars, see: http://stackoverflow.com/questions/12229572/php-generated-xml-shows-invalid-char-value-27-message
-		string = string.replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '');
+		string = string.replace('/[^\\x{0009}\\x{000a}\\x{000d}\\x{0020}-\\x{D7FF}\\x{E000}-\\x{FFFD}]+/u', '');
 	
 		return string;
 	
