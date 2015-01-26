@@ -194,6 +194,7 @@ APP.save_and_recall = (function () {
 		
 			CMP_object["type"] = "environment_state";
 			CMP_object["environment_id"] = APP.environments.active_environment.id;
+			CMP_object["environment_version"] = APP.environments.active_environment.version;
 		
 			var environment_object = my.retrieveEnvironmentDataToSave();
 			CMP_object.environments = {};

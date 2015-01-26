@@ -26,7 +26,7 @@ var XMLString = function () {
 
 	var createTag = function(name, mode, attributes){
 		
-		name = self.escapeIllegalCharacters(name);
+		name = self.escapeOrRemoveIllegalCharacters(name);
 		
 		var return_string = "<";
 		
@@ -100,13 +100,13 @@ var XMLString = function () {
 			}
 			
 			//attribute key
-			return_string += self.escapeIllegalCharacters(attributes[i][0]);
+			return_string += self.escapeOrRemoveIllegalCharacters(attributes[i][0]);
 			
 			return_string += "=";
 			
 			//attribute value in quotation marks
 			return_string += "\"";
-			return_string += self.escapeIllegalCharacters(attributes[i][1]);
+			return_string += self.escapeOrRemoveIllegalCharacters(attributes[i][1]);
 			return_string += "\"";
 			
 		}
@@ -152,7 +152,7 @@ var XMLString = function () {
 	};
 	
 	
-	self.escapeIllegalCharacters = function(string){
+	self.escapeOrRemoveIllegalCharacters = function(string){
 		var illegal_char;
 		var entity_reference;
 		
@@ -165,6 +165,7 @@ var XMLString = function () {
 			["&quot;",	"\""]			//quotation mark
 		];
 	
+		//Escape XML special chars
 		for (var i = 0; i < illegal_chars.length; i++){
 			
 			illegal_char = illegal_chars[i][1];
@@ -172,6 +173,11 @@ var XMLString = function () {
 			string = strings.replaceCharactersInStringWithSubstitute(string, illegal_char, entity_reference);
 			
 		}
+		
+		
+		//Remove not allowed UTF-8 chars from string
+		// XML PCDATA does not allow some Unicode-Chars, see: http://stackoverflow.com/questions/12229572/php-generated-xml-shows-invalid-char-value-27-message
+		string = string.replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '');
 	
 		return string;
 	
@@ -230,7 +236,7 @@ var XMLString = function () {
 	
 	self.insertValue = function(value){
 	
-		value = self.escapeIllegalCharacters(value);
+		value = self.escapeOrRemoveIllegalCharacters(value);
 		
 		buffer += value;
 		
