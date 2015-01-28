@@ -202,6 +202,12 @@ var XMLString = function () {
 		//mode close = closing tag
 		//mode self-closing = self-closing tag
 		
+		if (typeof name != "string"){
+			console.error("XML.Element: typeof Element name = " + typeof name + ". Must be string!");
+			return;
+		}
+		
+		
 		if (!keys){
 			keys = [];
 		}
@@ -252,6 +258,10 @@ var XMLString = function () {
 		if (typeof value == "undefined"){
 			value = "undefined";
 			console.warn("XML.Element: Value of " + name + " is undefined!");
+		}
+		
+		if (typeof value == "number"){
+			value = value.toString();
 		}
 		
 		

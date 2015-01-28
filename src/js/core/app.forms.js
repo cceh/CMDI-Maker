@@ -686,8 +686,7 @@ APP.forms = (function () {
 		
 		my.fillObjectWithFormData(object, element_id_prefix, field);
 		
-		return object;
-	
+		return object;	
 	
 	};
 	
@@ -773,85 +772,6 @@ APP.forms = (function () {
 		}
 		
 
-	};
-	
-	
-	my.getDateStringByDateInput = function(element_prefix){
-	
-		var date_object = {};
-	
-		date_object.year = g(element_prefix + "_year").value;
-		date_object.month = g(element_prefix + "_month").value;	
-		date_object.day = g(element_prefix + "_day").value;
-
-		return getDateStringByDateObject(date_object);
-		
-	};
-	
-	
-	my.getDateStringByDateObject = function(date_object){
-	
-		if (!date_object || !date_object.month || !date_object.day){
-			return undefined;
-		}
-	
-		var valid_chars = "0123456789";
-	
-		if (date_object.year.length != 4 || !strings.areOnlyTheseCharsInString(date_object.year, valid_chars)){
-			return undefined;
-		}
-
-		if (date_object.month.length != 2 || !strings.areOnlyTheseCharsInString(date_object.month, valid_chars)){
-			return undefined;
-		}
-
-		if (date_object.day.length != 2 || !strings.areOnlyTheseCharsInString(date_object.day, valid_chars)){
-			return undefined;
-		}		
-	
-		return date_object.year + "-" + date_object.month + "-" + date_object.day;	
-	
-	};
-	
-	
-	my.isUserDefinedDateInvalid = function(element_prefix_or_date_object){
-		
-		var year, month, day;
-		var typeOfDate;
-		
-		if (typeof element_prefix_or_date_object == "string"){
-			var element_prefix = element_prefix_or_date_object;
-			
-			year = get(element_prefix + "_year");
-			month = get(element_prefix + "_month");
-			day = get(element_prefix + "_day");
-			
-			typeOfDate = typeof my.getDateStringByDateInput(element_prefix);
-		}
-		
-		else {
-			var date_object = element_prefix_or_date_object;
-			
-			year = date_object.year;
-			month = date_object.month;
-			day = date_object.day;
-			
-			typeOfDate = typeof my.getDateStringByDateObject(date_object);
-		}
-	
-	
-		if (typeOfDate == "undefined" && (year != "YYYY" || month != "MM" || day != "DD" )) {
-		
-			return true;
-			
-		}
-		
-		else {
-		
-			return false;
-		
-		}
-	
 	};
 	
 	

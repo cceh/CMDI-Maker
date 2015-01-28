@@ -461,7 +461,7 @@ function get(name){
 			break;
 		}
 		
-		default: console.log("Function \"get\" has been misused with a "+elem.nodeName+" element. This should not have happened!");
+		default: console.log("Function \"get\" has been misused with a " + elem.nodeName + " element. This should not have happened!");
 	
 	}
 }
@@ -509,14 +509,6 @@ var removeToInsertLater = function(element) {
 };
 
 
-function calcAgeAtDate(dateString,birthDate) {
-	
-	var date = +new Date(dateString);
-	var birthday = +new Date(birthDate);
-	return ~~((date - birthday) / (31557600000));
-}
-
-
 function o(object, property_array){ 
 //returns value of object properties if they exist, if not returns ""
 
@@ -556,24 +548,6 @@ function a(array,index){
 }
 
 
-function today(){
-
-	var now = new Date();
-
-	var day = now.getDate();	
-	if (day < 10) {day = "0" + day;}
-	
-	var month = now.getMonth();
-	month += 1;  //as months begin with 0 here
-	if (month < 10) {month = "0" + month;}
-
-
-	var today_date = now.getFullYear() + "-" + month + "-" + day;
-
-	return today_date;
-}    
-
-
 function sortBySubKey(array,keys){
 
     return array.sort(function(a, b) {
@@ -605,116 +579,4 @@ function sortByKey(array, key) {
 
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
-} 
-
-
-function parseDate(str){
-	
-	var date;
-
-	if (typeof str == "undefined"){
-		return null;
-	}
-
-	var t = str.match(/([1-2][0-9][0-9][0-9])\-([0-1][0-9])\-([0-3][0-9])/);
-	
-	if(t!==null){
-		
-		var y=+t[1], m=+t[2], d=+t[3];
-		date = new Date(y,m-1,d);
-		
-		if(date.getFullYear()===y && date.getMonth()===m-1){
-			return {
-			
-				year: t[1],
-				month: t[2],
-				day: t[3]
-				
-			
-			};   
-		}
-	
-	}
-	
-	//if not successful, try other date format
-	var parts = str.match(/(\d+)/g);
-	
-	// note parts[1]-1
-	if (parts !== null){
-		date = new Date(parts[2], parts[1]-1, parts[0]);
-		
-		if(date.getFullYear()==parts[2] && date.getMonth()==parts[1]-1){
-		
-			return {
-			
-				year: parts[2],
-				month: parts[1],
-				day: parts[0]
-				
-			
-			};   
-		}		
-		
-	}
-	
-	return null;
-	
 }
-
-
-/*
-var parse_birth_date = function(string){
-	var year;
-	var month;
-	var day;
-
-	if (string.length != 10 || string == "Unspecified" || string == "Unknown"){
-		year = "YYYY";
-		month = "MM";
-		day = "DD";
-	}
-	
-	else {
-	
-		year = string.slice(0, 4);
-		month = string.slice(5, 7);
-		day = string.slice(8, 10);	
-
-	}
-
-	var object = {
-	
-		year: year,
-		month: month,
-		day: day
-	
-	
-	};
-	
-	
-	return object;
-
-};
-*/
-
-var dateAsString = function(date){
-
-	var year = date.year;
-	var month = date.month;
-	var day = date.day;
-
-	if (month < 10){
-	
-		month = "0" + month;
-		
-	}
-	
-	if (day < 10){
-	
-		day = "0" + day;
-		
-	}
-
-	return year + "-" + month + "-" + day;
-
-};

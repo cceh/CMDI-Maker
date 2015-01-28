@@ -36,6 +36,7 @@ var make_appcache = true;
 
 var source_scripts = [
 	/* Dependencies */
+	"./src/js/dates.js",
 	"./src/js/helpers.js",
 	"./src/js/alertify.js",
 	"./src/js/zip.js",

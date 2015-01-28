@@ -430,6 +430,8 @@ var ObjectList = function(start_array) {
 		if ((!state) || (!state.list) || (typeof state.list != "object")){
 
 			if (force_array && Array.isArray(state)){
+			
+				self.reset();
 
 				for (var i = 0; i < state.length; i++){
 				
