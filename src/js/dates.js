@@ -90,22 +90,23 @@ var dates = (function() {
 			return undefined;
 		}
 		
-		/*
+		
 		var valid_chars = "0123456789";
 	
+		//when we get a date object with strings instead of integers, then we must validate them
 		
-		if (date_object.year.length != 4 || !strings.areOnlyTheseCharsInString(date_object.year, valid_chars)){
+		if (typeof date_object.year == "string" && (date_object.year.length != 4 || !strings.areOnlyTheseCharsInString(date_object.year, valid_chars))){
 			return undefined;
 		}
 
-		if (date_object.month.length != 2 || !strings.areOnlyTheseCharsInString(date_object.month, valid_chars)){
+		if (typeof date_object.month == "string" && (date_object.month.length != 2 || !strings.areOnlyTheseCharsInString(date_object.month, valid_chars))){
 			return undefined;
 		}
 
-		if (date_object.day.length != 2 || !strings.areOnlyTheseCharsInString(date_object.day, valid_chars)){
+		if (typeof date_object.day == "string" && (date_object.day.length != 2 || !strings.areOnlyTheseCharsInString(date_object.day, valid_chars))){
 			return undefined;
 		}
-		*/
+		
 	
 		return date_object.year + "-" + date_object.month + "-" + date_object.day;	
 	
