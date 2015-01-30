@@ -20,13 +20,15 @@ var notify = require('gulp-notify');
 // Here you can specify environment scripts which shall be included in the build/index.html as well as in the build/cmdi-maker.appcache
 // !!! You are responsible for their real existence at their specified position !!!
 var environment_scripts = [
-	"imdi_environment.js"
+	"imdi_environment.js",
+	"eldp_environment.js"
 ];
 
 // Here you can specify environment stylesheets which shall be included in the build/index.html as well as in the build/mdi-maker.appcache
 // !!! You are responsible for their real existence at their specified position !!!
 var environment_stylesheets = [
-	"imdi_environment.css"
+	"imdi_environment.css",
+	"eldp_environment.css"
 ];
 
 
@@ -256,7 +258,7 @@ gulp.task('manifest', function(){
 	gulp.src([])
 		.pipe(manifest({
 			hash: true,
-			filename: 'cmdi_maker.appcache',
+			filename: 'cmdi-maker.appcache',
 			network: ["*"],  //important, so that network stuff like version checker works
 			exclude: [],
 			cache: manifest_cache_files
