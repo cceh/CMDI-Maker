@@ -43,6 +43,13 @@ APP.save_and_recall = (function () {
 	};
 	
 	
+/**
+ * Tries to get environment data from browser database.
+ * @method getRecallDataForEnvironment
+ * @param {mixed} environment An environment object.
+ * @return {mixed} form_object Environment state object.
+ * @static 
+ */	
 	my.getRecallDataForEnvironment = function(environment){
 	
 		if (typeof environment == "undefined"){
@@ -66,6 +73,12 @@ APP.save_and_recall = (function () {
 	};
 	
 
+/**
+ * Sets the autosave interval of the app.
+ * @method setAutosaveInterval
+ * @param {integer} time Time in seconds
+ * @static 
+ */	
 	my.setAutosaveInterval = function(time){
 	
 		window.clearInterval(my.interval);	
@@ -90,11 +103,17 @@ APP.save_and_recall = (function () {
 		// if not switched off
 		my.interval = window.setInterval(function() {
 			my.save();
-		}, my.interval_time*1000);
+		}, my.interval_time * 1000);
 
 	};
 	
-	
+
+/**
+ * Sets the state of the active environment.
+ * @method recallEnvironmentData
+ * @param {mixed} recall_object Environment state object
+ * @static 
+ */		
 	my.recallEnvironmentData = function (recall_object){
 
 		//recall environment settigns
@@ -113,7 +132,12 @@ APP.save_and_recall = (function () {
 	
 	};
 
-
+	
+/**
+ * Deletes all data in the browser database.
+ * @method deleteAllData
+ * @static 
+ */
 	my.deleteAllData = function(){
 	
 		localStorage.clear();
