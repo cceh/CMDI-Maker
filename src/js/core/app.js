@@ -701,7 +701,7 @@ var APP = (function () {
 	
 		my.save_and_recall.save();
 	
-	};
+	}; 
 	
 
 /**
@@ -726,6 +726,12 @@ var APP = (function () {
 	};
 	
 	
+	
+/**
+* Gets all XML strings from output textareas, makes files and zips these files into one. For the user, it looks like a download of a ZIP file.
+* @method zipAllOutputFiles
+* @static
+*/	
 	my.zipAllOutputFiles = function(){
 	
 		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
@@ -781,7 +787,12 @@ var APP = (function () {
 	
 	};
 	
-	
+
+/**
+* Gets all XML strings from output textareas, makes files and saves them. For the user, it looks like several downloads.
+* @method saveAllOutputFiles
+* @static
+*/
 	my.saveAllOutputFiles = function(){
 	
 		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
@@ -793,8 +804,16 @@ var APP = (function () {
 		});
 	
 	};
-	
-	
+
+
+/**
+* Recalls and sets the app state. If recall_object.active_environment_id is given, it tries to load that environment and recalls the environment state too.
+* If environment_data is undefined, it tries to get the recall data for that environment by checking the browser database.
+* @method recall
+* @param {mixed} recall_object Object with the state of the app.
+* @param {mixed} environment_data Object with the state of an environment to be loaded.
+* @static
+*/	
 	my.recall = function(recall_object, environment_data){
 	//environment_data is an optional parameter, if it is not specified, the function tries to get the
 	//environment_data from local storage
@@ -834,6 +853,12 @@ var APP = (function () {
 	};
 	
 	
+/**
+* Changes the language of the app. Reloads the app, so that changes are effective immediately.
+* @method changeLanguage
+* @param {integer} index Index of the language in the array my.languages
+* @static
+*/
 	my.changeLanguage = function(index){
 		
 		my.active_language = my.languages[index];
@@ -841,7 +866,14 @@ var APP = (function () {
 	
 	};
 	
-	
+
+/**
+* Searches for a language entry in LanguageIndex.js. Displays a screen where the user can select a language from the results. Selection will be passed as parameter to on_select
+* @method doStandardLanguageSearch
+* @param {string} input Input string
+* @param {function} on_select Method to be called when the user selects a language. Selection will be passed as parameter.
+* @static
+*/
 	my.doStandardLanguageSearch = function(input, on_select){
 	//input = input string
 
