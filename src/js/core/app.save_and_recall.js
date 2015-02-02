@@ -145,6 +145,11 @@ APP.save_and_recall = (function () {
 	};
 
 
+/**
+ * Deletes the saved data of the active environment from the browser database.
+ * @method deleteEnvironmentData
+ * @static 
+ */	
 	my.deleteEnvironmentData = function(){
 
 		try {
@@ -161,12 +166,24 @@ APP.save_and_recall = (function () {
 	};
 	
 	
+/**
+ * Saves current app and environment states in the browser database and notifies the user about that..
+ * @method userSave
+ * @static 
+ */	
 	my.userSave = function(){
+	
 		my.save();
 		APP.log(APP.l("save_and_recall","form_saved"));
+		
 	};
 
-	
+
+/**
+ * Saves current app and environment states in the browser database.
+ * @method save
+ * @static 
+ */		
 	my.save = function(){
 	//This saves the app data and the data of the active environment
 		
@@ -182,7 +199,12 @@ APP.save_and_recall = (function () {
 
 	};
 	
-	
+
+/**
+ * Saves current app and environment states to a file. For the user, this looks like a download.
+ * @method saveAllToFile
+ * @static 
+ */		
 	my.saveAllToFile = function(){
 	
 		var CMP_object = {};
@@ -199,7 +221,12 @@ APP.save_and_recall = (function () {
 	
 	};
 	
-	
+
+/**
+ * Saves the active environment state to a file. For the user, this looks like a download.
+ * @method saveActiveEnvironmentStateToFile
+ * @static 
+ */
 	my.saveActiveEnvironmentStateToFile = function(){
 	
 		if (APP.environments.isAnEnvironmentLoaded()){	
