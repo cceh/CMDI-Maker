@@ -25,7 +25,31 @@ limitations under the License.
  *
  * @class HELPERS
  */
+
  
+function postWithAJAX(url, post_data, success_callback){
+
+	var http = new XMLHttpRequest();
+	
+	http.open("POST", url, true);
+
+	http.onreadystatechange = function() { //Call a function when the state changes.
+
+		if (http.readyState == 4 && http.status == 200) {
+			
+			console.log("AJAX successful!");
+			
+			success_callback(http);
+			
+		}
+	};
+	
+	console.log("Sending ajax request to: " + url);
+	
+	return http.send(post_data);
+	
+}
+
 
 
 /**

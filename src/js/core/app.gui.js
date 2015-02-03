@@ -812,11 +812,18 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename, mockup){
+	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename, mockup, http_post_information){
 
 		var div = dom.make("div", "", "output_div", parent);
 		
-		var img = my.icon(div,"","download_icon", "save");
+		var img = my.icon(div,"","download_icon xml_output_area_icon", "save");
+		
+		if (typeof http_post_information != "undefined"){
+			var post_img = my.icon(div,"","download_icon xml_output_area_icon", "send_mail");
+			
+			post_img.title = "Post data to server";
+			
+		}
 		
 		var h1 = dom.h1(div, title);
 		
@@ -827,6 +834,20 @@ APP.GUI = (function() {
 		img.addEventListener("click", function(){
 			APP.saveTextfile(textarea.value, filename, APP.CONF.file_download_header);
 		});
+		
+		
+		if (typeof http_post_information != "undefined"){
+			
+			var post_data = http_post_information.xml_string_key + "='" + textarea.value + "'&" + http_post_information.additional_data;			
+			
+			post_img.addEventListener("click", function(){
+				postWithAJAX(
+					http_post_information.url,
+					post_data,
+					function(){APP.log("Data saved on server!", "success");}
+				);					
+			});			
+		}
 		
 		if (mockup && mockup === true){
 			console.warn("Created invalid XML");
@@ -840,6 +861,8 @@ APP.GUI = (function() {
 			value;
 			dom.remove(img);
 		}
+		
+		
 
 	};
 	
