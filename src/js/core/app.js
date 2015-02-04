@@ -738,7 +738,7 @@ var APP = (function () {
 		
 		var file_name;
 		
-		if (APP.environments.active_environment.getProjectName() !== ""){
+		if (typeof APP.environments.active_environment.getProjectName == "function" && APP.environments.active_environment.getProjectName() !== ""){
 			file_name = APP.environments.active_environment.getProjectName() + ".zip";
 		}
 		
