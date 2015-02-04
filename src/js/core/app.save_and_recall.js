@@ -15,6 +15,11 @@ limitations under the License.
 */
 
 
+/**
+ * A sub module of APP that deals with saving and recalling APP and environment states and data.
+ *
+ * @class APP.save_and_recall
+ */
 APP.save_and_recall = (function () {
 	'use strict';
 

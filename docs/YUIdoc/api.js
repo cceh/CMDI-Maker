@@ -2,7 +2,8 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "APP",
-        "APP.GUI"
+        "APP.GUI",
+        "APP.save_and_recall"
     ],
     "modules": [
         "CORE"

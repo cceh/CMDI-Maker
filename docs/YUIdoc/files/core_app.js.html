@@ -14,7 +14,9 @@
 <div id="doc">
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
+            
                 <h1><img src="../assets/css/logo.png" title=""></h1>
+            
         </div>
         <div class="yui3-u-1-4 version">
             <em>API Docs for: </em>
@@ -25,994 +27,1038 @@
         <div class="yui3-u-1-4">
             <div id="docs-sidebar" class="sidebar apidocs">
                 <div id="api-list">
-                    <h2 class="off-left">APIs</h2>
-                    <div id="api-tabview" class="tabview">
-                        <ul class="tabs">
-                            <li><a href="#api-classes">Classes</a></li>
-                            <li><a href="#api-modules">Modules</a></li>
-                        </ul>
-                
-                        <div id="api-tabview-filter">
-                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
-                        </div>
-                
-                        <div id="api-tabview-panel">
-                            <ul id="api-classes" class="apis classes">
-                                <li><a href="../classes/APP.html">APP</a></li>
-                                <li><a href="../classes/APP.GUI.html">APP.GUI</a></li>
-                            </ul>
-                
-                            <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/CORE.html">CORE</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/APP.html">APP</a></li>
+            
+                <li><a href="../classes/APP.GUI.html">APP.GUI</a></li>
+            
+                <li><a href="../classes/APP.save_and_recall.html">APP.save_and_recall</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/CORE.html">CORE</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
             </div>
         </div>
         <div class="yui3-u-3-4">
                 <div id="api-options">
-                    Show:
-                    <label for="api-show-inherited">
-                        <input type="checkbox" id="api-show-inherited" checked>
-                        Inherited
-                    </label>
-            
-                    <label for="api-show-protected">
-                        <input type="checkbox" id="api-show-protected">
-                        Protected
-                    </label>
-            
-                    <label for="api-show-private">
-                        <input type="checkbox" id="api-show-private">
-                        Private
-                    </label>
-                    <label for="api-show-deprecated">
-                        <input type="checkbox" id="api-show-deprecated">
-                        Deprecated
-                    </label>
-            
-                </div>
-            
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
                         <h1 class="file-heading">File: core\app.js</h1>
-                        
-                        <div class="file">
-                            <pre class="code prettyprint linenums">
-                        ﻿/*
-                        Copyright 2014 Sebastian Zimmer
-                        
-                        Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-                        you may not use this file except in compliance with the License.
-                        You may obtain a copy of the License at
-                        
-                            http://www.apache.org/licenses/LICENSE-2.0
-                        
-                        Unless required by applicable law or agreed to in writing, software
-                        distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-                        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                        See the License for the specific language governing permissions and
-                        limitations under the License.
-                        */
-                        
-                        /**
-                         * The main module for the app.
-                         *
-                         * @module CORE
-                         */
-                        
-                        /**
-                         * The main module for the app.
-                         *
-                         * @class APP
-                         */
-                        var APP = (function () {
-                        	&#x27;use strict&#x27;;
-                        	
-                        	//PRIVATE
-                        	var renderStartPage = function (){
-                        	
-                        		var view = g(&quot;VIEW_start&quot;);
-                        
-                        		var random_index = Math.floor(Math.random() * APP.CONF.hellos.length);
-                        		g(&quot;hello&quot;).innerHTML = APP.CONF.hellos[random_index][0];
-                        		g(&quot;hello&quot;).addEventListener(&quot;click&quot;, function () {
-                        			my.log(my.l(&quot;start&quot;, &quot;this_is&quot;,&quot;before_language&quot;) + APP.CONF.hellos[random_index][1] + my.l(&quot;start&quot;, &quot;this_is&quot;,&quot;after_language&quot;));
-                        		});
-                        
-                        		g(&quot;greeting_text&quot;).innerHTML = my.l(&quot;start&quot;,&quot;greeting_text&quot;);
-                        		g(&quot;start_select_profile_span&quot;).innerHTML = my.l(&quot;start&quot;,&quot;select_your_profile&quot;);
-                        		
-                        		g(&quot;before_lets_go&quot;).innerHTML = my.l(&quot;start&quot;,&quot;and_lets_go__before_link&quot;);
-                        		g(&quot;link_lets_go&quot;).innerHTML = my.l(&quot;start&quot;,&quot;and_lets_go__link&quot;);
-                        		g(&quot;after_lets_go&quot;).innerHTML = my.l(&quot;start&quot;,&quot;and_lets_go__after_link&quot;);
-                        		
-                        		g(&quot;supported_by_label&quot;).innerHTML = my.l(&quot;start&quot;,&quot;is_supported_by&quot;);
-                        		g(&quot;need_help_label&quot;).innerHTML = my.l(&quot;start&quot;,&quot;need_help&quot;);
-                        		g(&quot;help_pages_description&quot;).innerHTML = my.l(&quot;start&quot;,&quot;help_pages_description&quot;);
-                        		
-                        		var lang_links = g(&quot;lang_links&quot;);
-                        		
-                        		forEach(my.languages, function(language, counter){
-                        			
-                        			dom.link(lang_links, &quot;&quot;, &quot;&quot;, language.code.toUpperCase(), function(){
-                        				APP.changeLanguage(counter);
-                        			});
-                        			
-                        			dom.span(lang_links, &quot;&quot;, &quot;&quot;, &quot;  &quot;);
-                        		
-                        		});
-                        		
-                        		
-                        		g(&#x27;link_lets_go&#x27;).addEventListener(&#x27;click&#x27;, function() {
-                        		
-                        			if (typeof my.environments.active_environment == &quot;undefined&quot;){
-                        				my.environments.create(my.environments.get(0));	
-                        			}
-                        			
-                        			if (my.environments.active_environment.workflow[0]){
-                        				my.view(my.environments.active_environment.workflow[0]);
-                        			}
-                        			
-                        			else {
-                        			
-                        				console.error(&quot;ERROR: The active profile does not have a workflow!&quot;);
-                        				
-                        			}
-                        			
-                        		});
-                        		
-                        	};
-                        	
-                        	
-                        	var displayLanguages = function (){
-                        		
-                        		var select = g(&quot;language_select&quot;);
-                        		dom.setSelectOptions(select, my.languages, &quot;name&quot;, &quot;id&quot;, false);
-                        
-                        	};
-                        	
-                        
-                        	//PUBLIC
-                        	
-                        	var my = {};
-                        	
-                        /**
-                         * Initializes the app. This method is called on &quot;DOMContentLoaded&quot;.
-                         * @method init
-                         * @param {Boolean} no_recall If true, the app will not attempt to recall saved data from the application cache.
-                         * @static 
-                         */
-                        	my.init = function (no_recall) {
-                        		var recall_object;
-                        		
-                        		my.active_language = my.getActiveLanguageByNavigatorLanguageOrTakeDefault();
-                        		
-                        		if (!no_recall){
-                        			recall_object = my.save_and_recall.getRecallDataForApp();
-                        			
-                        			if (recall_object &amp;&amp; recall_object.settings.active_language_id){
-                        				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
-                        			}
-                        			
-                        			if (recall_object &amp;&amp; recall_object.version &amp;&amp; recall_object.version != APP.CONF.version){
-                        				console.info(&quot;APP version is different than recall object version. &quot;+
-                        				&quot;APP version = &quot; + APP.CONF.version +
-                        				&quot; , Recall Object version = &quot; + recall_object.version);
-                        				
-                        				my.log(
-                        					my.l(&quot;start&quot;, &quot;you_are_now_using_version__before_version_number&quot;)+
-                        					APP.CONF.version+
-                        					my.l(&quot;start&quot;, &quot;you_are_now_using_version__after_version_number&quot;)
-                        				);
-                        			}
-                        		}
-                        		
-                        		renderStartPage();
-                        		my.checkIfFirstStart();
-                        		g(&quot;version_span&quot;).innerHTML = APP.CONF.version;
-                        		
-                        		g(&quot;settings_heading&quot;).innerHTML = my.l(&quot;settings&quot;,&quot;settings&quot;);
-                        		my.settings.init(my.coreSettings(), g(&quot;core_settings&quot;));
-                        		displayLanguages();
-                        		
-                        
-                        		g(&quot;VIEWLINK_start&quot;).addEventListener(&quot;click&quot;, function() { my.view(&quot;VIEW_start&quot;); });
-                        	
-                        		document.addEventListener(&quot;keydown&quot;, function(event) {
-                        		
-                        			if (event.keyCode == 27)  {   //escape pressed
-                        			
-                        				APP.GUI.closeSelectFrame();
-                        			
-                        			}
-                        		
-                        		});
-                        		
-                        		my.environments.displayAllInSelect();
-                        		
-                        		if ((!no_recall) &amp;&amp; (typeof recall_object != &quot;undefined&quot;)){
-                        			my.recall(recall_object);
-                        		}
-                        		
-                        		my.GUI.mainMenu.draw(my.main_menu_elements());
-                        		
-                        		window.addEventListener(&quot;beforeunload&quot;, my.save, false);
-                        		
-                        		
-                        		//since this is a very big one, that would slow code parsing and executing, we add it async when everything else is done
-                        		addScript(APP.CONF.path_to_scripts + APP.CONF.languageIndex_filename, function(){
-                        			console.log(&quot;LanguageIndex ready!&quot;);
-                        		});
-                        		
-                        	};
-                        	
-                        
-                        /**
-                         * Tries to retrieve the APP language by looking at what language the browser is set (navigator.language).
-                         * @method getActiveLanguageByNavigatorLanguageOrTakeDefault
-                         * @return {Object} LanguagePack Returns an APP LanguagePack, that matches the browser language or returns the default LanguagePack of the APP.
-                         * @static 
-                         */	
-                        	my.getActiveLanguageByNavigatorLanguageOrTakeDefault = function(){
-                        		//check if there is a LanguagePack whose code property is equal to the browser language
-                        		
-                        		var navigator_language = navigator.language;
-                        		
-                        		var hyphen_position = navigator_language.indexOf(&quot;-&quot;);
-                        		
-                        		//extract the substring before the hyphen, e.g. take &quot;en&quot; from &quot;en-US&quot;
-                        		if (hyphen_position != -1){
-                        			navigator_language = navigator_language.substring(0, hyphen_position); 
-                        		}
-                        		
-                        		var lang = getObject(my.languages, &quot;code&quot;, navigator_language);
-                        		
-                        		if (typeof lang != &quot;undefined&quot;){
-                        			return lang;
-                        		}
-                        		
-                        		else {
-                        			return my.languages[0];
-                        		}
-                        	
-                        	};
-                        
-                        	
-                        	my.languages = [];
-                        	
-                        	my.getLPFromID = function(id){
-                        	
-                        		var LP = getObject(my.languages, &quot;id&quot;, id);
-                        		
-                        		if (typeof LP == &quot;undefined&quot;){
-                        			console.error(&quot;ERROR: No language object with id &quot; + id + &quot; found!&quot;);
-                        		}
-                        		
-                        		return LP;
-                        	
-                        	};
-                        	
-                        	
-                        	my.getIndexFromLPID = function(id){
-                        	
-                        		var index = getIndex(my.languages, &quot;id&quot;, id);
-                        		
-                        		if (typeof index == &quot;undefined&quot;){
-                        			console.error(&quot;ERROR: No language object with id &quot; + id + &quot; found!&quot;);
-                        		}
-                        		
-                        		return index;
-                        	
-                        	};
-                        	
-                        	
-                        	my.active_view = undefined;
-                        	my.active_language = undefined;
-                        
-                        	
-                        	my.views = [
-                        		{
-                        			id: &quot;start&quot;,
-                        			place: &quot;top&quot;
-                        		},
-                        		{
-                        			id: &quot;settings&quot;,
-                        			icon: &quot;wrench&quot;,
-                        		},
-                        		{
-                        			id: &quot;about&quot;,
-                        			icon: &quot;about&quot;,
-                        		}
-                        	];
-                        	
-                        	
-                        	my.l = function(arg1, arg2, arg3, arg4){
-                        		
-                        		return my.getTermInActiveLanguage(my.languages, arg1, arg2, arg3, arg4);
-                        		
-                        	};
-                        	
-                        	
-                        	my.getActiveLanguagePackFromID = function(id, LPArray){
-                        	
-                        		return getObject(LPArray, &quot;id&quot;, id);
-                        	
-                        	};
-                        	
-                        	
-                        	var getTermInLP = function(LP, arg1, arg2, arg3, arg4){
-                        		
-                        		if (!LP){
-                        			return undefined;
-                        		}
-                        		
-                        		if (typeof LP[arg1] == &quot;undefined&quot;){
-                        			return undefined;
-                        		}
-                        	
-                        		if (arg4){
-                        
-                        			if (typeof LP[arg1][arg2][arg3][arg4] != &quot;undefined&quot;){
-                        				return LP[arg1][arg2][arg3][arg4];
-                        			}
-                        			
-                        			else {
-                        				return undefined;
-                        			}
-                        			
-                        		}
-                        	
-                        		if (arg3){
-                        
-                        			if (typeof LP[arg1] != &quot;undefined&quot; &amp;&amp; typeof LP[arg1][arg2][arg3] != &quot;undefined&quot;){
-                        				return LP[arg1][arg2][arg3];
-                        			}
-                        			
-                        			else {
-                        				return undefined;
-                        			}
-                        			
-                        		}
-                        		
-                        		if (arg2){
-                        
-                        			if (typeof LP[arg1] != &quot;undefined&quot; &amp;&amp; typeof LP[arg1][arg2] != &quot;undefined&quot;){
-                        				return LP[arg1][arg2];
-                        			}
-                        			
-                        			else {
-                        				return undefined;
-                        			}
-                        			
-                        		}
-                        		
-                        		return LP[arg1];
-                        	
-                        	};
-                        	
-                        /**
-                         * Tries to get a term in a specific language. This method is called by environments each time a language dependent term is displayed by an environment.
-                         * @method getTermInActiveLanguage
-                         * @param {array} LanguagePacksArray An array with all the available LanguagePacks of the environment.
-                         * @param {string} arg1 First key in LanguagePack to look at.
-                         * @param {string} arg2 Second key in LanguagePack to look at.
-                         * @param {string} arg3 Third key in LanguagePack to look at.
-                         * @param {string} arg4 Fourth key in LanguagePack to look at.
-                         * @return {string} term Returns the term in the specific language. If there is no term in that language, the term in the default language is returned. If there is no term in the default language, APP.CONF.language_error_placeholder is returned.
-                         * @static 
-                         */	
-                        	my.getTermInActiveLanguage = function(LanguagePacksArray, arg1, arg2, arg3, arg4){
-                        	
-                        		//Look in the LanguagesArray, that&#x27;s been given by the APP or by one environment and then search for the language that has the id of the APP&#x27;s active language
-                        		var LP = my.getActiveLanguagePackFromID(my.active_language.id, LanguagePacksArray);
-                        	
-                        		var termInLP = getTermInLP(LP, arg1, arg2, arg3, arg4);
-                        		
-                        		if (typeof termInLP != &quot;undefined&quot;){
-                        			return termInLP;
-                        		}
-                        		
-                        		console.warn(&quot;Haven&#x27;t found a term in &quot; + my.active_language.name + &quot;: &quot; +
-                        		arg1 +
-                        		(arg2 ? &quot;, &quot; + arg2 : &quot;&quot;) +
-                        		(arg3 ? &quot;, &quot; + arg3 : &quot;&quot;) +
-                        		(arg4 ? &quot;, &quot; + arg4 : &quot;&quot;) +
-                        		&quot;. Trying to get it in default language.&quot;);
-                        		
-                        		//try to get term in default language
-                        		var defaultLP = LanguagePacksArray[0];
-                        		var termInDefaultLP = getTermInLP(defaultLP,arg1,arg2,arg3,arg4);
-                        		
-                        		if (typeof termInDefaultLP != &quot;undefined&quot;){
-                        			return termInDefaultLP;
-                        		}
-                        		
-                        		//if there&#x27;s no term at all, BAD!!!
-                        		console.error(&quot;LANGUAGE ERROR: &quot; +
-                        		arg1 +
-                        		(arg2 ? &quot;, &quot; + arg2 : &quot;&quot;) +
-                        		(arg3 ? &quot;, &quot; + arg3 : &quot;&quot;) +
-                        		(arg4 ? &quot;, &quot; + arg4 : &quot;&quot;));
-                        		
-                        		return APP.CONF.language_error_placeholder;
-                        
-                        	};
-                        	
-                        	
-                        	my.main_menu_elements = function(){
-                        		return [
-                        		/*	{
-                        				title: my.l(&quot;save&quot;),
-                        				id: &quot;LINK_save_form&quot;,
-                        				icon:	&quot;save&quot;,
-                        				onclick: function(){ my.save_and_recall.userSave(); }
-                        			},*/
-                        		// This is completely unnecessary because Auto Save is on and data will be saved
-                        		// beforeUnload anyway.
-                        			{
-                        				title: my.l(&quot;open_file&quot;),
-                        				id: &quot;LINK_open_file&quot;,
-                        				icon:	&quot;open&quot;,
-                        				onclick: function(){ my.GUI.showFileDialog(APP.save_and_recall.loadFromFile);}
-                        			},
-                        			{
-                        				title: my.l(&quot;export_to_file&quot;),
-                        				id: &quot;LINK_export_to_file&quot;,
-                        				icon:	&quot;save&quot;,
-                        				onclick: function(){ my.save_and_recall.saveActiveEnvironmentStateToFile(); }
-                        			},
-                        			{
-                        				title: my.l(&quot;reset_form&quot;),
-                        				icon: &quot;reset&quot;,
-                        				id: &quot;LINK_reset_form&quot;,
-                        				onclick: function() {     
-                        
-                        					APP.confirm(my.l(&quot;really_reset_form&quot;), function (e) {
-                        						if (e) {
-                        							// user clicked &quot;ok&quot;
-                        						}
-                        				
-                        						else {
-                        							// user clicked &quot;cancel&quot; (as cancel is always the red button, the red button is chosen to be the executive button=
-                        							APP.environments.resetActive();
-                        							APP.log(my.l(&quot;form_reset&quot;));
-                        							
-                        						}
-                        						
-                        					}, my.l(&quot;no&quot;), my.l(&quot;yes_delete_form&quot;));
-                        					
-                        				}
-                        			},
-                        			{
-                        				title: my.l(&quot;settings&quot;, &quot;settings&quot;),
-                        				id: &quot;VIEWLINK_settings&quot;,
-                        				icon:	&quot;wrench&quot;,
-                        				onclick: function(){ APP.view(&quot;VIEW_settings&quot;); }
-                        			},
-                        			{
-                        				title: my.l(&quot;about&quot;),
-                        				id: &quot;VIEWLINK_about&quot;,
-                        				icon:	&quot;about&quot;,
-                        				onclick: function(){ APP.view(&quot;VIEW_about&quot;); }
-                        			}
-                        		];
-                        	
-                        	};
-                        	
-                        
-                        	my.coreSettings = function(){
-                        		return [
-                        			{
-                        				title: my.l(&quot;settings&quot;,&quot;program_language&quot;),
-                        				type: &quot;select&quot;,
-                        				name: &quot;language_select&quot;,
-                        				id: &quot;language_select&quot;,
-                        				onchange: function(){my.changeLanguage(g(&quot;language_select&quot;).selectedIndex);}
-                        			},
-                        			{
-                        				title: my.l(&quot;settings&quot;,&quot;profile&quot;),
-                        				type: &quot;select&quot;,
-                        				name: &quot;profile_select&quot;,
-                        				id: &quot;profile_select&quot;,
-                        				onchange: function(){my.environments.change(g(&quot;profile_select&quot;).selectedIndex-1);}
-                        			},
-                        			{
-                        				title: my.l(&quot;settings&quot;,&quot;auto_save&quot;),
-                        				radio_name: &quot;radio_auto_save&quot;,
-                        				type: &quot;radio&quot;,
-                        				options: [
-                        					{
-                        						title: my.l(&quot;settings&quot;,&quot;off&quot;),
-                        						value: -1
-                        					},
-                        					{
-                        						title: my.l(&quot;settings&quot;,&quot;every_30_seconds&quot;),
-                        						value: 30
-                        					},
-                        					{
-                        						title: my.l(&quot;settings&quot;,&quot;every_60_seconds&quot;),
-                        						value: 60
-                        					},
-                        					{
-                        						title: my.l(&quot;settings&quot;,&quot;every_5_minutes&quot;),
-                        						value: 300
-                        					},
-                        					{
-                        						title: my.l(&quot;settings&quot;,&quot;every_10_minutes&quot;),
-                        						value: 600
-                        					}
-                        				],
-                        				default_option: 2,
-                        				onchange: my.save_and_recall.setAutosaveInterval
-                        			},
-                        			/*{
-                        				title: my.l(&quot;settings&quot;,&quot;load_project&quot;),
-                        				description: my.l(&quot;settings&quot;,&quot;load_project_description&quot;),
-                        				type: &quot;file&quot;,
-                        				file_input_id: &quot;project_file_input&quot;,
-                        				file_input_name: &quot;project_file_input&quot;,
-                        				onchange: my.save_and_recall.handleProjectFileInputChange
-                        			},*/
-                        			//Unneccessary, as this function is already in main menu
-                        			{
-                        				title: my.l(&quot;settings&quot;,&quot;delete_recall_data&quot;),
-                        				type: &quot;link&quot;,
-                        				description: my.l(&quot;settings&quot;,&quot;delete_recall_data_description&quot;),
-                        				onclick: function() {my.save_and_recall.deleteEnvironmentData();}
-                        			},
-                        			{
-                        				title: my.l(&quot;settings&quot;,&quot;hard_reset&quot;),
-                        				importance: &quot;high&quot;,
-                        				type: &quot;link&quot;,
-                        				description: my.l(&quot;settings&quot;,&quot;hard_reset_description&quot;),
-                        				onclick: function() {    
-                        
-                        					APP.confirm(my.l(&quot;confirm&quot;,&quot;hard_reset&quot;), function (e) {
-                        
-                        						if (e) {
-                        							// user clicked &quot;ok&quot;
-                        						}
-                        				
-                        						else {
-                        							// user clicked &quot;cancel&quot; (as cancel is always the red button, the red button is chosen to be the executive button=
-                        							my.hard_reset();
-                        						}
-                        						
-                        					}, my.l(&quot;confirm&quot;,&quot;no&quot;), my.l(&quot;confirm&quot;,&quot;yes_delete_everything&quot;));
-                        
-                        				}
-                        			}
-                        		];
-                        	};
-                        	
-                        	
-                        
-                        /**
-                         * Checks if the app is started for the first time or not and fires a fitting welcome note. (TO DO: The check in this method should be replaced by a check, if a data object can be retrieved or not.
-                         * @method checkIfFirstStart
-                         * @static 
-                         */	
-                        	my.checkIfFirstStart = function (){
-                        
-                        		var first_start = localStorage.getItem(&quot;first_start&quot;);
-                        		
-                        		if (first_start === null){  //if there&#x27;s no data, assume it&#x27;s the first start
-                        			first_start = true;
-                        		}
-                        		
-                        		
-                        		if (first_start === true){
-                        
-                        			localStorage.setItem(&quot;first_start&quot;, false);
-                        			console.log(&quot;First start! Hey there and welcome to CMDI Maker!&quot;);
-                        		
-                        		}
-                        		
-                        		else {
-                        		
-                        			my.log(my.l(&quot;welcome_back&quot;));
-                        		
-                        		}
-                        
-                        	};
-                        	
-                        
-                        /**
-                         * Shows a log message to the user
-                         * @method log
-                         * @param {string} message The message to display.
-                         * @param {string} type Type of the log message resulting in different colors (&quot;error&quot; =&gt; red flag, &quot;success&quot; =&gt; green flag, else: black flag).
-                         * @static 
-                         */		
-                        	my.log = function(message, type){
-                        		
-                        		if (!type){
-                        			type = &quot;&quot;;
-                        		}
-                        		
-                        		alertify.log(message, type, APP.CONF.log_message_period);
-                        	
-                        	};
-                        
-                        	
-                        /**
-                         * Shows a confirm dialog to the user
-                         * @method confirm
-                         * @param {string} message The message to display.
-                         * @param {function} callback The function to be called when the user makes a decision. An bool value is passed to this function: true when user pressed ok, false when user pressed cancel.
-                         * @param {function} ok_label The text of the OK button.
-                         * @param {function} cancel_label The text of the cancel button.
-                         * @static 
-                         */	
-                        	my.confirm = function(message, callback, ok_label, cancel_label){
-                        	
-                        		alertify.set({ labels: {
-                        			ok     : ok_label,
-                        			cancel : cancel_label
-                        		} });
-                        		
-                        		alertify.confirm(message, callback);
-                        	
-                        	};
-                        	
-                        
-                        /**
-                         * Shows an alert message to the user.
-                         * @method alert
-                         * @param {string} message The message to display.
-                         * @static 
-                         */		
-                        	my.alert = function(message) {
-                        	
-                        		alertify.set({ labels: {
-                        			ok     : my.l(&quot;ok&quot;)
-                        		} });
-                        		
-                        		alertify.alert(message);
-                        	
-                        	};
-                        
-                        
-                        /**
-                         * This method deletes all saved data and reloads the app. It is quite DANGEROUS!
-                         * @method hard_reset
-                         * @static 
-                         */	
-                        	my.hard_reset = function(){
-                        
-                        		my.save_and_recall.deleteAllData();
-                        		window.removeEventListener(&quot;beforeunload&quot;, my.save);
-                        		location.reload();
-                        
-                        	};
-                        
-                        	
-                        /**
-                        * This method changes the view of the app. A view can be a view of the app, 
-                        * or of a module of an environment.
-                        * @method view
-                        * @param {Mixed} module_or_id It can be a module or an id of a view element.
-                        */
-                        	my.view = function (module_or_id){
-                        		var module;
-                        		var id;
-                        		var pager;
-                        	
-                        		my.GUI.closeSelectFrame();
-                        		my.GUI.mainMenu.close();
-                        		
-                        		if (typeof module_or_id == &quot;undefined&quot;){
-                        			console.warn(&quot;APP.view: module_or_id is undefined. Showing default view!&quot;);
-                        			module_or_id = &quot;default&quot;;
-                        		}
-                        		
-                        		if (typeof module_or_id === &#x27;string&#x27;) {
-                        			
-                        			id = module_or_id;
-                        			module = my.environments.getModuleByViewID(id);
-                        			
-                        		}
-                        		
-                        		else { //if argument seems to be a module
-                        			
-                        			if (module_or_id.identity){
-                        				module = module_or_id;
-                        				id = APP.CONF.view_id_prefix + module.identity.id;
-                        			}
-                        			
-                        			else {
-                        				console.warn(&quot;APP.view: module to view is undefined!&quot;);
-                        				APP.view(&quot;default&quot;);
-                        				return;
-                        			}
-                        		}
-                        		
-                        		if (id == &quot;default&quot;){
-                        			id = &quot;VIEW_start&quot;;
-                        		}
-                        		
-                        		var views = g(APP.CONF.content_wrapper_id).children;
-                        		
-                        		//make all views invisible
-                        		forEach(views, dom.hide);
-                        		
-                        		var view_ids = getArrayWithIDs(views);
-                        		
-                        		//check if view exists
-                        		if (view_ids.indexOf(id) == -1){
-                        			console.warn(&quot;Warning: Unkown view requested (&quot; + id +&quot;)!&quot;);
-                        			my.view(&quot;default&quot;);
-                        			return;
-                        		}			
-                        
-                        		my.active_view = id;
-                        
-                        		my.GUI.highlightViewIcon(id);
-                        		
-                        		g(&quot;module_icons&quot;).style.display = &quot;block&quot;;
-                        		
-                        		my.GUI.showFunctionsForView(module);
-                        		
-                        		//make the selected view visible
-                        		g(id).style.display = &quot;block&quot;;
-                        		
-                        		//if there is a pager, remove it
-                        		if (g(&quot;pager&quot;)){
-                        			dom.remove(&quot;pager&quot;);
-                        		}		
-                        	
-                        		//if a module view is selected, call the view method of the module
-                        		//every module can have a view method for things to be done, before viewing the page
-                        		if (module &amp;&amp; module.view){
-                        			module.view();
-                        		}
-                        		
-                        	};
-                        	
-                        
-                        /**
-                        * Saves the current state of the APP and the active environment.
-                        * @method save
-                        * @static
-                        */
-                        	my.save = function(){
-                        	
-                        		my.save_and_recall.save();
-                        	
-                        	};
-                        	
-                        
-                        /**
-                        * Saves a file with text content. For the user, it looks like a download.
-                        * @method save_file
-                        * @param {string} text Content of file as string
-                        * @param {string} filename Filename
-                        * @param {string} mime_type Mime type for download
-                        * @static
-                        */	
-                        	my.save_file = function (text, filename, mime_type){
-                        
-                        		var clean_filename = strings.replaceAccentBearingLettersWithASCISubstitute(filename);
-                        		
-                        		if (!mime_type){
-                        			mime_type = APP.CONF.file_download_header;
-                        		}
-                        
-                        		var blob = new Blob([text], {type: mime_type});
-                        		saveAs(blob, clean_filename);
-                        
-                        	};
-                        	
-                        	
-                        	my.zipAllOutputFiles = function(){
-                        	
-                        		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
-                        		
-                        		var file_name;
-                        		
-                        		if (APP.environments.active_environment.getProjectName() !== &quot;&quot;){
-                        			file_name = APP.environments.active_environment.getProjectName() + &quot;.zip&quot;;
-                        		}
-                        		
-                        		else {
-                        			file_name = APP.CONF.zip_archive_file_name;
-                        		}
-                        		
-                        		// use a BlobWriter to store the zip into a Blob object
-                        		zip.createWriter(new zip.BlobWriter(), function(writer) {
-                        			
-                        			var asyncLoop = function(o){
-                        				var i=-1;
-                        
-                        				var loop = function(){
-                        					i++;
-                        					if(i==o.length){o.callback(); return;}
-                        					o.functionToLoop(loop, i);
-                        				};
-                        				
-                        				loop(); //init
-                        			};
-                        			
-                        			asyncLoop({
-                        				length : textareas.length,
-                        				functionToLoop : function(loop, i){
-                        				
-                        					// use a TextReader to read the String to add, onsuccess: loop!
-                        					writer.add(textareas[i].filename, new zip.TextReader(textareas[i].value), loop);
-                        				
-                        				},
-                        				callback : function(){
-                        					writer.close(function(blob) {
-                        					
-                        						// blob contains the zip file as a Blob object
-                        						console.log(&quot;GOT ZIP BLOB&quot;);
-                        						saveAs(blob, file_name);
-                        
-                        					});
-                        				}    
-                        			});
-                        			
-                        			
-                        		}, function(error) {
-                        			// onerror callback
-                        		});
-                        	
-                        	};
-                        	
-                        	
-                        	my.saveAllOutputFiles = function(){
-                        	
-                        		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
-                        		
-                        		forEach(textareas, function(textarea){
-                        		
-                        			my.save_file(textarea.value, textarea.filename);
-                        			
-                        		});
-                        	
-                        	};
-                        	
-                        	
-                        	my.recall = function(recall_object, environment_data){
-                        	//environment_data is an optional parameter, if it is not specified, the function tries to get the
-                        	//environment_data from local storage
-                        
-                        		console.log(&quot;Filling the form with recalled data&quot;);
-                        	
-                        		if (recall_object.settings.active_language_id){
-                        		
-                        			var index = my.getIndexFromLPID(recall_object.settings.active_language_id);
-                        		
-                        			my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
-                        			g(&quot;language_select&quot;).selectedIndex = index;
-                        			
-                        		}		
-                        		
-                        		dom.setRadiosByValue(g(&quot;radio_auto_save&quot;), recall_object.settings.save_interval_time);
-                        		my.save_and_recall.setAutosaveInterval(recall_object.settings.save_interval_time);
-                        		
-                        		if (recall_object.active_environment_id){
-                        		
-                        			var environment = my.environments.getByID(recall_object.active_environment_id);
-                        			my.environments.create(environment);
-                        			
-                        			if (typeof environment_data == &quot;undefined&quot;){
-                        				environment_data = my.save_and_recall.getRecallDataForEnvironment(environment);
-                        			}
-                        			
-                        			if (typeof environment_data != &quot;undefined&quot;){
-                        				my.save_and_recall.recallEnvironmentData(environment_data);
-                        			}
-                        			
-                        		}
-                        		
-                        		my.view(recall_object.active_view);
-                        		g(APP.CONF.content_wrapper_id).scrollTop = recall_object.scroll_top;
-                        		
-                        	};
-                        	
-                        	
-                        	my.changeLanguage = function(index){
-                        		
-                        		my.active_language = my.languages[index];
-                        		location.reload(); //includes auto save before unload
-                        	
-                        	};
-                        	
-                        	
-                        	my.doStandardLanguageSearch = function(input, on_select){
-                        	//input = input string
-                        
-                        		//if input string is shorter than 3 chars, return error
-                        		if (input.length &lt; 3){
-                        		
-                        			APP.alert(my.l(&quot;languages&quot;, &quot;specify_search_request_at_least_3_chars&quot;));
-                        			
-                        			return;
-                        		}
-                        		
-                        		var name_hits = [];
-                        		
-                        		//look through the whole LanguageIndex file
-                        		for (var i=0;i&lt;LanguageIndex.length;i++){
-                        			
-                        			//if input is start of a word in string, add it to name_hits
-                        			if (strings.isSubstringAStartOfAWordInString(LanguageIndex[i][3], input)){
-                        				
-                        				//get an array with all relevant ISO codes
-                        				name_hits.push(LanguageIndex[i][0]);
-                        			}
-                        
-                        		}
-                        		
-                        		//now we have all relevant ISO codes in name_hits. next step: get the entries with the L-names of these ISO codes.
-                        		
-                        		//iterate again through the whole LanguageIndex file and filter it for the results
-                        		var results = LanguageIndex.filter( function(LanguageObject){
-                        			
-                        			//if an entry of LanguageIndex is an L language AND its ISO code is part of name_hits, we have a result!
-                        			return ((name_hits.indexOf(LanguageObject[0]) != -1) &amp;&amp; (LanguageObject[2] == &quot;L&quot; ));
-                        			
-                        		});
-                        		
-                        		var titles = map(results, function(result){
-                        
-                        			return result[0] + &quot;, &quot; + result[1] + &quot;, &quot; + result[3];
-                        
-                        		});	
-                        
-                        		var heading = my.l(&quot;languages&quot;, &quot;language_search&quot;) + &quot;: &quot; + results.length + &quot; &quot; + ((results.length == 1) ? my.l(&quot;languages&quot;, &quot;result&quot;) : my.l(&quot;languages&quot;, &quot;results&quot;));
-                        		var subheading = &quot;(ISO639-3 Code, Country ID, &quot; + my.l(&quot;languages&quot;, &quot;language_name&quot;) + &quot;)&quot;;
-                        		
-                        		APP.GUI.showSelectFrame(results, titles, on_select, heading, subheading);		
-                        		
-                        	};
-                        
-                        	
-                        	document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
-                        	
-                        		my.init();
-                        
-                        	}, false);
-                        	
-                        	
-                        	// Check if a new cache is available on page load.
-                        	window.addEventListener(&#x27;load&#x27;, function(e) {
-                        
-                        		window.applicationCache.addEventListener(&#x27;updateready&#x27;, function(e) {
-                        			
-                        			if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-                        			// Browser downloaded a new app cache.
-                        			// Swap it in and reload the page to get the new hotness.
-                        				
-                        				window.applicationCache.swapCache();
-                        				
-                        				//if (confirm(&#x27;A new version of this site is available. Load it?&#x27;)) {
-                        					window.location.reload();
-                        				//}
-                        				
-                        			}
-                        			
-                        			else {
-                        				// Manifest didn&#x27;t change. Nothing new to serve.
-                        				console.log(&quot;Manifest file on server didn&#x27;t change.&quot;);
-                        			}
-                        			
-                        			
-                        		}, false);
-                        
-                        	}, false);
-                        
-                        	
-                        	return my;
-                        	
-                        })();
-                        
-                            </pre>
-                        </div>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+﻿/*
+Copyright 2014 Sebastian Zimmer
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+/**
+ * The main module for the app.
+ *
+ * @module CORE
+ */
+
+/**
+ * The main module for the app.
+ *
+ * @class APP
+ */
+var APP = (function () {
+	&#x27;use strict&#x27;;
+	
+	//PRIVATE
+	var renderStartPage = function (){
+	
+		var view = g(&quot;VIEW_start&quot;);
+
+		var random_index = Math.floor(Math.random() * APP.CONF.hellos.length);
+		g(&quot;hello&quot;).innerHTML = APP.CONF.hellos[random_index][0];
+		g(&quot;hello&quot;).addEventListener(&quot;click&quot;, function () {
+			my.log(my.l(&quot;start&quot;, &quot;this_is&quot;,&quot;before_language&quot;) + APP.CONF.hellos[random_index][1] + my.l(&quot;start&quot;, &quot;this_is&quot;,&quot;after_language&quot;));
+		});
+
+		g(&quot;greeting_text&quot;).innerHTML = my.l(&quot;start&quot;,&quot;greeting_text&quot;);
+		g(&quot;start_select_profile_span&quot;).innerHTML = my.l(&quot;start&quot;,&quot;select_your_profile&quot;);
+		
+		g(&quot;before_lets_go&quot;).innerHTML = my.l(&quot;start&quot;,&quot;and_lets_go__before_link&quot;);
+		g(&quot;link_lets_go&quot;).innerHTML = my.l(&quot;start&quot;,&quot;and_lets_go__link&quot;);
+		g(&quot;after_lets_go&quot;).innerHTML = my.l(&quot;start&quot;,&quot;and_lets_go__after_link&quot;);
+		
+		g(&quot;supported_by_label&quot;).innerHTML = my.l(&quot;start&quot;,&quot;is_supported_by&quot;);
+		g(&quot;need_help_label&quot;).innerHTML = my.l(&quot;start&quot;,&quot;need_help&quot;);
+		g(&quot;help_pages_description&quot;).innerHTML = my.l(&quot;start&quot;,&quot;help_pages_description&quot;);
+		
+		var lang_links = g(&quot;lang_links&quot;);
+		
+		forEach(my.languages, function(language, counter){
+			
+			dom.link(lang_links, &quot;&quot;, &quot;&quot;, language.code.toUpperCase(), function(){
+				APP.changeLanguage(counter);
+			});
+			
+			dom.span(lang_links, &quot;&quot;, &quot;&quot;, &quot;  &quot;);
+		
+		});
+		
+		
+		g(&#x27;link_lets_go&#x27;).addEventListener(&#x27;click&#x27;, function() {
+		
+			if (typeof my.environments.active_environment == &quot;undefined&quot;){
+				my.environments.load(my.environments.get(0));	
+			}
+			
+			if (my.environments.active_environment.workflow[0]){
+				my.view(my.environments.active_environment.workflow[0]);
+			}
+			
+			else {
+			
+				console.error(&quot;ERROR: The active profile does not have a workflow!&quot;);
+				
+			}
+			
+		});
+		
+	};
+	
+	
+	var displayLanguages = function (){
+		
+		var select = g(&quot;language_select&quot;);
+		dom.setSelectOptions(select, my.languages, &quot;name&quot;, &quot;id&quot;, false);
+
+	};
+	
+
+	//PUBLIC
+	
+	var my = {};
+	
+/**
+ * Initializes the app. This method is called on &quot;DOMContentLoaded&quot;.
+ * @method init
+ * @param {Boolean} no_recall If true, the app will not attempt to recall saved data from the application cache.
+ * @static 
+ */
+	my.init = function (no_recall) {
+		var recall_object;
+		
+		my.active_language = my.getActiveLanguageByNavigatorLanguageOrTakeDefault();
+		
+		if (!no_recall){
+			recall_object = my.save_and_recall.getRecallDataForApp();
+			
+			if (recall_object &amp;&amp; recall_object.settings.active_language_id){
+				my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
+			}
+			
+			if (recall_object &amp;&amp; recall_object.version &amp;&amp; recall_object.version != APP.CONF.version){
+				console.info(&quot;APP version is different than recall object version. &quot;+
+				&quot;APP version = &quot; + APP.CONF.version +
+				&quot; , Recall Object version = &quot; + recall_object.version);
+				
+				my.log(
+					my.l(&quot;start&quot;, &quot;you_are_now_using_version__before_version_number&quot;)+
+					APP.CONF.version+
+					my.l(&quot;start&quot;, &quot;you_are_now_using_version__after_version_number&quot;)
+				);
+			}
+		}
+		
+		renderStartPage();
+		my.checkIfFirstStart();
+		g(&quot;version_span&quot;).innerHTML = &quot;v&quot; + APP.CONF.version;
+		
+		g(&quot;settings_heading&quot;).innerHTML = my.l(&quot;settings&quot;,&quot;settings&quot;);
+		my.settings.init(my.coreSettings(), g(&quot;core_settings&quot;));
+		displayLanguages();
+		
+
+		g(&quot;VIEWLINK_start&quot;).addEventListener(&quot;click&quot;, function() { my.view(&quot;VIEW_start&quot;); });
+	
+		document.addEventListener(&quot;keydown&quot;, function(event) {
+		
+			if (event.keyCode == 27)  {   //escape pressed
+			
+				APP.GUI.closeSelectFrame();
+			
+			}
+		
+		});
+		
+		my.environments.displayAllInSelect();
+		
+		if ((!no_recall) &amp;&amp; (typeof recall_object != &quot;undefined&quot;)){
+			my.recall(recall_object);
+		}
+		
+		my.GUI.mainMenu.draw(my.main_menu_elements());
+		
+		window.addEventListener(&quot;beforeunload&quot;, my.save, false);
+		
+		
+		//since this is a very big one, that would slow code parsing and executing, we add it async when everything else is done
+		addScript(APP.CONF.path_to_scripts + APP.CONF.languageIndex_filename, function(){
+			console.log(&quot;LanguageIndex ready!&quot;);
+		}, true);
+		
+		console.log(&quot;Welcome to CMDI Maker v&quot; + APP.CONF.version);
+		
+	};
+	
+
+/**
+ * Tries to retrieve the APP language by looking at what language the browser is set (navigator.language).
+ * @method getActiveLanguageByNavigatorLanguageOrTakeDefault
+ * @return {Object} LanguagePack Returns an APP LanguagePack, that matches the browser language or returns the default LanguagePack of the APP.
+ * @static 
+ */	
+	my.getActiveLanguageByNavigatorLanguageOrTakeDefault = function(){
+		//check if there is a LanguagePack whose code property is equal to the browser language
+		
+		var navigator_language = navigator.language;
+		
+		var hyphen_position = navigator_language.indexOf(&quot;-&quot;);
+		
+		//extract the substring before the hyphen, e.g. take &quot;en&quot; from &quot;en-US&quot;
+		if (hyphen_position != -1){
+			navigator_language = navigator_language.substring(0, hyphen_position); 
+		}
+		
+		var lang = getObject(my.languages, &quot;code&quot;, navigator_language);
+		
+		if (typeof lang != &quot;undefined&quot;){
+			return lang;
+		}
+		
+		else {
+			return my.languages[0];
+		}
+	
+	};
+
+	
+	my.languages = [];
+	
+	my.getLPFromID = function(id){
+	
+		var LP = getObject(my.languages, &quot;id&quot;, id);
+		
+		if (typeof LP == &quot;undefined&quot;){
+			console.error(&quot;ERROR: No language object with id &quot; + id + &quot; found!&quot;);
+		}
+		
+		return LP;
+	
+	};
+	
+	
+	my.getIndexFromLPID = function(id){
+	
+		var index = getIndex(my.languages, &quot;id&quot;, id);
+		
+		if (typeof index == &quot;undefined&quot;){
+			console.error(&quot;ERROR: No language object with id &quot; + id + &quot; found!&quot;);
+		}
+		
+		return index;
+	
+	};
+	
+	
+	my.active_view = undefined;
+	my.active_language = undefined;
+
+	
+	my.views = [
+		{
+			id: &quot;start&quot;,
+			place: &quot;top&quot;
+		},
+		{
+			id: &quot;settings&quot;,
+			icon: &quot;wrench&quot;,
+		},
+		{
+			id: &quot;about&quot;,
+			icon: &quot;about&quot;,
+		}
+	];
+	
+	
+	my.l = function(arg1, arg2, arg3, arg4){
+		
+		return my.getTermInActiveLanguage(my.languages, arg1, arg2, arg3, arg4);
+		
+	};
+	
+	
+	my.getActiveLanguagePackFromID = function(id, LPArray){
+	
+		return getObject(LPArray, &quot;id&quot;, id);
+	
+	};
+	
+	
+	var getTermInLP = function(LP, arg1, arg2, arg3, arg4){
+		
+		if (!LP){
+			return undefined;
+		}
+		
+		if (typeof LP[arg1] == &quot;undefined&quot;){
+			return undefined;
+		}
+	
+		if (arg4){
+
+			if (typeof LP[arg1][arg2][arg3][arg4] != &quot;undefined&quot;){
+				return LP[arg1][arg2][arg3][arg4];
+			}
+			
+			else {
+				return undefined;
+			}
+			
+		}
+	
+		if (arg3){
+
+			if (typeof LP[arg1] != &quot;undefined&quot; &amp;&amp; typeof LP[arg1][arg2][arg3] != &quot;undefined&quot;){
+				return LP[arg1][arg2][arg3];
+			}
+			
+			else {
+				return undefined;
+			}
+			
+		}
+		
+		if (arg2){
+
+			if (typeof LP[arg1] != &quot;undefined&quot; &amp;&amp; typeof LP[arg1][arg2] != &quot;undefined&quot;){
+				return LP[arg1][arg2];
+			}
+			
+			else {
+				return undefined;
+			}
+			
+		}
+		
+		return LP[arg1];
+	
+	};
+	
+/**
+ * Tries to get a term in a specific language. This method is called by environments each time a language dependent term is displayed by an environment.
+ * @method getTermInActiveLanguage
+ * @param {array} LanguagePacksArray An array with all the available LanguagePacks of the environment.
+ * @param {string} arg1 First key in LanguagePack to look at.
+ * @param {string} arg2 Second key in LanguagePack to look at.
+ * @param {string} arg3 Third key in LanguagePack to look at.
+ * @param {string} arg4 Fourth key in LanguagePack to look at.
+ * @return {string} term Returns the term in the specific language. If there is no term in that language, the term in the default language is returned. If there is no term in the default language, APP.CONF.language_error_placeholder is returned.
+ * @static 
+ */	
+	my.getTermInActiveLanguage = function(LanguagePacksArray, arg1, arg2, arg3, arg4){
+	
+		//Look in the LanguagesArray, that&#x27;s been given by the APP or by one environment and then search for the language that has the id of the APP&#x27;s active language
+		var LP = my.getActiveLanguagePackFromID(my.active_language.id, LanguagePacksArray);
+	
+		var termInLP = getTermInLP(LP, arg1, arg2, arg3, arg4);
+		
+		if (typeof termInLP != &quot;undefined&quot;){
+			return termInLP;
+		}
+		
+		console.warn(&quot;Haven&#x27;t found a term in &quot; + my.active_language.name + &quot;: &quot; +
+		arg1 +
+		(arg2 ? &quot;, &quot; + arg2 : &quot;&quot;) +
+		(arg3 ? &quot;, &quot; + arg3 : &quot;&quot;) +
+		(arg4 ? &quot;, &quot; + arg4 : &quot;&quot;) +
+		&quot;. Trying to get it in default language.&quot;);
+		
+		//try to get term in default language
+		var defaultLP = LanguagePacksArray[0];
+		var termInDefaultLP = getTermInLP(defaultLP,arg1,arg2,arg3,arg4);
+		
+		if (typeof termInDefaultLP != &quot;undefined&quot;){
+			return termInDefaultLP;
+		}
+		
+		//if there&#x27;s no term at all, BAD!!!
+		console.error(&quot;LANGUAGE ERROR: &quot; +
+		arg1 +
+		(arg2 ? &quot;, &quot; + arg2 : &quot;&quot;) +
+		(arg3 ? &quot;, &quot; + arg3 : &quot;&quot;) +
+		(arg4 ? &quot;, &quot; + arg4 : &quot;&quot;));
+		
+		return APP.CONF.language_error_placeholder;
+
+	};
+	
+	
+	my.main_menu_elements = function(){
+		return [
+		/*	{
+				title: my.l(&quot;save&quot;),
+				id: &quot;LINK_save_form&quot;,
+				icon:	&quot;save&quot;,
+				onclick: function(){ my.save_and_recall.userSave(); }
+			},*/
+		// This is completely unnecessary because Auto Save is on and data will be saved
+		// beforeUnload anyway.
+			{
+				title: my.l(&quot;open_file&quot;),
+				id: &quot;LINK_open_file&quot;,
+				icon:	&quot;open&quot;,
+				onclick: function(){ my.GUI.showFileDialog(APP.save_and_recall.loadFromFile);}
+			},
+			{
+				title: my.l(&quot;export_to_file&quot;),
+				id: &quot;LINK_export_to_file&quot;,
+				icon:	&quot;save&quot;,
+				onclick: function(){ my.save_and_recall.saveActiveEnvironmentStateToFile(); }
+			},
+			{
+				title: my.l(&quot;reset_form&quot;),
+				icon: &quot;reset&quot;,
+				id: &quot;LINK_reset_form&quot;,
+				onclick: function() {     
+
+					APP.confirm(my.l(&quot;really_reset_form&quot;), function (e) {
+						if (e) {
+							// user clicked &quot;ok&quot;
+						}
+				
+						else {
+							// user clicked &quot;cancel&quot; (as cancel is always the red button, the red button is chosen to be the executive button=
+							APP.environments.resetActive();
+							APP.log(my.l(&quot;form_reset&quot;));
+							
+						}
+						
+					}, my.l(&quot;no&quot;), my.l(&quot;yes_delete_form&quot;));
+					
+				}
+			},
+			{
+				title: my.l(&quot;settings&quot;, &quot;settings&quot;),
+				id: &quot;VIEWLINK_settings&quot;,
+				icon:	&quot;wrench&quot;,
+				onclick: function(){ APP.view(&quot;VIEW_settings&quot;); }
+			},
+			{
+				title: my.l(&quot;about&quot;),
+				id: &quot;VIEWLINK_about&quot;,
+				icon:	&quot;about&quot;,
+				onclick: function(){ APP.view(&quot;VIEW_about&quot;); }
+			}
+		];
+	
+	};
+	
+
+	my.coreSettings = function(){
+		return [
+			{
+				title: my.l(&quot;settings&quot;,&quot;program_language&quot;),
+				type: &quot;select&quot;,
+				name: &quot;language_select&quot;,
+				id: &quot;language_select&quot;,
+				onchange: function(){my.changeLanguage(g(&quot;language_select&quot;).selectedIndex);}
+			},
+			{
+				title: my.l(&quot;settings&quot;,&quot;profile&quot;),
+				type: &quot;select&quot;,
+				name: &quot;profile_select&quot;,
+				id: &quot;profile_select&quot;,
+				onchange: function(){my.environments.change(g(&quot;profile_select&quot;).selectedIndex-1);}
+			},
+			{
+				title: my.l(&quot;settings&quot;,&quot;auto_save&quot;),
+				radio_name: &quot;radio_auto_save&quot;,
+				type: &quot;radio&quot;,
+				options: [
+					{
+						title: my.l(&quot;settings&quot;,&quot;off&quot;),
+						value: -1
+					},
+					{
+						title: my.l(&quot;settings&quot;,&quot;every_30_seconds&quot;),
+						value: 30
+					},
+					{
+						title: my.l(&quot;settings&quot;,&quot;every_60_seconds&quot;),
+						value: 60
+					},
+					{
+						title: my.l(&quot;settings&quot;,&quot;every_5_minutes&quot;),
+						value: 300
+					},
+					{
+						title: my.l(&quot;settings&quot;,&quot;every_10_minutes&quot;),
+						value: 600
+					}
+				],
+				default_option: 2,
+				onchange: my.save_and_recall.setAutosaveInterval
+			},
+			/*{
+				title: my.l(&quot;settings&quot;,&quot;load_project&quot;),
+				description: my.l(&quot;settings&quot;,&quot;load_project_description&quot;),
+				type: &quot;file&quot;,
+				file_input_id: &quot;project_file_input&quot;,
+				file_input_name: &quot;project_file_input&quot;,
+				onchange: my.save_and_recall.handleProjectFileInputChange
+			},*/
+			//Unneccessary, as this function is already in main menu
+			{
+				title: my.l(&quot;settings&quot;,&quot;delete_recall_data&quot;),
+				type: &quot;link&quot;,
+				description: my.l(&quot;settings&quot;,&quot;delete_recall_data_description&quot;),
+				onclick: function() {my.save_and_recall.deleteEnvironmentData();}
+			},
+			{
+				title: my.l(&quot;settings&quot;,&quot;hard_reset&quot;),
+				importance: &quot;high&quot;,
+				type: &quot;link&quot;,
+				description: my.l(&quot;settings&quot;,&quot;hard_reset_description&quot;),
+				onclick: function() {    
+
+					APP.confirm(my.l(&quot;confirm&quot;,&quot;hard_reset&quot;), function (e) {
+
+						if (e) {
+							// user clicked &quot;ok&quot;
+						}
+				
+						else {
+							// user clicked &quot;cancel&quot; (as cancel is always the red button, the red button is chosen to be the executive button=
+							my.hard_reset();
+						}
+						
+					}, my.l(&quot;confirm&quot;,&quot;no&quot;), my.l(&quot;confirm&quot;,&quot;yes_delete_everything&quot;));
+
+				}
+			}
+		];
+	};
+	
+	
+
+/**
+ * Checks if the app is started for the first time or not and fires a fitting welcome note. (TO DO: The check in this method should be replaced by a check, if a data object can be retrieved or not.
+ * @method checkIfFirstStart
+ * @static 
+ */	
+	my.checkIfFirstStart = function (){
+
+		var first_start = localStorage.getItem(&quot;first_start&quot;);
+		
+		if (first_start === null){  //if there&#x27;s no data, assume it&#x27;s the first start
+			first_start = true;
+		}
+		
+		
+		if (first_start === true){
+
+			localStorage.setItem(&quot;first_start&quot;, false);
+			console.log(&quot;First start! Hey there and welcome to CMDI Maker!&quot;);
+		
+		}
+		
+		else {
+		
+			my.log(my.l(&quot;welcome_back&quot;));
+		
+		}
+
+	};
+	
+
+/**
+ * Shows a log message to the user
+ * @method log
+ * @param {string} message The message to display.
+ * @param {string} type Type of the log message resulting in different colors (&quot;error&quot; =&gt; red flag, &quot;success&quot; =&gt; green flag, else: black flag).
+ * @static 
+ */		
+	my.log = function(message, type){
+		
+		if (!type){
+			type = &quot;&quot;;
+		}
+		
+		alertify.log(message, type, APP.CONF.log_message_period);
+	
+	};
+
+	
+/**
+ * Shows a confirm dialog to the user
+ * @method confirm
+ * @param {string} message The message to display.
+ * @param {function} callback The function to be called when the user makes a decision. An bool value is passed to this function: true when user pressed ok, false when user pressed cancel.
+ * @param {function} ok_label The text of the OK button.
+ * @param {function} cancel_label The text of the cancel button.
+ * @static 
+ */	
+	my.confirm = function(message, callback, ok_label, cancel_label){
+	
+		alertify.set({ labels: {
+			ok     : ok_label,
+			cancel : cancel_label
+		} });
+		
+		alertify.confirm(message, callback);
+	
+	};
+	
+
+/**
+ * Shows an alert message to the user.
+ * @method alert
+ * @param {string} message The message to display.
+ * @static 
+ */		
+	my.alert = function(message) {
+	
+		alertify.set({ labels: {
+			ok     : my.l(&quot;ok&quot;)
+		} });
+		
+		alertify.alert(message);
+	
+	};
+
+
+/**
+ * This method deletes all saved data and reloads the app. It is quite DANGEROUS!
+ * @method hard_reset
+ * @static 
+ */	
+	my.hard_reset = function(){
+
+		my.save_and_recall.deleteAllData();
+		window.removeEventListener(&quot;beforeunload&quot;, my.save);
+		location.reload();
+
+	};
+
+	
+/**
+* This method changes the view of the app. A view can be a view of the app, 
+* or of a module of an environment.
+* @method view
+* @param {Mixed} module_or_id It can be a module or an id of a view element.
+*/
+	my.view = function (module_or_id){
+		var module;
+		var id;
+		var pager;
+	
+		my.GUI.closeSelectFrame();
+		my.GUI.mainMenu.close();
+		
+		if (typeof module_or_id == &quot;undefined&quot;){
+			console.warn(&quot;APP.view: module_or_id is undefined. Showing default view!&quot;);
+			module_or_id = &quot;default&quot;;
+		}
+		
+		if (typeof module_or_id === &#x27;string&#x27;) {
+			
+			id = module_or_id;
+			module = my.environments.getModuleByViewID(id);
+			
+		}
+		
+		else { //if argument seems to be a module
+			
+			if (module_or_id.identity){
+				module = module_or_id;
+				id = APP.CONF.view_id_prefix + module.identity.id;
+			}
+			
+			else {
+				console.warn(&quot;APP.view: module to view is undefined!&quot;);
+				APP.view(&quot;default&quot;);
+				return;
+			}
+		}
+		
+		if (id == &quot;default&quot;){
+			id = &quot;VIEW_start&quot;;
+		}
+		
+		var views = g(APP.CONF.content_wrapper_id).children;
+		
+		//make all views invisible
+		forEach(views, dom.hide);
+		
+		var view_ids = getArrayWithIDs(views);
+		
+		//check if view exists
+		if (view_ids.indexOf(id) == -1){
+			console.warn(&quot;Warning: Unkown view requested (&quot; + id +&quot;)!&quot;);
+			my.view(&quot;default&quot;);
+			return;
+		}			
+
+		my.active_view = id;
+
+		my.GUI.highlightViewIcon(id);
+		
+		g(&quot;module_icons&quot;).style.display = &quot;block&quot;;
+		
+		my.GUI.showFunctionsForView(module);
+		
+		//make the selected view visible
+		g(id).style.display = &quot;block&quot;;
+		
+		//if there is a pager, remove it
+		if (g(&quot;pager&quot;)){
+			dom.remove(&quot;pager&quot;);
+		}		
+	
+		//if a module view is selected, call the view method of the module
+		//every module can have a view method for things to be done, before viewing the page
+		if (module &amp;&amp; module.view){
+			module.view();
+		}
+		
+	};
+	
+
+/**
+* Saves the current state of the APP and the active environment.
+* @method save
+* @static
+*/
+	my.save = function(){
+	
+		my.save_and_recall.save();
+	
+	}; 
+	
+
+/**
+* Saves a file with text content. For the user, it looks like a download.
+* @method saveTextfile
+* @param {string} text Content of file as string
+* @param {string} filename Filename
+* @param {string} mime_type Mime type for download
+* @static
+*/	
+	my.saveTextfile = function (text, filename, mime_type){
+
+		var clean_filename = strings.replaceAccentBearingLettersWithASCISubstitute(filename);
+		
+		if (!mime_type){
+			mime_type = APP.CONF.file_download_header;
+		}
+
+		var blob = new Blob([text], {type: mime_type});
+		saveAs(blob, clean_filename);
+
+	};
+	
+	
+	
+/**
+* Gets all XML strings from output textareas, makes files and zips these files into one. For the user, it looks like a download of a ZIP file.
+* @method zipAllOutputFiles
+* @static
+*/	
+	my.zipAllOutputFiles = function(){
+	
+		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
+		
+		var file_name;
+		
+		if (typeof APP.environments.active_environment.getProjectName == &quot;function&quot; &amp;&amp; APP.environments.active_environment.getProjectName() !== &quot;&quot;){
+			file_name = APP.environments.active_environment.getProjectName() + &quot;.zip&quot;;
+		}
+		
+		else {
+			file_name = APP.CONF.zip_archive_file_name;
+		}
+		
+		// use a BlobWriter to store the zip into a Blob object
+		zip.createWriter(new zip.BlobWriter(), function(writer) {
+			
+			var asyncLoop = function(o){
+				var i=-1;
+
+				var loop = function(){
+					i++;
+					if(i==o.length){o.callback(); return;}
+					o.functionToLoop(loop, i);
+				};
+				
+				loop(); //init
+			};
+			
+			asyncLoop({
+				length : textareas.length,
+				functionToLoop : function(loop, i){
+				
+					// use a TextReader to read the String to add, onsuccess: loop!
+					writer.add(textareas[i].filename, new zip.TextReader(textareas[i].value), loop);
+				
+				},
+				callback : function(){
+					writer.close(function(blob) {
+					
+						// blob contains the zip file as a Blob object
+						console.log(&quot;GOT ZIP BLOB&quot;);
+						saveAs(blob, file_name);
+
+					});
+				}    
+			});
+			
+			
+		}, function(error) {
+			// onerror callback
+		});
+	
+	};
+	
+
+/**
+* Gets all XML strings from output textareas, makes files and saves them. For the user, it looks like several downloads.
+* @method saveAllOutputFiles
+* @static
+*/
+	my.saveAllOutputFiles = function(){
+	
+		var textareas = document.getElementsByClassName(APP.CONF.xml_textarea_class_name);
+		
+		forEach(textareas, function(textarea){
+		
+			my.saveTextfile(textarea.value, textarea.filename);
+			
+		});
+	
+	};
+
+
+/**
+* Recalls and sets the app state. If recall_object.active_environment_id is given, it tries to load that environment and recalls the environment state too.
+* If environment_data is undefined, it tries to get the recall data for that environment by checking the browser database.
+* @method recall
+* @param {mixed} recall_object Object with the state of the app.
+* @param {mixed} environment_data Object with the state of an environment to be loaded.
+* @static
+*/	
+	my.recall = function(recall_object, environment_data){
+	//environment_data is an optional parameter, if it is not specified, the function tries to get the
+	//environment_data from local storage
+
+		console.log(&quot;Filling the form with recalled data&quot;);
+	
+		if (recall_object.settings.active_language_id){
+		
+			var index = my.getIndexFromLPID(recall_object.settings.active_language_id);
+		
+			my.active_language = my.getLPFromID(recall_object.settings.active_language_id);
+			g(&quot;language_select&quot;).selectedIndex = index;
+			
+		}		
+		
+		dom.setRadiosByValue(g(&quot;radio_auto_save&quot;), recall_object.settings.save_interval_time);
+		my.save_and_recall.setAutosaveInterval(recall_object.settings.save_interval_time);
+		
+		if (recall_object.active_environment_id){
+		
+			var environment = my.environments.getByID(recall_object.active_environment_id);
+			my.environments.load(environment);
+			
+			if (typeof environment_data == &quot;undefined&quot;){
+				environment_data = my.save_and_recall.getRecallDataForEnvironment(environment);
+			}
+			
+			if (typeof environment_data != &quot;undefined&quot;){
+				my.save_and_recall.recallEnvironmentData(environment_data);
+			}
+			
+		}
+		
+		my.view(recall_object.active_view);
+		g(APP.CONF.content_wrapper_id).scrollTop = recall_object.scroll_top;
+		
+	};
+	
+	
+/**
+* Changes the language of the app. Reloads the app, so that changes are effective immediately.
+* @method changeLanguage
+* @param {integer} index Index of the language in the array my.languages
+* @static
+*/
+	my.changeLanguage = function(index){
+		
+		my.active_language = my.languages[index];
+		location.reload(); //includes auto save before unload
+	
+	};
+	
+
+/**
+* Searches for a language entry in LanguageIndex.js. Displays a screen where the user can select a language from the results. Selection will be passed as parameter to on_select
+* @method doStandardLanguageSearch
+* @param {string} input Input string
+* @param {function} on_select Method to be called when the user selects a language. Selection will be passed as parameter.
+* @static
+*/
+	my.doStandardLanguageSearch = function(input, on_select){
+	//input = input string
+
+		//if input string is shorter than 3 chars, return error
+		if (input.length &lt; 3){
+		
+			APP.alert(my.l(&quot;languages&quot;, &quot;specify_search_request_at_least_3_chars&quot;));
+			
+			return;
+		}
+		
+		var name_hits = [];
+		
+		//look through the whole LanguageIndex file
+		for (var i=0;i&lt;LanguageIndex.length;i++){
+			
+			//if input is start of a word in string, add it to name_hits
+			if (strings.isSubstringAStartOfAWordInString(LanguageIndex[i][3], input)){
+				
+				//get an array with all relevant ISO codes
+				name_hits.push(LanguageIndex[i][0]);
+			}
+
+		}
+		
+		//now we have all relevant ISO codes in name_hits. next step: get the entries with the L-names of these ISO codes.
+		
+		//iterate again through the whole LanguageIndex file and filter it for the results
+		var results = LanguageIndex.filter( function(LanguageObject){
+			
+			//if an entry of LanguageIndex is an L language AND its ISO code is part of name_hits, we have a result!
+			return ((name_hits.indexOf(LanguageObject[0]) != -1) &amp;&amp; (LanguageObject[2] == &quot;L&quot; ));
+			
+		});
+		
+		var titles = map(results, function(result){
+
+			return result[0] + &quot;, &quot; + result[1] + &quot;, &quot; + result[3];
+
+		});	
+
+		var heading = my.l(&quot;languages&quot;, &quot;language_search&quot;) + &quot;: &quot; + results.length + &quot; &quot; + ((results.length == 1) ? my.l(&quot;languages&quot;, &quot;result&quot;) : my.l(&quot;languages&quot;, &quot;results&quot;));
+		var subheading = &quot;(ISO639-3 Code, Country ID, &quot; + my.l(&quot;languages&quot;, &quot;language_name&quot;) + &quot;)&quot;;
+		
+		APP.GUI.showSelectFrame(results, titles, on_select, heading, subheading);		
+		
+	};
+
+	
+	document.addEventListener(&#x27;DOMContentLoaded&#x27;, function() {
+	
+		my.init();
+
+	}, false);
+	
+	
+	// Check if a new cache is available on page load.
+	window.addEventListener(&#x27;load&#x27;, function(e) {
+
+		window.applicationCache.addEventListener(&#x27;updateready&#x27;, function(e) {
+			
+			if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+			// Browser downloaded a new app cache.
+			// Swap it in and reload the page to get the new hotness.
+				
+				window.applicationCache.swapCache();
+				
+				//if (confirm(&#x27;A new version of this site is available. Load it?&#x27;)) {
+					window.location.reload();
+				//}
+				
+			}
+			
+			else {
+				// Manifest didn&#x27;t change. Nothing new to serve.
+				console.log(&quot;Manifest file on server didn&#x27;t change.&quot;);
+			}
+			
+			
+		}, false);
+
+	}, false);
+
+	
+	return my;
+	
+})();
+
+    </pre>
+</div>
+
                     </div>
                 </div>
             </div>
