@@ -491,14 +491,6 @@ function get(name){
 }
 
 
-
-function g_value(id){
-
-	return document.getElementById(id).options[document.getElementById(id).options.selectedIndex].value;
-
-}
-
-
 var g = function (id){
 	
 	if (document.getElementById(id)){
