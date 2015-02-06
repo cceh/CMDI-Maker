@@ -111,7 +111,7 @@
 				<img class="content-img" src="img/imdi-tutorial/4.png">
 			</div>
             <p>
-                In the "Resources" view, you can add resource files to be added to the corpus. Adding resources means, that CMDI Maker reads
+                In the "Resources" view, you can choose resource files to be added to the corpus. Adding resources means, that CMDI Maker reads
 				their filenames and filesizes and displays file objects that can be added to sessions later on.<br>
 				There are two ways of importing resource files:<br>
 				1. Drag files from your file system browser onto the hot area.<br>
@@ -138,7 +138,20 @@
 				<li>MPG files</li>
 				<li>MP4 files</li><br>
 				
-				When an EAF file is added to a session and the session has not been named yet, it gets named automatically after the EAF file name.
+				When an EAF file is added to a session and the session has not been named yet, it gets named automatically after the EAF file name.<br>
+				When adding a file to a session, CMDI Maker also checks for files that start with the same string as the one to be added initially.<br>
+				<br>
+				Example:<br>
+				There are several resources avaliable:<br>
+				x001.eaf<br>
+				x001.wav<br>
+				x001_1.png<br>
+				y002.wav<br>
+				z003.eaf<br>
+				<br>
+				In the files menu, "EAF" is selected. In this case, two sessions will be generated:<br>
+				Session 1 will contain "x001.eaf", "x001.wav" and "x001_1.png". Session 2 will contain "z003.eaf".
+				
 				
             </p>
 			
