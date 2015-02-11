@@ -87,7 +87,7 @@ APP.languages[0] = {
 			before_language: "This is ",
 			after_language: "!"
 		},
-		you_are_now_using_version__before_version_number: "You are now using ",
+		you_are_now_using_version__before_version_number: "You are now using v",
 		you_are_now_using_version__after_version_number: " of CMDI Maker."
 	},
 	
@@ -194,7 +194,7 @@ APP.languages[1] = {
 			before_language: "Das ist ",
 			after_language: "!"
 		},
-		you_are_now_using_version__before_version_number: "Du benutzt nun ",
+		you_are_now_using_version__before_version_number: "Du benutzt nun die Version ",
 		you_are_now_using_version__after_version_number: " von CMDI Maker."
 	},
 	
