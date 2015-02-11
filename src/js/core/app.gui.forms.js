@@ -104,7 +104,7 @@ APP.GUI.FORMS = (function() {
 				on_delete(num);
 			};
 			
-		}(element_prefix) );
+		}(id) );
 		delete_link.innerHTML = "<img id=\"" + element_prefix + "_delete_img\" class=\"delete_img\" src=\""+APP.CONF.path_to_icons+"reset.png\" alt=\"Delete Bundle\">";
 		
 		//create icon to expand/collapse the expandable form, it will do nothing, just indicate status
