@@ -418,9 +418,19 @@ APP.environments = (function () {
 	
 	my.add = function(environment){
 	
+		//check if environment with such an id is not already there
+		for (var e=0; e<my.environments.length; e++){
+			if (my.environments[e].id == environment.id){
+				console.warn("An environment with the id " + environment.id + " is already loaded! Aborting!");
+				return;
+			}
+		}
+	
 		my.environments.push(environment);
 		my.displayAllInSelect();
 		console.log("Environment available: " + environment.id + ", v" + environment.version);
+		
+		g("environment_versions_span").innerHTML += environment.id + ": v" + environment.version + "<br>";
 		
 	};
 	
