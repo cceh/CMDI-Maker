@@ -822,6 +822,11 @@ APP.GUI = (function() {
 		
 		var textarea = dom.textarea(div, textarea_id, APP.CONF.xml_textarea_class_name, 
 		APP.CONF.output_textarea_rows, APP.CONF.output_textarea_columns, value);
+		
+		//Sanitize filename
+		filename = strings.replaceAccentBearingLettersWithASCISubstitute(filename);
+		filename = strings.removeAllCharactersFromStringExcept(filename, APP.CONF.valid_chars_for_filename);
+		
 		textarea.filename = filename;
 		
 		img.addEventListener("click", function(){
