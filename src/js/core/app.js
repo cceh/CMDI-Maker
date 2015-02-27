@@ -620,7 +620,6 @@ var APP = (function () {
 		var id;
 		var pager;
 	
-		my.GUI.closeSelectFrame();
 		my.GUI.mainMenu.close();
 		
 		if (typeof module_or_id == "undefined"){

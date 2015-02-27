@@ -718,23 +718,6 @@ APP.GUI = (function() {
 	};
 	
 	
-	my.closeSelectFrame = function(){
-		
-		if (g(APP.CONF.select_frame_id)){	
-		
-			var view = g(APP.CONF.select_frame_id).parentNode;
-		
-			dom.showAllChildren(view);
-			dom.remove(APP.CONF.select_frame_id);
-
-			var module = APP.environments.getModuleByViewID(view.id);
-			my.showFunctionsForView(module);
-			
-		}
-	
-	};
-	
-	
 	my.switchToggle = function(input){
 
 		if (input.on === false){
@@ -767,14 +750,21 @@ APP.GUI = (function() {
 	my.showSelectFrame = function(options, titles, callback, title, subtitle){
 	//options are the parameters for the callback method
 	
-		//first, make sure, existing select frames are closed
-		my.closeSelectFrame();
-	
-		var active_view = g(APP.active_view);
+		var old_view = APP.active_view;
 		
-		dom.hideAllChildren(active_view);
+		//create new view for select frame or get old one
+		if (g("VIEW_SF")){
+			var SF_view = g("VIEW_SF");
+			SF_view.innerHTML = "";
+		}
 		
-		var frame = dom.make("div",APP.CONF.select_frame_id,APP.CONF.select_frame_id,active_view,"");	
+		else {
+			
+			SF_view = dom.div(g("content_wrapper"), "VIEW_SF", "content");
+			
+		}
+		
+		var frame = dom.make("div",APP.CONF.select_frame_id,APP.CONF.select_frame_id,SF_view,"");	
 		frame.style.display = "block";
 		
 		dom.make("h1","","",frame,title); 
@@ -782,7 +772,8 @@ APP.GUI = (function() {
 		var img = dom.make("img","","close_select_frame_icon",frame);
 		img.src = APP.CONF.path_to_icons + "reset.png";
 		img.addEventListener('click', function() { 
-			my.closeSelectFrame(); 
+			//go back to old view
+			APP.view(old_view); 
 		} );
 		
 		dom.h3(frame,subtitle);
@@ -791,16 +782,18 @@ APP.GUI = (function() {
 		
 			var a = dom.link(frame,'cl_results_link_'+j,'cl_results_link',"",function(num) {
 				return function(){
-					my.closeSelectFrame();
 					callback(num);
+					
+					//go back to old view
+					APP.view(old_view);
 				};
 			}(options[j]));
 			
 			dom.make("div","",'SF_search_entry',a,titles[j]);
 
 		}
-	
-		my.makeAllFunctionsInvisible();
+		
+		APP.view("VIEW_SF");
 	
 	};
 	

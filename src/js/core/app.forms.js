@@ -100,7 +100,7 @@ APP.forms = (function () {
 				field.maxLength
 			);
 			
-			//if there is a data object, do the big data-binding thing!
+			//if there is a data object, do the data-binding thing!
 			if (data_object){
 				input.addEventListener("blur", function(){
 					data_object[field.name] = input.value;
@@ -167,7 +167,7 @@ APP.forms = (function () {
 			input.year.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (valid_chars.indexOf(chr) == -1){
+				if (valid_chars.indexOf(chr) == -1 && e.charCode != 0){
 					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
 					return false;
 				}
@@ -176,7 +176,7 @@ APP.forms = (function () {
 			input.month.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (valid_chars.indexOf(chr) == -1){
+				if (valid_chars.indexOf(chr) == -1 && e.charCode != 0){
 					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
 					return false;
 				}
@@ -185,7 +185,7 @@ APP.forms = (function () {
 			input.day.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (valid_chars.indexOf(chr) == -1){
+				if (valid_chars.indexOf(chr) == -1 && e.charCode != 0){
 					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
 					return false;
 				}
