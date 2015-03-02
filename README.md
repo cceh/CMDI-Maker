@@ -12,3 +12,5 @@ Available on: http://cmdi-maker.uni-koeln.de
 2. Configure gulpfile.js so that environment scripts of the environments you want to provide with this CMDI Maker build are added to the array environment_scripts and environment css files to environment_stylesheets. These files will be added to the index.html as well as to cmdi-maker.appcache under the CACHE section, so that they are cached and available offline.
 3. Then just run the default task in the gulpfile.js (usually done by typing "gulp" in the npm command line")
 4. After that, provide all environment files for CMDI Maker. They should be put in the same directory as the CMDI Maker build. Of course they must be exactly where you have specified them in Step 2.
+
+When deploying on a server, all kinds of caching should be disabled.
