@@ -869,3 +869,12 @@ float: right;
 
 
 }
+
+
+.intl_form{
+	float: left;
+	display: inline-block;
+	overflow: hidden;
+	word-break: break-all;
+	width: 200px;
+}

@@ -542,14 +542,99 @@ APP.forms = (function () {
 	};
 	
 	
+	var replaceStringValuesWithTemplateItems = function(data_object, flag){
+
+		var fields = [];
+		
+		for (var key in data_object){
+		
+			if (typeof data_object[key] == "object"){
+				
+				var field = {
+					type: "subarea",
+					heading: key,
+					id: key,					
+					fields: replaceStringValuesWithTemplateItems(data_object[key], flag)
+				};
+				
+				fields.push(field);
+			}
+			
+			else {
+				
+				if (data_object[key].length > 25){
+					var type = "textarea";
+				}
+				
+				else {
+					type = "text";
+				}
+				
+				if (flag == "no_default_values"){
+					var value = undefined;
+				}
+				
+				else {
+					value = data_object[key];
+				}
+				
+				
+				field = {
+					
+					name: key,
+					heading: key,
+					type: type,
+					default_value: value
+					
+				};
+				
+				fields.push(field);
+				
+			}
+			
+		}
+		
+		return fields;
+		
+	}
+	
+	
 	//PUBLIC
 	
 	
 	var my = {};
 	
+	//Generates a form without a template. Assumes that every field in JSON data_object is string
+	//and makes text input
+	my.makeWithoutTemplate = function(parent, element_id_prefix, element_class_prefix, data_object, form_id){
+		
+		var template = my.getTemplateFromDataObject(data_object, form_id);
+		
+		log(template);
+		
+		my.make(parent, template, element_id_prefix, element_class_prefix, data_object, undefined);
+
+	};
+	
+	my.getTemplateFromDataObject = function(data_object, form_id, flag){
+	
+		var template = {
+			type: "form",
+			id: form_id,
+			heading: form_id,
+			fields: []
+		};
+
+		template.fields = replaceStringValuesWithTemplateItems(data_object, flag);
+		
+		return template;
+		
+	}
+	
 
 	my.make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
-		
+		log("DO IS THERE: ");
+		log(data_object);
 		var input;
 
 		if (makeFunctions[field.type]) {

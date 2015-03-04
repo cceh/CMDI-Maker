@@ -156,6 +156,8 @@ var APP = (function () {
 		
 		my.GUI.mainMenu.draw(my.main_menu_elements());
 		
+		my.intl.init();
+		
 		window.addEventListener("beforeunload", my.save, false);
 		
 		
@@ -242,6 +244,9 @@ var APP = (function () {
 			icon: "wrench",
 		},
 		{
+			id: "intl"
+		},
+		{
 			id: "about",
 			icon: "about",
 		}
@@ -268,14 +273,16 @@ var APP = (function () {
 			return undefined;
 		}
 		
-		if (typeof LP[arg1] == "undefined"){
+		var terms = LP.terms;
+		
+		if (typeof terms[arg1] == "undefined"){
 			return undefined;
 		}
 	
 		if (arg4){
 
-			if (typeof LP[arg1][arg2][arg3][arg4] != "undefined"){
-				return LP[arg1][arg2][arg3][arg4];
+			if (typeof terms[arg1][arg2][arg3][arg4] != "undefined"){
+				return terms[arg1][arg2][arg3][arg4];
 			}
 			
 			else {
@@ -286,8 +293,8 @@ var APP = (function () {
 	
 		if (arg3){
 
-			if (typeof LP[arg1] != "undefined" && typeof LP[arg1][arg2][arg3] != "undefined"){
-				return LP[arg1][arg2][arg3];
+			if (typeof terms[arg1] != "undefined" && typeof terms[arg1][arg2][arg3] != "undefined"){
+				return terms[arg1][arg2][arg3];
 			}
 			
 			else {
@@ -298,8 +305,8 @@ var APP = (function () {
 		
 		if (arg2){
 
-			if (typeof LP[arg1] != "undefined" && typeof LP[arg1][arg2] != "undefined"){
-				return LP[arg1][arg2];
+			if (typeof terms[arg1] != "undefined" && typeof terms[arg1][arg2] != "undefined"){
+				return terms[arg1][arg2];
 			}
 			
 			else {
@@ -308,7 +315,7 @@ var APP = (function () {
 			
 		}
 		
-		return LP[arg1];
+		return terms[arg1];
 	
 	};
 	
@@ -372,24 +379,24 @@ var APP = (function () {
 		// This is completely unnecessary because Auto Save is on and data will be saved
 		// beforeUnload anyway.
 			{
-				title: my.l("open_file"),
+				title: my.l("main", "open_file"),
 				id: "LINK_open_file",
 				icon:	"open",
 				onclick: function(){ my.GUI.showFileDialog(APP.save_and_recall.loadFromFile);}
 			},
 			{
-				title: my.l("export_to_file"),
+				title: my.l("main", "export_to_file"),
 				id: "LINK_export_to_file",
 				icon:	"save",
 				onclick: function(){ my.save_and_recall.saveActiveEnvironmentStateToFile(); }
 			},
 			{
-				title: my.l("reset_form"),
+				title: my.l("main", "reset_form"),
 				icon: "reset",
 				id: "LINK_reset_form",
 				onclick: function() {     
 
-					APP.confirm(my.l("really_reset_form"), function (e) {
+					APP.confirm(my.l("main", "really_reset_form"), function (e) {
 						if (e) {
 							// user clicked "ok"
 						}
@@ -397,11 +404,11 @@ var APP = (function () {
 						else {
 							// user clicked "cancel" (as cancel is always the red button, the red button is chosen to be the executive button=
 							APP.environments.resetActive();
-							APP.log(my.l("form_reset"));
+							APP.log(my.l("main", "form_reset"));
 							
 						}
 						
-					}, my.l("no"), my.l("yes_delete_form"));
+					}, my.l("main", "no"), my.l("main", "yes_delete_form"));
 					
 				}
 			},
@@ -412,7 +419,7 @@ var APP = (function () {
 				onclick: function(){ APP.view("VIEW_settings"); }
 			},
 			{
-				title: my.l("about"),
+				title: my.l("main", "about"),
 				id: "VIEWLINK_about",
 				icon:	"about",
 				onclick: function(){ APP.view("VIEW_about"); }
@@ -477,6 +484,12 @@ var APP = (function () {
 			},*/
 			//Unneccessary, as this function is already in main menu
 			{
+				title: my.l("settings","internationalization"),
+				type: "link",
+				description: my.l("settings","internationalization_description"),
+				onclick: function() { my.intl.view(); }
+			},
+			{
 				title: my.l("settings","delete_recall_data"),
 				type: "link",
 				description: my.l("settings","delete_recall_data_description"),
@@ -532,7 +545,7 @@ var APP = (function () {
 		
 		else {
 		
-			my.log(my.l("welcome_back"));
+			my.log(my.l("main", "welcome_back"));
 		
 		}
 
