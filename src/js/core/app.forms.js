@@ -553,7 +553,8 @@ APP.forms = (function () {
 				var field = {
 					type: "subarea",
 					heading: key,
-					id: key,					
+					id: key,
+					name: key,
 					fields: replaceStringValuesWithTemplateItems(data_object[key], flag)
 				};
 				
@@ -633,8 +634,7 @@ APP.forms = (function () {
 	
 
 	my.make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
-		log("DO IS THERE: ");
-		log(data_object);
+
 		var input;
 
 		if (makeFunctions[field.type]) {

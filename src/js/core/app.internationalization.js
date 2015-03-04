@@ -43,7 +43,10 @@ APP.intl = (function () {
 			var save_link = dom.a(form_wrapper, "save_intl_" + LP.id, "save_intl_link", undefined,
 				"Save as JSON",
 				function(){
-					log("Save to do");
+					log("Saving intl form with id " + LP.id + "as json");
+					var data = APP.forms.makeObjectWithFormData(template, "intl_" + LP.id + "_");
+					
+					APP.saveTextfile(JSON.stringify(data, null, "\t"), LP.id + ".json");
 				}
 			);
 			
