@@ -21,53 +21,75 @@ APP.intl = (function () {
 	var my = {};
 	
 	my.init = function(){
-	
-		var view = dom.div(g("content_wrapper"), "VIEW_intl", "content");
+		
+		if (!g("VIEW_intl")){
+			var view = dom.div(g("content_wrapper"), "VIEW_intl", "content");
+		}
+		
+		else {
+			view = g("VIEW_intl");
+			view.innerHTML = "";
+		}
 		
 		//as form template we use always the default languge (english)
 		var template = APP.forms.getTemplateFromDataObject(APP.languages[0].terms, "terms", "no_default_values");
 		
-		log("template with no def values:");
-		log(template);
+		//get from each environment a form template from its first language
+		var environment_language_templates = map(APP.environments.environments, function(env){
+			
+			var LP_0 = env.languages[0];
+			var template = APP.forms.getTemplateFromDataObject(LP_0.terms, "terms", "no_default_values");
+			return template;
+			
+		});
 		
 		forEach(APP.languages, function(LP){
 			
 			var terms = LP.terms;
 		
-			var form_wrapper = dom.div(view, "form_" + LP.id, "intl_form");
-			
-			var form_title = dom.h1(form_wrapper, LP.id);
-			
-			APP.forms.make(form_wrapper, template, "intl_" + LP.id + "_", "intl_", terms, undefined);
-			
-			var save_link = dom.a(form_wrapper, "save_intl_" + LP.id, "save_intl_link", undefined,
-				"Save as JSON",
-				function(){
-					log("Saving intl form with id " + LP.id + "as json");
-					var data = APP.forms.makeObjectWithFormData(template, "intl_" + LP.id + "_");
-					
-					APP.saveTextfile(JSON.stringify(data, null, "\t"), LP.id + ".json");
-				}
-			);
+			var id = LP.id;
+		
+			my.makeLPForm(view, template, id, terms, environment_language_templates);
 			
 		});
 		
-		
 		//create form for new language
-		var form_wrapper = dom.div(view, "form_new", "intl_form");
+		my.makeLPForm(view, template, "new", undefined);
 		
-		var form_title = dom.h1(form_wrapper, "New LP");
+	}
+	
+	
+	my.makeLPForm = function(parent, template, id, data, environment_language_templates){
 		
-		APP.forms.make(form_wrapper, template, "intl_new_", "intl_", undefined);
+		var form_wrapper = dom.div(parent, "form_" + id, "intl_form");
 		
-		var save_link = dom.a(form_wrapper, "save_intl_new", "save_intl_link", undefined,
+		var form_title = dom.h1(form_wrapper, id);
+		
+		APP.forms.make(form_wrapper, template, "intl_" + id + "_", "intl_", data, undefined);
+		
+		dom.br(form_wrapper);
+		
+		var save_link = dom.a(form_wrapper, "save_intl_" + id, "save_intl_link", undefined,
 			"Save as JSON",
 			function(){
-				log("Save to do");
+				log("Saving intl form with id " + id + "as json");
+				var data = APP.forms.makeObjectWithFormData(template, "intl_" + id + "_");
+				
+				APP.saveTextfile(JSON.stringify(data, null, "\t"), id + ".json");
 			}
 		);
 		
-	}
+		dom.br(form_wrapper);
+		dom.br(form_wrapper);
+		
+		//Create form in this language for every loaded environment
+		forEach(environment_language_templates, function(template){
+			
+			APP.forms.make(form_wrapper, template, "intl_" + id + "_", "intl_", data, undefined);
+			
+		});
+		
+	};
 	
 	
 	my.view = function(){
