@@ -424,7 +424,7 @@ var ObjectList = function(start_array) {
 	};
 	
 	
-	//If force_array = true and typeof state == array, setState will add array items to list
+	//If force_array = true and typeof state == array, setState will add array items to list, when state is an array instead of an ordinary ObjectList state
 	this.setState = function(state, force_array){
 	
 		if ((!state) || (!state.list) || (typeof state.list != "object")){
@@ -434,10 +434,26 @@ var ObjectList = function(start_array) {
 				self.reset();
 
 				for (var i = 0; i < state.length; i++){
-				
-					self.add(state[i]);
+					
+					//if item already has an id and this id is still available, take it and push object manually into list
+					if (typeof state[i].id == "number" && self.getArrayWithIDs().indexOf(state[i].id) == -1){
+						list.push(state[i]);
+						
+						//check if id_counter has to be raised
+						if (state[i].id >= id_counter){
+							id_counter = state[i].id + 1;
+						}
+					}
+					
+					else {
+						self.add(state[i]);
+					}
 				
 				}
+				
+				self.length = list.length;
+		
+				checkPointerValidity();
 				
 				return;
 			
