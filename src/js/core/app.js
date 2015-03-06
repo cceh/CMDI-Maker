@@ -156,8 +156,6 @@ var APP = (function () {
 		
 		my.GUI.mainMenu.draw(my.main_menu_elements());
 		
-		my.intl.init();
-		
 		window.addEventListener("beforeunload", my.save, false);
 		
 		
@@ -674,7 +672,7 @@ var APP = (function () {
 		
 		//check if view exists
 		if (view_ids.indexOf(id) == -1){
-			console.warn("Warning: Unkown view requested (" + id +")!");
+			console.warn("Warning: Unknown view requested (" + id +")!");
 			my.view("default");
 			return;
 		}			
