@@ -31,45 +31,113 @@ APP.intl = (function () {
 			view.innerHTML = "";
 		}
 		
+		//templates of app core and each environment
+		var templates = [];
+		
 		//as form template we use always the default languge (english)
-		var template = APP.forms.getTemplateFromDataObject(APP.languages[0].terms, "terms", "no_default_values");
+		var app_core_template = APP.forms.getTemplateFromDataObject(APP.languages[0].terms, "terms", "no_default_values");
+		
+		templates.push(app_core_template);
 		
 		//get from each environment a form template from its first language
-		var environment_language_templates = map(APP.environments.environments, function(env){
+		forEach(APP.environments.environments, function(env){
 			
-			var LP_0 = env.languages[0];
-			var template = APP.forms.getTemplateFromDataObject(LP_0.terms, "terms", "no_default_values");
-			return template;
+			if (env.languages){
+				var LP_0 = env.languages[0];
+				var env_template = APP.forms.getTemplateFromDataObject(LP_0.terms, "terms", "no_default_values");
+				templates.push(env_template);
+			}
 			
-		});
-		
-		forEach(APP.languages, function(LP){
-			
-			var terms = LP.terms;
-		
-			var id = LP.id;
-		
-			my.makeLPForm(view, template, id, terms, environment_language_templates);
+			else {
+				templates.push(undefined);
+			}
 			
 		});
 		
-		//create form for new language
-		my.makeLPForm(view, template, "new", undefined);
+		log(templates[0]);
 		
-	}
+		//The idea is: every environment language must be supported by the APP CORE too. it wouldn't make sense to have only the environment
+		//but not the app core in french. that is why we create only forms for the languages supported by app core
+		//as well as an empty column for a new language. the user can then create LPs for all loaded environments in the new language.
+		forEach(APP.languages, function(APP_CORE_LP, i){
+			
+			var id = APP_CORE_LP.id;
+			
+			var all_LPs_of_one_language = [];
+			all_LPs_of_one_language.push(APP_CORE_LP);
+			
+			//get languages packs of all environments for this language
+			forEach(APP.environments.environments, function(env, j){
+			
+				if (env.languages && env.languages[i]){
+					all_LPs_of_one_language.push(env.languages[i]);
+				}
+				
+				else {
+					all_LPs_of_one_language.push(undefined);
+				}
+			
+			});	
+		
+			my.makeFormColumnForLanguage(view, id, templates, all_LPs_of_one_language);
+			
+		});
+		
+		//create column for new language
+		my.makeFormColumnForLanguage(view, "new", templates, undefined);
+		
+	};
 	
 	
-	my.makeLPForm = function(parent, template, id, data, environment_language_templates){
+	//When this site gets viewed, re-initialize it and refresh it with all the new environments now available
+	my.view = my.init;
+	
+	
+	//creates a LP form for one language with all environments that are supporting that language
+	my.makeFormColumnForLanguage = function(parent, id, templates, LPs){
 		
 		var form_wrapper = dom.div(parent, "form_" + id, "intl_form");
-		
 		var form_title = dom.h1(form_wrapper, id);
 		
-		APP.forms.make(form_wrapper, template, "intl_" + id + "_", "intl_", data, undefined);
+		if (LPs){
+			var CORE_LP = LPs[0];
+		}
 		
-		dom.br(form_wrapper);
+		my.makeLPForm(form_wrapper, templates[0], id + "_core", "APP CORE", CORE_LP);
 		
-		var save_link = dom.a(form_wrapper, "save_intl_" + id, "save_intl_link", undefined,
+		//Create form in this language for every loaded environment
+		for (var t = 1; t < templates.length; t++){
+			
+			var template = templates[t];
+			if (LPs){
+				var LP = LPs[t];
+			}
+
+			var environment_id = APP.environments.environments[t-1].id;
+			
+			//Tell again, which language it is
+			dom.h1(form_wrapper, id);
+			
+			my.makeLPForm(form_wrapper, template, id + "_" + environment_id, "Environment: " + environment_id, LP);
+			
+		}
+
+	};
+	
+	
+	my.makeLPForm = function(parent, template, id, title, LP){
+		
+		if (LP){
+			var data = LP.terms;
+		}
+		
+		dom.h2(parent, title);
+		log(template);
+		APP.forms.make(parent, template, "intl_" + id + "_", "intl_", data, undefined);
+		
+		dom.br(parent);
+		
+		var save_link = dom.a(parent, "save_intl_" + id, "save_intl_link", undefined,
 			"Save as JSON",
 			function(){
 				log("Saving intl form with id " + id + "as json");
@@ -79,24 +147,14 @@ APP.intl = (function () {
 			}
 		);
 		
-		dom.br(form_wrapper);
-		dom.br(form_wrapper);
 		
-		//Create form in this language for every loaded environment
-		forEach(environment_language_templates, function(template){
-			
-			APP.forms.make(form_wrapper, template, "intl_" + id + "_", "intl_", data, undefined);
-			
-		});
+		dom.br(parent);
+		dom.br(parent);
+		dom.br(parent);
+		dom.br(parent);
 		
 	};
-	
-	
-	my.view = function(){
-		
-		APP.view("VIEW_intl");
-		
-	}
+
 	
 	return my;
 	

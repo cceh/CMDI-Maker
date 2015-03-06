@@ -329,7 +329,7 @@ APP.GUI = (function() {
 		
 		var iso_button = dom.make("input", element_id_prefix + "iso_ok","language_iso_add_button",p);
 		iso_button.type = "button";
-		iso_button.value = l("ok");			
+		iso_button.value = l("main", "ok");			
 		
 		if (!no_display){
 			dom.make("div",element_id_prefix + "display", "", parent);	
@@ -733,13 +733,13 @@ APP.GUI = (function() {
 	my.setToggleValue = function(input, value){
 	
 		if (value === true){
-			input.value = APP.l("on");
+			input.value = APP.l("main", "on");
 			input.style.backgroundColor = APP.CONF.toggle_color_on;
 			input.on = true;
 		}
 		
 		else {
-			input.value = APP.l("off");
+			input.value = APP.l("main", "off");
 			input.style.backgroundColor = APP.CONF.toggle_color_off;
 			input.on = false;
 		}		

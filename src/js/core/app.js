@@ -66,10 +66,10 @@ var APP = (function () {
 		g('link_lets_go').addEventListener('click', function() {
 		
 			if (typeof my.environments.active_environment == "undefined"){
-				my.environments.load(my.environments.get(0));	
+				my.environments.load(my.environments.get(0));
 			}
 			
-			if (my.environments.active_environment.workflow[0]){
+			if (my.environments.active_environment && my.environments.active_environment.workflow){
 				my.view(my.environments.active_environment.workflow[0]);
 			}
 			
@@ -487,7 +487,7 @@ var APP = (function () {
 				title: my.l("settings","internationalization"),
 				type: "link",
 				description: my.l("settings","internationalization_description"),
-				onclick: function() { my.intl.view(); }
+				onclick: function() { my.view("VIEW_intl"); }
 			},
 			{
 				title: my.l("settings","delete_recall_data"),
@@ -600,7 +600,7 @@ var APP = (function () {
 	my.alert = function(message) {
 	
 		alertify.set({ labels: {
-			ok     : my.l("ok")
+			ok     : my.l("main", "ok")
 		} });
 		
 		alertify.alert(message);
@@ -699,6 +699,11 @@ var APP = (function () {
 		//every module can have a view method for things to be done, before viewing the page
 		if (module && module.view){
 			module.view();
+		}
+		
+		// If VIEW_intl is selected, it has to be refreshed too!
+		if (id == "VIEW_intl"){
+			my.intl.view();
 		}
 		
 	};

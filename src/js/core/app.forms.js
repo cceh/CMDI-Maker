@@ -636,7 +636,15 @@ APP.forms = (function () {
 	my.make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 
 		var input;
-
+		
+		if (!field){
+		
+			console.error("ERROR: APP.forms.make: field is not defined! element_id_prefix = " + element_id_prefix + ". PARENT = ");
+			console.error(parent);
+			return;			
+			
+		}
+		
 		if (makeFunctions[field.type]) {
 			input = makeFunctions[field.type](parent, field, element_id_prefix, element_class_prefix, data_object, on_special);
 		}
