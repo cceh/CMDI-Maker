@@ -31,6 +31,12 @@ APP.intl = (function () {
 			view.innerHTML = "";
 		}
 		
+		var introduction = dom.p(view, "", "internationalization_introduction", "");
+		introduction.innerHTML = "CMDI Maker was originally created to support linguists all over the world to create XML metadata. " +
+		"This is the reason for implementing this internationalization module, where you can create, edit or just have a look at Language Packs (LPs) for the app.<br>" +
+		"You can import them by including the resulting JSON files in the CMDI Maker source code.";
+
+		
 		//templates of app core and each environment
 		var templates = [];
 		
