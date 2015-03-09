@@ -50,7 +50,7 @@ APP.intl = (function () {
 		introduction.innerHTML = "CMDI Maker was originally created to support linguists all over the world to create XML metadata. " +
 		"This is the reason for implementing this internationalization module, where you can create, edit or just have a look at Language Packs (LPs) for the app.<br>" +
 		"You can import them by including the resulting JSON files in the CMDI Maker source code or in the source code of the respective CMDI Maker environment.<br><br>"+
-		"If not sure about translating tech terms, maybe <a target='_blank' href='http://www.microsoft.com/Language/en-US/Search.aspx?sString=Abort&langID=es-es'>Microsoft Terminology Search</a> is of help!";
+		"If you are not sure about translating tech terms, maybe <a target='_blank' href='http://www.microsoft.com/Language/en-US/Search.aspx?sString=Abort&langID=es-es'>Microsoft Terminology Search</a> is of help!";
 
 		
 		//templates of app core and each environment
@@ -146,6 +146,27 @@ APP.intl = (function () {
 	};
 	
 	
+	var deleteEmptyStringsInObject = function(obj){
+	
+		for (var key in obj){
+		
+			if (typeof obj[key] == "string" && obj[key] == ""){
+				
+				delete obj[key];
+				
+			}
+			
+			if (typeof obj[key] == "object"){
+			
+				deleteEmptyStringsInObject(obj[key]);
+			
+			}
+			
+		}
+	
+	}
+	
+	
 	my.makeLPForm = function(parent, template, id, title, LP){
 		
 		if (LP){
@@ -163,6 +184,8 @@ APP.intl = (function () {
 			function(){
 				log("Saving intl form with id " + id + "as json");
 				var data = APP.forms.makeObjectWithFormData(template, "intl_" + id + "_");
+				
+				deleteEmptyStringsInObject(data);				
 				
 				APP.saveTextfile(JSON.stringify(data, null, "\t"), id + ".json");
 			}

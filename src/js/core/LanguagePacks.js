@@ -352,7 +352,6 @@ APP.languages[3] = {
 	code: "ru",
 	
 	terms: {
-	
 		"settings": {
 			"settings": "Настройки",
 			"profile": "Профиль",
@@ -369,9 +368,7 @@ APP.languages[3] = {
 			"hard_reset": "Полный сброс",
 			"hard_reset_description": "Удаляет все данные, сохранённые из CMDI Maker на этом компьютере.",
 			"program_language": "Язык интерфейса",
-			"no_project_data_found_in_file": "В файле не найдено данных проекта CMDI Maker!",
-			"internationalization": "",
-			"internationalization_description": ""
+			"no_project_data_found_in_file": "В файле не найдено данных проекта CMDI Maker!"
 		},
 		"save_and_recall": {
 			"active_profile_data_deleted": "Данные текущего профиля удалены.",
@@ -391,22 +388,12 @@ APP.languages[3] = {
 			"off": "Выкл",
 			"ok": "ОК",
 			"welcome_back": "Добро пожаловать к нам снова!",
-			"about": "",
-			"save": "",
-			"export_to_file": "",
 			"open_file": "Открыть файл проекта",
-			"abort": "Прервать",
-			"reset_form": "",
-			"form_reset": "",
-			"really_reset_form": "",
-			"yes_delete_form": "",
-			"no": ""
+			"abort": "Прервать"
 		},
 		"start": {
 			"greeting_text": "Добро пожаловать в CMDI Maker!<br>Обратите внимание, это оффлайновое приложение. Вы можете им пользоваться даже без подключения к Интернету.<br>Перейдя по этому адресу, Вы продолжите с того места, где остановились в прошлый раз (на этом компьютере).",
-			"and_lets_go__before_link": "",
 			"and_lets_go__link": "и вперёд!",
-			"and_lets_go__after_link": "",
 			"is_supported_by": "CMDI Maker поддерживают",
 			"need_help": "Нужна помощь?",
 			"help_pages_description": "На страницах справки можно найти видеопомощь на разных языках, почтовую рассылку, к кому обращаться, и многое другое!",
@@ -414,9 +401,7 @@ APP.languages[3] = {
 			"this_is": {
 				"before_language": "Это",
 				"after_language": "!"
-			},
-			"you_are_now_using_version__before_version_number": "",
-			"you_are_now_using_version__after_version_number": ""
+			}
 		},
 		"language_search": {
 			"or_type_in_iso_code": "или впишите код ISO",
