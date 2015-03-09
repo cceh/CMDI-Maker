@@ -279,7 +279,7 @@ APP.forms = (function () {
 		form: function(parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 			var form_parent;
 			
-			if ((field.fields) && (field.fields[0].type == "column")){
+			if ((field.fields) && (field.fields[0]) && (field.fields[0].type == "column")){
 				var table = dom.make("table",element_id_prefix+"table","session_table",parent);
 				var tr = dom.make("tr","","",table);
 				form_parent = tr;
@@ -610,8 +610,6 @@ APP.forms = (function () {
 	my.makeWithoutTemplate = function(parent, element_id_prefix, element_class_prefix, data_object, form_id){
 		
 		var template = my.getTemplateFromDataObject(data_object, form_id);
-		
-		log(template);
 		
 		my.make(parent, template, element_id_prefix, element_class_prefix, data_object, undefined);
 

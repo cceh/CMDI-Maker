@@ -58,7 +58,7 @@ APP.intl = (function () {
 		var templates = [];
 		
 		//as form template we use always the default languge (english)
-		var app_core_template = APP.forms.getTemplateFromDataObject(APP.languages[0].terms, "terms", "no_default_values");
+		var app_core_template = APP.forms.getTemplateFromDataObject(APP.languages[0].terms, "core_terms", "no_default_values");
 		
 		templates.push(app_core_template);
 		
@@ -67,7 +67,7 @@ APP.intl = (function () {
 			
 			if (env.languages){
 				var LP_0 = env.languages[0];
-				var env_template = APP.forms.getTemplateFromDataObject(LP_0.terms, "terms", "no_default_values");
+				var env_template = APP.forms.getTemplateFromDataObject(LP_0.terms, env.id + "_terms", "no_default_values");
 				templates.push(env_template);
 			}
 			
@@ -77,7 +77,7 @@ APP.intl = (function () {
 			
 		});
 		
-		log(templates[0]);
+		log(templates);
 		
 		//The idea is: every environment language must be supported by the APP CORE too. it wouldn't make sense to have only the environment
 		//but not the app core in french. that is why we create only forms for the languages supported by app core
