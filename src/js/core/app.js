@@ -150,6 +150,9 @@ var APP = (function () {
 		
 		my.environments.displayAllInSelect();
 		
+		//Initialize internationalization module
+		my.intl.init();
+		
 		if ((!no_recall) && (typeof recall_object != "undefined")){
 			my.recall(recall_object);
 		}

@@ -343,3 +343,105 @@ APP.languages[2] = {
 	}
 	
 };
+
+
+APP.languages[3] = {
+
+	id: "russian",
+	name: "Русский язык",
+	code: "ru",
+	
+	terms: {
+	
+		"settings": {
+			"settings": "Настройки",
+			"profile": "Профиль",
+			"auto_save": "Автосохранение",
+			"off": "Выключено",
+			"every_30_seconds": "Каждые 30 секунд",
+			"every_60_seconds": "Каждые 60 секунд",
+			"every_5_minutes": "Каждые 5 минут",
+			"every_10_minutes": "Каждые 10 минут",
+			"load_project": "Загрузить проект",
+			"load_project_description": "Загрузить данные проекта из файла CMP.",
+			"delete_recall_data": "Очистить данные в браузере",
+			"delete_recall_data_description": "CMDI Maker сохраняет введённые данные в базе данных браузера. Данные сохраняются, даже когда Вы закрываете браузер.<br>Если Автосохранение включено, новые данные сохраняются автоматически.<br>Эта команда удаляет только данные из текущего профиля!",
+			"hard_reset": "Полный сброс",
+			"hard_reset_description": "Удаляет все данные, сохранённые из CMDI Maker на этом компьютере.",
+			"program_language": "Язык интерфейса",
+			"no_project_data_found_in_file": "В файле не найдено данных проекта CMDI Maker!",
+			"internationalization": "",
+			"internationalization_description": ""
+		},
+		"save_and_recall": {
+			"active_profile_data_deleted": "Данные текущего профиля удалены.",
+			"no_data_found": "Для текущего профиля данных не обнаружено.",
+			"form_saved": "Форма сохранена.",
+			"no_data_to_save_no_profile_loaded": "Нет данных для сохранения, поскольку не выбран профиль."
+		},
+		"confirm": {
+			"no": "Нет",
+			"yes_delete_everything": "Да, удалить всё",
+			"yes_overwrite_data": "Да, записать данные поверх",
+			"overwrite_data": "Уверены?<br>Вы хотите записать данные поверх всех прежних данных?",
+			"hard_reset": "Уверены?<br>Вы хотите полностью очистить данные CMDI Maker? Данные обо всех участниках и т. п. будут уничтожены."
+		},
+		"main": {
+			"on": "Вкл",
+			"off": "Выкл",
+			"ok": "ОК",
+			"welcome_back": "Добро пожаловать к нам снова!",
+			"about": "",
+			"save": "",
+			"export_to_file": "",
+			"open_file": "Открыть файл проекта",
+			"abort": "Прервать",
+			"reset_form": "",
+			"form_reset": "",
+			"really_reset_form": "",
+			"yes_delete_form": "",
+			"no": ""
+		},
+		"start": {
+			"greeting_text": "Добро пожаловать в CMDI Maker!<br>Обратите внимание, это оффлайновое приложение. Вы можете им пользоваться даже без подключения к Интернету.<br>Перейдя по этому адресу, Вы продолжите с того места, где остановились в прошлый раз (на этом компьютере).",
+			"and_lets_go__before_link": "",
+			"and_lets_go__link": "и вперёд!",
+			"and_lets_go__after_link": "",
+			"is_supported_by": "CMDI Maker поддерживают",
+			"need_help": "Нужна помощь?",
+			"help_pages_description": "На страницах справки можно найти видеопомощь на разных языках, почтовую рассылку, к кому обращаться, и многое другое!",
+			"select_your_profile": "Выберите профиль",
+			"this_is": {
+				"before_language": "Это",
+				"after_language": "!"
+			},
+			"you_are_now_using_version__before_version_number": "",
+			"you_are_now_using_version__after_version_number": ""
+		},
+		"language_search": {
+			"or_type_in_iso_code": "или впишите код ISO",
+			"search": "Поиск"
+		},
+		"forms": {
+			"drag_and_drop_files_here": "Сюда можно перетащить файлы",
+			"this_character_is_not_allowed_here": "Этот символ здесь не разрешён."
+		},
+		"languages": {
+			"set_global_languages_of_content": "Установить общие языки для содержимого.",
+			"language_search": "Поиск языков",
+			"result": "результат",
+			"results": "результата (-ов)",
+			"language_name": "Название языка",
+			"is_new_global": "установлен как общий язык содержимого",
+			"iso_code": "Код ISO",
+			"not_found_in_db": "в базе данных не обнаружен",
+			"specify_search_request_at_least_3_chars": "Пожалуйста, уточните запрос.\nНаберите по крайней мере 3 буквы.",
+			"primary_language": "Основной язык",
+			"mother_tongue": "Родной язык",
+			"current_content_languages": "Текущие языки содержимого",
+			"content_language_removed__before_lang": "Язык содержания \"",
+			"content_language_removed__after_lang": "\" исключён."
+		}
+	}
+	
+};

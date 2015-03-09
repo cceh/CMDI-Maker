@@ -21,6 +21,21 @@ APP.intl = (function () {
 	var my = {};
 	
 	my.init = function(){
+	
+		if (!g("VIEW_intl")){
+			var view = dom.div(g("content_wrapper"), "VIEW_intl", "content");
+		}
+		
+		else {
+			view = g("VIEW_intl");
+			view.innerHTML = "";
+		}		
+	
+	}
+	
+	
+	//When this page gets viewed, re-initialize it and refresh it with all the new environments now available
+	my.view = function(){
 		
 		if (!g("VIEW_intl")){
 			var view = dom.div(g("content_wrapper"), "VIEW_intl", "content");
@@ -34,7 +49,8 @@ APP.intl = (function () {
 		var introduction = dom.p(view, "", "internationalization_introduction", "");
 		introduction.innerHTML = "CMDI Maker was originally created to support linguists all over the world to create XML metadata. " +
 		"This is the reason for implementing this internationalization module, where you can create, edit or just have a look at Language Packs (LPs) for the app.<br>" +
-		"You can import them by including the resulting JSON files in the CMDI Maker source code.";
+		"You can import them by including the resulting JSON files in the CMDI Maker source code or in the source code of the respective CMDI Maker environment.<br><br>"+
+		"If not sure about translating tech terms, maybe <a target='_blank' href='http://www.microsoft.com/Language/en-US/Search.aspx?sString=Abort&langID=es-es'>Microsoft Terminology Search</a> is of help!";
 
 		
 		//templates of app core and each environment
@@ -92,11 +108,10 @@ APP.intl = (function () {
 		//create column for new language
 		my.makeFormColumnForLanguage(view, "new", templates, undefined);
 		
+		
+		dom.scrollTop(view);
+		
 	};
-	
-	
-	//When this site gets viewed, re-initialize it and refresh it with all the new environments now available
-	my.view = my.init;
 	
 	
 	//creates a LP form for one language with all environments that are supporting that language

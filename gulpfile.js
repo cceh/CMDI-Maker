@@ -60,6 +60,7 @@ var source_scripts = [
 	"./src/js/core/app.save_and_recall.js",
 	"./src/js/core/app.settings.js",
 	"./src/js/core/app.config.js",
+	"./src/js/core/app.internationalization.js",
 ];
 
 
