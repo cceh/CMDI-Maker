@@ -50,7 +50,8 @@ APP.intl = (function () {
 		introduction.innerHTML = "CMDI Maker was originally created to support linguists all over the world to create XML metadata. " +
 		"This is the reason for implementing this internationalization module, where you can create, edit or just have a look at Language Packs (LPs) for the app.<br>" +
 		"You can import them by including the resulting JSON files in the CMDI Maker source code or in the source code of the respective CMDI Maker environment.<br><br>"+
-		"If you are not sure about translating tech terms, maybe <a target='_blank' href='http://www.microsoft.com/Language/en-US/Search.aspx?sString=Abort&langID=es-es'>Microsoft Terminology Search</a> is of help!";
+		"If you are not sure about translating tech terms, maybe <a target='_blank' href='http://www.microsoft.com/Language/en-US/Search.aspx?sString=Abort&langID=es-es'>Microsoft Terminology Search</a> is of help!<br>"+
+		"English is the default and reference language. Translations should always take this language as source.";
 
 		
 		//templates of app core and each environment

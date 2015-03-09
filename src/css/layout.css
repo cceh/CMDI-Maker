@@ -890,3 +890,10 @@ float: right;
 	font-size: 13pt;
 	margin-top: 0px;
 }
+
+
+#form_english{
+	background-color: aquamarine;
+	padding-left: 10px;
+	margin-right: 10px;
+}
