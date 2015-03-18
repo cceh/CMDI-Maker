@@ -836,13 +836,16 @@ APP.GUI = (function() {
 		
 		if (typeof http_post_information != "undefined"){
 			
-			var post_data = http_post_information.xml_string_key + "='" + textarea.value + "'&" + http_post_information.additional_data;			
+			var xml_in_one_line = strings.removeCharactersFromString(textarea.value, "\r\n");
+			
+			var post_data = http_post_information.xml_string_key + "='" + xml_in_one_line + "'&" + http_post_information.additional_data;			
 			
 			post_img.addEventListener("click", function(){
 				postWithAJAX(
 					http_post_information.url,
 					post_data,
-					function(){APP.log("Data saved on server!", "success");}
+					function(){APP.log("Data saved on server!", "success");},
+					http_post_information.additional_headers
 				);					
 			});			
 		}
