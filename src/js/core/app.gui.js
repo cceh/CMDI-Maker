@@ -838,7 +838,7 @@ APP.GUI = (function() {
 			
 			var xml_in_one_line = strings.removeCharactersFromString(textarea.value, "\r\n");
 			
-			var post_data = http_post_information.xml_string_key + "='" + xml_in_one_line + "'&" + http_post_information.additional_data;			
+			var post_data = http_post_information.xml_string_key + "=" + xml_in_one_line + "&" + http_post_information.additional_data;			
 			
 			post_img.addEventListener("click", function(){
 				postWithAJAX(
