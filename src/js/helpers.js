@@ -69,20 +69,11 @@ function postWithAJAX(url, post_data, success_callback, additional_headers){
  * @return {mixed} http.send() Value of http.send()
  * @static 
  */	
-function postWithAJAX(url, post_data, success_callback, additional_headers){
+function getWithAJAX(url, success_callback){
 
 	var http = new XMLHttpRequest();
 	
-	http.open("POST", url, true);
-	
-	if (additional_headers){
-		
-		for (var h = 0; h < additional_headers.length; h++){
-			log("setting header: " + additional_headers[h].key + ": " + additional_headers[h].value);
-			http.setRequestHeader(additional_headers[h].key, additional_headers[h].value);
-		}
-		
-	}
+	http.open("GET", url, true);
 
 	http.onreadystatechange = function() { //Call a function when the state changes.
 
