@@ -135,12 +135,16 @@ APP.intl = (function () {
 				var LP = LPs[t];
 			}
 
-			var environment_id = APP.environments.environments[t-1].id;
-			
-			//Tell again, which language it is
-			dom.h1(form_wrapper, id);
-			
-			my.makeLPForm(form_wrapper, template, id + "_" + environment_id, "Environment: " + environment_id, LP);
+			if (LP){
+				
+				var environment_id = APP.environments.environments[t-1].id;
+				
+				//Tell again, which language it is
+				dom.h1(form_wrapper, id);
+				
+				my.makeLPForm(form_wrapper, template, id + "_" + environment_id, "Environment: " + environment_id, LP);
+				
+			}
 			
 		}
 
