@@ -973,7 +973,7 @@ APP.GUI = (function() {
 	my.showFileDialog = function(onchange){
 	
 		alertify.set({ labels: {
-			ok     : APP.l("abort")
+			ok     : APP.l("main", "abort")
 		} });
 		
 		var innerHTML = "<input type='file' id='generic_file_input'>";

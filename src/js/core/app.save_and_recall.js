@@ -222,7 +222,7 @@ APP.save_and_recall = (function () {
 			CMP_object.environments[APP.environments.active_environment.id] = environment_object;
 		}
 	
-		APP.saveTextfile(JSON.stringify(CMP_object), APP.CONF.project_file_name);
+		APP.saveTextfile(JSON.stringify(CMP_object, null, "\t"), APP.CONF.project_file_name);
 	
 	};
 	
@@ -256,7 +256,7 @@ APP.save_and_recall = (function () {
 			CMP_object.environments = {};
 			CMP_object.environments[APP.environments.active_environment.id] = environment_object;
 			
-			APP.saveTextfile(JSON.stringify(CMP_object), file_name);
+			APP.saveTextfile(JSON.stringify(CMP_object, null, "\t"), file_name);
 			
 		}
 		
