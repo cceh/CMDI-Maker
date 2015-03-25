@@ -135,16 +135,12 @@ APP.intl = (function () {
 				var LP = LPs[t];
 			}
 
-			if (LP){
-				
-				var environment_id = APP.environments.environments[t-1].id;
-				
-				//Tell again, which language it is
-				dom.h1(form_wrapper, id);
-				
-				my.makeLPForm(form_wrapper, template, id + "_" + environment_id, "Environment: " + environment_id, LP);
-				
-			}
+			var environment_id = APP.environments.environments[t-1].id;
+			
+			//Tell again, which language it is
+			dom.h1(form_wrapper, id);
+	
+			my.makeLPForm(form_wrapper, template, id + "_" + environment_id, "Environment: " + environment_id, LP);
 			
 		}
 
@@ -178,8 +174,40 @@ APP.intl = (function () {
 			var data = LP.terms;
 		}
 		
+		//if there is no LP, make an empty form
+		
 		dom.h2(parent, title);
 		log(template);
+		
+		var import_link = dom.a(parent, "import_intl_" + id, "import_intl_link", undefined,
+			"Import JSON file",
+			function(){
+				
+				APP.GUI.showFileDialog(function(file){
+				
+					readFileAsJSON(
+					
+						file,
+						
+						function(json){
+					
+							APP.forms.fill(template, "intl_" + id + "_", json);
+						
+						},
+						
+						function(){
+						
+							log("Error reading file as JSON!");
+						
+						}
+						
+					);
+				});
+				
+			}
+		);		
+		
+		
 		APP.forms.make(parent, template, "intl_" + id + "_", "intl_", data, undefined);
 		
 		dom.br(parent);
@@ -187,7 +215,7 @@ APP.intl = (function () {
 		var save_link = dom.a(parent, "save_intl_" + id, "save_intl_link", undefined,
 			"Save as JSON",
 			function(){
-				log("Saving intl form with id " + id + "as json");
+				log("Saving intl form with id " + id + " as json");
 				var data = APP.forms.makeObjectWithFormData(template, "intl_" + id + "_");
 				
 				deleteEmptyStringsInObject(data);				
