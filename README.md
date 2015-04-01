@@ -24,3 +24,7 @@ No ETag header must be present!
 In Apache Web Server, this is done by adding these commands:
 * FileETag None
 * Header unset ETag
+
+Make sure, that appcache files are served with the correct mime type.
+For example, to serve this mime-type in Apache, add this line to your config file:
+* AddType text/cache-manifest .appcache
