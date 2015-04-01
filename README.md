@@ -18,3 +18,9 @@ When deploying on a server, all kinds of caching must be disabled. Otherwise, th
 Expires: 0
 Pragma: no-cache
 Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+
+No ETag header must be present!
+
+In Apache Web Server, this is done by adding these commands:
+FileETag None
+Header unset ETag
