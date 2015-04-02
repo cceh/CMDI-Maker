@@ -17,7 +17,13 @@ When deploying on a server, all kinds of caching must be disabled. Otherwise, th
 
 * Expires: 0
 * Pragma: no-cache
-* Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+* Cache-Control: no-cache, must-revalidate, post-check=0, pre-check=0
+
+Notice: It is not recommended to use Cache-Control: no-store, since this would prevent Firefox from storing the App in the appcache at all and in the console it says:
+* "Offline cache manifest item has Cache-control: no-store header"
+Maybe this is a bug: https://bugzilla.mozilla.org/show_bug.cgi?id=959008
+Since Chrome does neglect no-cache header (see https://code.google.com/p/chromium/issues/detail?id=64139 and https://code.google.com/p/chromium/issues/detail?id=28035)
+there seems to be no perfect solution at this point.
 
 No ETag header must be present!
 
