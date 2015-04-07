@@ -88,7 +88,7 @@ APP.languages[0] = {
 			and_lets_go__after_link: "!",
 			is_supported_by: "CMDI Maker is supported by",
 			need_help: "Need help?",
-			help_pages_description: "On the help pages you will find video tutorials in several languages, a mailing list, go-to persons and much more!",
+			help_pages_description: "On the help pages you will find <a href='help/#imdi_video_tutorials'>video tutorials in several languages</a>, <a href='help/faq.html'>FAQs</a>, a <a href='https://lists.uni-koeln.de/mailman/listinfo/cmdi-maker-news'>mailing list</a>, <a href='help/#email_support'>email support</a> and much more!",
 			select_your_profile: "Select your profile",
 			this_is: {
 				before_language: "This is ",
@@ -202,7 +202,7 @@ APP.languages[1] = {
 			and_lets_go__after_link: "!",
 			is_supported_by: "CMDI Maker wird unterstützt von",
 			need_help: "Brauchst Du Hilfe?",
-			help_pages_description: "Auf den Hilfe-Seiten findest Du Video-Tutorials in verschiedenen Sprachen, eine Mailing-Liste, Ansprechpartner und vieles mehr!",
+			help_pages_description: "Auf den Hilfe-Seiten findest Du <a href='help/#imdi_video_tutorials'>Video-Tutorials in verschiedenen Sprachen</a>, <a href='help/faq.html'>FAQs</a>, eine <a href='https://lists.uni-koeln.de/mailman/listinfo/cmdi-maker-news'>Mailing-Liste</a>, <a href='help/#email_support'>Ansprechpartner</a> und vieles mehr!",
 			select_your_profile: "Wähle dein Profil",
 			this_is: {
 				before_language: "Das ist ",
