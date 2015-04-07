@@ -77,6 +77,7 @@ APP.languages[0] = {
 			really_reset_form: "Do you really want to delete all form data?",
 			yes_delete_form: "Yes, delete Form",
 			no: "No",
+			help: "Help"
 		},
 		
 		start: {
@@ -190,6 +191,7 @@ APP.languages[1] = {
 			really_reset_form: "Möchtest Du wirklich alle Formulareingaben löschen?",
 			yes_delete_form: "Ja, löschen",
 			no: "Nein",
+			help: "Hilfe"
 		},
 		
 		start: {

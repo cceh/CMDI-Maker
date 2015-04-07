@@ -420,9 +420,15 @@ var APP = (function () {
 				onclick: function(){ APP.view("VIEW_settings"); }
 			},
 			{
+				title: my.l("main", "help"),
+				id: "VIEWLINK_help",
+				icon:	"about",
+				onclick: function(){ window.open("http://cmdi-maker.uni-koeln.de/help/", '_blank'); }
+			},			
+			{
 				title: my.l("main", "about"),
 				id: "VIEWLINK_about",
-				icon:	"about",
+				icon:	"bubble",
 				onclick: function(){ APP.view("VIEW_about"); }
 			}
 		];
