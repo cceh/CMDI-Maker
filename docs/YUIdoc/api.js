@@ -3,16 +3,23 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [
         "APP",
         "APP.GUI",
-        "APP.save_and_recall"
+        "APP.save_and_recall",
+        "HELPERS"
     ],
     "modules": [
-        "CORE"
+        "CORE",
+        "HELPERS"
     ],
     "allModules": [
         {
             "displayName": "CORE",
             "name": "CORE",
             "description": "The main module for the app."
+        },
+        {
+            "displayName": "HELPERS",
+            "name": "HELPERS",
+            "description": "Helper functions. These are available in the global namespace!"
         }
     ]
 } };

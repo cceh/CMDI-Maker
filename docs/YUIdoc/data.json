@@ -36,6 +36,24 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "alertify.js": {
+            "name": "alertify.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "helpers.js": {
+            "name": "helpers.js",
+            "modules": {
+                "HELPERS": 1
+            },
+            "classes": {
+                "HELPERS": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {
@@ -53,6 +71,19 @@
             "file": "core\\app.save_and_recall.js",
             "line": 18,
             "description": "The main module for the app."
+        },
+        "HELPERS": {
+            "name": "HELPERS",
+            "submodules": {},
+            "classes": {
+                "HELPERS": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "helpers.js",
+            "line": 23,
+            "description": "Helper functions. These are available in the global namespace!"
         }
     },
     "classes": {
@@ -96,6 +127,20 @@
             "file": "core\\app.save_and_recall.js",
             "line": 18,
             "description": "A sub module of APP that deals with saving and recalling APP and environment states and data."
+        },
+        "HELPERS": {
+            "name": "HELPERS",
+            "shortname": "HELPERS",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "HELPERS",
+            "namespace": "",
+            "file": "helpers.js",
+            "line": 23,
+            "description": "Helper functions. These are available in the global namespace!"
         }
     },
     "classitems": [
@@ -162,6 +207,237 @@
             "class": "APP.GUI"
         },
         {
+            "file": "core\\app.gui.js",
+            "line": 151,
+            "description": "Creates a text input element with heading. Used a lot by APP.forms",
+            "itemtype": "method",
+            "name": "makeTextInput",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM"
+                },
+                {
+                    "name": "title",
+                    "description": "Title or heading that is displayed above the form element",
+                    "type": "String"
+                },
+                {
+                    "name": "name",
+                    "description": "Name of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "id",
+                    "description": "ID of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "Value",
+                    "type": "String"
+                },
+                {
+                    "name": "hover",
+                    "description": "HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.",
+                    "type": "String"
+                },
+                {
+                    "name": "maxLength",
+                    "description": "Maximum length of chars in element."
+                }
+            ],
+            "return": {
+                "description": "input Element that is to be created."
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 188,
+            "description": "Creates a text input element with heading. The element can be used to type year numbers.",
+            "itemtype": "method",
+            "name": "makeYearInput",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM"
+                },
+                {
+                    "name": "title",
+                    "description": "Title or heading that is displayed above the form element",
+                    "type": "String"
+                },
+                {
+                    "name": "name",
+                    "description": "Name of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "id",
+                    "description": "ID of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "Value",
+                    "type": "String"
+                },
+                {
+                    "name": "hover",
+                    "description": "HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element."
+                }
+            ],
+            "return": {
+                "description": "input Element that is to be created."
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 222,
+            "description": "Creates an input element of type \"checkbox\" with a heading above the element.",
+            "itemtype": "method",
+            "name": "makeCheckbox",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM"
+                },
+                {
+                    "name": "title",
+                    "description": "Title or heading that is displayed above the form element",
+                    "type": "String"
+                },
+                {
+                    "name": "name",
+                    "description": "Name of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "id",
+                    "description": "ID of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "checked",
+                    "description": "Set to true if the checkbox is to be checked.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "hover",
+                    "description": "HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "input Element that is to be created."
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 252,
+            "description": "Creates a user input field where the user either can select an option from a given vocabulary or type in a custom option. As always, there is a heading above the element.",
+            "itemtype": "method",
+            "name": "openVocabulary",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM"
+                },
+                {
+                    "name": "title",
+                    "description": "Title or heading that is displayed above the form element",
+                    "type": "String"
+                },
+                {
+                    "name": "name",
+                    "description": "Name of the input elements",
+                    "type": "String"
+                },
+                {
+                    "name": "id",
+                    "description": "ID of the input elements. Note that both select and input will have the same ID.",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "Array with strings. Vocabulary of values."
+                },
+                {
+                    "name": "value",
+                    "description": "Value of the input field. Note that if the value is part of options, the select element will be used, otherwise the text input element.",
+                    "type": "String"
+                },
+                {
+                    "name": "hover",
+                    "description": "HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.",
+                    "type": "String"
+                },
+                {
+                    "name": "className",
+                    "description": "Class name of the select and input elements.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "return_object Returns an object that contains both the select and the input element. Keys are \"text\" and \"select\"."
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 345,
+            "description": "Creates a language search form, where the user can search a language or type in an ISO639-3 code to add a language somewhere.",
+            "itemtype": "method",
+            "name": "makeLanguageSearchForm",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM"
+                },
+                {
+                    "name": "element_id_prefix",
+                    "description": "Prefix of the IDs of all elements that are created here.",
+                    "type": "String"
+                },
+                {
+                    "name": "no_br",
+                    "description": "Set true, if there shall be no line break between the search input part and the add ISO part.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "no_display",
+                    "description": "Set true, if there shall no display element be created that could contain added languages to display.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "on_select",
+                    "description": "Callback function that is called, when the user adds a language."
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "core\\app.gui.js",
+            "line": 447,
+            "description": "Checks if an ISO code is reserved for local use. These are all ISO codes between \"qaa\" and \"qtz\"",
+            "itemtype": "method",
+            "name": "isISOCodeReservedForLocalUse",
+            "params": [
+                {
+                    "name": "code",
+                    "description": "ISO Code",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "answer True or false."
+            },
+            "class": "APP.GUI"
+        },
+        {
             "file": "core\\app.gui.pager.js",
             "line": 70,
             "class": "APP"
@@ -185,7 +461,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 172,
+            "line": 175,
             "description": "Tries to retrieve the APP language by looking at what language the browser is set (navigator.language).",
             "itemtype": "method",
             "name": "getActiveLanguageByNavigatorLanguageOrTakeDefault",
@@ -199,7 +475,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 315,
+            "line": 323,
             "description": "Tries to get a term in a specific language. This method is called by environments each time a language dependent term is displayed by an environment.",
             "itemtype": "method",
             "name": "getTermInActiveLanguage",
@@ -240,7 +516,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 512,
+            "line": 532,
             "description": "Checks if the app is started for the first time or not and fires a fitting welcome note. (TO DO: The check in this method should be replaced by a check, if a data object can be retrieved or not.",
             "itemtype": "method",
             "name": "checkIfFirstStart",
@@ -250,7 +526,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 542,
+            "line": 562,
             "description": "Shows a log message to the user",
             "itemtype": "method",
             "name": "log",
@@ -272,7 +548,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 560,
+            "line": 580,
             "description": "Shows a confirm dialog to the user",
             "itemtype": "method",
             "name": "confirm",
@@ -304,7 +580,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 581,
+            "line": 601,
             "description": "Shows an alert message to the user.",
             "itemtype": "method",
             "name": "alert",
@@ -321,7 +597,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 598,
+            "line": 618,
             "description": "This method deletes all saved data and reloads the app. It is quite DANGEROUS!",
             "itemtype": "method",
             "name": "hard_reset",
@@ -331,7 +607,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 612,
+            "line": 632,
             "description": "This method changes the view of the app. A view can be a view of the app, \nor of a module of an environment.",
             "itemtype": "method",
             "name": "view",
@@ -347,7 +623,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 695,
+            "line": 719,
             "description": "Saves the current state of the APP and the active environment.",
             "itemtype": "method",
             "name": "save",
@@ -357,7 +633,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 707,
+            "line": 731,
             "description": "Saves a file with text content. For the user, it looks like a download.",
             "itemtype": "method",
             "name": "saveTextfile",
@@ -384,7 +660,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 730,
+            "line": 754,
             "description": "Gets all XML strings from output textareas, makes files and zips these files into one. For the user, it looks like a download of a ZIP file.",
             "itemtype": "method",
             "name": "zipAllOutputFiles",
@@ -394,7 +670,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 791,
+            "line": 815,
             "description": "Gets all XML strings from output textareas, makes files and saves them. For the user, it looks like several downloads.",
             "itemtype": "method",
             "name": "saveAllOutputFiles",
@@ -404,7 +680,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 809,
+            "line": 833,
             "description": "Recalls and sets the app state. If recall_object.active_environment_id is given, it tries to load that environment and recalls the environment state too.\nIf environment_data is undefined, it tries to get the recall data for that environment by checking the browser database.",
             "itemtype": "method",
             "name": "recall",
@@ -426,7 +702,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 856,
+            "line": 880,
             "description": "Changes the language of the app. Reloads the app, so that changes are effective immediately.",
             "itemtype": "method",
             "name": "changeLanguage",
@@ -443,7 +719,7 @@
         },
         {
             "file": "core\\app.js",
-            "line": 870,
+            "line": 894,
             "description": "Searches for a language entry in LanguageIndex.js. Displays a screen where the user can select a language from the results. Selection will be passed as parameter to on_select",
             "itemtype": "method",
             "name": "doStandardLanguageSearch",
@@ -577,12 +853,663 @@
             "static": 1,
             "class": "APP.save_and_recall",
             "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 17,
+            "description": "Markup pieces",
+            "type": "{Object}",
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 33,
+            "description": "Return the proper transitionend event",
+            "return": {
+                "description": "Transition type string",
+                "type": "String"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 63,
+            "description": "Shorthand for document.getElementById()",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "A specific element ID",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "HTML element",
+                "type": "Object"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 73,
+            "description": "Alertify private object",
+            "type": "{Object}",
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 79,
+            "description": "Labels object",
+            "type": "{Object}",
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 88,
+            "description": "Delay number",
+            "type": "{Number}",
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 94,
+            "description": "Whether buttons are reversed (default is secondary/primary)",
+            "type": "{Boolean}",
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 100,
+            "description": "Which button should be focused by default",
+            "type": "{String}\t\"ok\" (default), \"cancel\", or \"none\"",
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 106,
+            "description": "Set the transition event on load",
+            "type": "{[type]}",
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 112,
+            "description": "Set the proper button click events",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "[Optional] Callback function",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 189,
+            "description": "Bind events to elements",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "HTML Object",
+                    "type": "Object"
+                },
+                {
+                    "name": "event",
+                    "description": "Event to attach to element",
+                    "type": "Event"
+                },
+                {
+                    "name": "fn",
+                    "description": "Callback function",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 206,
+            "description": "Use alertify as the global error handler (using window.onerror)",
+            "return": {
+                "description": "success",
+                "type": "Boolean"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 223,
+            "description": "Append button HTML strings",
+            "params": [
+                {
+                    "name": "secondary",
+                    "description": "The secondary button HTML string",
+                    "type": "String"
+                },
+                {
+                    "name": "primary",
+                    "description": "The primary button HTML string",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The appended button HTML strings",
+                "type": "String"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 235,
+            "description": "Build the proper message box",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "Current object in the queue",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "An HTML string of the message box",
+                "type": "String"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 291,
+            "description": "Close the log messages",
+            "params": [
+                {
+                    "name": "elem",
+                    "description": "HTML Element of log message to close",
+                    "type": "Object"
+                },
+                {
+                    "name": "wait",
+                    "description": "[optional] Time (in ms) to wait before automatically hiding the message, if 0 never hide",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 340,
+            "description": "Create a dialog box",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message passed from the callee",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "Type of dialog to create",
+                    "type": "String"
+                },
+                {
+                    "name": "fn",
+                    "description": "[Optional] Callback function",
+                    "type": "Function"
+                },
+                {
+                    "name": "placeholder",
+                    "description": "[Optional] Default value for prompt input field",
+                    "type": "String"
+                },
+                {
+                    "name": "cssClass",
+                    "description": "[Optional] Class(es) to append to dialog box",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 376,
+            "description": "Extend the log method to create custom methods",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "Custom method name",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Function"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 391,
+            "description": "Hide the dialog and rest to defaults",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 426,
+            "description": "Initialize Alertify\nCreate the 2 main elements",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 468,
+            "description": "Show a new log message box",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message passed from the callee",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "[Optional] Optional type of log message",
+                    "type": "String"
+                },
+                {
+                    "name": "wait",
+                    "description": "[Optional] Time (in ms) to wait before auto-hiding the log",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 493,
+            "description": "Add new log message\nIf a type is passed, a class name \"alertify-log-{type}\" will get added.\nThis allows for custom look and feel for various types of notifications.",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The message passed from the callee",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "[Optional] Type of log message",
+                    "type": "String"
+                },
+                {
+                    "name": "wait",
+                    "description": "[Optional] Time (in ms) to wait before auto-hiding",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 515,
+            "description": "Set properties",
+            "params": [
+                {
+                    "name": "args",
+                    "description": "Passing parameters",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 534,
+            "description": "Common place to set focus to proper element",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 547,
+            "description": "Initiate all the required pieces for the dialog box",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "alertify.js",
+            "line": 586,
+            "description": "Unbind events to elements",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "HTML Object",
+                    "type": "Object"
+                },
+                {
+                    "name": "event",
+                    "description": "Event to detach to element",
+                    "type": "Event"
+                },
+                {
+                    "name": "fn",
+                    "description": "Callback function",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "HELPERS",
+            "module": "CORE"
+        },
+        {
+            "file": "helpers.js",
+            "line": 64,
+            "description": "Downloads a resource via AJAX, using the HTTP GET method.",
+            "itemtype": "method",
+            "name": "getWithAJAX",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL of the resource.",
+                    "type": "String"
+                },
+                {
+                    "name": "success_callback",
+                    "description": "Callback function to be called when resource is downloaded and ready. It gets the XMLHttpRequest object.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "http.send() Value of http.send()",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "helpers.js",
+            "line": 96,
+            "description": "Downloads a text resource via AJAX, using the HTTP GET method.",
+            "itemtype": "method",
+            "name": "getTextWithAJAX",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL of the resource.",
+                    "type": "String"
+                },
+                {
+                    "name": "success_callback",
+                    "description": "Callback function to be called when resource is downloaded and ready. It gets the resource as text string.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "http.send() Value of http.send()",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "helpers.js",
+            "line": 114,
+            "description": "Downloads a JSON resource via AJAX, using the HTTP GET method.",
+            "itemtype": "method",
+            "name": "getJSONWithAJAX",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL of the resource.",
+                    "type": "String"
+                },
+                {
+                    "name": "success_callback",
+                    "description": "Callback function to be called when resource is downloaded and ready. It gets the resulting javascript object, when JSON parsing was successful.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "http.send() Value of http.send()",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "helpers.js",
+            "line": 131,
+            "description": "Clones a javascript object (instead of just copying references of it).",
+            "itemtype": "method",
+            "name": "cloneObject",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "Source object.",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "clone Clone of the object",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "helpers.js",
+            "line": 158,
+            "description": "Parses a Javascript Blob object for its text. This obviously works only with text files.",
+            "itemtype": "method",
+            "name": "readFileAsText",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "File as Blob object.",
+                    "type": "Mixed"
+                },
+                {
+                    "name": "onsuccess",
+                    "description": "Callback function to be called when file is parsed. It gets the resulting string, if parsing was successful.",
+                    "type": "Function"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "helpers.js",
+            "line": 518,
+            "description": "Remove an element and provide a function that inserts it into its original position",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "The element to be temporarily removed",
+                    "type": "Element"
+                }
+            ],
+            "return": {
+                "description": "A function that inserts the element into its original position",
+                "type": "Function"
+            },
+            "class": "HELPERS",
+            "module": "HELPERS"
         }
     ],
     "warnings": [
         {
             "message": "Missing item type",
             "line": " core\\app.gui.pager.js:70"
+        },
+        {
+            "message": "Missing item type\nMarkup pieces",
+            "line": " alertify.js:17"
+        },
+        {
+            "message": "Missing item type\nReturn the proper transitionend event",
+            "line": " alertify.js:33"
+        },
+        {
+            "message": "Missing item type\nShorthand for document.getElementById()",
+            "line": " alertify.js:63"
+        },
+        {
+            "message": "Missing item type\nAlertify private object",
+            "line": " alertify.js:73"
+        },
+        {
+            "message": "Missing item type\nLabels object",
+            "line": " alertify.js:79"
+        },
+        {
+            "message": "Missing item type\nDelay number",
+            "line": " alertify.js:88"
+        },
+        {
+            "message": "Missing item type\nWhether buttons are reversed (default is secondary/primary)",
+            "line": " alertify.js:94"
+        },
+        {
+            "message": "Missing item type\nWhich button should be focused by default",
+            "line": " alertify.js:100"
+        },
+        {
+            "message": "Missing item type\nSet the transition event on load",
+            "line": " alertify.js:106"
+        },
+        {
+            "message": "Missing item type\nSet the proper button click events",
+            "line": " alertify.js:112"
+        },
+        {
+            "message": "Missing item type\nBind events to elements",
+            "line": " alertify.js:189"
+        },
+        {
+            "message": "Missing item type\nUse alertify as the global error handler (using window.onerror)",
+            "line": " alertify.js:206"
+        },
+        {
+            "message": "Missing item type\nAppend button HTML strings",
+            "line": " alertify.js:223"
+        },
+        {
+            "message": "Missing item type\nBuild the proper message box",
+            "line": " alertify.js:235"
+        },
+        {
+            "message": "Missing item type\nClose the log messages",
+            "line": " alertify.js:291"
+        },
+        {
+            "message": "Missing item type\nCreate a dialog box",
+            "line": " alertify.js:340"
+        },
+        {
+            "message": "Missing item type\nExtend the log method to create custom methods",
+            "line": " alertify.js:376"
+        },
+        {
+            "message": "Missing item type\nHide the dialog and rest to defaults",
+            "line": " alertify.js:391"
+        },
+        {
+            "message": "Missing item type\nInitialize Alertify\nCreate the 2 main elements",
+            "line": " alertify.js:426"
+        },
+        {
+            "message": "Missing item type\nShow a new log message box",
+            "line": " alertify.js:468"
+        },
+        {
+            "message": "Missing item type\nAdd new log message\nIf a type is passed, a class name \"alertify-log-{type}\" will get added.\nThis allows for custom look and feel for various types of notifications.",
+            "line": " alertify.js:493"
+        },
+        {
+            "message": "Missing item type\nSet properties",
+            "line": " alertify.js:515"
+        },
+        {
+            "message": "Missing item type\nCommon place to set focus to proper element",
+            "line": " alertify.js:534"
+        },
+        {
+            "message": "Missing item type\nInitiate all the required pieces for the dialog box",
+            "line": " alertify.js:547"
+        },
+        {
+            "message": "Missing item type\nUnbind events to elements",
+            "line": " alertify.js:586"
+        },
+        {
+            "message": "Missing item type\nRemove an element and provide a function that inserts it into its original position",
+            "line": " helpers.js:518"
         }
     ]
 }

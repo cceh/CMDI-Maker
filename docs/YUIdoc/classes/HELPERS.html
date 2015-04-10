@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>APP.save_and_recall</title>
+    <title>HELPERS</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -92,7 +92,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>APP.save_and_recall Class</h1>
+                        <h1>HELPERS Class</h1>
 <div class="box meta">
     
 
@@ -100,13 +100,13 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/core_app.save_and_recall.js.html#l18"><code>core\app.save_and_recall.js:18</code></a>
+            Defined in: <a href="../files/helpers.js.html#l23"><code>helpers.js:23</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/CORE.html">CORE</a>
+            Module: <a href="../modules/HELPERS.html">HELPERS</a>
         
     
 
@@ -116,7 +116,7 @@
 
 
 <div class="box intro">
-    <p>A sub module of APP that deals with saving and recalling APP and environment states and data.</p>
+    <p>Helper functions. These are available in the global namespace!</p>
 
 </div>
 
@@ -145,7 +145,7 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_deleteAllData">deleteAllData</a>
+                                <a href="#method_cloneObject">cloneObject</a>
 
                                 
                                     <span class="flag static">static</span>
@@ -154,7 +154,7 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_deleteEnvironmentData">deleteEnvironmentData</a>
+                                <a href="#method_getJSONWithAJAX">getJSONWithAJAX</a>
 
                                 
                                     <span class="flag static">static</span>
@@ -163,7 +163,7 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_getRecallDataForEnvironment">getRecallDataForEnvironment</a>
+                                <a href="#method_getTextWithAJAX">getTextWithAJAX</a>
 
                                 
                                     <span class="flag static">static</span>
@@ -172,7 +172,7 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_recallEnvironmentData">recallEnvironmentData</a>
+                                <a href="#method_getWithAJAX">getWithAJAX</a>
 
                                 
                                     <span class="flag static">static</span>
@@ -181,43 +181,7 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_save">save</a>
-
-                                
-                                    <span class="flag static">static</span>
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_saveActiveEnvironmentStateToFile">saveActiveEnvironmentStateToFile</a>
-
-                                
-                                    <span class="flag static">static</span>
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_saveAllToFile">saveAllToFile</a>
-
-                                
-                                    <span class="flag static">static</span>
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_setAutosaveInterval">setAutosaveInterval</a>
-
-                                
-                                    <span class="flag static">static</span>
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_userSave">userSave</a>
+                                <a href="#method_readFileAsText">readFileAsText</a>
 
                                 
                                     <span class="flag static">static</span>
@@ -241,122 +205,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_deleteAllData" class="method item">
-    <h3 class="name"><code>deleteAllData</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/core_app.save_and_recall.js.html#l141"><code>core\app.save_and_recall.js:141</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Deletes all data in the browser database.</p>
-
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_deleteEnvironmentData" class="method item">
-    <h3 class="name"><code>deleteEnvironmentData</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/core_app.save_and_recall.js.html#l153"><code>core\app.save_and_recall.js:153</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Deletes the saved data of the active environment from the browser database.</p>
-
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_getRecallDataForEnvironment" class="method item">
-    <h3 class="name"><code>getRecallDataForEnvironment</code></h3>
+                    <div id="method_cloneObject" class="method item">
+    <h3 class="name"><code>cloneObject</code></h3>
 
     
         <div class="args">
@@ -364,7 +214,7 @@
             
                 <li class="arg">
                     
-                        <code>environment</code>
+                        <code>obj</code>
                     
                 </li>
             
@@ -403,7 +253,7 @@
             
         
         
-        <a href="../files/core_app.save_and_recall.js.html#l51"><code>core\app.save_and_recall.js:51</code></a>
+        <a href="../files/helpers.js.html#l131"><code>helpers.js:131</code></a>
         
         </p>
 
@@ -414,7 +264,7 @@
     </div>
 
     <div class="description">
-        <p>Tries to get environment data from browser database.</p>
+        <p>Clones a javascript object (instead of just copying references of it).</p>
 
     </div>
 
@@ -426,14 +276,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">environment</code>
+                        <code class="param-name">obj</code>
                         <span class="type">Mixed</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>An environment object.</p>
+                        <p>Source object.</p>
 
                     </div>
 
@@ -453,7 +303,7 @@
                     
                         <span class="type">Mixed</span>:
                     
-                    <p>form_object Environment state object.</p>
+                    <p>clone Clone of the object</p>
 
                 
             </div>
@@ -464,8 +314,8 @@
 </div>
 
                 
-                    <div id="method_recallEnvironmentData" class="method item">
-    <h3 class="name"><code>recallEnvironmentData</code></h3>
+                    <div id="method_getJSONWithAJAX" class="method item">
+    <h3 class="name"><code>getJSONWithAJAX</code></h3>
 
     
         <div class="args">
@@ -473,7 +323,406 @@
             
                 <li class="arg">
                     
-                        <code>recall_object</code>
+                        <code>url</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>success_callback</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Mixed</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/helpers.js.html#l114"><code>helpers.js:114</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Downloads a JSON resource via AJAX, using the HTTP GET method.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">url</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>URL of the resource.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">success_callback</code>
+                        <span class="type">Function</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Callback function to be called when resource is downloaded and ready. It gets the resulting javascript object, when JSON parsing was successful.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Mixed</span>:
+                    
+                    <p>http.send() Value of http.send()</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getTextWithAJAX" class="method item">
+    <h3 class="name"><code>getTextWithAJAX</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>url</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>success_callback</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Mixed</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/helpers.js.html#l96"><code>helpers.js:96</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Downloads a text resource via AJAX, using the HTTP GET method.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">url</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>URL of the resource.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">success_callback</code>
+                        <span class="type">Function</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Callback function to be called when resource is downloaded and ready. It gets the resource as text string.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Mixed</span>:
+                    
+                    <p>http.send() Value of http.send()</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getWithAJAX" class="method item">
+    <h3 class="name"><code>getWithAJAX</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>url</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>success_callback</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Mixed</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/helpers.js.html#l64"><code>helpers.js:64</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Downloads a resource via AJAX, using the HTTP GET method.</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">url</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>URL of the resource.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">success_callback</code>
+                        <span class="type">Function</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Callback function to be called when resource is downloaded and ready. It gets the XMLHttpRequest object.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Mixed</span>:
+                    
+                    <p>http.send() Value of http.send()</p>
+
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_readFileAsText" class="method item">
+    <h3 class="name"><code>readFileAsText</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>file</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>onsuccess</code>
                     
                 </li>
             
@@ -508,7 +757,7 @@
             
         
         
-        <a href="../files/core_app.save_and_recall.js.html#l116"><code>core\app.save_and_recall.js:116</code></a>
+        <a href="../files/helpers.js.html#l158"><code>helpers.js:158</code></a>
         
         </p>
 
@@ -519,7 +768,7 @@
     </div>
 
     <div class="description">
-        <p>Sets the state of the active environment.</p>
+        <p>Parses a Javascript Blob object for its text. This obviously works only with text files.</p>
 
     </div>
 
@@ -531,276 +780,30 @@
             
                 <li class="param">
                     
-                        <code class="param-name">recall_object</code>
+                        <code class="param-name">file</code>
                         <span class="type">Mixed</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Environment state object</p>
+                        <p>File as Blob object.</p>
 
                     </div>
 
                     
                 </li>
             
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_save" class="method item">
-    <h3 class="name"><code>save</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/core_app.save_and_recall.js.html#l187"><code>core\app.save_and_recall.js:187</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Saves current app and environment states in the browser database.</p>
-
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_saveActiveEnvironmentStateToFile" class="method item">
-    <h3 class="name"><code>saveActiveEnvironmentStateToFile</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/core_app.save_and_recall.js.html#l230"><code>core\app.save_and_recall.js:230</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Saves the active environment state to a file. For the user, this looks like a download.</p>
-
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_saveAllToFile" class="method item">
-    <h3 class="name"><code>saveAllToFile</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/core_app.save_and_recall.js.html#l208"><code>core\app.save_and_recall.js:208</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Saves current app and environment states to a file. For the user, this looks like a download.</p>
-
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_setAutosaveInterval" class="method item">
-    <h3 class="name"><code>setAutosaveInterval</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>time</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/core_app.save_and_recall.js.html#l81"><code>core\app.save_and_recall.js:81</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Sets the autosave interval of the app.</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
                 <li class="param">
                     
-                        <code class="param-name">time</code>
-                        <span class="type">Integer</span>
+                        <code class="param-name">onsuccess</code>
+                        <span class="type">Function</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Time in seconds</p>
+                        <p>Callback function to be called when file is parsed. It gets the resulting string, if parsing was successful.</p>
 
                     </div>
 
@@ -809,63 +812,6 @@
             
             </ul>
         </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method_userSave" class="method item">
-    <h3 class="name"><code>userSave</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/core_app.save_and_recall.js.html#l174"><code>core\app.save_and_recall.js:174</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Saves current app and environment states in the browser database and notifies the user about that..</p>
-
-    </div>
-
     
 
     

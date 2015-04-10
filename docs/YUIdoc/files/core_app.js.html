@@ -47,11 +47,15 @@
             
                 <li><a href="../classes/APP.save_and_recall.html">APP.save_and_recall</a></li>
             
+                <li><a href="../classes/HELPERS.html">HELPERS</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/CORE.html">CORE</a></li>
+            
+                <li><a href="../modules/HELPERS.html">HELPERS</a></li>
             
             </ul>
         </div>
@@ -160,10 +164,10 @@ var APP = (function () {
 		g(&#x27;link_lets_go&#x27;).addEventListener(&#x27;click&#x27;, function() {
 		
 			if (typeof my.environments.active_environment == &quot;undefined&quot;){
-				my.environments.load(my.environments.get(0));	
+				my.environments.load(my.environments.get(0));
 			}
 			
-			if (my.environments.active_environment.workflow[0]){
+			if (my.environments.active_environment &amp;&amp; my.environments.active_environment.workflow){
 				my.view(my.environments.active_environment.workflow[0]);
 			}
 			
@@ -243,6 +247,9 @@ var APP = (function () {
 		});
 		
 		my.environments.displayAllInSelect();
+		
+		//Initialize internationalization module
+		my.intl.init();
 		
 		if ((!no_recall) &amp;&amp; (typeof recall_object != &quot;undefined&quot;)){
 			my.recall(recall_object);
@@ -336,6 +343,9 @@ var APP = (function () {
 			icon: &quot;wrench&quot;,
 		},
 		{
+			id: &quot;intl&quot;
+		},
+		{
 			id: &quot;about&quot;,
 			icon: &quot;about&quot;,
 		}
@@ -362,14 +372,16 @@ var APP = (function () {
 			return undefined;
 		}
 		
-		if (typeof LP[arg1] == &quot;undefined&quot;){
+		var terms = LP.terms;
+		
+		if (typeof terms[arg1] == &quot;undefined&quot;){
 			return undefined;
 		}
 	
 		if (arg4){
 
-			if (typeof LP[arg1][arg2][arg3][arg4] != &quot;undefined&quot;){
-				return LP[arg1][arg2][arg3][arg4];
+			if (typeof terms[arg1][arg2][arg3][arg4] != &quot;undefined&quot;){
+				return terms[arg1][arg2][arg3][arg4];
 			}
 			
 			else {
@@ -380,8 +392,8 @@ var APP = (function () {
 	
 		if (arg3){
 
-			if (typeof LP[arg1] != &quot;undefined&quot; &amp;&amp; typeof LP[arg1][arg2][arg3] != &quot;undefined&quot;){
-				return LP[arg1][arg2][arg3];
+			if (typeof terms[arg1] != &quot;undefined&quot; &amp;&amp; typeof terms[arg1][arg2][arg3] != &quot;undefined&quot;){
+				return terms[arg1][arg2][arg3];
 			}
 			
 			else {
@@ -392,8 +404,8 @@ var APP = (function () {
 		
 		if (arg2){
 
-			if (typeof LP[arg1] != &quot;undefined&quot; &amp;&amp; typeof LP[arg1][arg2] != &quot;undefined&quot;){
-				return LP[arg1][arg2];
+			if (typeof terms[arg1] != &quot;undefined&quot; &amp;&amp; typeof terms[arg1][arg2] != &quot;undefined&quot;){
+				return terms[arg1][arg2];
 			}
 			
 			else {
@@ -402,7 +414,7 @@ var APP = (function () {
 			
 		}
 		
-		return LP[arg1];
+		return terms[arg1];
 	
 	};
 	
@@ -466,24 +478,24 @@ var APP = (function () {
 		// This is completely unnecessary because Auto Save is on and data will be saved
 		// beforeUnload anyway.
 			{
-				title: my.l(&quot;open_file&quot;),
+				title: my.l(&quot;main&quot;, &quot;open_file&quot;),
 				id: &quot;LINK_open_file&quot;,
 				icon:	&quot;open&quot;,
 				onclick: function(){ my.GUI.showFileDialog(APP.save_and_recall.loadFromFile);}
 			},
 			{
-				title: my.l(&quot;export_to_file&quot;),
+				title: my.l(&quot;main&quot;, &quot;export_to_file&quot;),
 				id: &quot;LINK_export_to_file&quot;,
 				icon:	&quot;save&quot;,
 				onclick: function(){ my.save_and_recall.saveActiveEnvironmentStateToFile(); }
 			},
 			{
-				title: my.l(&quot;reset_form&quot;),
+				title: my.l(&quot;main&quot;, &quot;reset_form&quot;),
 				icon: &quot;reset&quot;,
 				id: &quot;LINK_reset_form&quot;,
 				onclick: function() {     
 
-					APP.confirm(my.l(&quot;really_reset_form&quot;), function (e) {
+					APP.confirm(my.l(&quot;main&quot;, &quot;really_reset_form&quot;), function (e) {
 						if (e) {
 							// user clicked &quot;ok&quot;
 						}
@@ -491,11 +503,11 @@ var APP = (function () {
 						else {
 							// user clicked &quot;cancel&quot; (as cancel is always the red button, the red button is chosen to be the executive button=
 							APP.environments.resetActive();
-							APP.log(my.l(&quot;form_reset&quot;));
+							APP.log(my.l(&quot;main&quot;, &quot;form_reset&quot;));
 							
 						}
 						
-					}, my.l(&quot;no&quot;), my.l(&quot;yes_delete_form&quot;));
+					}, my.l(&quot;main&quot;, &quot;no&quot;), my.l(&quot;main&quot;, &quot;yes_delete_form&quot;));
 					
 				}
 			},
@@ -506,9 +518,15 @@ var APP = (function () {
 				onclick: function(){ APP.view(&quot;VIEW_settings&quot;); }
 			},
 			{
-				title: my.l(&quot;about&quot;),
-				id: &quot;VIEWLINK_about&quot;,
+				title: my.l(&quot;main&quot;, &quot;help&quot;),
+				id: &quot;VIEWLINK_help&quot;,
 				icon:	&quot;about&quot;,
+				onclick: function(){ window.open(&quot;http://cmdi-maker.uni-koeln.de/help/&quot;, &#x27;_blank&#x27;); }
+			},			
+			{
+				title: my.l(&quot;main&quot;, &quot;about&quot;),
+				id: &quot;VIEWLINK_about&quot;,
+				icon:	&quot;bubble&quot;,
 				onclick: function(){ APP.view(&quot;VIEW_about&quot;); }
 			}
 		];
@@ -571,6 +589,12 @@ var APP = (function () {
 			},*/
 			//Unneccessary, as this function is already in main menu
 			{
+				title: my.l(&quot;settings&quot;,&quot;internationalization&quot;),
+				type: &quot;link&quot;,
+				description: my.l(&quot;settings&quot;,&quot;internationalization_description&quot;),
+				onclick: function() { my.view(&quot;VIEW_intl&quot;); }
+			},
+			{
 				title: my.l(&quot;settings&quot;,&quot;delete_recall_data&quot;),
 				type: &quot;link&quot;,
 				description: my.l(&quot;settings&quot;,&quot;delete_recall_data_description&quot;),
@@ -626,7 +650,7 @@ var APP = (function () {
 		
 		else {
 		
-			my.log(my.l(&quot;welcome_back&quot;));
+			my.log(my.l(&quot;main&quot;, &quot;welcome_back&quot;));
 		
 		}
 
@@ -681,7 +705,7 @@ var APP = (function () {
 	my.alert = function(message) {
 	
 		alertify.set({ labels: {
-			ok     : my.l(&quot;ok&quot;)
+			ok     : my.l(&quot;main&quot;, &quot;ok&quot;)
 		} });
 		
 		alertify.alert(message);
@@ -714,7 +738,6 @@ var APP = (function () {
 		var id;
 		var pager;
 	
-		my.GUI.closeSelectFrame();
 		my.GUI.mainMenu.close();
 		
 		if (typeof module_or_id == &quot;undefined&quot;){
@@ -756,7 +779,7 @@ var APP = (function () {
 		
 		//check if view exists
 		if (view_ids.indexOf(id) == -1){
-			console.warn(&quot;Warning: Unkown view requested (&quot; + id +&quot;)!&quot;);
+			console.warn(&quot;Warning: Unknown view requested (&quot; + id +&quot;)!&quot;);
 			my.view(&quot;default&quot;);
 			return;
 		}			
@@ -781,6 +804,11 @@ var APP = (function () {
 		//every module can have a view method for things to be done, before viewing the page
 		if (module &amp;&amp; module.view){
 			module.view();
+		}
+		
+		// If VIEW_intl is selected, it has to be refreshed too!
+		if (id == &quot;VIEW_intl&quot;){
+			my.intl.view();
 		}
 		
 	};
