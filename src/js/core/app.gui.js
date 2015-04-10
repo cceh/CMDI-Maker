@@ -699,7 +699,21 @@ APP.GUI = (function() {
 	};
 
 
-	my.makeTextarea = function (t_cols,t_rows,parent,title,t_name,t_id,t_class,t_value, hover){
+/**
+ * Creates a textarea. As always, there is a title above the form element.
+ * @method makeTextarea
+ * @param {Number} t_cols Number of columns of the textarea.
+ * @param {Number} t_rows Number of rows of the textarea. 
+ * @param {Object} parent Parent element in DOM.
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} t_name Name of the textarea element.
+ * @param {String} t_id ID of the textarea element.
+ * @param {String} t_class Class of the textarea element.
+ * @param {String} t_value Value of the element.
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @return {Object} Returns the textarea DOM node.
+ */	
+	my.makeTextarea = function (t_cols, t_rows, parent, title, t_name, t_id, t_class, t_value, hover){
 
 		if (!hover){
 			hover = "";
