@@ -736,6 +736,10 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Hides all functions from the user.
+ * @method makeAllFunctionsInvisible
+ */	
 	my.makeAllFunctionsInvisible = function(){
 	
 		//make all functions invisible
@@ -744,7 +748,11 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Hides the div wrapper that contains the functions.
+ * @method hideFunctionsDIV
+ */	
 	my.hideFunctionsDIV = function(){
 	
 		g(APP.CONF.functions_div_id).style.height = "0px";
@@ -756,7 +764,11 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Shows the div wrapper that contains the functions.
+ * @method showFunctionsDIV
+ */		
 	my.showFunctionsDIV = function(){
 	
 		g(APP.CONF.functions_div_id).style.height = APP.CONF.functions_div_height;
@@ -768,7 +780,12 @@ APP.GUI = (function() {
 	
 	};	
 	
-	
+
+/**
+ * Shows the div wrapper that contains the functions.
+ * @method showFunctionsForView
+ * @param {Object} module Module of which the functions are to be displayed.
+ */		
 	my.showFunctionsForView = function (module){
 
 		my.makeAllFunctionsInvisible();
@@ -797,6 +814,11 @@ APP.GUI = (function() {
 	};
 	
 	
+/**
+ * Renders a function if it is not disabled, i.e. part of the array APP.environments.disabled_functions
+ * @method renderFunctionIfNotDisabled
+ * @param {Object} function CMDI Maker Function object. Note that the parameter is an object, not a function.
+ */		
 	my.renderFunctionIfNotDisabled = function(func){
 		var id;
 		
@@ -820,7 +842,12 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Renders a function.
+ * @method renderFunction
+ * @param {Object} function CMDI Maker Function object. Note that the parameter is an object, not a function.
+ */		
 	my.renderFunction = function (func){
 	
 		if (func.type == "function_wrap"){
@@ -841,7 +868,12 @@ APP.GUI = (function() {
 		
 	};
 	
-	
+
+/**
+ * Switches a CMDI Maker toggle switch from on to off or the other way aroud.
+ * @method switchToggle
+ * @param {Object} input DOM Node of the toggle.
+ */			
 	my.switchToggle = function(input){
 
 		if (input.on === false){
@@ -853,7 +885,13 @@ APP.GUI = (function() {
 		}		
 	};
 	
-	
+
+/**
+ * Sets CMDI Maker toggle switch to on or off.
+ * @method setToggleValue
+ * @param {Object} input DOM Node of the toggle.
+ * @param {Boolean} value True = toggle on, false = toggle off. 
+ */				
 	my.setToggleValue = function(input, value){
 	
 		if (value === true){
@@ -870,7 +908,16 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Shows a frame on the screen where the user can select one of multiple values. For this selection frame, a new view is created, if it does not exist yet.
+ * @method showSelectFrame
+ * @param {Array} options Options to be displayed. Note, that the values in this array are not displayed on screen.
+ * @param {Array} titles Titles of the options. Titles are displayed on screen.
+ * @param {Function} callback Function to be called, when the user clicks on one option. The respective option from the options array is passed here as parameter.
+ * @param {String} title Title of the selection frame. 
+ * @param {String} subtitle Subtitle of the selection frame.  
+ */		
 	my.showSelectFrame = function(options, titles, callback, title, subtitle){
 	//options are the parameters for the callback method
 	
