@@ -968,7 +968,11 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Scrolls the content to the top.
+ * @method scrollTop
+ */		
 	my.scrollTop = function(){
 	
 		dom.scrollTop(g(APP.CONF.content_wrapper_id));
@@ -1038,7 +1042,12 @@ APP.GUI = (function() {
 
 	};
 	
-	
+
+/**
+ * Highlights a view icon, e.g. a workflow item. Unhighlights all the other view icons.
+ * @method highlightViewIcon
+ * @param {String} id Module identity. NOT the id of a DOM node.
+ */		
 	my.highlightViewIcon = function (id) {
 		
 		if (typeof APP.environments.active_environment != "undefined"){

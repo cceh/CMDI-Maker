@@ -639,6 +639,227 @@
             "class": "APP.GUI"
         },
         {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 702,
+            "description": "Creates a textarea. As always, there is a title above the form element.",
+            "itemtype": "method",
+            "name": "makeTextarea",
+            "params": [
+                {
+                    "name": "t_cols",
+                    "description": "Number of columns of the textarea.",
+                    "type": "Number"
+                },
+                {
+                    "name": "t_rows",
+                    "description": "Number of rows of the textarea.",
+                    "type": "Number"
+                },
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM.",
+                    "type": "Object"
+                },
+                {
+                    "name": "title",
+                    "description": "Title or heading that is displayed above the form element",
+                    "type": "String"
+                },
+                {
+                    "name": "t_name",
+                    "description": "Name of the textarea element.",
+                    "type": "String"
+                },
+                {
+                    "name": "t_id",
+                    "description": "ID of the textarea element.",
+                    "type": "String"
+                },
+                {
+                    "name": "t_class",
+                    "description": "Class of the textarea element.",
+                    "type": "String"
+                },
+                {
+                    "name": "t_value",
+                    "description": "Value of the element.",
+                    "type": "String"
+                },
+                {
+                    "name": "hover",
+                    "description": "HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns the textarea DOM node.",
+                "type": "Object"
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 739,
+            "description": "Hides all functions from the user.",
+            "itemtype": "method",
+            "name": "makeAllFunctionsInvisible",
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 752,
+            "description": "Hides the div wrapper that contains the functions.",
+            "itemtype": "method",
+            "name": "hideFunctionsDIV",
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 768,
+            "description": "Shows the div wrapper that contains the functions.",
+            "itemtype": "method",
+            "name": "showFunctionsDIV",
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 784,
+            "description": "Shows the div wrapper that contains the functions.",
+            "itemtype": "method",
+            "name": "showFunctionsForView",
+            "params": [
+                {
+                    "name": "module",
+                    "description": "Module of which the functions are to be displayed.",
+                    "type": "Object"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 817,
+            "description": "Renders a function if it is not disabled, i.e. part of the array APP.environments.disabled_functions",
+            "itemtype": "method",
+            "name": "renderFunctionIfNotDisabled",
+            "params": [
+                {
+                    "name": "function",
+                    "description": "CMDI Maker Function object. Note that the parameter is an object, not a function.",
+                    "type": "Object"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 846,
+            "description": "Renders a function.",
+            "itemtype": "method",
+            "name": "renderFunction",
+            "params": [
+                {
+                    "name": "function",
+                    "description": "CMDI Maker Function object. Note that the parameter is an object, not a function.",
+                    "type": "Object"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 872,
+            "description": "Switches a CMDI Maker toggle switch from on to off or the other way aroud.",
+            "itemtype": "method",
+            "name": "switchToggle",
+            "params": [
+                {
+                    "name": "input",
+                    "description": "DOM Node of the toggle.",
+                    "type": "Object"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 889,
+            "description": "Sets CMDI Maker toggle switch to on or off.",
+            "itemtype": "method",
+            "name": "setToggleValue",
+            "params": [
+                {
+                    "name": "input",
+                    "description": "DOM Node of the toggle.",
+                    "type": "Object"
+                },
+                {
+                    "name": "value",
+                    "description": "True = toggle on, false = toggle off.",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 912,
+            "description": "Shows a frame on the screen where the user can select one of multiple values. For this selection frame, a new view is created, if it does not exist yet.",
+            "itemtype": "method",
+            "name": "showSelectFrame",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "Options to be displayed. Note, that the values in this array are not displayed on screen.",
+                    "type": "Array"
+                },
+                {
+                    "name": "titles",
+                    "description": "Titles of the options. Titles are displayed on screen.",
+                    "type": "Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "Function to be called, when the user clicks on one option. The respective option from the options array is passed here as parameter.",
+                    "type": "Function"
+                },
+                {
+                    "name": "title",
+                    "description": "Title of the selection frame.",
+                    "type": "String"
+                },
+                {
+                    "name": "subtitle",
+                    "description": "Subtitle of the selection frame.",
+                    "type": "String"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 972,
+            "description": "Scrolls the content to the top.",
+            "itemtype": "method",
+            "name": "scrollTop",
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 1046,
+            "description": "Highlights a view icon, e.g. a workflow item. Unhighlights all the other view icons.",
+            "itemtype": "method",
+            "name": "highlightViewIcon",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "Module identity. NOT the id of a DOM node.",
+                    "type": "String"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
             "file": "src\\js\\core\\app.gui.pager.js",
             "line": 70,
             "class": "APP"
