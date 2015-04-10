@@ -34,3 +34,7 @@ In Apache Web Server, this is done by adding these commands:
 Make sure, that appcache files are served with the correct mime type.
 For example, to serve this mime-type in Apache, add this line to your config file:
 * AddType text/cache-manifest .appcache
+
+
+There is a support website for CMDI Maker, that is available in the repository: https://github.com/cceh/CMDI-Maker-Help-Pages
+Make sure to include this website in a subfolder of the deployed CMDI Maker instance, called "help" or remove the links to these help pages from the source code of CMDI Maker.
