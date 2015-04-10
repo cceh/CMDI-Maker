@@ -83,7 +83,7 @@ APP.GUI = (function() {
  * @param element_id ID of DOM element
  * @param value Value
  * @param open_vocabulary If element is an open vocabulary, it should be provided here, too.
- */		
+ */	
 	my.setFormValue = function (element_id, value, open_vocabulary){
 
 		var element = g(element_id);
@@ -148,7 +148,19 @@ APP.GUI = (function() {
 	};
 
 
-	my.makeTextInput = function (parent,title,name,id,value,hover,maxLength){
+/**
+ * Creates a text input element with heading. Used a lot by APP.forms
+ * @method makeTextInput
+ * @param parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name Name of the input element
+ * @param {String} id ID of the input element
+ * @param {String} value Value
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @param maxLength Maximum length of chars in element.
+ * @return input Element that is to be created.
+ */	
+	my.makeTextInput = function (parent, title, name, id, value, hover, maxLength){
 
 		var span = dom.spanBR(parent, "", "", title);
 		
@@ -172,8 +184,19 @@ APP.GUI = (function() {
 		
 	};
 	
-	
-	my.makeYearInput = function (parent,title,name,id,value,hover,maxLength){
+
+/**
+ * Creates a text input element with heading. The element can be used to type year numbers.
+ * @method makeYearInput
+ * @param parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name Name of the input element
+ * @param {String} id ID of the input element 
+ * @param {String} value Value
+ * @param hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @return input Element that is to be created.
+ */		
+	my.makeYearInput = function (parent, title, name, id, value, hover){
 
 		var span = dom.spanBR(parent, "", "", title);
 		
@@ -196,7 +219,18 @@ APP.GUI = (function() {
 	};
 
 
-	my.makeCheckbox = function (parent,title,name,id,checked,hover){
+/**
+ * Creates an input element of type "checkbox" with a heading above the element.
+ * @method makeCheckbox
+ * @param parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name Name of the input element
+ * @param {String} id ID of the input element
+ * @param {Boolean} checked Set to true if the checkbox is to be checked.
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @return input Element that is to be created.
+ */	
+	my.makeCheckbox = function (parent, title, name, id, checked, hover){
 
 		var input = dom.input(parent, id, "", name, "checkbox");
 		input.checked = checked;
@@ -215,6 +249,19 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Creates a user input field where the user either can select an option from a given vocabulary or type in a custom option. As always, there is a heading above the element.
+ * @method openVocabulary
+ * @param parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name Name of the input elements
+ * @param {String} id ID of the input elements. Note that both select and input will have the same ID.
+ * @param options Array with strings. Vocabulary of values.
+ * @param {String} value Value of the input field. Note that if the value is part of options, the select element will be used, otherwise the text input element. 
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @param {String} className Class name of the select and input elements. 
+ * @return return_object Returns an object that contains both the select and the input element. Keys are "text" and "select".
+ */	
 	my.openVocabulary = function (parent, title, name, id, size, options, value, hover, className){
 
 		if (!hover){
@@ -295,6 +342,15 @@ APP.GUI = (function() {
 	};
 	
 	
+/**
+ * Creates a language search form, where the user can search a language or type in an ISO639-3 code to add a language somewhere.
+ * @method makeLanguageSearchForm
+ * @param parent Parent element in DOM
+ * @param {String} element_id_prefix Prefix of the IDs of all elements that are created here.
+ * @param {Boolean} no_br Set true, if there shall be no line break between the search input part and the add ISO part.
+ * @param {Boolean} no_display Set true, if there shall no display element be created that could contain added languages to display.
+ * @param on_select Callback function that is called, when the user adds a language.
+ */		
 	my.makeLanguageSearchForm = function(parent, element_id_prefix, no_br, no_display, on_select){
 		var on_search = APP.doStandardLanguageSearch;
 		var on_add_ISO = my.addLanguageByISOCode;
@@ -387,7 +443,13 @@ APP.GUI = (function() {
 
 	};
 	
-	
+
+/**
+ * Checks if an ISO code is reserved for local use. These are all ISO codes between "qaa" and "qtz"
+ * @method isISOCodeReservedForLocalUse
+ * @param {String} code ISO Code
+ * @return answer True or false.
+ */	
 	my.isISOCodeReservedForLocalUse = function(code){
 		//check for codes between qaa ... qtz
 		
