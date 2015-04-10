@@ -546,7 +546,7 @@ APP.GUI = (function() {
  * Checks if an ISO code is reserved for local use. These are all ISO codes between &quot;qaa&quot; and &quot;qtz&quot;
  * @method isISOCodeReservedForLocalUse
  * @param {String} code ISO Code
- * @return answer True or false.
+ * @return {Boolean} True or false.
  */	
 	my.isISOCodeReservedForLocalUse = function(code){
 		//check for codes between qaa ... qtz
@@ -571,10 +571,20 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Creates a DOM element containing an icon based on the available icons in src/img/icons.
+ * @method icon
+ * @param {Object} parent Parent DOM element
+ * @param {String} id ID of the element.
+ * @param {String} className Class name of the element.
+ * @param {String} icon Name of the icon, e.g. &quot;star&quot; or &quot;about&quot;. Must be one of the icons in src/img/icons, but without file ending.
+ * @param {Function} onclick Callback function that is called when the icon is clicked upon.
+ * @return {Object} DOM object of icon.
+ */	
 	my.icon = function(parent, id, className, icon, onclick){
 	
-		var img = dom.make(&quot;img&quot;,id,className,parent);
+		var img = dom.make(&quot;img&quot;, id, className, parent);
 		my.setIcon(img, icon);
 		
 		if (onclick){
@@ -585,8 +595,14 @@ APP.GUI = (function() {
 	
 	};
 	
-	
-	my.copyField = function (target_element_name,source_element_name){
+
+/**
+ * Copies the value of a form element to another form element, no matter if elements are select or input, type=text.
+ * @method copyField
+ * @param {String} target_element_name Name of the target element.
+ * @param {String} source_element_name Name of the source element.
+ */		
+	my.copyField = function (target_element_name, source_element_name){
 
 		var value = get(source_element_name);
 		
@@ -633,6 +649,13 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Changes the type of input element for an Open Vocabulary input field.
+ * @method changeOVInput
+ * @param {String} id ID of the element.
+ * @param {Array} options If the field changes from text input to select, this is the vocabulary for the select.
+ * @return {Object} Returns the newly created DOM node.
+ */
 	my.changeOVInput = function (id, options){
 	//change input form of open vocabulary (=make select to text input and vice versa)
 	//This method has to be changed!
@@ -673,6 +696,18 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Creates a select element in the DOM. As always, there is a heading above the element.
+ * @method makeSelect
+ * @param {Object} parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name Name of the input element.
+ * @param {String} id ID of the input element.
+ * @param {Array} options Vocabulary of values.
+ * @param {String} value Value of the select. 
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @return {Object}  Returns the newly created DOM node.
+ */		
 	my.makeSelect = function (parent, title, name, id, size, options, value, hover){
 		//parameters: parent to append to, title, name of element, id of element, size, array of options
 		
@@ -708,6 +743,19 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Creates input elements to input a date. As always, there is a title above the form element.
+ * @method makeDateInput
+ * @param {Object} parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name_prefix Prefix that is used for all names of DOM elements to be created.
+ * @param {String} id_prefix Prefix that is used for all IDs of DOM elements to be created.
+ * @param {String} y_value Value of the year element.
+ * @param {String} m_value Value of the month element.
+ * @param {String} d_value Value of the day element.
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @return {Object} Returns an object containing references to the newly created DOM nodes. Keys are &quot;year&quot;, &quot;month&quot; and &quot;day&quot;.
+ */	
 	my.makeDateInput = function (parent, title, name_prefix, id_prefix, y_value, m_value, d_value, hover){
 		var span;
 		

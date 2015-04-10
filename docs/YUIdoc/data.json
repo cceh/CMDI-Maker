@@ -447,7 +447,194 @@
                 }
             ],
             "return": {
-                "description": "answer True or false."
+                "description": "True or false.",
+                "type": "Boolean"
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 477,
+            "description": "Creates a DOM element containing an icon based on the available icons in src/img/icons.",
+            "itemtype": "method",
+            "name": "icon",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent DOM element",
+                    "type": "Object"
+                },
+                {
+                    "name": "id",
+                    "description": "ID of the element.",
+                    "type": "String"
+                },
+                {
+                    "name": "className",
+                    "description": "Class name of the element.",
+                    "type": "String"
+                },
+                {
+                    "name": "icon",
+                    "description": "Name of the icon, e.g. \"star\" or \"about\". Must be one of the icons in src/img/icons, but without file ending.",
+                    "type": "String"
+                },
+                {
+                    "name": "onclick",
+                    "description": "Callback function that is called when the icon is clicked upon.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "DOM object of icon.",
+                "type": "Object"
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 501,
+            "description": "Copies the value of a form element to another form element, no matter if elements are select or input, type=text.",
+            "itemtype": "method",
+            "name": "copyField",
+            "params": [
+                {
+                    "name": "target_element_name",
+                    "description": "Name of the target element.",
+                    "type": "String"
+                },
+                {
+                    "name": "source_element_name",
+                    "description": "Name of the source element.",
+                    "type": "String"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 554,
+            "description": "Changes the type of input element for an Open Vocabulary input field.",
+            "itemtype": "method",
+            "name": "changeOVInput",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the element.",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "If the field changes from text input to select, this is the vocabulary for the select.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Returns the newly created DOM node.",
+                "type": "Object"
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 601,
+            "description": "Creates a select element in the DOM. As always, there is a heading above the element.",
+            "itemtype": "method",
+            "name": "makeSelect",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM",
+                    "type": "Object"
+                },
+                {
+                    "name": "title",
+                    "description": "Title or heading that is displayed above the form element",
+                    "type": "String"
+                },
+                {
+                    "name": "name",
+                    "description": "Name of the input element.",
+                    "type": "String"
+                },
+                {
+                    "name": "id",
+                    "description": "ID of the input element.",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "Vocabulary of values.",
+                    "type": "Array"
+                },
+                {
+                    "name": "value",
+                    "description": "Value of the select.",
+                    "type": "String"
+                },
+                {
+                    "name": "hover",
+                    "description": "HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns the newly created DOM node.",
+                "type": "Object"
+            },
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 648,
+            "description": "Creates input elements to input a date. As always, there is a title above the form element.",
+            "itemtype": "method",
+            "name": "makeDateInput",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM",
+                    "type": "Object"
+                },
+                {
+                    "name": "title",
+                    "description": "Title or heading that is displayed above the form element",
+                    "type": "String"
+                },
+                {
+                    "name": "name_prefix",
+                    "description": "Prefix that is used for all names of DOM elements to be created.",
+                    "type": "String"
+                },
+                {
+                    "name": "id_prefix",
+                    "description": "Prefix that is used for all IDs of DOM elements to be created.",
+                    "type": "String"
+                },
+                {
+                    "name": "y_value",
+                    "description": "Value of the year element.",
+                    "type": "String"
+                },
+                {
+                    "name": "m_value",
+                    "description": "Value of the month element.",
+                    "type": "String"
+                },
+                {
+                    "name": "d_value",
+                    "description": "Value of the day element.",
+                    "type": "String"
+                },
+                {
+                    "name": "hover",
+                    "description": "HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns an object containing references to the newly created DOM nodes. Keys are \"year\", \"month\" and \"day\".",
+                "type": "Object"
             },
             "class": "APP.GUI"
         },

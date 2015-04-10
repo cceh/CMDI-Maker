@@ -645,6 +645,19 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Creates input elements to input a date. As always, there is a title above the form element.
+ * @method makeDateInput
+ * @param {Object} parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name_prefix Prefix that is used for all names of DOM elements to be created.
+ * @param {String} id_prefix Prefix that is used for all IDs of DOM elements to be created.
+ * @param {String} y_value Value of the year element.
+ * @param {String} m_value Value of the month element.
+ * @param {String} d_value Value of the day element.
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @return {Object} Returns an object containing references to the newly created DOM nodes. Keys are "year", "month" and "day".
+ */	
 	my.makeDateInput = function (parent, title, name_prefix, id_prefix, y_value, m_value, d_value, hover){
 		var span;
 		
