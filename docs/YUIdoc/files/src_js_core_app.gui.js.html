@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>core\app.gui.js</title>
+    <title>src\js\core\app.gui.js - CMDI Maker</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,11 +15,11 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../assets/css/logo.png" title=""></h1>
+                <h1><img src="..\..\yuidoc_header_image.png" title="CMDI Maker"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: </em>
+            <em>API Docs for: 2.10</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -92,7 +92,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: core\app.gui.js</h1>
+                        <h1 class="file-heading">File: src\js\core\app.gui.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -256,7 +256,7 @@ APP.GUI = (function() {
  * @param {String} value Value
  * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
  * @param maxLength Maximum length of chars in element.
- * @return input Element that is to be created.
+ * @return {Object} Element that is to be created.
  */	
 	my.makeTextInput = function (parent, title, name, id, value, hover, maxLength){
 
@@ -292,7 +292,7 @@ APP.GUI = (function() {
  * @param {String} id ID of the input element 
  * @param {String} value Value
  * @param hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
- * @return input Element that is to be created.
+ * @return {Object} Element that is to be created.
  */		
 	my.makeYearInput = function (parent, title, name, id, value, hover){
 
@@ -320,13 +320,13 @@ APP.GUI = (function() {
 /**
  * Creates an input element of type &quot;checkbox&quot; with a heading above the element.
  * @method makeCheckbox
- * @param parent Parent element in DOM
+ * @param {Object} parent Parent element in DOM
  * @param {String} title Title or heading that is displayed above the form element
  * @param {String} name Name of the input element
  * @param {String} id ID of the input element
  * @param {Boolean} checked Set to true if the checkbox is to be checked.
  * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
- * @return input Element that is to be created.
+ * @return {Object} Element that is to be created.
  */	
 	my.makeCheckbox = function (parent, title, name, id, checked, hover){
 
@@ -350,7 +350,7 @@ APP.GUI = (function() {
 /**
  * Creates a user input field where the user either can select an option from a given vocabulary or type in a custom option. As always, there is a heading above the element.
  * @method openVocabulary
- * @param parent Parent element in DOM
+ * @param {Object} parent Parent element in DOM
  * @param {String} title Title or heading that is displayed above the form element
  * @param {String} name Name of the input elements
  * @param {String} id ID of the input elements. Note that both select and input will have the same ID.
@@ -358,7 +358,7 @@ APP.GUI = (function() {
  * @param {String} value Value of the input field. Note that if the value is part of options, the select element will be used, otherwise the text input element. 
  * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
  * @param {String} className Class name of the select and input elements. 
- * @return return_object Returns an object that contains both the select and the input element. Keys are &quot;text&quot; and &quot;select&quot;.
+ * @return {Object}  Returns an object that contains both the select and the input element. Keys are &quot;text&quot; and &quot;select&quot;.
  */	
 	my.openVocabulary = function (parent, title, name, id, size, options, value, hover, className){
 
@@ -443,11 +443,11 @@ APP.GUI = (function() {
 /**
  * Creates a language search form, where the user can search a language or type in an ISO639-3 code to add a language somewhere.
  * @method makeLanguageSearchForm
- * @param parent Parent element in DOM
+ * @param {Object}  Parent element in DOM
  * @param {String} element_id_prefix Prefix of the IDs of all elements that are created here.
  * @param {Boolean} no_br Set true, if there shall be no line break between the search input part and the add ISO part.
  * @param {Boolean} no_display Set true, if there shall no display element be created that could contain added languages to display.
- * @param on_select Callback function that is called, when the user adds a language.
+ * @param {Function} on_select Callback function that is called, when the user adds a language.
  */		
 	my.makeLanguageSearchForm = function(parent, element_id_prefix, no_br, no_display, on_select){
 		var on_search = APP.doStandardLanguageSearch;

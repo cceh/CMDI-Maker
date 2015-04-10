@@ -1,0 +1,11 @@
+{
+    "name": "CMDI Maker",
+    "description": "A tool for easily creating XML documents on the basis of handsome forms.",
+    "version": "2.10",
+    "url": "http://cmdi-maker.uni-koeln.de/",
+    "options": {
+		"paths": "src/js",
+        "outdir": "docs/YUIdoc"
+    },
+	"logo": "../yuidoc_header_image.png"
+}

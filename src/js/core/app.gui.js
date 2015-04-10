@@ -158,7 +158,7 @@ APP.GUI = (function() {
  * @param {String} value Value
  * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
  * @param maxLength Maximum length of chars in element.
- * @return input Element that is to be created.
+ * @return {Object} Element that is to be created.
  */	
 	my.makeTextInput = function (parent, title, name, id, value, hover, maxLength){
 
@@ -194,7 +194,7 @@ APP.GUI = (function() {
  * @param {String} id ID of the input element 
  * @param {String} value Value
  * @param hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
- * @return input Element that is to be created.
+ * @return {Object} Element that is to be created.
  */		
 	my.makeYearInput = function (parent, title, name, id, value, hover){
 
@@ -222,13 +222,13 @@ APP.GUI = (function() {
 /**
  * Creates an input element of type "checkbox" with a heading above the element.
  * @method makeCheckbox
- * @param parent Parent element in DOM
+ * @param {Object} parent Parent element in DOM
  * @param {String} title Title or heading that is displayed above the form element
  * @param {String} name Name of the input element
  * @param {String} id ID of the input element
  * @param {Boolean} checked Set to true if the checkbox is to be checked.
  * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
- * @return input Element that is to be created.
+ * @return {Object} Element that is to be created.
  */	
 	my.makeCheckbox = function (parent, title, name, id, checked, hover){
 
@@ -252,7 +252,7 @@ APP.GUI = (function() {
 /**
  * Creates a user input field where the user either can select an option from a given vocabulary or type in a custom option. As always, there is a heading above the element.
  * @method openVocabulary
- * @param parent Parent element in DOM
+ * @param {Object} parent Parent element in DOM
  * @param {String} title Title or heading that is displayed above the form element
  * @param {String} name Name of the input elements
  * @param {String} id ID of the input elements. Note that both select and input will have the same ID.
@@ -260,7 +260,7 @@ APP.GUI = (function() {
  * @param {String} value Value of the input field. Note that if the value is part of options, the select element will be used, otherwise the text input element. 
  * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
  * @param {String} className Class name of the select and input elements. 
- * @return return_object Returns an object that contains both the select and the input element. Keys are "text" and "select".
+ * @return {Object}  Returns an object that contains both the select and the input element. Keys are "text" and "select".
  */	
 	my.openVocabulary = function (parent, title, name, id, size, options, value, hover, className){
 
@@ -345,11 +345,11 @@ APP.GUI = (function() {
 /**
  * Creates a language search form, where the user can search a language or type in an ISO639-3 code to add a language somewhere.
  * @method makeLanguageSearchForm
- * @param parent Parent element in DOM
+ * @param {Object}  Parent element in DOM
  * @param {String} element_id_prefix Prefix of the IDs of all elements that are created here.
  * @param {Boolean} no_br Set true, if there shall be no line break between the search input part and the add ISO part.
  * @param {Boolean} no_display Set true, if there shall no display element be created that could contain added languages to display.
- * @param on_select Callback function that is called, when the user adds a language.
+ * @param {Function} on_select Callback function that is called, when the user adds a language.
  */		
 	my.makeLanguageSearchForm = function(parent, element_id_prefix, no_br, no_display, on_select){
 		var on_search = APP.doStandardLanguageSearch;
@@ -448,7 +448,7 @@ APP.GUI = (function() {
  * Checks if an ISO code is reserved for local use. These are all ISO codes between "qaa" and "qtz"
  * @method isISOCodeReservedForLocalUse
  * @param {String} code ISO Code
- * @return answer True or false.
+ * @return {Boolean} True or false.
  */	
 	my.isISOCodeReservedForLocalUse = function(code){
 		//check for codes between qaa ... qtz
@@ -473,10 +473,20 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Creates a DOM element containing an icon based on the available icons in src/img/icons.
+ * @method icon
+ * @param {Object} parent Parent DOM element
+ * @param {String} id ID of the element.
+ * @param {String} className Class name of the element.
+ * @param {String} icon Name of the icon, e.g. "star" or "about". Must be one of the icons in src/img/icons, but without file ending.
+ * @param {Function} onclick Callback function that is called when the icon is clicked upon.
+ * @return {Object} DOM object of icon.
+ */	
 	my.icon = function(parent, id, className, icon, onclick){
 	
-		var img = dom.make("img",id,className,parent);
+		var img = dom.make("img", id, className, parent);
 		my.setIcon(img, icon);
 		
 		if (onclick){
@@ -487,8 +497,14 @@ APP.GUI = (function() {
 	
 	};
 	
-	
-	my.copyField = function (target_element_name,source_element_name){
+
+/**
+ * Copies the value of a form element to another form element, no matter if elements are select or input, type=text.
+ * @method copyField
+ * @param {String} target_element_name Name of the target element.
+ * @param {String} source_element_name Name of the source element.
+ */		
+	my.copyField = function (target_element_name, source_element_name){
 
 		var value = get(source_element_name);
 		
@@ -535,6 +551,13 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Changes the type of input element for an Open Vocabulary input field.
+ * @method changeOVInput
+ * @param {String} id ID of the element.
+ * @param {Array} options If the field changes from text input to select, this is the vocabulary for the select.
+ * @return {Object} Returns the newly created DOM node.
+ */
 	my.changeOVInput = function (id, options){
 	//change input form of open vocabulary (=make select to text input and vice versa)
 	//This method has to be changed!
@@ -575,6 +598,18 @@ APP.GUI = (function() {
 	};
 
 
+/**
+ * Creates a select element in the DOM. As always, there is a heading above the element.
+ * @method makeSelect
+ * @param {Object} parent Parent element in DOM
+ * @param {String} title Title or heading that is displayed above the form element
+ * @param {String} name Name of the input element.
+ * @param {String} id ID of the input element.
+ * @param {Array} options Vocabulary of values.
+ * @param {String} value Value of the select. 
+ * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
+ * @return {Object}  Returns the newly created DOM node.
+ */		
 	my.makeSelect = function (parent, title, name, id, size, options, value, hover){
 		//parameters: parent to append to, title, name of element, id of element, size, array of options
 		

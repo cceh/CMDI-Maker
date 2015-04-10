@@ -1,8 +1,14 @@
 {
-    "project": {},
+    "project": {
+        "name": "CMDI Maker",
+        "description": "A tool for easily creating XML documents on the basis of handsome forms.",
+        "version": "2.10",
+        "url": "http://cmdi-maker.uni-koeln.de/",
+        "logo": "../yuidoc_header_image.png"
+    },
     "files": {
-        "core\\app.gui.js": {
-            "name": "core\\app.gui.js",
+        "src\\js\\core\\app.gui.js": {
+            "name": "src\\js\\core\\app.gui.js",
             "modules": {},
             "classes": {
                 "APP.GUI": 1
@@ -10,15 +16,15 @@
             "fors": {},
             "namespaces": {}
         },
-        "core\\app.gui.pager.js": {
-            "name": "core\\app.gui.pager.js",
+        "src\\js\\core\\app.gui.pager.js": {
+            "name": "src\\js\\core\\app.gui.pager.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "core\\app.js": {
-            "name": "core\\app.js",
+        "src\\js\\core\\app.js": {
+            "name": "src\\js\\core\\app.js",
             "modules": {
                 "CORE": 1
             },
@@ -28,8 +34,8 @@
             "fors": {},
             "namespaces": {}
         },
-        "core\\app.save_and_recall.js": {
-            "name": "core\\app.save_and_recall.js",
+        "src\\js\\core\\app.save_and_recall.js": {
+            "name": "src\\js\\core\\app.save_and_recall.js",
             "modules": {},
             "classes": {
                 "APP.save_and_recall": 1
@@ -37,15 +43,15 @@
             "fors": {},
             "namespaces": {}
         },
-        "alertify.js": {
-            "name": "alertify.js",
+        "src\\js\\alertify.js": {
+            "name": "src\\js\\alertify.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "helpers.js": {
-            "name": "helpers.js",
+        "src\\js\\helpers.js": {
+            "name": "src\\js\\helpers.js",
             "modules": {
                 "HELPERS": 1
             },
@@ -68,7 +74,7 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 18,
             "description": "The main module for the app."
         },
@@ -81,7 +87,7 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 23,
             "description": "Helper functions. These are available in the global namespace!"
         }
@@ -96,7 +102,7 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "CORE",
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 17,
             "description": "A sub module of APP that deals with the GUI."
         },
@@ -110,7 +116,7 @@
             "extension_for": [],
             "module": "CORE",
             "namespace": "",
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 23,
             "description": "The main module for the app."
         },
@@ -124,7 +130,7 @@
             "extension_for": [],
             "module": "CORE",
             "namespace": "",
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 18,
             "description": "A sub module of APP that deals with saving and recalling APP and environment states and data."
         },
@@ -138,14 +144,14 @@
             "extension_for": [],
             "module": "HELPERS",
             "namespace": "",
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 23,
             "description": "Helper functions. These are available in the global namespace!"
         }
     },
     "classitems": [
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 28,
             "description": "Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)",
             "params": [
@@ -159,7 +165,7 @@
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 54,
             "description": "Hides the busy indicator again.  (This feature is in pre-alpha state. Do not use it yet.)",
             "itemtype": "method",
@@ -167,7 +173,7 @@
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 67,
             "description": "Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)",
             "itemtype": "method",
@@ -185,7 +191,7 @@
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 80,
             "description": "Sets a value to a form element",
             "itemtype": "method",
@@ -207,7 +213,7 @@
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 151,
             "description": "Creates a text input element with heading. Used a lot by APP.forms",
             "itemtype": "method",
@@ -248,12 +254,13 @@
                 }
             ],
             "return": {
-                "description": "input Element that is to be created."
+                "description": "Element that is to be created.",
+                "type": "Object"
             },
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 188,
             "description": "Creates a text input element with heading. The element can be used to type year numbers.",
             "itemtype": "method",
@@ -289,12 +296,13 @@
                 }
             ],
             "return": {
-                "description": "input Element that is to be created."
+                "description": "Element that is to be created.",
+                "type": "Object"
             },
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 222,
             "description": "Creates an input element of type \"checkbox\" with a heading above the element.",
             "itemtype": "method",
@@ -302,7 +310,8 @@
             "params": [
                 {
                     "name": "parent",
-                    "description": "Parent element in DOM"
+                    "description": "Parent element in DOM",
+                    "type": "Object"
                 },
                 {
                     "name": "title",
@@ -331,12 +340,13 @@
                 }
             ],
             "return": {
-                "description": "input Element that is to be created."
+                "description": "Element that is to be created.",
+                "type": "Object"
             },
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 252,
             "description": "Creates a user input field where the user either can select an option from a given vocabulary or type in a custom option. As always, there is a heading above the element.",
             "itemtype": "method",
@@ -344,7 +354,8 @@
             "params": [
                 {
                     "name": "parent",
-                    "description": "Parent element in DOM"
+                    "description": "Parent element in DOM",
+                    "type": "Object"
                 },
                 {
                     "name": "title",
@@ -382,20 +393,22 @@
                 }
             ],
             "return": {
-                "description": "return_object Returns an object that contains both the select and the input element. Keys are \"text\" and \"select\"."
+                "description": "Returns an object that contains both the select and the input element. Keys are \"text\" and \"select\".",
+                "type": "Object"
             },
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 345,
             "description": "Creates a language search form, where the user can search a language or type in an ISO639-3 code to add a language somewhere.",
             "itemtype": "method",
             "name": "makeLanguageSearchForm",
             "params": [
                 {
-                    "name": "parent",
-                    "description": "Parent element in DOM"
+                    "name": "Parent",
+                    "description": "element in DOM",
+                    "type": "Object"
                 },
                 {
                     "name": "element_id_prefix",
@@ -414,13 +427,14 @@
                 },
                 {
                     "name": "on_select",
-                    "description": "Callback function that is called, when the user adds a language."
+                    "description": "Callback function that is called, when the user adds a language.",
+                    "type": "Function"
                 }
             ],
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.js",
+            "file": "src\\js\\core\\app.gui.js",
             "line": 447,
             "description": "Checks if an ISO code is reserved for local use. These are all ISO codes between \"qaa\" and \"qtz\"",
             "itemtype": "method",
@@ -438,12 +452,12 @@
             "class": "APP.GUI"
         },
         {
-            "file": "core\\app.gui.pager.js",
+            "file": "src\\js\\core\\app.gui.pager.js",
             "line": 70,
             "class": "APP"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 99,
             "description": "Initializes the app. This method is called on \"DOMContentLoaded\".",
             "itemtype": "method",
@@ -460,7 +474,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 175,
             "description": "Tries to retrieve the APP language by looking at what language the browser is set (navigator.language).",
             "itemtype": "method",
@@ -474,7 +488,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 323,
             "description": "Tries to get a term in a specific language. This method is called by environments each time a language dependent term is displayed by an environment.",
             "itemtype": "method",
@@ -515,7 +529,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 532,
             "description": "Checks if the app is started for the first time or not and fires a fitting welcome note. (TO DO: The check in this method should be replaced by a check, if a data object can be retrieved or not.",
             "itemtype": "method",
@@ -525,7 +539,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 562,
             "description": "Shows a log message to the user",
             "itemtype": "method",
@@ -547,7 +561,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 580,
             "description": "Shows a confirm dialog to the user",
             "itemtype": "method",
@@ -579,7 +593,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 601,
             "description": "Shows an alert message to the user.",
             "itemtype": "method",
@@ -596,7 +610,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 618,
             "description": "This method deletes all saved data and reloads the app. It is quite DANGEROUS!",
             "itemtype": "method",
@@ -606,7 +620,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 632,
             "description": "This method changes the view of the app. A view can be a view of the app, \nor of a module of an environment.",
             "itemtype": "method",
@@ -622,7 +636,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 719,
             "description": "Saves the current state of the APP and the active environment.",
             "itemtype": "method",
@@ -632,7 +646,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 731,
             "description": "Saves a file with text content. For the user, it looks like a download.",
             "itemtype": "method",
@@ -659,7 +673,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 754,
             "description": "Gets all XML strings from output textareas, makes files and zips these files into one. For the user, it looks like a download of a ZIP file.",
             "itemtype": "method",
@@ -669,7 +683,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 815,
             "description": "Gets all XML strings from output textareas, makes files and saves them. For the user, it looks like several downloads.",
             "itemtype": "method",
@@ -679,7 +693,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 833,
             "description": "Recalls and sets the app state. If recall_object.active_environment_id is given, it tries to load that environment and recalls the environment state too.\nIf environment_data is undefined, it tries to get the recall data for that environment by checking the browser database.",
             "itemtype": "method",
@@ -701,7 +715,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 880,
             "description": "Changes the language of the app. Reloads the app, so that changes are effective immediately.",
             "itemtype": "method",
@@ -718,7 +732,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.js",
+            "file": "src\\js\\core\\app.js",
             "line": 894,
             "description": "Searches for a language entry in LanguageIndex.js. Displays a screen where the user can select a language from the results. Selection will be passed as parameter to on_select",
             "itemtype": "method",
@@ -740,7 +754,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 51,
             "description": "Tries to get environment data from browser database.",
             "itemtype": "method",
@@ -761,7 +775,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 81,
             "description": "Sets the autosave interval of the app.",
             "itemtype": "method",
@@ -778,7 +792,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 116,
             "description": "Sets the state of the active environment.",
             "itemtype": "method",
@@ -795,7 +809,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 141,
             "description": "Deletes all data in the browser database.",
             "itemtype": "method",
@@ -805,7 +819,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 153,
             "description": "Deletes the saved data of the active environment from the browser database.",
             "itemtype": "method",
@@ -815,7 +829,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 174,
             "description": "Saves current app and environment states in the browser database and notifies the user about that..",
             "itemtype": "method",
@@ -825,7 +839,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 187,
             "description": "Saves current app and environment states in the browser database.",
             "itemtype": "method",
@@ -835,7 +849,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 208,
             "description": "Saves current app and environment states to a file. For the user, this looks like a download.",
             "itemtype": "method",
@@ -845,7 +859,7 @@
             "module": "CORE"
         },
         {
-            "file": "core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.save_and_recall.js",
             "line": 230,
             "description": "Saves the active environment state to a file. For the user, this looks like a download.",
             "itemtype": "method",
@@ -855,7 +869,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 17,
             "description": "Markup pieces",
             "type": "{Object}",
@@ -863,7 +877,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 33,
             "description": "Return the proper transitionend event",
             "return": {
@@ -874,7 +888,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 63,
             "description": "Shorthand for document.getElementById()",
             "params": [
@@ -892,7 +906,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 73,
             "description": "Alertify private object",
             "type": "{Object}",
@@ -900,7 +914,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 79,
             "description": "Labels object",
             "type": "{Object}",
@@ -908,7 +922,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 88,
             "description": "Delay number",
             "type": "{Number}",
@@ -916,7 +930,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 94,
             "description": "Whether buttons are reversed (default is secondary/primary)",
             "type": "{Boolean}",
@@ -924,7 +938,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 100,
             "description": "Which button should be focused by default",
             "type": "{String}\t\"ok\" (default), \"cancel\", or \"none\"",
@@ -932,7 +946,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 106,
             "description": "Set the transition event on load",
             "type": "{[type]}",
@@ -940,7 +954,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 112,
             "description": "Set the proper button click events",
             "params": [
@@ -958,7 +972,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 189,
             "description": "Bind events to elements",
             "params": [
@@ -986,7 +1000,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 206,
             "description": "Use alertify as the global error handler (using window.onerror)",
             "return": {
@@ -997,7 +1011,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 223,
             "description": "Append button HTML strings",
             "params": [
@@ -1020,7 +1034,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 235,
             "description": "Build the proper message box",
             "params": [
@@ -1038,7 +1052,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 291,
             "description": "Close the log messages",
             "params": [
@@ -1061,7 +1075,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 340,
             "description": "Create a dialog box",
             "params": [
@@ -1099,7 +1113,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 376,
             "description": "Extend the log method to create custom methods",
             "params": [
@@ -1117,7 +1131,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 391,
             "description": "Hide the dialog and rest to defaults",
             "return": {
@@ -1128,7 +1142,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 426,
             "description": "Initialize Alertify\nCreate the 2 main elements",
             "return": {
@@ -1139,7 +1153,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 468,
             "description": "Show a new log message box",
             "params": [
@@ -1167,7 +1181,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 493,
             "description": "Add new log message\nIf a type is passed, a class name \"alertify-log-{type}\" will get added.\nThis allows for custom look and feel for various types of notifications.",
             "params": [
@@ -1195,7 +1209,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 515,
             "description": "Set properties",
             "params": [
@@ -1213,7 +1227,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 534,
             "description": "Common place to set focus to proper element",
             "return": {
@@ -1224,7 +1238,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 547,
             "description": "Initiate all the required pieces for the dialog box",
             "return": {
@@ -1235,7 +1249,7 @@
             "module": "CORE"
         },
         {
-            "file": "alertify.js",
+            "file": "src\\js\\alertify.js",
             "line": 586,
             "description": "Unbind events to elements",
             "params": [
@@ -1263,7 +1277,7 @@
             "module": "CORE"
         },
         {
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 64,
             "description": "Downloads a resource via AJAX, using the HTTP GET method.",
             "itemtype": "method",
@@ -1289,7 +1303,7 @@
             "module": "HELPERS"
         },
         {
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 96,
             "description": "Downloads a text resource via AJAX, using the HTTP GET method.",
             "itemtype": "method",
@@ -1315,7 +1329,7 @@
             "module": "HELPERS"
         },
         {
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 114,
             "description": "Downloads a JSON resource via AJAX, using the HTTP GET method.",
             "itemtype": "method",
@@ -1341,7 +1355,7 @@
             "module": "HELPERS"
         },
         {
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 131,
             "description": "Clones a javascript object (instead of just copying references of it).",
             "itemtype": "method",
@@ -1362,7 +1376,7 @@
             "module": "HELPERS"
         },
         {
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 158,
             "description": "Parses a Javascript Blob object for its text. This obviously works only with text files.",
             "itemtype": "method",
@@ -1384,7 +1398,7 @@
             "module": "HELPERS"
         },
         {
-            "file": "helpers.js",
+            "file": "src\\js\\helpers.js",
             "line": 518,
             "description": "Remove an element and provide a function that inserts it into its original position",
             "params": [
@@ -1405,111 +1419,111 @@
     "warnings": [
         {
             "message": "Missing item type",
-            "line": " core\\app.gui.pager.js:70"
+            "line": " src\\js\\core\\app.gui.pager.js:70"
         },
         {
             "message": "Missing item type\nMarkup pieces",
-            "line": " alertify.js:17"
+            "line": " src\\js\\alertify.js:17"
         },
         {
             "message": "Missing item type\nReturn the proper transitionend event",
-            "line": " alertify.js:33"
+            "line": " src\\js\\alertify.js:33"
         },
         {
             "message": "Missing item type\nShorthand for document.getElementById()",
-            "line": " alertify.js:63"
+            "line": " src\\js\\alertify.js:63"
         },
         {
             "message": "Missing item type\nAlertify private object",
-            "line": " alertify.js:73"
+            "line": " src\\js\\alertify.js:73"
         },
         {
             "message": "Missing item type\nLabels object",
-            "line": " alertify.js:79"
+            "line": " src\\js\\alertify.js:79"
         },
         {
             "message": "Missing item type\nDelay number",
-            "line": " alertify.js:88"
+            "line": " src\\js\\alertify.js:88"
         },
         {
             "message": "Missing item type\nWhether buttons are reversed (default is secondary/primary)",
-            "line": " alertify.js:94"
+            "line": " src\\js\\alertify.js:94"
         },
         {
             "message": "Missing item type\nWhich button should be focused by default",
-            "line": " alertify.js:100"
+            "line": " src\\js\\alertify.js:100"
         },
         {
             "message": "Missing item type\nSet the transition event on load",
-            "line": " alertify.js:106"
+            "line": " src\\js\\alertify.js:106"
         },
         {
             "message": "Missing item type\nSet the proper button click events",
-            "line": " alertify.js:112"
+            "line": " src\\js\\alertify.js:112"
         },
         {
             "message": "Missing item type\nBind events to elements",
-            "line": " alertify.js:189"
+            "line": " src\\js\\alertify.js:189"
         },
         {
             "message": "Missing item type\nUse alertify as the global error handler (using window.onerror)",
-            "line": " alertify.js:206"
+            "line": " src\\js\\alertify.js:206"
         },
         {
             "message": "Missing item type\nAppend button HTML strings",
-            "line": " alertify.js:223"
+            "line": " src\\js\\alertify.js:223"
         },
         {
             "message": "Missing item type\nBuild the proper message box",
-            "line": " alertify.js:235"
+            "line": " src\\js\\alertify.js:235"
         },
         {
             "message": "Missing item type\nClose the log messages",
-            "line": " alertify.js:291"
+            "line": " src\\js\\alertify.js:291"
         },
         {
             "message": "Missing item type\nCreate a dialog box",
-            "line": " alertify.js:340"
+            "line": " src\\js\\alertify.js:340"
         },
         {
             "message": "Missing item type\nExtend the log method to create custom methods",
-            "line": " alertify.js:376"
+            "line": " src\\js\\alertify.js:376"
         },
         {
             "message": "Missing item type\nHide the dialog and rest to defaults",
-            "line": " alertify.js:391"
+            "line": " src\\js\\alertify.js:391"
         },
         {
             "message": "Missing item type\nInitialize Alertify\nCreate the 2 main elements",
-            "line": " alertify.js:426"
+            "line": " src\\js\\alertify.js:426"
         },
         {
             "message": "Missing item type\nShow a new log message box",
-            "line": " alertify.js:468"
+            "line": " src\\js\\alertify.js:468"
         },
         {
             "message": "Missing item type\nAdd new log message\nIf a type is passed, a class name \"alertify-log-{type}\" will get added.\nThis allows for custom look and feel for various types of notifications.",
-            "line": " alertify.js:493"
+            "line": " src\\js\\alertify.js:493"
         },
         {
             "message": "Missing item type\nSet properties",
-            "line": " alertify.js:515"
+            "line": " src\\js\\alertify.js:515"
         },
         {
             "message": "Missing item type\nCommon place to set focus to proper element",
-            "line": " alertify.js:534"
+            "line": " src\\js\\alertify.js:534"
         },
         {
             "message": "Missing item type\nInitiate all the required pieces for the dialog box",
-            "line": " alertify.js:547"
+            "line": " src\\js\\alertify.js:547"
         },
         {
             "message": "Missing item type\nUnbind events to elements",
-            "line": " alertify.js:586"
+            "line": " src\\js\\alertify.js:586"
         },
         {
             "message": "Missing item type\nRemove an element and provide a function that inserts it into its original position",
-            "line": " helpers.js:518"
+            "line": " src\\js\\helpers.js:518"
         }
     ]
 }
