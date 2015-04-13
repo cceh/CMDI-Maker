@@ -47,6 +47,12 @@ APP.environments = (function () {
 	
 	my.active_environment = undefined;
 
+	
+/**
+ * Checks if an environment is currently loaded.
+ * @method isAnEnvironmentLoaded
+ * @return {Boolean} True or false
+ */	
 	my.isAnEnvironmentLoaded = function(){
 	
 		if (typeof my.active_environment != "undefined"){
@@ -59,7 +65,11 @@ APP.environments = (function () {
 	
 	};
 	
-	
+
+/**
+ * Displays all available environments in the GUI select elements on the start page and in the settings view.
+ * @method displayAllInSelect
+ */	
 	my.displayAllInSelect = function (){
 		
 		var select = g("profile_select");
