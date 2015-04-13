@@ -14,7 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
+/**
+ * A sub module of APP that deals with all forms on screen. Generating, manipulating, reading... It's also about data-binding and so on.
+ *
+ * @class APP.GUI
+ */
 APP.forms = (function () {
 	'use strict';
 	
@@ -605,8 +609,16 @@ APP.forms = (function () {
 	
 	var my = {};
 	
-	//Generates a form without a template. Assumes that every field in JSON data_object is string
-	//and makes text input
+	
+/**
+ * Generates a form without a template. Assumes that every field in JSON data_object is of type string and thus always makes text input elements
+ * @method makeWithoutTemplate
+ * @param {Object} parent Parent DOM element
+ * @param {String} element_id_prefix Prefix for the IDs of all generated DOM elements
+ * @param {String} element_class_prefix Prefix for the classes of all generated DOM elements 
+ * @param {Object} data_object Object that contains the data of which a template is generated.
+ * @param {String} form_id ID of the form template that is to be generated. (Not relevant to form on screen)
+ */	
 	my.makeWithoutTemplate = function(parent, element_id_prefix, element_class_prefix, data_object, form_id){
 		
 		var template = my.getTemplateFromDataObject(data_object, form_id);
@@ -614,6 +626,7 @@ APP.forms = (function () {
 		my.make(parent, template, element_id_prefix, element_class_prefix, data_object, undefined);
 
 	};
+	
 	
 	my.getTemplateFromDataObject = function(data_object, form_id, flag){
 	

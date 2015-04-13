@@ -27,8 +27,8 @@ APP.GUI = (function() {
 	
 /**
  * Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)
- * @param parent Parent element
  * @method showBusyIndicator
+ * @param parent Parent DOM element
  */	
 	my.showBusyIndicator = function(parent){
 	
@@ -1161,6 +1161,11 @@ APP.GUI = (function() {
 	})();
 	
 	
+/**
+ * Shows a dialog where the user can import a file. A callback function is called when there is a new file available.
+ * @method showFileDialog
+ * @param {Function} onchange Called, when the user selected a file to import. The JavaScript File object is passed as parameter.
+ */		
 	my.showFileDialog = function(onchange){
 	
 		alertify.set({ labels: {
