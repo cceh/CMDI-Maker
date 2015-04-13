@@ -628,6 +628,13 @@ APP.forms = (function () {
 	};
 	
 	
+/**
+ * Generates a form template from a data object. Assumes that every field in JSON data_object is of type string and thus always makes text input elements
+ * @method getTemplateFromDataObject
+ * @param {Object} data_object Object that contains the data of which a template is generated.
+ * @param {String} form_id ID of the form template that is to be generated.
+ * @param {String} flag If flag == "no_default_values", values of data_object will be ignored and not be set as default values in the template
+ */	
 	my.getTemplateFromDataObject = function(data_object, form_id, flag){
 	
 		var template = {
@@ -644,6 +651,16 @@ APP.forms = (function () {
 	}
 	
 
+/**
+ * Generates a form on screen.
+ * @method make
+ * @param {Object} parent Parent DOM element
+ * @param {Object} field The form template.
+ * @param {String} element_id_prefix Prefix for the IDs of all generated DOM elements
+ * @param {String} element_class_prefix Prefix for the classes of all generated DOM elements 
+ * @param {Object} data_object Object that contains form data to be inserted after the form is generated.
+ * @param {Function} on_special Function that is called, when type of a field is "special". The following parameters are then passed to this function: (field, parent, element_id_prefix, element_class_prefix)
+ */	
 	my.make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 
 		var input;
