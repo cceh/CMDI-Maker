@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\js\core\app.gui.forms.js - CMDI Maker</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..\..\yuidoc_header_image.png" title="CMDI Maker"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 2.10</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/APP.html">APP</a></li>
+            
+                <li><a href="../classes/APP.CONF.html">APP.CONF</a></li>
+            
+                <li><a href="../classes/APP.environments.html">APP.environments</a></li>
+            
+                <li><a href="../classes/APP.forms.html">APP.forms</a></li>
+            
+                <li><a href="../classes/APP.GUI.html">APP.GUI</a></li>
+            
+                <li><a href="../classes/APP.GUI.FORMS.html">APP.GUI.FORMS</a></li>
+            
+                <li><a href="../classes/APP.GUI.pager.html">APP.GUI.pager</a></li>
+            
+                <li><a href="../classes/APP.intl.html">APP.intl</a></li>
+            
+                <li><a href="../classes/APP.save_and_recall.html">APP.save_and_recall</a></li>
+            
+                <li><a href="../classes/APP.settings.html">APP.settings</a></li>
+            
+                <li><a href="../classes/HELPERS.html">HELPERS</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/CORE.html">CORE</a></li>
+            
+                <li><a href="../modules/HELPERS.html">HELPERS</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src\js\core\app.gui.forms.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+﻿/*
+Copyright 2014 Sebastian Zimmer
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
+/**
+ * A sub module of APP.GUI that offers some GUI forms that help shape the UI.
+ *
+ * @class APP.GUI.FORMS
+ */
+APP.GUI.FORMS = (function() {
+	
+	var l = APP.l;
+	
+	var my = {};
+
+	
+	my.fileDropZone = function(parent, id, onchange){
+	
+		var dropZone = dom.make(&quot;div&quot;, id, &quot;fileDropZone&quot;, parent,&quot;&lt;h2&gt;&quot; + l(&quot;forms&quot;, &quot;drag_and_drop_files_here&quot;) + &quot;&lt;/h2&gt;&quot;);
+		
+		var input = dom.input(parent,&quot;files_input&quot;,&quot;&quot;,&quot;files_input&quot;, &quot;file&quot;);
+		input.multiple = true;
+		
+		dropZone.addEventListener(&#x27;dragover&#x27;, function(evt) {
+
+			evt.stopPropagation();
+			evt.preventDefault();
+			evt.dataTransfer.dropEffect = &#x27;copy&#x27;; // Explicitly show this is a copy.
+			
+		}, false);
+		
+		dropZone.addEventListener(&#x27;drop&#x27;, function(evt){
+
+			evt.stopPropagation();
+			evt.preventDefault();
+			onchange(evt.dataTransfer.files);
+			
+		}, false);
+
+		g(&#x27;files_input&#x27;).addEventListener(&#x27;change&#x27;, function(evt){
+	 
+			onchange(evt.target.files);
+		 
+		}, false);
+		
+	};
+	
+	
+	my.redBox = function(parent, element_id, additionalClassName, content, on_delete, width){
+	
+		var box = dom.div(parent, element_id, &quot;redBox&quot;);
+		
+		if (typeof additionalClassName != &quot;undefined&quot;){
+			box.className += &quot; &quot;;
+			box.className += additionalClassName;			
+		}
+		
+		APP.GUI.icon(box,&quot;&quot;,&quot;delete_lang_icon&quot;, &quot;reset&quot;, on_delete);
+		
+		var box_content = dom.div(box, &quot;&quot;, &quot;redBox_content&quot;);
+		
+		forEach(content, function(content_for_line){
+			var span = dom.spanBR(box_content, &quot;&quot;, &quot;&quot;, &quot;&quot;);
+			dom.appendHTMLContent(span, content_for_line);
+		});
+		
+		box.style.width = width + &quot;px&quot;;
+		
+		return {
+			box: box,
+			content: box_content
+		};
+
+	};
+	
+	
+	my.expandableForm = function(parent, element_prefix, expanded, on_expand_collapse, on_delete, id){
+	
+		var form = dom.make(&#x27;div&#x27;, element_prefix, &#x27;expandable_form&#x27;, parent); 
+		
+		var header = dom.make(&#x27;div&#x27;, element_prefix + &#x27;_header&#x27;,&#x27;expandable_form_header&#x27;, form);
+		header.addEventListener(&#x27;click&#x27;, function(num, num2) { 
+			return function(){
+				my.expandableFormViewChange(num, on_expand_collapse, num2);
+			};
+		}(element_prefix, id) );
+
+		var label = dom.make(&#x27;h1&#x27;, element_prefix + &#x27;_label&#x27;,&#x27;expandable_form_heading&#x27;, header);
+
+		//create icon for deleting the expandable form
+		var delete_link = APP.GUI.icon(header, element_prefix+&#x27;_delete_link&#x27;,&#x27;expandable_form_delete_link&#x27;, &quot;reset&quot;, 
+		function(num) {
+
+			return function(event){	//only event must be a parameter of the return function because event is to be looked up when the event is fired, not when calling the wrapper function
+				event.stopPropagation();
+				on_delete(num);
+			};
+			
+		}(id) );
+		delete_link.innerHTML = &quot;&lt;img id=\&quot;&quot; + element_prefix + &quot;_delete_img\&quot; class=\&quot;delete_img\&quot; src=\&quot;&quot;+APP.CONF.path_to_icons+&quot;reset.png\&quot; alt=\&quot;Delete Bundle\&quot;&gt;&quot;;
+		
+		//create icon to expand/collapse the expandable form, it will do nothing, just indicate status
+		var display_link = APP.GUI.icon(header,element_prefix+&#x27;_display_link&#x27;,&#x27;expandable_form_display_link&#x27;, &quot;down&quot;);
+		APP.GUI.icon(display_link, element_prefix+&quot;_expand_img&quot;, &quot;expand_img&quot;, &quot;down&quot;);
+
+		var content = dom.make(&#x27;div&#x27;, element_prefix+&#x27;_content&#x27;, &#x27;expandable_form_content&#x27;, form);
+
+		if (expanded == false){
+			my.collapseExpandableForm(element_prefix);
+		}
+		
+		return {
+			form: form,
+			header: header,
+			label: label,
+			content: content,
+			delete_icon: delete_link,
+			display_icon: display_link
+		};
+	
+	};
+	
+	
+	my.collapseExpandableForm = function (element_prefix){
+
+		dom.hideElement(g(element_prefix + &quot;_content&quot;));
+		APP.GUI.setIcon(g(element_prefix + &quot;_display_link&quot;), &quot;up&quot;);
+
+	};
+	
+
+	my.expandableFormViewChange = function(element_prefix, on_expand_collapse, id){
+	
+		var content = g(element_prefix + &quot;_content&quot;);
+	
+		if (content.style.display != &quot;none&quot;){
+		
+			my.collapseExpandableForm(element_prefix);
+			
+			var event = {
+				id: id,
+				expanded: false
+			};
+			
+
+		}
+		
+		else {
+		
+			dom.unhideElement(content);
+			APP.GUI.setIcon(g(element_prefix + &quot;_display_link&quot;), &quot;down&quot;);
+			
+			var event = {
+				id: id,
+				expanded: true
+			};
+			
+		}
+		
+		on_expand_collapse(event);
+		
+	};
+	
+	
+	my.clickableListSmall = function(parent, titles, subtitles, action, id, highlighted_index){
+	
+		var self = this;
+		
+		this.parent = parent;
+		this.titles = titles;
+		this.subtitles = subtitles;
+		this.action = action;
+		this.id = id;
+		this.highlighted_index = highlighted_index;
+		
+		this.scrollTop;
+	
+		this.list_div;
+
+		
+		var renderItem = function(parent, title, subtitle, action, highlighted){
+		
+			var div = dom.make(&#x27;div&#x27;, &quot;&quot;, &quot;clickable_list_entry&quot;, self.list_div);
+			
+			if (highlighted){
+				div.className += &quot; clickable_list_entry_highlighted&quot;;
+			}
+			
+			dom.h2(div, title);
+			dom.p(div, subtitle);
+			
+			div.addEventListener(&#x27;click&#x27;, action, false);	
+			
+			return div;
+		
+		};
+		
+		
+		var render = function(){
+		
+			if (!g(id)){
+				self.list_div = dom.make(&quot;div&quot;, id, &quot;clickable_list_small&quot;, parent);
+				
+				self.list_div.addEventListener(&quot;scroll&quot;, function(event){
+				
+					self.scrollTop = self.list_div.scrollTop;
+				
+				}, false);
+				
+			}
+			
+			var elements = [];
+		
+			self.list_div.innerHTML = &quot;&quot;;
+			
+			for (var i = 0; i &lt; self.titles.length; i++){
+				
+				if (typeof self.subtitles !== &quot;undefined&quot;){
+					var subtitle = self.subtitles[i];
+				}
+				
+				else {
+					subtitle = &quot;&quot;;
+				}
+				
+				var div = renderItem(
+					self.list_div,
+					self.titles[i],
+					subtitle,
+					function(num) { 
+						return function(){ self.action(num); }; 
+					}(i),
+					(self.highlighted_index == i)
+				);
+				
+				elements.push(div);	
+				
+			}
+			
+			self.list_div.scrollTop = self.scrollTop;
+			
+			return elements;
+			
+		};
+		
+		
+		this.elements = render(parent, titles, subtitles, action, highlighted_index);
+		
+		
+		this.changeHighlight = function(new_index){
+			self.highlighted_index = new_index;
+			render();
+		};
+		
+		this.refresh = function(titles, subtitles){
+			self.titles = titles;
+			self.subtitles = subtitles;
+			render();
+		};
+	
+	}
+	
+	return my;
+	
+})();
+
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

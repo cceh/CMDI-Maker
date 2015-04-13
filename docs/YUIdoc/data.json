@@ -7,6 +7,42 @@
         "logo": "../yuidoc_header_image.png"
     },
     "files": {
+        "src\\js\\core\\app.config.js": {
+            "name": "src\\js\\core\\app.config.js",
+            "modules": {},
+            "classes": {
+                "APP.CONF": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\js\\core\\app.environments.js": {
+            "name": "src\\js\\core\\app.environments.js",
+            "modules": {},
+            "classes": {
+                "APP.environments": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\js\\core\\app.forms.js": {
+            "name": "src\\js\\core\\app.forms.js",
+            "modules": {},
+            "classes": {
+                "APP.forms": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\js\\core\\app.gui.forms.js": {
+            "name": "src\\js\\core\\app.gui.forms.js",
+            "modules": {},
+            "classes": {
+                "APP.GUI.FORMS": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\js\\core\\app.gui.js": {
             "name": "src\\js\\core\\app.gui.js",
             "modules": {},
@@ -19,7 +55,18 @@
         "src\\js\\core\\app.gui.pager.js": {
             "name": "src\\js\\core\\app.gui.pager.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "APP.GUI.pager": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\js\\core\\app.internationalization.js": {
+            "name": "src\\js\\core\\app.internationalization.js",
+            "modules": {},
+            "classes": {
+                "APP.intl": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -39,6 +86,15 @@
             "modules": {},
             "classes": {
                 "APP.save_and_recall": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\js\\core\\app.settings.js": {
+            "name": "src\\js\\core\\app.settings.js",
+            "modules": {},
+            "classes": {
+                "APP.settings": 1
             },
             "fors": {},
             "namespaces": {}
@@ -67,14 +123,21 @@
             "name": "CORE",
             "submodules": {},
             "classes": {
+                "APP.CONF": 1,
+                "APP.environments": 1,
+                "APP.forms": 1,
+                "APP.GUI.FORMS": 1,
                 "APP.GUI": 1,
+                "APP.GUI.pager": 1,
+                "APP.intl": 1,
                 "APP": 1,
-                "APP.save_and_recall": 1
+                "APP.save_and_recall": 1,
+                "APP.settings": 1
             },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src\\js\\core\\app.save_and_recall.js",
+            "file": "src\\js\\core\\app.settings.js",
             "line": 18,
             "description": "The main module for the app."
         },
@@ -93,6 +156,58 @@
         }
     },
     "classes": {
+        "APP.CONF": {
+            "name": "APP.CONF",
+            "shortname": "APP.CONF",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "file": "src\\js\\core\\app.config.js",
+            "line": 18,
+            "description": "A sub module of APP where all configuration settings are stored."
+        },
+        "APP.environments": {
+            "name": "APP.environments",
+            "shortname": "APP.environments",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "file": "src\\js\\core\\app.environments.js",
+            "line": 17,
+            "description": "A sub module of APP that deals with including, loading and managing CMDI Maker environments."
+        },
+        "APP.forms": {
+            "name": "APP.forms",
+            "shortname": "APP.forms",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "file": "src\\js\\core\\app.forms.js",
+            "line": 17,
+            "description": "A sub module of APP that deals with all forms on screen. Generating, manipulating, reading... It's also about data-binding and so on."
+        },
+        "APP.GUI.FORMS": {
+            "name": "APP.GUI.FORMS",
+            "shortname": "APP.GUI.FORMS",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "file": "src\\js\\core\\app.gui.forms.js",
+            "line": 18,
+            "description": "A sub module of APP.GUI that offers some GUI forms that help shape the UI."
+        },
         "APP.GUI": {
             "name": "APP.GUI",
             "shortname": "APP.GUI",
@@ -105,6 +220,32 @@
             "file": "src\\js\\core\\app.gui.js",
             "line": 17,
             "description": "A sub module of APP that deals with the GUI."
+        },
+        "APP.GUI.pager": {
+            "name": "APP.GUI.pager",
+            "shortname": "APP.GUI.pager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "file": "src\\js\\core\\app.gui.pager.js",
+            "line": 18,
+            "description": "A sub module of APP.GUI that allows to create a pager for splitting lots of screen elements on several pages."
+        },
+        "APP.intl": {
+            "name": "APP.intl",
+            "shortname": "APP.intl",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "file": "src\\js\\core\\app.internationalization.js",
+            "line": 18,
+            "description": "A sub module of APP that offers users to create translations of CMDI Maker LanguagePacks (LPs)."
         },
         "APP": {
             "name": "APP",
@@ -134,6 +275,20 @@
             "line": 18,
             "description": "A sub module of APP that deals with saving and recalling APP and environment states and data."
         },
+        "APP.settings": {
+            "name": "APP.settings",
+            "shortname": "APP.settings",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CORE",
+            "namespace": "",
+            "file": "src\\js\\core\\app.settings.js",
+            "line": 18,
+            "description": "A sub module of APP that deals with creating and managing app settings and environment settings."
+        },
         "HELPERS": {
             "name": "HELPERS",
             "shortname": "HELPERS",
@@ -151,17 +306,117 @@
     },
     "classitems": [
         {
-            "file": "src\\js\\core\\app.gui.js",
-            "line": 28,
-            "description": "Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)",
+            "file": "src\\js\\core\\app.forms.js",
+            "line": 613,
+            "description": "Generates a form without a template. Assumes that every field in JSON data_object is of type string and thus always makes text input elements",
+            "itemtype": "method",
+            "name": "makeWithoutTemplate",
             "params": [
                 {
                     "name": "parent",
-                    "description": "Parent element"
+                    "description": "Parent DOM element",
+                    "type": "Object"
+                },
+                {
+                    "name": "element_id_prefix",
+                    "description": "Prefix for the IDs of all generated DOM elements",
+                    "type": "String"
+                },
+                {
+                    "name": "element_class_prefix",
+                    "description": "Prefix for the classes of all generated DOM elements",
+                    "type": "String"
+                },
+                {
+                    "name": "data_object",
+                    "description": "Object that contains the data of which a template is generated.",
+                    "type": "Object"
+                },
+                {
+                    "name": "form_id",
+                    "description": "ID of the form template that is to be generated. (Not relevant to form on screen)",
+                    "type": "String"
                 }
             ],
+            "class": "APP.forms"
+        },
+        {
+            "file": "src\\js\\core\\app.forms.js",
+            "line": 631,
+            "description": "Generates a form template from a data object. Assumes that every field in JSON data_object is of type string and thus always makes text input elements",
+            "itemtype": "method",
+            "name": "getTemplateFromDataObject",
+            "params": [
+                {
+                    "name": "data_object",
+                    "description": "Object that contains the data of which a template is generated.",
+                    "type": "Object"
+                },
+                {
+                    "name": "form_id",
+                    "description": "ID of the form template that is to be generated.",
+                    "type": "String"
+                },
+                {
+                    "name": "flag",
+                    "description": "If flag == \"no_default_values\", values of data_object will be ignored and not be set as default values in the template",
+                    "type": "String"
+                }
+            ],
+            "class": "APP.forms"
+        },
+        {
+            "file": "src\\js\\core\\app.forms.js",
+            "line": 654,
+            "description": "Generates a form on screen.",
+            "itemtype": "method",
+            "name": "make",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent DOM element",
+                    "type": "Object"
+                },
+                {
+                    "name": "field",
+                    "description": "The form template.",
+                    "type": "Object"
+                },
+                {
+                    "name": "element_id_prefix",
+                    "description": "Prefix for the IDs of all generated DOM elements",
+                    "type": "String"
+                },
+                {
+                    "name": "element_class_prefix",
+                    "description": "Prefix for the classes of all generated DOM elements",
+                    "type": "String"
+                },
+                {
+                    "name": "data_object",
+                    "description": "Object that contains form data to be inserted after the form is generated.",
+                    "type": "Object"
+                },
+                {
+                    "name": "on_special",
+                    "description": "Function that is called, when type of a field is \"special\". The following parameters are then passed to this function: (field, parent, element_id_prefix, element_class_prefix)",
+                    "type": "Function"
+                }
+            ],
+            "class": "APP.forms"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 28,
+            "description": "Displays a busy indicator. (This feature is in pre-alpha state. Do not use it yet.)",
             "itemtype": "method",
             "name": "showBusyIndicator",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent DOM element"
+                }
+            ],
             "class": "APP.GUI"
         },
         {
@@ -846,7 +1101,52 @@
         },
         {
             "file": "src\\js\\core\\app.gui.js",
-            "line": 1046,
+            "line": 983,
+            "description": "Creates a GUI form that can contain an XML document. With this form, it is possible then to download the XML or to send it to an URL via HTTP POST.",
+            "itemtype": "method",
+            "name": "createXMLOutputDIV",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent DOM element",
+                    "type": "Object"
+                },
+                {
+                    "name": "title",
+                    "description": "Heading of the form.",
+                    "type": "String"
+                },
+                {
+                    "name": "textarea_id",
+                    "description": "DOM element id of the textarea, that contains the XML document.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "XML document",
+                    "type": "String"
+                },
+                {
+                    "name": "filename",
+                    "description": "Name of the file that is saved on the computer, when the user clicks on \"Save\"",
+                    "type": "String"
+                },
+                {
+                    "name": "mockup",
+                    "description": "If true, the form's color will be red and there will be a warning message to not use this XML document as it is invalid.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "http_post_information",
+                    "description": "Object that contains information on how to send this XML document via HTTP post. Keys are \"xml_string_key\" (Key of the POST parameter that contains the XML string), \"url\", \"additional_headers\" (array of key-value-pairs, that are added as headers to the HTTP request) and \"additional_data\" (data that is appended to post payload)",
+                    "type": "Object"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 1057,
             "description": "Highlights a view icon, e.g. a workflow item. Unhighlights all the other view icons.",
             "itemtype": "method",
             "name": "highlightViewIcon",
@@ -860,9 +1160,24 @@
             "class": "APP.GUI"
         },
         {
+            "file": "src\\js\\core\\app.gui.js",
+            "line": 1164,
+            "description": "Shows a dialog where the user can import a file. A callback function is called when there is a new file available.",
+            "itemtype": "method",
+            "name": "showFileDialog",
+            "params": [
+                {
+                    "name": "onchange",
+                    "description": "Called, when the user selected a file to import. The JavaScript File object is passed as parameter.",
+                    "type": "Function"
+                }
+            ],
+            "class": "APP.GUI"
+        },
+        {
             "file": "src\\js\\core\\app.gui.pager.js",
-            "line": 70,
-            "class": "APP"
+            "line": 75,
+            "class": "APP.GUI.pager"
         },
         {
             "file": "src\\js\\core\\app.js",
@@ -1827,7 +2142,7 @@
     "warnings": [
         {
             "message": "Missing item type",
-            "line": " src\\js\\core\\app.gui.pager.js:70"
+            "line": " src\\js\\core\\app.gui.pager.js:75"
         },
         {
             "message": "Missing item type\nMarkup pieces",

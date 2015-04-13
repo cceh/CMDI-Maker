@@ -14,7 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// APP Config
+
+/**
+ * A sub module of APP where all configuration settings are stored.
+ *
+ * @class APP.CONF
+ */
 APP.CONF = {
 
 	originator: "CMDI Maker by CLASS - Cologne Language Archive Services",    

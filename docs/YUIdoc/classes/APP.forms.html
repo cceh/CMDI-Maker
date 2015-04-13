@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>HELPERS - CMDI Maker</title>
+    <title>APP.forms - CMDI Maker</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -106,7 +106,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>HELPERS Class</h1>
+                        <h1>APP.forms Class</h1>
 <div class="box meta">
     
 
@@ -114,13 +114,13 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/src_js_helpers.js.html#l23"><code>src\js\helpers.js:23</code></a>
+            Defined in: <a href="../files/src_js_core_app.forms.js.html#l17"><code>src\js\core\app.forms.js:17</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/HELPERS.html">HELPERS</a>
+            Module: <a href="../modules/CORE.html">CORE</a>
         
     
 
@@ -130,7 +130,7 @@
 
 
 <div class="box intro">
-    <p>Helper functions. These are available in the global namespace!</p>
+    <p>A sub module of APP that deals with all forms on screen. Generating, manipulating, reading... It&#39;s also about data-binding and so on.</p>
 
 </div>
 
@@ -159,46 +159,22 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
-                                <a href="#method_cloneObject">cloneObject</a>
+                                <a href="#method_getTemplateFromDataObject">getTemplateFromDataObject</a>
 
-                                
-                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_getJSONWithAJAX">getJSONWithAJAX</a>
+                                <a href="#method_make">make</a>
 
-                                
-                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_getTextWithAJAX">getTextWithAJAX</a>
+                                <a href="#method_makeWithoutTemplate">makeWithoutTemplate</a>
 
-                                
-                                    <span class="flag static">static</span>
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_getWithAJAX">getWithAJAX</a>
-
-                                
-                                    <span class="flag static">static</span>
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_readFileAsText">readFileAsText</a>
-
-                                
-                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
@@ -219,8 +195,8 @@
                 <h2 class="off-left">Methods</h2>
 
                 
-                    <div id="method_cloneObject" class="method item">
-    <h3 class="name"><code>cloneObject</code></h3>
+                    <div id="method_getTemplateFromDataObject" class="method item">
+    <h3 class="name"><code>getTemplateFromDataObject</code></h3>
 
     
         <div class="args">
@@ -228,7 +204,19 @@
             
                 <li class="arg">
                     
-                        <code>obj</code>
+                        <code>data_object</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>form_id</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>flag</code>
                     
                 </li>
             
@@ -237,10 +225,6 @@
     
 
     
-        <span class="returns-inline">
-            <span class="type">Mixed</span>
-        </span>
-    
 
     
 
@@ -248,8 +232,6 @@
 
     
 
-    
-        <span class="flag static">static</span>
     
 
     
@@ -267,7 +249,7 @@
             
         
         
-        <a href="../files/src_js_helpers.js.html#l131"><code>src\js\helpers.js:131</code></a>
+        <a href="../files/src_js_core_app.forms.js.html#l631"><code>src\js\core\app.forms.js:631</code></a>
         
         </p>
 
@@ -278,7 +260,7 @@
     </div>
 
     <div class="description">
-        <p>Clones a javascript object (instead of just copying references of it).</p>
+        <p>Generates a form template from a data object. Assumes that every field in JSON data_object is of type string and thus always makes text input elements</p>
 
     </div>
 
@@ -290,129 +272,30 @@
             
                 <li class="param">
                     
-                        <code class="param-name">obj</code>
-                        <span class="type">Mixed</span>
+                        <code class="param-name">data_object</code>
+                        <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Source object.</p>
+                        <p>Object that contains the data of which a template is generated.</p>
 
                     </div>
 
                     
                 </li>
             
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Mixed</span>:
-                    
-                    <p>clone Clone of the object</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_getJSONWithAJAX" class="method item">
-    <h3 class="name"><code>getJSONWithAJAX</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>url</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>success_callback</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Mixed</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_js_helpers.js.html#l114"><code>src\js\helpers.js:114</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Downloads a JSON resource via AJAX, using the HTTP GET method.</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
                 <li class="param">
                     
-                        <code class="param-name">url</code>
+                        <code class="param-name">form_id</code>
                         <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>URL of the resource.</p>
+                        <p>ID of the form template that is to be generated.</p>
 
                     </div>
 
@@ -421,145 +304,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">success_callback</code>
-                        <span class="type">Function</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Callback function to be called when resource is downloaded and ready. It gets the resulting javascript object, when JSON parsing was successful.</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Mixed</span>:
-                    
-                    <p>http.send() Value of http.send()</p>
-
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_getTextWithAJAX" class="method item">
-    <h3 class="name"><code>getTextWithAJAX</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>url</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>success_callback</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Mixed</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_js_helpers.js.html#l96"><code>src\js\helpers.js:96</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Downloads a text resource via AJAX, using the HTTP GET method.</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">url</code>
+                        <code class="param-name">flag</code>
                         <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>URL of the resource.</p>
-
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">success_callback</code>
-                        <span class="type">Function</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Callback function to be called when resource is downloaded and ready. It gets the resource as text string.</p>
+                        <p>If flag == &quot;no_default_values&quot;, values of data_object will be ignored and not be set as default values in the template</p>
 
                     </div>
 
@@ -571,27 +323,13 @@
     
 
     
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Mixed</span>:
-                    
-                    <p>http.send() Value of http.send()</p>
-
-                
-            </div>
-        </div>
-    
 
     
 </div>
 
                 
-                    <div id="method_getWithAJAX" class="method item">
-    <h3 class="name"><code>getWithAJAX</code></h3>
+                    <div id="method_make" class="method item">
+    <h3 class="name"><code>make</code></h3>
 
     
         <div class="args">
@@ -599,13 +337,37 @@
             
                 <li class="arg">
                     
-                        <code>url</code>
+                        <code>parent</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>success_callback</code>
+                        <code>field</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>element_id_prefix</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>element_class_prefix</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>data_object</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>on_special</code>
                     
                 </li>
             
@@ -614,10 +376,6 @@
     
 
     
-        <span class="returns-inline">
-            <span class="type">Mixed</span>
-        </span>
-    
 
     
 
@@ -625,8 +383,6 @@
 
     
 
-    
-        <span class="flag static">static</span>
     
 
     
@@ -644,7 +400,7 @@
             
         
         
-        <a href="../files/src_js_helpers.js.html#l64"><code>src\js\helpers.js:64</code></a>
+        <a href="../files/src_js_core_app.forms.js.html#l654"><code>src\js\core\app.forms.js:654</code></a>
         
         </p>
 
@@ -655,7 +411,7 @@
     </div>
 
     <div class="description">
-        <p>Downloads a resource via AJAX, using the HTTP GET method.</p>
+        <p>Generates a form on screen.</p>
 
     </div>
 
@@ -667,14 +423,46 @@
             
                 <li class="param">
                     
-                        <code class="param-name">url</code>
+                        <code class="param-name">parent</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Parent DOM element</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">field</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The form template.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">element_id_prefix</code>
                         <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>URL of the resource.</p>
+                        <p>Prefix for the IDs of all generated DOM elements</p>
 
                     </div>
 
@@ -683,14 +471,46 @@
             
                 <li class="param">
                     
-                        <code class="param-name">success_callback</code>
+                        <code class="param-name">element_class_prefix</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Prefix for the classes of all generated DOM elements</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">data_object</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Object that contains form data to be inserted after the form is generated.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">on_special</code>
                         <span class="type">Function</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Callback function to be called when resource is downloaded and ready. It gets the XMLHttpRequest object.</p>
+                        <p>Function that is called, when type of a field is &quot;special&quot;. The following parameters are then passed to this function: (field, parent, element_id_prefix, element_class_prefix)</p>
 
                     </div>
 
@@ -702,27 +522,13 @@
     
 
     
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Mixed</span>:
-                    
-                    <p>http.send() Value of http.send()</p>
-
-                
-            </div>
-        </div>
-    
 
     
 </div>
 
                 
-                    <div id="method_readFileAsText" class="method item">
-    <h3 class="name"><code>readFileAsText</code></h3>
+                    <div id="method_makeWithoutTemplate" class="method item">
+    <h3 class="name"><code>makeWithoutTemplate</code></h3>
 
     
         <div class="args">
@@ -730,13 +536,31 @@
             
                 <li class="arg">
                     
-                        <code>file</code>
+                        <code>parent</code>
                     
                 </li>
             
                 <li class="arg">
                     
-                        <code>onsuccess</code>
+                        <code>element_id_prefix</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>element_class_prefix</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>data_object</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>form_id</code>
                     
                 </li>
             
@@ -752,8 +576,6 @@
 
     
 
-    
-        <span class="flag static">static</span>
     
 
     
@@ -771,7 +593,7 @@
             
         
         
-        <a href="../files/src_js_helpers.js.html#l158"><code>src\js\helpers.js:158</code></a>
+        <a href="../files/src_js_core_app.forms.js.html#l613"><code>src\js\core\app.forms.js:613</code></a>
         
         </p>
 
@@ -782,7 +604,7 @@
     </div>
 
     <div class="description">
-        <p>Parses a Javascript Blob object for its text. This obviously works only with text files.</p>
+        <p>Generates a form without a template. Assumes that every field in JSON data_object is of type string and thus always makes text input elements</p>
 
     </div>
 
@@ -794,14 +616,14 @@
             
                 <li class="param">
                     
-                        <code class="param-name">file</code>
-                        <span class="type">Mixed</span>
+                        <code class="param-name">parent</code>
+                        <span class="type">Object</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>File as Blob object.</p>
+                        <p>Parent DOM element</p>
 
                     </div>
 
@@ -810,14 +632,62 @@
             
                 <li class="param">
                     
-                        <code class="param-name">onsuccess</code>
-                        <span class="type">Function</span>
+                        <code class="param-name">element_id_prefix</code>
+                        <span class="type">String</span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Callback function to be called when file is parsed. It gets the resulting string, if parsing was successful.</p>
+                        <p>Prefix for the IDs of all generated DOM elements</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">element_class_prefix</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Prefix for the classes of all generated DOM elements</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">data_object</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Object that contains the data of which a template is generated.</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">form_id</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>ID of the form template that is to be generated. (Not relevant to form on screen)</p>
 
                     </div>
 

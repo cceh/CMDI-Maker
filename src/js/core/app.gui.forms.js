@@ -15,6 +15,11 @@ limitations under the License.
 */
 
 
+/**
+ * A sub module of APP.GUI that offers some GUI forms that help shape the UI.
+ *
+ * @class APP.GUI.FORMS
+ */
 APP.GUI.FORMS = (function() {
 	
 	var l = APP.l;

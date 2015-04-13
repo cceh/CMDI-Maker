@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>HELPERS - CMDI Maker</title>
+    <title>src\js\core\app.config.js - CMDI Maker</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -106,50 +106,100 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>HELPERS Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: src\js\core\app.config.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+﻿/*
+Copyright 2014 Sebastian Zimmer
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_js_helpers.js.html#l23"><code>src\js\helpers.js:23</code></a>
-        </div>
-    
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-    
-</div>
+    http://www.apache.org/licenses/LICENSE-2.0
 
-
-
-<div class="box intro">
-    <p>Helper functions. These are available in the global namespace!</p>
-
-</div>
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 
+/**
+ * A sub module of APP where all configuration settings are stored.
+ *
+ * @class APP.CONF
+ */
+APP.CONF = {
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-            <p>This module provides the following classes:</p>
+	originator: &quot;CMDI Maker by CLASS - Cologne Language Archive Services&quot;,    
+	version: &quot;2.11&quot;,
+	LanguageCodePrefix: &quot;ISO639-3:&quot;,
+	path_to_images: &quot;img/&quot;,
+	path_to_icons: &quot;img/icons/&quot;,
+	path_to_scripts: &quot;js/&quot;,
+	file_download_header: &quot;text/xml;charset=utf-8&quot;,
+	highlight_color: &quot;skyblue&quot;,
+	local_storage_key: &quot;CMDI-Maker&quot;,
+	project_file_name: &quot;CMDI-Maker-Project&quot;,
+	project_file_extension: &quot;cmp&quot;,
+	zip_archive_file_name: &quot;archive.zip&quot;,
+	content_wrapper_id: &quot;content_wrapper&quot;,
+	
+	valid_chars_for_filename: &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._ &quot;,
+	
+	app_core_storage_key: &quot;app&quot;,
 
-            <ul class="module-classes">
-            
-                <li class="module-class">
-                    <a href="../classes/HELPERS.html">
-                        HELPERS
-                    </a>
-                </li>
-            
-            </ul>
-        
-    </div>
+	copy_checkbox_element_prefix: &quot;copy_check_&quot;,
+	viewlink_id_prefix: &quot;VIEWLINK_&quot;,
+	view_id_prefix: &quot;VIEW_&quot;,
+	xml_textarea_class_name: &quot;xml_textarea&quot;,
+	select_frame_id: &quot;SF&quot;,
+	main_menu_div_id: &quot;main_menu_div&quot;,
+	functions_div_id: &quot;functions&quot;,
+	
+	functions_div_height: &quot;44px&quot;,
+	
+	toggle_color_on: &quot;limegreen&quot;,
+	toggle_color_off: &quot;tomato&quot;,
+	
+	output_textarea_rows: 40,
+	output_textarea_columns: 130,
+	form_textarea_rows: 6,
+	form_textarea_columns: 18,
+	
+	log_message_period: 5000,  //ms
+	log_section_id: &quot;alertify-logs&quot;,
+	
+	language_error_placeholder: &quot;###&quot;,
+	
+	url_for_version_check: &quot;get_version.php&quot;,
+	languageIndex_filename: &quot;LanguageIndex.js&quot;,
 
-    <div class="yui3-u-1-2">
-        
-    </div>
+	hellos: [
+		[&quot;Hello!&quot;,&quot;English&quot;],
+		[&quot;Hallo!&quot;,&quot;German&quot;],
+		[&quot;Aloha!&quot;,&quot;Hawaiian&quot;],
+		[&quot;Hola!&quot;, &quot;Spanish&quot;],
+		[&quot;Hej!&quot;, &quot;Danish&quot;],
+		[&quot;Merhaba!&quot;, &quot;Turkish&quot;],
+		[&quot;你好&quot;, &quot;Chinese&quot;],
+		[&quot;こんにちは&quot;, &quot;Japanese&quot;],
+		[&quot;Вiтаю!&quot;,&quot;Belarusian&quot;],
+		[&quot;Salut!&quot;,&quot;French&quot;],
+		[&quot;Grüezi!&quot;,&quot;Swiss German&quot;],
+		[&quot;Ciao!&quot;, &quot;Italian&quot;],
+		[&quot;Hæ!&quot;, &quot;Icelandic&quot;],
+		[&quot;Moïen!&quot;, &quot;Luxembourgish&quot;],
+		[&quot;Olá!&quot;, &quot;Portuguese&quot;],
+		[&quot;Privet!&quot;, &quot;Russian&quot;],
+		[&quot;Hallå!&quot;, &quot;Scanian&quot;],
+		[&quot;Salam!&quot;, &quot;Urdu&quot;]
+	]
+};
+    </pre>
 </div>
 
                     </div>

@@ -15,6 +15,11 @@ limitations under the License.
 */
 
 
+/**
+ * A sub module of APP that deals with creating and managing app settings and environment settings.
+ *
+ * @class APP.settings
+ */
 APP.settings = (function () {
 	'use strict';
 

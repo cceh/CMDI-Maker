@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>HELPERS - CMDI Maker</title>
+    <title>src\js\core\app.settings.js - CMDI Maker</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -106,50 +106,155 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>HELPERS Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: src\js\core\app.settings.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+﻿/*
+Copyright 2014 Sebastian Zimmer
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_js_helpers.js.html#l23"><code>src\js\helpers.js:23</code></a>
-        </div>
-    
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-    
-</div>
+    http://www.apache.org/licenses/LICENSE-2.0
 
-
-
-<div class="box intro">
-    <p>Helper functions. These are available in the global namespace!</p>
-
-</div>
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 
+/**
+ * A sub module of APP that deals with creating and managing app settings and environment settings.
+ *
+ * @class APP.settings
+ */
+APP.settings = (function () {
+	&#x27;use strict&#x27;;
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-            <p>This module provides the following classes:</p>
+	var my = {};
+	
+	my.makeFunctions = {
+	
+		radio: function(setting, parent){
+		
+			dom.makeRadios(parent, setting.options, setting.radio_name, setting.radio_name + &quot;_&quot;, &quot;title&quot;, &quot;value&quot;, setting.default_option, setting.onchange);
+		
+		},
+		
+		select: function(setting, parent){
+		
+			var select = dom.make(&quot;select&quot;,setting.id,&quot;&quot;,parent);
+			select.size = 1;
+			select.name = setting.name;
+			
+			if (setting.onchange){
+				select.addEventListener(&quot;change&quot;, setting.onchange, false);
+			}
+			
+			dom.br(parent);
+			
+		},
+		
+		toggle: function(setting, parent){
+			
+			var input = dom.input(parent, setting.id, &quot;on_off_switch&quot;, setting.name, &quot;button&quot;);
+			input.on = false;
+			input.addEventListener(&quot;click&quot;, function(){APP.GUI.switchToggle(this);}, false);
+			
+			APP.GUI.setToggleValue(g(setting.id),setting.default_value);
+			
+			dom.br(parent);
+			
+		},
+		
+		file: function(setting, parent){
+		
+			var input = dom.input(parent,setting.file_input_id,&quot;&quot;,setting.file_input_name,&quot;file&quot;);
+			input.addEventListener(&#x27;change&#x27;, setting.onchange, false);
+			dom.br(parent);
+		},
+		
+		text: function(setting, parent){
+			
+			var input = dom.input(parent,setting.id,&quot;&quot;,setting.name, &quot;text&quot;, setting.value);
+			input.addEventListener(&#x27;change&#x27;, setting.onchange, false);
+			dom.br(parent);
+		},
+		
+		empty: function(setting, parent){
+			
+			dom.make(&quot;div&quot;,setting.id,&quot;&quot;,parent);
+		
+		},
+		
+		link: function(){
+			return;
+		}
+	
+	};
+	
+	
+	my.init = function (settings, parent){
+	
+		parent.innerHTML = &quot;&quot;;
+		
+		forEach(settings, function(setting) { my.create(setting, parent); });
+	
+	};
+	
 
-            <ul class="module-classes">
-            
-                <li class="module-class">
-                    <a href="../classes/HELPERS.html">
-                        HELPERS
-                    </a>
-                </li>
-            
-            </ul>
-        
-    </div>
+	my.create = function(setting, parent){
+		
+		var h2 = dom.h2(parent);
+		
+		if ((setting.importance) &amp;&amp; (setting.importance == &quot;high&quot;)){
+			h2.style.color = &quot;red&quot;;
+		}
+		
+		if (setting.onclick){
+			var a = dom.link(h2,&quot;&quot;,&quot;&quot;,setting.title, setting.onclick);
+			
+			if ((setting.importance) &amp;&amp; (setting.importance == &quot;high&quot;)){
+				a.style.color = &quot;red&quot;;
+			}
+		}
+		
+		else {
+		
+			h2.innerHTML = setting.title;
+		
+		}
+		
+		if (setting.description){
+			dom.make(&quot;p&quot;,&quot;&quot;,&quot;&quot;,parent,setting.description);
+		}
 
-    <div class="yui3-u-1-2">
-        
-    </div>
+		if (my.makeFunctions[setting.type]) {
+		
+			my.makeFunctions[setting.type](setting, parent);
+		
+		}
+		
+		else {
+		
+			console.warn(&quot;Unknown setting type: &quot; + setting.type);
+			
+		}
+		
+		dom.br(parent);
+		
+	};
+
+	
+	return my;
+	
+})();
+
+    </pre>
 </div>
 
                     </div>

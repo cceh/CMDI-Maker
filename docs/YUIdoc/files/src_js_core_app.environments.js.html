@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\js\core\app.environments.js - CMDI Maker</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..\..\yuidoc_header_image.png" title="CMDI Maker"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 2.10</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/APP.html">APP</a></li>
+            
+                <li><a href="../classes/APP.CONF.html">APP.CONF</a></li>
+            
+                <li><a href="../classes/APP.environments.html">APP.environments</a></li>
+            
+                <li><a href="../classes/APP.forms.html">APP.forms</a></li>
+            
+                <li><a href="../classes/APP.GUI.html">APP.GUI</a></li>
+            
+                <li><a href="../classes/APP.GUI.FORMS.html">APP.GUI.FORMS</a></li>
+            
+                <li><a href="../classes/APP.GUI.pager.html">APP.GUI.pager</a></li>
+            
+                <li><a href="../classes/APP.intl.html">APP.intl</a></li>
+            
+                <li><a href="../classes/APP.save_and_recall.html">APP.save_and_recall</a></li>
+            
+                <li><a href="../classes/APP.settings.html">APP.settings</a></li>
+            
+                <li><a href="../classes/HELPERS.html">HELPERS</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/CORE.html">CORE</a></li>
+            
+                <li><a href="../modules/HELPERS.html">HELPERS</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src\js\core\app.environments.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+﻿/*
+Copyright 2014 Sebastian Zimmer
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+/**
+ * A sub module of APP that deals with including, loading and managing CMDI Maker environments.
+ *
+ * @class APP.environments
+ */
+APP.environments = (function () {
+	&#x27;use strict&#x27;;
+	
+	//PRIVATE
+	
+	var getIndexOfEnvironment = function(environment){
+	
+		var index = getIndex(my.environments, &quot;id&quot;, environment.id);
+		
+		if (typeof index == &quot;undefined&quot;){
+			return console.log(&quot;Environment &quot; + environment.id + &quot; not found in APP.environments&quot;);
+		}
+		
+		return index;
+	
+	};
+	
+	//PUBLIC
+
+	var my = {};
+	
+	my.disabled_functions = [];
+	
+	//Environments can integrate themselves in this array to get noticed by CMDI Maker
+	my.environments = [];
+	
+	my.active_environment = undefined;
+
+	my.isAnEnvironmentLoaded = function(){
+	
+		if (typeof my.active_environment != &quot;undefined&quot;){
+			return true;
+		}
+		
+		else {
+			return false;
+		}
+	
+	};
+	
+	
+	my.displayAllInSelect = function (){
+		
+		var select = g(&quot;profile_select&quot;);
+		var start_select = g(&quot;start_profile_select&quot;);
+		
+		// If environments are loaded synchronously with the main app, they could be there when the DOM is not ready yet.
+		// That is why we have to make sure, that these selects are there. If not, nothing happens yet. But no problem:
+		// When the app initializes itself, it will refresh this nonetheless, so everything will be alright.
+		if (!select || !start_select){
+			return;
+		}
+		
+		dom.setSelectOptions(select, my.environments, &quot;title&quot;, &quot;id&quot;, true);
+		dom.setSelectOptions(start_select, my.environments, &quot;title&quot;, &quot;id&quot;, false);
+		
+		start_select.addEventListener(&quot;change&quot;, function(){my.change(start_select.selectedIndex);});
+		
+	};
+
+	
+	my.getModuleByViewID = function(id){
+		
+		if (typeof my.active_environment != &quot;undefined&quot;){
+		
+			//find the module for this id
+			for (var m=0; m&lt;my.active_environment.workflow.length; m++){
+
+				if ((APP.CONF.view_id_prefix + my.active_environment.workflow[m].identity.id) == id){
+					return my.active_environment.workflow[m];
+				}
+			
+			}
+		}
+		
+		return undefined;
+	
+	};
+	
+	
+	my.resetActive = function(){
+	
+		if (!my.active_environment){
+			return;
+		}
+	
+		if (my.active_environment.reset){
+			my.active_environment.reset();
+		}
+		
+		forEach(my.active_environment.workflow, function(module){
+		
+			if (typeof module.reset != &quot;undefined&quot;){
+				module.reset();
+			}
+		
+		});
+	
+	};
+	
+	
+	my.unloadActive = function (){
+	
+		if (!my.active_environment){
+			console.warn(&quot;APP.environments.unloadActive called although there is no environment loaded!&quot;);
+			return;
+		}
+	
+		console.log(&quot;Unloading active environment: &quot; + my.active_environment.id);
+	
+		APP.save();
+		
+		g(&quot;environment_settings&quot;).innerHTML = &quot;&quot;;
+	
+		forEach(my.active_environment.workflow, function (module){
+		
+			//delete module view
+			dom.remove(APP.CONF.view_id_prefix + module.identity.id);
+			
+		});
+		
+		g(&quot;functions&quot;).innerHTML = &quot;&quot;;
+	
+		g(&quot;module_icons&quot;).innerHTML = &quot;&quot;;
+		
+		my.active_environment = undefined;
+		
+		g(&quot;profile_select&quot;).selectedIndex = 0;
+		
+		APP.view(&quot;VIEW_start&quot;);
+	
+	};
+	
+	
+	my.load = function (environment){
+		
+		if (typeof environment != &quot;object&quot;){
+			console.warn(&quot;APP.environments.load: Environment parameter is invalid or undefined! typeof environment = &quot; + typeof environment);
+			return;
+		}
+		
+		if (typeof my.active_environment != &quot;undefined&quot;){
+		
+			if (environment.id == my.active_environment.id){
+				console.log(&quot;Environment to be loaded is already active: &quot; + my.active_environment.id);
+				return;
+			}
+			
+			else {
+				my.unloadActive();
+			}
+		}
+	
+		//Variable has to be set first, because later methods depend on that
+		my.active_environment = environment;	
+		
+		console.log(&quot;Creating environment: &quot; + environment.id);
+	
+		my.initSettings(environment.settings());
+		
+		if (environment.init){
+			environment.init();
+		}
+	
+		my.createWorkflow(environment.workflow);
+		
+		var index = getIndexOfEnvironment(environment);
+	
+		g(&quot;profile_select&quot;).selectedIndex = index + 1;
+		//+1 because the first option of profile select is an empty option
+		
+		g(&quot;start_profile_select&quot;).selectedIndex = index;
+		
+		APP.view(&quot;default&quot;);
+	
+	};
+	
+	
+	my.initSettings = function (settings){
+	
+		APP.settings.init(settings, g(&quot;environment_settings&quot;));
+	
+	};
+	
+	
+	my.createWorkflow = function(workflow){
+	
+		forEach(workflow, my.createWorkflowModule);
+	
+		my.createWorkflowDisplay(workflow);
+	
+	};
+	
+	
+	my.createWorkflowModule = function(module){
+	
+		//create a view for the module
+		var view = dom.newElement(&quot;div&quot;,APP.CONF.view_id_prefix+module.identity.id,&quot;content&quot;,g(APP.CONF.content_wrapper_id));
+		
+		//initialize functions for the interface
+		if (module.functions){
+		
+			if (typeof module.functions == &quot;function&quot;){
+				my.initFunctions(module.functions());
+			}
+			
+			else {
+				my.initFunctions(module.functions);
+			}
+			
+		}
+		
+		if (module.init){
+			module.init(view);
+		}
+	
+	};
+	
+	
+	my.createWorkflowDisplay = function (workflow){
+	
+		var div = g(&quot;module_icons&quot;);
+	
+		for (var w=0; w&lt;workflow.length; w++){
+		
+			if (w !== 0){
+			
+				var arrow = dom.newElement(&quot;div&quot;,&quot;&quot;,&quot;wizard_arrow&quot;,div);
+				APP.GUI.icon(arrow,&quot;&quot;,&quot;wizard_icon&quot;, &quot;right2&quot;);
+			
+			}
+			
+			var icon = dom.newElement(&quot;div&quot;,APP.CONF.viewlink_id_prefix + workflow[w].identity.id,&quot;icon_div&quot;,div);
+			APP.GUI.icon(icon, &quot;&quot;, &quot;module_icon&quot;, workflow[w].identity.icon);
+			dom.br(icon);
+			dom.span(icon,&quot;&quot;,&quot;&quot;,workflow[w].identity.title);
+			
+			icon.addEventListener(&#x27;click&#x27;, function(num) {
+				return function(){
+					APP.view(num);
+				};
+			}(workflow[w]));
+		}
+	
+	};
+	
+	
+	my.getByID = function(id){
+		
+		return getObjectByID(my.environments, id);
+	
+	};
+	
+	
+	my.get = function(index){
+	
+		return my.environments[index];
+	
+	};
+	
+	
+	my.changeByID = function(id){
+	
+		var index = my.getIndexFromID(id);
+		my.change(index);
+	
+	};
+
+	
+	my.change = function(index){
+
+		APP.save();
+		
+		if (index == -1){
+			my.unloadActive();
+			return;
+		}
+		
+		if (typeof my.active_environment != &quot;undefined&quot;){
+		
+			if (my.environments[index].id == my.active_environment.id){
+				console.log(&quot;Environment does not have to be changed because it is already active: &quot; + my.active_environment.id);
+				return;
+			}
+			
+			my.unloadActive();
+			
+		}
+		
+		APP.GUI.scrollTop();
+		
+		my.load(my.environments[index]);
+	
+	};
+	
+	
+	my.getIndexFromID = function(id){
+		
+		var index = getIndex(my.environments, &quot;id&quot;, id);
+		
+		if (typeof index == &quot;undefined&quot;){
+			console.error(&quot;ERROR: Unknown environment id: &quot; + id);
+		}
+		
+		return index;
+	
+	};
+	
+	
+	my.initFunctions = function(functions){
+	
+		var functions_div = g(&quot;functions&quot;);
+		forEach(functions, function(func) { my.createFunction(functions_div, func); });
+		
+	};
+	
+	
+	my.disableFunction = function(id){
+		
+		if (my.disabled_functions.indexOf(id) == -1){	
+		
+			my.disabled_functions.push(id);
+			APP.GUI.showFunctionsForView(APP.environments.getModuleByViewID(APP.active_view));			
+			
+		}
+
+	};
+	
+	
+	my.enableFunction = function(id){
+		
+		if (my.disabled_functions.indexOf(id) != -1){
+			
+			my.disabled_functions.splice(my.disabled_functions.indexOf(id), 1);
+			APP.GUI.showFunctionsForView(APP.environments.getModuleByViewID(APP.active_view));
+			
+		}		
+	
+	};
+	
+	
+	my.createFunction = function(parent, func){
+		var function_div;
+		
+		if (func.type != &quot;function_wrap&quot;){
+		
+			function_div = dom.make(&quot;div&quot;, func.id, &quot;function_icon&quot;, parent);
+			APP.GUI.icon(function_div,&quot;&quot;,&quot;function_img&quot;, func.icon);
+			var label = dom.h3(function_div, func.label);
+			
+			if (func.label_span_id){
+				dom.make(&quot;span&quot;, func.label_span_id, &quot;&quot;, label);
+			}
+			
+			else if (func.label) {  //if label is there
+				label.innerHTML = func.label;
+			}
+			
+			function_div.addEventListener(&#x27;click&#x27;, func.onclick);
+
+		}
+
+		else {
+		
+			var function_wrap = dom.div(parent, func.wrapper_id, &quot;function_wrap&quot;);
+			
+			function_div = dom.div(function_wrap, func.id, &quot;function_icon&quot;);
+			APP.GUI.icon(function_div,&quot;&quot;,&quot;function_img&quot;, func.icon);
+			dom.h3(function_div, func.label);
+			
+			function_div.addEventListener(&#x27;click&#x27;, func.onclick);
+
+			var sub_div = dom.make(&quot;div&quot;,func.sub_div,&quot;function_sub_div&quot;,function_wrap);
+			
+			if (func.sub_div_innerHTML){
+				sub_div.innerHTML = func.sub_div_innerHTML;
+			}
+			
+			
+			//this cannot be done with css
+			function_div.addEventListener(&#x27;mousedown&#x27;, function(elem) {
+				return function(){
+					elem.style.backgroundColor = &quot;black&quot;;
+				};
+			}(function_div));
+			
+			function_div.addEventListener(&#x27;mouseup&#x27;, function(elem) {
+				return function(){
+					elem.style.backgroundColor = &quot;&quot;;
+				};
+			}(function_div));
+			
+		}
+		
+		if (func.after_that){
+			func.after_that();
+		}
+	
+	};
+	
+	
+	my.add = function(environment){
+	
+		//check if environment with such an id is not already there
+		for (var e=0; e&lt;my.environments.length; e++){
+			if (my.environments[e].id == environment.id){
+				console.warn(&quot;An environment with the id &quot; + environment.id + &quot; is already loaded! Aborting!&quot;);
+				return;
+			}
+		}
+	
+		my.environments.push(environment);
+		my.displayAllInSelect();
+		console.log(&quot;Environment available: &quot; + environment.id + &quot;, v&quot; + environment.version);
+		
+		g(&quot;environment_versions_span&quot;).innerHTML += environment.id + &quot;: v&quot; + environment.version + &quot;&lt;br&gt;&quot;;
+		
+	};
+	
+	
+	return my;
+	
+})();
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

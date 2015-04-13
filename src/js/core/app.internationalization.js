@@ -15,6 +15,11 @@ limitations under the License.
 */
 
 
+/**
+ * A sub module of APP that offers users to create translations of CMDI Maker LanguagePacks (LPs).
+ *
+ * @class APP.intl
+ */
 APP.intl = (function () {
 	'use strict';
 

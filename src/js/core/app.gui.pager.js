@@ -15,6 +15,11 @@ limitations under the License.
 */
 
 
+/**
+ * A sub module of APP.GUI that allows to create a pager for splitting lots of screen elements on several pages.
+ *
+ * @class APP.GUI.pager
+ */
 APP.GUI.pager = function(config){
 
 	var self = this;

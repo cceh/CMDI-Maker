@@ -14,7 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
+/**
+ * A sub module of APP that deals with including, loading and managing CMDI Maker environments.
+ *
+ * @class APP.environments
+ */
 APP.environments = (function () {
 	'use strict';
 	

@@ -1,33 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src\js\core\app.forms.js - CMDI Maker</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..\..\yuidoc_header_image.png" title="CMDI Maker"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 2.10</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/APP.html">APP</a></li>
+            
+                <li><a href="../classes/APP.CONF.html">APP.CONF</a></li>
+            
+                <li><a href="../classes/APP.environments.html">APP.environments</a></li>
+            
+                <li><a href="../classes/APP.forms.html">APP.forms</a></li>
+            
+                <li><a href="../classes/APP.GUI.html">APP.GUI</a></li>
+            
+                <li><a href="../classes/APP.GUI.FORMS.html">APP.GUI.FORMS</a></li>
+            
+                <li><a href="../classes/APP.GUI.pager.html">APP.GUI.pager</a></li>
+            
+                <li><a href="../classes/APP.intl.html">APP.intl</a></li>
+            
+                <li><a href="../classes/APP.save_and_recall.html">APP.save_and_recall</a></li>
+            
+                <li><a href="../classes/APP.settings.html">APP.settings</a></li>
+            
+                <li><a href="../classes/HELPERS.html">HELPERS</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/CORE.html">CORE</a></li>
+            
+                <li><a href="../modules/HELPERS.html">HELPERS</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src\js\core\app.forms.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
 ﻿/*
 Copyright 2014 Sebastian Zimmer
 
-Licensed under the Apache License, Version 2.0 (the "License");
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
 
 /**
- * A sub module of APP that deals with all forms on screen. Generating, manipulating, reading... It's also about data-binding and so on.
+ * A sub module of APP that deals with all forms on screen. Generating, manipulating, reading... It&#x27;s also about data-binding and so on.
  *
  * @class APP.forms
  */
 APP.forms = (function () {
-	'use strict';
+	&#x27;use strict&#x27;;
 	
 	//PRIVATE
 	
 	var checkForValueOrTakeDefault = function(data_object, field){
 		var value;
 		
-		if (typeof data_object != "undefined"){
+		if (typeof data_object != &quot;undefined&quot;){
 			value = data_object;
 		}
 		
@@ -37,20 +149,20 @@ APP.forms = (function () {
 		
 		else {
 		
-			if (field.type == "check"){
+			if (field.type == &quot;check&quot;){
 				value =  false;
 			}
 			
-			else if (field.type == "date"){
+			else if (field.type == &quot;date&quot;){
 				value = {
-					year: "YYYY",
-					month: "MM",
-					day: "DD"
+					year: &quot;YYYY&quot;,
+					month: &quot;MM&quot;,
+					day: &quot;DD&quot;
 				};
 			}
 			
 			else {
-				value = "";
+				value = &quot;&quot;;
 			}
 			
 		}
@@ -62,9 +174,9 @@ APP.forms = (function () {
 	var getValueFromDataObject = function(data_object, field){
 		var value;
 	
-		if (field.name && field.name !== ""){  //sub object
+		if (field.name &amp;&amp; field.name !== &quot;&quot;){  //sub object
 			
-			if (typeof data_object != "undefined" && data_object[field.name]){
+			if (typeof data_object != &quot;undefined&quot; &amp;&amp; data_object[field.name]){
 				value = data_object[field.name];
 			}
 			
@@ -99,14 +211,14 @@ APP.forms = (function () {
 			input = APP.GUI.makeTextInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : (field.default_value || "")),
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name] : (field.default_value || &quot;&quot;)),
 				field.comment,
 				field.maxLength
 			);
 			
 			//if there is a data object, do the data-binding thing!
 			if (data_object){
-				input.addEventListener("blur", function(){
+				input.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name] = input.value;
 				});
 			}
@@ -122,13 +234,13 @@ APP.forms = (function () {
 			input = APP.GUI.makeYearInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : "YYYY"),
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name] : &quot;YYYY&quot;),
 				field.comment
 			);
 			
 			//if there is a data object, do the big data-binding thing!
 			if (data_object){
-				input.addEventListener("blur", function(){
+				input.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name] = input.value;
 				});
 			}
@@ -144,35 +256,35 @@ APP.forms = (function () {
 			input = APP.GUI.makeDateInput(parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name].year : ""),
-				(data_object && data_object[field.name] ? data_object[field.name].month : ""),				
-				(data_object && data_object[field.name] ? data_object[field.name].day : ""),					
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name].year : &quot;&quot;),
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name].month : &quot;&quot;),				
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name].day : &quot;&quot;),					
 				field.comment
 			);
 			
 			//if there is a data object, do the big data-binding thing!
 			if (data_object){
-				input.year.addEventListener("blur", function(){
+				input.year.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name].year = input.year.value;
 				});
 				
-				input.month.addEventListener("blur", function(){
+				input.month.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name].month = input.month.value;
 				});
 				
-				input.day.addEventListener("blur", function(){
+				input.day.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name].day = input.day.value;
 				});
 			}
 			
 			
-			var valid_chars = "0123456789";
+			var valid_chars = &quot;0123456789&quot;;
 			
 			input.year.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (valid_chars.indexOf(chr) == -1 && e.charCode != 0){
-					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+				if (valid_chars.indexOf(chr) == -1 &amp;&amp; e.charCode != 0){
+					APP.log(APP.l(&quot;forms&quot;, &quot;this_character_is_not_allowed_here&quot;),&quot;error&quot;);
 					return false;
 				}
 			};
@@ -180,8 +292,8 @@ APP.forms = (function () {
 			input.month.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (valid_chars.indexOf(chr) == -1 && e.charCode != 0){
-					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+				if (valid_chars.indexOf(chr) == -1 &amp;&amp; e.charCode != 0){
+					APP.log(APP.l(&quot;forms&quot;, &quot;this_character_is_not_allowed_here&quot;),&quot;error&quot;);
 					return false;
 				}
 			};
@@ -189,8 +301,8 @@ APP.forms = (function () {
 			input.day.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (valid_chars.indexOf(chr) == -1 && e.charCode != 0){
-					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+				if (valid_chars.indexOf(chr) == -1 &amp;&amp; e.charCode != 0){
+					APP.log(APP.l(&quot;forms&quot;, &quot;this_character_is_not_allowed_here&quot;),&quot;error&quot;);
 					return false;
 				}
 			};
@@ -211,13 +323,13 @@ APP.forms = (function () {
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : (field.default_value || "")),
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name] : (field.default_value || &quot;&quot;)),
 				field.comment
 			);
 			
 			//if there is a data object, do the big data-binding thing!
 			if (data_object){
-				input.addEventListener("blur", function(){
+				input.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name] = input.value;
 				});
 			}
@@ -235,8 +347,8 @@ APP.forms = (function () {
 			}
 			
 			if (field.fields){
-				if (field.name && field.name !== ""){
-					element_id_prefix += field.name + "_";
+				if (field.name &amp;&amp; field.name !== &quot;&quot;){
+					element_id_prefix += field.name + &quot;_&quot;;
 				}
 				
 				makeForEach(field.fields, parent, element_id_prefix, element_class_prefix, (data_object ? data_object[field.name] : undefined), on_special);
@@ -248,29 +360,29 @@ APP.forms = (function () {
 		
 			var td_name;		
 			
-			if (field.name && field.name !== ""){
+			if (field.name &amp;&amp; field.name !== &quot;&quot;){
 			
-				td_name = field.name+"_td";
+				td_name = field.name+&quot;_td&quot;;
 			
 			}
 			
 			else {
 			
-				td_name = "td";
+				td_name = &quot;td&quot;;
 			
 			}
 		
-			var td = dom.make("td", element_id_prefix+td_name,element_class_prefix+td_name, parent);
+			var td = dom.make(&quot;td&quot;, element_id_prefix+td_name,element_class_prefix+td_name, parent);
 			
-			if (field.title && field.title !== ""){
-				dom.make("h2","","",td,field.title);
+			if (field.title &amp;&amp; field.title !== &quot;&quot;){
+				dom.make(&quot;h2&quot;,&quot;&quot;,&quot;&quot;,td,field.title);
 			}
 			
 			if (field.fields){
 			
-				if (field.name && field.name !== ""){
+				if (field.name &amp;&amp; field.name !== &quot;&quot;){
 			
-					element_id_prefix += field.name + "_";
+					element_id_prefix += field.name + &quot;_&quot;;
 					
 				}
 			
@@ -283,9 +395,9 @@ APP.forms = (function () {
 		form: function(parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 			var form_parent;
 			
-			if ((field.fields) && (field.fields[0]) && (field.fields[0].type == "column")){
-				var table = dom.make("table",element_id_prefix+"table","session_table",parent);
-				var tr = dom.make("tr","","",table);
+			if ((field.fields) &amp;&amp; (field.fields[0]) &amp;&amp; (field.fields[0].type == &quot;column&quot;)){
+				var table = dom.make(&quot;table&quot;,element_id_prefix+&quot;table&quot;,&quot;session_table&quot;,parent);
+				var tr = dom.make(&quot;tr&quot;,&quot;&quot;,&quot;&quot;,table);
 				form_parent = tr;
 			}
 			
@@ -301,10 +413,10 @@ APP.forms = (function () {
 			
 			if (!on_special){
 			
-				console.error("APP.forms.make: Form Template has special fields, but no method on_special has been specified!");
-				console.error("field: ");
+				console.error(&quot;APP.forms.make: Form Template has special fields, but no method on_special has been specified!&quot;);
+				console.error(&quot;field: &quot;);
 				console.error(field);
-				console.error("element_id_prefix: " + element_id_prefix);
+				console.error(&quot;element_id_prefix: &quot; + element_id_prefix);
 				return;
 			
 			}
@@ -323,13 +435,13 @@ APP.forms = (function () {
 				element_id_prefix+field.name,
 				field.size,
 				field.vocabulary,
-				(data_object && data_object[field.name] ? data_object[field.name] : field.default_value),
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name] : field.default_value),
 				field.comment
 			);
 			
 			//if there is a data object, do the big data-binding thing!
 			if (data_object){
-				input.addEventListener("blur", function(){
+				input.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name] = get(input.name);
 				});
 			}
@@ -343,7 +455,7 @@ APP.forms = (function () {
 			var value;
 			var input;
 		
-			if (data_object && data_object[field.name]){
+			if (data_object &amp;&amp; data_object[field.name]){
 				value = data_object[field.name];
 			}
 			
@@ -363,11 +475,11 @@ APP.forms = (function () {
 			
 			//if there is a data object, do the big data-binding thing!
 			if (data_object){			
-				input.text.addEventListener("blur", function(){
+				input.text.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name] = input.text.value;
 				});
 				
-				input.select.addEventListener("blur", function(){
+				input.select.addEventListener(&quot;blur&quot;, function(){
 					data_object[field.name] = get(input.select.name);
 				});
 			}
@@ -384,13 +496,13 @@ APP.forms = (function () {
 				parent, field.heading,
 				element_id_prefix+field.name,
 				element_id_prefix+field.name,
-				(data_object && data_object[field.name] ? data_object[field.name] : false),
+				(data_object &amp;&amp; data_object[field.name] ? data_object[field.name] : false),
 				field.comment
 			);
 			
 			//if there is a data object, do the big data-binding thing!
 			if (data_object){
-				input.addEventListener("blur", function(){
+				input.addEventListener(&quot;blur&quot;, function(){
 					console.log(input);
 					data_object[field.name] = input.checked;
 				});
@@ -409,7 +521,7 @@ APP.forms = (function () {
 		}
 		
 		else {
-			resulting_object[field.name] = "";
+			resulting_object[field.name] = &quot;&quot;;
 		}
 	};
 	
@@ -426,7 +538,7 @@ APP.forms = (function () {
 			}
 			
 			else {
-				resulting_object[field.name] = "YYYY";
+				resulting_object[field.name] = &quot;YYYY&quot;;
 			}
 		},
 		
@@ -448,7 +560,7 @@ APP.forms = (function () {
 		column: function(field, resulting_object) {
 			var sub_object;
 			
-			if (field.name && field.name !== ""){
+			if (field.name &amp;&amp; field.name !== &quot;&quot;){
 				//create sub object
 				sub_object = {};
 				resulting_object[field.name] = sub_object;
@@ -475,9 +587,9 @@ APP.forms = (function () {
 		date: function(field, resulting_object) {
 		
 			var date_object = {
-				year: "",
-				month: "",
-				day: ""
+				year: &quot;&quot;,
+				month: &quot;&quot;,
+				day: &quot;&quot;
 			};
 		
 			resulting_object[field.name] = date_object;
@@ -485,11 +597,11 @@ APP.forms = (function () {
 		},
 		
 		special: function(field, resulting_object) {
-			if (field.object_structure == "array"){
+			if (field.object_structure == &quot;array&quot;){
 				resulting_object[field.name] = [];
 			}
 			
-			else if (field.object_structure == "object"){
+			else if (field.object_structure == &quot;object&quot;){
 				resulting_object[field.name] = {};
 				
 				if (field.object_arrays){
@@ -522,7 +634,7 @@ APP.forms = (function () {
 	
 	var createEmptyObjectForEach = function (fields, resulting_object){
 	
-		if (typeof fields == "undefined"){
+		if (typeof fields == &quot;undefined&quot;){
 			return;
 		}
 	
@@ -552,10 +664,10 @@ APP.forms = (function () {
 		
 		for (var key in data_object){
 		
-			if (typeof data_object[key] == "object"){
+			if (typeof data_object[key] == &quot;object&quot;){
 				
 				var field = {
-					type: "subarea",
+					type: &quot;subarea&quot;,
 					heading: key,
 					id: key,
 					name: key,
@@ -567,15 +679,15 @@ APP.forms = (function () {
 			
 			else {
 				
-				if (data_object[key].length > 25){
-					var type = "textarea";
+				if (data_object[key].length &gt; 25){
+					var type = &quot;textarea&quot;;
 				}
 				
 				else {
-					type = "text";
+					type = &quot;text&quot;;
 				}
 				
-				if (flag == "no_default_values"){
+				if (flag == &quot;no_default_values&quot;){
 					var value = undefined;
 				}
 				
@@ -633,12 +745,12 @@ APP.forms = (function () {
  * @method getTemplateFromDataObject
  * @param {Object} data_object Object that contains the data of which a template is generated.
  * @param {String} form_id ID of the form template that is to be generated.
- * @param {String} flag If flag == "no_default_values", values of data_object will be ignored and not be set as default values in the template
+ * @param {String} flag If flag == &quot;no_default_values&quot;, values of data_object will be ignored and not be set as default values in the template
  */	
 	my.getTemplateFromDataObject = function(data_object, form_id, flag){
 	
 		var template = {
-			type: "form",
+			type: &quot;form&quot;,
 			id: form_id,
 			heading: form_id,
 			fields: []
@@ -659,7 +771,7 @@ APP.forms = (function () {
  * @param {String} element_id_prefix Prefix for the IDs of all generated DOM elements
  * @param {String} element_class_prefix Prefix for the classes of all generated DOM elements 
  * @param {Object} data_object Object that contains form data to be inserted after the form is generated.
- * @param {Function} on_special Function that is called, when type of a field is "special". The following parameters are then passed to this function: (field, parent, element_id_prefix, element_class_prefix)
+ * @param {Function} on_special Function that is called, when type of a field is &quot;special&quot;. The following parameters are then passed to this function: (field, parent, element_id_prefix, element_class_prefix)
  */	
 	my.make = function (parent, field, element_id_prefix, element_class_prefix, data_object, on_special){
 
@@ -667,7 +779,7 @@ APP.forms = (function () {
 		
 		if (!field){
 		
-			console.error("ERROR: APP.forms.make: field is not defined! element_id_prefix = " + element_id_prefix + ". PARENT = ");
+			console.error(&quot;ERROR: APP.forms.make: field is not defined! element_id_prefix = &quot; + element_id_prefix + &quot;. PARENT = &quot;);
 			console.error(parent);
 			return;			
 			
@@ -678,7 +790,7 @@ APP.forms = (function () {
 		}
 		
 		else {
-			console.error("ERROR: APP.forms.make: Field type not supported! Field type = " + field.type);
+			console.error(&quot;ERROR: APP.forms.make: Field type not supported! Field type = &quot; + field.type);
 			return;
 		}
 		
@@ -687,13 +799,13 @@ APP.forms = (function () {
 			input.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (field.not_allowed_chars.indexOf(chr) >= 0){
-					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+				if (field.not_allowed_chars.indexOf(chr) &gt;= 0){
+					APP.log(APP.l(&quot;forms&quot;, &quot;this_character_is_not_allowed_here&quot;),&quot;error&quot;);
 					return false;
 				}
 			};
 			
-			input.addEventListener("blur", function(e){
+			input.addEventListener(&quot;blur&quot;, function(e){
 				var string = strings.removeCharactersFromString(e.target.value, field.not_allowed_chars);
 				input.value = string;
 			});
@@ -706,21 +818,21 @@ APP.forms = (function () {
 			input.onkeypress = function(e) {
 				var chr = String.fromCharCode(e.which);
 				
-				if (field.allowed_chars.indexOf(chr) == -1 && e.charCode != 0){
+				if (field.allowed_chars.indexOf(chr) == -1 &amp;&amp; e.charCode != 0){
 				//we also have to check for e.charCode != 0 here only because of FIREFOX. firefox handles backspace, delete and other
-				//keys as keyboard events on a text input while chrome does not! if we press del in chrome, this event won't be thrown at all.
+				//keys as keyboard events on a text input while chrome does not! if we press del in chrome, this event won&#x27;t be thrown at all.
 				
-					APP.log(APP.l("forms", "this_character_is_not_allowed_here"),"error");
+					APP.log(APP.l(&quot;forms&quot;, &quot;this_character_is_not_allowed_here&quot;),&quot;error&quot;);
 					return false;
 				}
 			};
 			
-			input.addEventListener("blur", function(e){
+			input.addEventListener(&quot;blur&quot;, function(e){
 			
 				var string = e.target.value;
 				
 				if (
-					field.replace_accent_bearing_letters_with_asci_substitute &&
+					field.replace_accent_bearing_letters_with_asci_substitute &amp;&amp;
 					field.replace_accent_bearing_letters_with_asci_substitute == true
 				){
 					string = strings.replaceAccentBearingLettersWithASCISubstitute(string);
@@ -741,15 +853,15 @@ APP.forms = (function () {
 		
 		var target;
 		
-		if (field.type == "column" || field.type == "subarea"){
+		if (field.type == &quot;column&quot; || field.type == &quot;subarea&quot;){
 		
-			if (field.name && field.name !== ""){
-				element_id_prefix += field.name + "_";
+			if (field.name &amp;&amp; field.name !== &quot;&quot;){
+				element_id_prefix += field.name + &quot;_&quot;;
 			}
 		
 		}
 
-		if (field.type == "form" || field.type == "subarea" || field.type == "column"){
+		if (field.type == &quot;form&quot; || field.type == &quot;subarea&quot; || field.type == &quot;column&quot;){
 			
 			forEach(field.fields, function(field){
 			
@@ -761,7 +873,7 @@ APP.forms = (function () {
 			
 		}
 	
-		if (field.type == "year" || field.type == "text" || field.type == "textarea" || field.type == "select" || field.type == "open_vocabulary" || field.type == "check"){
+		if (field.type == &quot;year&quot; || field.type == &quot;text&quot; || field.type == &quot;textarea&quot; || field.type == &quot;select&quot; || field.type == &quot;open_vocabulary&quot; || field.type == &quot;check&quot;){
 		
 			target = checkForValueOrTakeDefault(data_object, field);
 		
@@ -769,17 +881,17 @@ APP.forms = (function () {
 
 		}
 		
-		if (field.type == "date"){
+		if (field.type == &quot;date&quot;){
 		
 			target = checkForValueOrTakeDefault(data_object, field);
 		
-			g(element_id_prefix+field.name+"_year").value = (target.year != "") ? target.year : "YYYY";
-			g(element_id_prefix+field.name+"_month").value = (target.month != "") ? target.month : "MM";
-			g(element_id_prefix+field.name+"_day").value = (target.day != "") ? target.day : "DD";
+			g(element_id_prefix+field.name+&quot;_year&quot;).value = (target.year != &quot;&quot;) ? target.year : &quot;YYYY&quot;;
+			g(element_id_prefix+field.name+&quot;_month&quot;).value = (target.month != &quot;&quot;) ? target.month : &quot;MM&quot;;
+			g(element_id_prefix+field.name+&quot;_day&quot;).value = (target.day != &quot;&quot;) ? target.day : &quot;DD&quot;;
 			
 		}
 		
-		if (field.type == "special" && on_special){
+		if (field.type == &quot;special&quot; &amp;&amp; on_special){
 			on_special(field, element_id_prefix, data_object);
 		}
 		
@@ -795,7 +907,7 @@ APP.forms = (function () {
 		}
 		
 		else {
-			console.log("ERROR: createEmptyObjectFromTemplate: field.type not defined: " + field.type);
+			console.log(&quot;ERROR: createEmptyObjectFromTemplate: field.type not defined: &quot; + field.type);
 		}
 		
 	};
@@ -819,61 +931,61 @@ APP.forms = (function () {
 		var sub_object;
 		
 		if (!field){
-			console.error("fillObjectWithFormData: FIELD is undefined. element_id_prefix = " + element_id_prefix)
+			console.error(&quot;fillObjectWithFormData: FIELD is undefined. element_id_prefix = &quot; + element_id_prefix)
 			return;
 		}
 
 		if (!object){
-			console.error("fillObjectWithFormData: object is undefined. element_id_prefix = " + element_id_prefix)
+			console.error(&quot;fillObjectWithFormData: object is undefined. element_id_prefix = &quot; + element_id_prefix)
 			return;
 		}		
 		
 
-		if ((field.type == "year") || (field.type == "text") || (field.type == "textarea") || (field.type == "select") || (field.type == "open_vocabulary")){
+		if ((field.type == &quot;year&quot;) || (field.type == &quot;text&quot;) || (field.type == &quot;textarea&quot;) || (field.type == &quot;select&quot;) || (field.type == &quot;open_vocabulary&quot;)){
 
 			object[field.name] = get(element_id_prefix+field.name);
 			
 		}
 		
-		if (field.type == "check"){
+		if (field.type == &quot;check&quot;){
 
 			object[field.name] = g(element_id_prefix+field.name).checked;
 			
 		}
 		
-		if (field.type == "date"){
+		if (field.type == &quot;date&quot;){
 		
-			object[field.name].year = get(element_id_prefix+field.name+"_year");
-			object[field.name].month = get(element_id_prefix+field.name+"_month");
-			object[field.name].day = get(element_id_prefix+field.name+"_day");
+			object[field.name].year = get(element_id_prefix+field.name+&quot;_year&quot;);
+			object[field.name].month = get(element_id_prefix+field.name+&quot;_month&quot;);
+			object[field.name].day = get(element_id_prefix+field.name+&quot;_day&quot;);
 		}
 		
-		if (field.type == "column"){
+		if (field.type == &quot;column&quot;){
 			
-			if (field.name && field.name !== ""){
-				element_id_prefix += field.name + "_";
+			if (field.name &amp;&amp; field.name !== &quot;&quot;){
+				element_id_prefix += field.name + &quot;_&quot;;
 			}
 			
 			fillObjectForEach(field.fields, object, element_id_prefix);
 			
 		}
 		
-		if (field.type == "subarea"){
+		if (field.type == &quot;subarea&quot;){
 		
-			if (field.name && field.name !== ""){
-				element_id_prefix += field.name + "_";
+			if (field.name &amp;&amp; field.name !== &quot;&quot;){
+				element_id_prefix += field.name + &quot;_&quot;;
 			}
 			
 			fillObjectForEach(field.fields, object[field.name], element_id_prefix);
 			
 		}
 		
-		if (field.type == "form"){
+		if (field.type == &quot;form&quot;){
 		
 			forEach(field.fields, function(field){
 				
 				//check if a sub object has to be created
-				if (field.name && field.name !== "" && (field.type == "column"/* || field.type == "subarea"*/)){
+				if (field.name &amp;&amp; field.name !== &quot;&quot; &amp;&amp; (field.type == &quot;column&quot;/* || field.type == &quot;subarea&quot;*/)){
 					sub_object = object[field.name];
 				}
 				
@@ -888,7 +1000,7 @@ APP.forms = (function () {
 			
 		}
 		
-		if (field.type == "special" && on_special){
+		if (field.type == &quot;special&quot; &amp;&amp; on_special){
 			on_special(object, element_id_prefix, field);
 		}
 		
@@ -899,3 +1011,22 @@ APP.forms = (function () {
 	return my;
 	
 })();
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
