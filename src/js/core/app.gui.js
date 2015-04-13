@@ -778,7 +778,7 @@ APP.GUI = (function() {
 			g(APP.CONF.log_section_id).style.bottom = "50px";
 		}
 	
-	};	
+	};
 	
 
 /**
@@ -979,7 +979,18 @@ APP.GUI = (function() {
 	
 	};
 	
-	
+
+/**
+ * Creates a GUI form that can contain an XML document. With this form, it is possible then to download the XML or to send it to an URL via HTTP POST.
+ * @method createXMLOutputDIV
+ * @param {Object} parent Parent DOM element
+ * @param {String} title Heading of the form.
+ * @param {String} textarea_id DOM element id of the textarea, that contains the XML document.
+ * @param {String} value XML document
+ * @param {String} filename Name of the file that is saved on the computer, when the user clicks on "Save"
+ * @param {Boolean} mockup If true, the form's color will be red and there will be a warning message to not use this XML document as it is invalid.
+ * @param {Object} http_post_information Object that contains information on how to send this XML document via HTTP post. Keys are "xml_string_key" (Key of the POST parameter that contains the XML string), "url", "additional_headers" (array of key-value-pairs, that are added as headers to the HTTP request) and "additional_data" (data that is appended to post payload)
+ */		
 	my.createXMLOutputDIV = function (parent, title, textarea_id, value, filename, mockup, http_post_information){
 
 		var div = dom.make("div", "", "output_div", parent);
