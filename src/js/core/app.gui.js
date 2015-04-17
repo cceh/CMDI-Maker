@@ -157,7 +157,7 @@ APP.GUI = (function() {
  * @param {String} id ID of the input element
  * @param {String} value Value
  * @param {String} hover HTML Title Element value. This value is displayed as a tooltip when mouse is hovering above the element.
- * @param maxLength Maximum length of chars in element.
+ * @param {Number} maxLength Maximum length of chars in element.
  * @return {Object} Element that is to be created.
  */	
 	my.makeTextInput = function (parent, title, name, id, value, hover, maxLength){

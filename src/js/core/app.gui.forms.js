@@ -27,6 +27,13 @@ APP.GUI.FORMS = (function() {
 	var my = {};
 
 	
+/**
+ * Creates a drop zone on screen, where the user can drag files into. They are made available as File Object then. Under the drop zone, a usual file upload form element is added.
+ * @method fileDropZone
+ * @param {Object} parent Parent element in DOM
+ * @param {String} id ID of the input element
+ * @param {Function} onchange Callback function to be called, when one or more files are dropped.
+ */	
 	my.fileDropZone = function(parent, id, onchange){
 	
 		var dropZone = dom.make("div", id, "fileDropZone", parent,"<h2>" + l("forms", "drag_and_drop_files_here") + "</h2>");
@@ -59,6 +66,17 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
+/**
+ * Creates a simple red box with a delete icon in the upper right corner.
+ * @method redBox
+ * @param {Object} parent Parent element in DOM
+ * @param {String} element_id ID of the input element
+ * @param {String} additionalClassName Additional class name that is added to the red box. By default, it has the class name 'redBox'
+ * @param {Mixed} content Content to be inserted in the box. Can be string, strings, a DOM node or several DOM nodes.
+ * @param {Function} on_delete Function that is called when the user clicks on the delete icon.
+ * @param {String} width Width of the box in pixel.
+ * @return {Object} Object that contains DOM nodes of the box itself and of the box content. Keys are "box" and "content".
+ */	
 	my.redBox = function(parent, element_id, additionalClassName, content, on_delete, width){
 	
 		var box = dom.div(parent, element_id, "redBox");
@@ -87,6 +105,17 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
+/**
+ * Creates a form on screen that the user can expand and collapse/minimize. When minimized, the user sees only the header.
+ * @method expandableForm
+ * @param {Object} parent Parent element in DOM
+ * @param {String} element_prefix Prefix of the IDs of all DOM nodes created here.
+ * @param {Boolean} Shall the form be expanded or not at the beginning.
+ * @param {Function} on_expand_collapse Callback function that is called, when the user expands or collapses the form. Parameter is "true" when expanding and "false" when collapsing.
+ * @param {Function} on_delete Callback function to be called, when the user clicks on the delete icon. Parameter "id" is passed.
+ * @param {String} id Custom id that can be appended to the form. This ID is passed to on_delete when the user clicks on the delete icon.
+ * @return {Object} Object with several created DOM nodes. Keys are "form", "header", "label", "content", "delete_icon", "display_icon"
+ */	
 	my.expandableForm = function(parent, element_prefix, expanded, on_expand_collapse, on_delete, id){
 	
 		var form = dom.make('div', element_prefix, 'expandable_form', parent); 
@@ -96,7 +125,7 @@ APP.GUI.FORMS = (function() {
 			return function(){
 				my.expandableFormViewChange(num, on_expand_collapse, num2);
 			};
-		}(element_prefix, id) );
+		}(element_prefix, id));
 
 		var label = dom.make('h1', element_prefix + '_label','expandable_form_heading', header);
 
@@ -133,7 +162,12 @@ APP.GUI.FORMS = (function() {
 	
 	};
 	
-	
+
+/**
+ * Collapses/minimizes an expandableForm, so that only its header is shown. (This function is not to be used from outside. Maybe it should go to PRIVATE.)
+ * @method collapseExpandableForm
+ * @param {String} element_prefix Element prefix of the form to be collapsed.
+ */	
 	my.collapseExpandableForm = function (element_prefix){
 
 		dom.hideElement(g(element_prefix + "_content"));
@@ -142,6 +176,12 @@ APP.GUI.FORMS = (function() {
 	};
 	
 
+/**
+ * Changes the view of an expandable form. If it was expanded, it will be collapsed, or the other way around.
+ * @method expandableFormViewChange
+ * @param {String} element_prefix Element prefix of the form to be collapsed.
+ * @param {Function} on_expand_collapse Function that is to be called in addition. An event object is passed that contains the keys "id" and "expanded" (set to true or false)
+ */	
 	my.expandableFormViewChange = function(element_prefix, on_expand_collapse, id){
 	
 		var content = g(element_prefix + "_content");
@@ -175,6 +215,16 @@ APP.GUI.FORMS = (function() {
 	};
 	
 	
+/**
+ * Creates a thin list (width = approx. 230px) in the DOM that consists of small blue boxes and one highlighted purple box.
+ * @method clickableListSmall
+ * @param {Object} parent Parent element in DOM
+ * @param {Array} titles Array with title strings of the items.
+ * @param {Array} subtitles Array with subtitle strings of the items.
+ * @param {Function} action Callback function that is called, when the user clicks on one item. Item index is passed to the function.
+ * @param {String} id DOM element ID
+ * @return {Number} highlighted_index Index of item to highlight
+ */	
 	my.clickableListSmall = function(parent, titles, subtitles, action, id, highlighted_index){
 	
 		var self = this;
