@@ -306,6 +306,26 @@
     },
     "classitems": [
         {
+            "file": "src\\js\\core\\app.environments.js",
+            "line": 51,
+            "description": "Checks if an environment is currently loaded.",
+            "itemtype": "method",
+            "name": "isAnEnvironmentLoaded",
+            "return": {
+                "description": "True or false",
+                "type": "Boolean"
+            },
+            "class": "APP.environments"
+        },
+        {
+            "file": "src\\js\\core\\app.environments.js",
+            "line": 69,
+            "description": "Displays all available environments in the GUI select elements on the start page and in the settings view.",
+            "itemtype": "method",
+            "name": "displayAllInSelect",
+            "class": "APP.environments"
+        },
+        {
             "file": "src\\js\\core\\app.forms.js",
             "line": 613,
             "description": "Generates a form without a template. Assumes that every field in JSON data_object is of type string and thus always makes text input elements",
@@ -404,6 +424,193 @@
                 }
             ],
             "class": "APP.forms"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.forms.js",
+            "line": 30,
+            "description": "Creates a drop zone on screen, where the user can drag files into. They are made available as File Object then. Under the drop zone, a usual file upload form element is added.",
+            "itemtype": "method",
+            "name": "fileDropZone",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM",
+                    "type": "Object"
+                },
+                {
+                    "name": "id",
+                    "description": "ID of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "onchange",
+                    "description": "Callback function to be called, when one or more files are dropped.",
+                    "type": "Function"
+                }
+            ],
+            "class": "APP.GUI.FORMS"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.forms.js",
+            "line": 69,
+            "description": "Creates a simple red box with a delete icon in the upper right corner.",
+            "itemtype": "method",
+            "name": "redBox",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM",
+                    "type": "Object"
+                },
+                {
+                    "name": "element_id",
+                    "description": "ID of the input element",
+                    "type": "String"
+                },
+                {
+                    "name": "additionalClassName",
+                    "description": "Additional class name that is added to the red box. By default, it has the class name 'redBox'",
+                    "type": "String"
+                },
+                {
+                    "name": "content",
+                    "description": "Content to be inserted in the box. Can be string, strings, a DOM node or several DOM nodes.",
+                    "type": "Mixed"
+                },
+                {
+                    "name": "on_delete",
+                    "description": "Function that is called when the user clicks on the delete icon.",
+                    "type": "Function"
+                },
+                {
+                    "name": "width",
+                    "description": "Width of the box in pixel.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Object that contains DOM nodes of the box itself and of the box content. Keys are \"box\" and \"content\".",
+                "type": "Object"
+            },
+            "class": "APP.GUI.FORMS"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.forms.js",
+            "line": 108,
+            "description": "Creates a form on screen that the user can expand and collapse/minimize. When minimized, the user sees only the header.",
+            "itemtype": "method",
+            "name": "expandableForm",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM",
+                    "type": "Object"
+                },
+                {
+                    "name": "element_prefix",
+                    "description": "Prefix of the IDs of all DOM nodes created here.",
+                    "type": "String"
+                },
+                {
+                    "name": "Shall",
+                    "description": "the form be expanded or not at the beginning.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "on_expand_collapse",
+                    "description": "Callback function that is called, when the user expands or collapses the form. Parameter is \"true\" when expanding and \"false\" when collapsing.",
+                    "type": "Function"
+                },
+                {
+                    "name": "on_delete",
+                    "description": "Callback function to be called, when the user clicks on the delete icon. Parameter \"id\" is passed.",
+                    "type": "Function"
+                },
+                {
+                    "name": "id",
+                    "description": "Custom id that can be appended to the form. This ID is passed to on_delete when the user clicks on the delete icon.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Object with several created DOM nodes. Keys are \"form\", \"header\", \"label\", \"content\", \"delete_icon\", \"display_icon\"",
+                "type": "Object"
+            },
+            "class": "APP.GUI.FORMS"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.forms.js",
+            "line": 166,
+            "description": "Collapses/minimizes an expandableForm, so that only its header is shown. (This function is not to be used from outside. Maybe it should go to PRIVATE.)",
+            "itemtype": "method",
+            "name": "collapseExpandableForm",
+            "params": [
+                {
+                    "name": "element_prefix",
+                    "description": "Element prefix of the form to be collapsed.",
+                    "type": "String"
+                }
+            ],
+            "class": "APP.GUI.FORMS"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.forms.js",
+            "line": 179,
+            "description": "Changes the view of an expandable form. If it was expanded, it will be collapsed, or the other way around.",
+            "itemtype": "method",
+            "name": "expandableFormViewChange",
+            "params": [
+                {
+                    "name": "element_prefix",
+                    "description": "Element prefix of the form to be collapsed.",
+                    "type": "String"
+                },
+                {
+                    "name": "on_expand_collapse",
+                    "description": "Function that is to be called in addition. An event object is passed that contains the keys \"id\" and \"expanded\" (set to true or false)",
+                    "type": "Function"
+                }
+            ],
+            "class": "APP.GUI.FORMS"
+        },
+        {
+            "file": "src\\js\\core\\app.gui.forms.js",
+            "line": 218,
+            "description": "Creates a thin list (width = approx. 230px) in the DOM that consists of small blue boxes and one highlighted purple box.",
+            "itemtype": "method",
+            "name": "clickableListSmall",
+            "params": [
+                {
+                    "name": "parent",
+                    "description": "Parent element in DOM",
+                    "type": "Object"
+                },
+                {
+                    "name": "titles",
+                    "description": "Array with title strings of the items.",
+                    "type": "Array"
+                },
+                {
+                    "name": "subtitles",
+                    "description": "Array with subtitle strings of the items.",
+                    "type": "Array"
+                },
+                {
+                    "name": "action",
+                    "description": "Callback function that is called, when the user clicks on one item. Item index is passed to the function.",
+                    "type": "Function"
+                },
+                {
+                    "name": "id",
+                    "description": "DOM element ID",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "highlighted_index Index of item to highlight",
+                "type": "Number"
+            },
+            "class": "APP.GUI.FORMS"
         },
         {
             "file": "src\\js\\core\\app.gui.js",
@@ -505,7 +712,8 @@
                 },
                 {
                     "name": "maxLength",
-                    "description": "Maximum length of chars in element."
+                    "description": "Maximum length of chars in element.",
+                    "type": "Number"
                 }
             ],
             "return": {
@@ -2001,7 +2209,43 @@
         },
         {
             "file": "src\\js\\helpers.js",
-            "line": 64,
+            "line": 30,
+            "description": "Sends a HTTP POST via AJAX.",
+            "itemtype": "method",
+            "name": "postWithAJAX",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL of the resource.",
+                    "type": "String"
+                },
+                {
+                    "name": "post_data",
+                    "description": "Request body data as string.",
+                    "type": "String"
+                },
+                {
+                    "name": "success_callback",
+                    "description": "Callback function to be called when there is a HTTP response. It gets the XMLHttpRequest object.",
+                    "type": "Function"
+                },
+                {
+                    "name": "additional_headers",
+                    "description": "Array with key-value-pairs, that are used as HTTP request headers.",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Returns the value of XMLHttpRequest.send()",
+                "type": "Object"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 74,
             "description": "Downloads a resource via AJAX, using the HTTP GET method.",
             "itemtype": "method",
             "name": "getWithAJAX",
@@ -2027,7 +2271,7 @@
         },
         {
             "file": "src\\js\\helpers.js",
-            "line": 96,
+            "line": 106,
             "description": "Downloads a text resource via AJAX, using the HTTP GET method.",
             "itemtype": "method",
             "name": "getTextWithAJAX",
@@ -2053,7 +2297,7 @@
         },
         {
             "file": "src\\js\\helpers.js",
-            "line": 114,
+            "line": 124,
             "description": "Downloads a JSON resource via AJAX, using the HTTP GET method.",
             "itemtype": "method",
             "name": "getJSONWithAJAX",
@@ -2079,7 +2323,7 @@
         },
         {
             "file": "src\\js\\helpers.js",
-            "line": 131,
+            "line": 141,
             "description": "Clones a javascript object (instead of just copying references of it).",
             "itemtype": "method",
             "name": "cloneObject",
@@ -2100,7 +2344,7 @@
         },
         {
             "file": "src\\js\\helpers.js",
-            "line": 158,
+            "line": 168,
             "description": "Parses a Javascript Blob object for its text. This obviously works only with text files.",
             "itemtype": "method",
             "name": "readFileAsText",
@@ -2122,7 +2366,399 @@
         },
         {
             "file": "src\\js\\helpers.js",
-            "line": 518,
+            "line": 193,
+            "description": "Parses a JSON string to a JavaScript object. If JSON is invalid, the error is catched and a callback function is called. This is better than just relying on JSON.parse throwing real errors.",
+            "itemtype": "method",
+            "name": "parseJSON",
+            "params": [
+                {
+                    "name": "string",
+                    "description": "JSON string",
+                    "type": "String"
+                },
+                {
+                    "name": "onsuccess",
+                    "description": "Function to be called when JSON could be parsed. Javascript Object is passed as parameter.",
+                    "type": "Function"
+                },
+                {
+                    "name": "onerror",
+                    "description": "Function to be called when JSON could not be parsed. No parameters are passed here.",
+                    "type": "Function"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 230,
+            "description": "Reads the JSON content of a Javascript File Object and parses it.",
+            "itemtype": "method",
+            "name": "readFileAsJSON",
+            "params": [
+                {
+                    "name": "Javascript",
+                    "description": "File Object to be parsed",
+                    "type": "Object"
+                },
+                {
+                    "name": "onsuccess",
+                    "description": "Function to be called when JSON could be parsed. Javascript Object is passed as parameter.",
+                    "type": "Function"
+                },
+                {
+                    "name": "onerror",
+                    "description": "Function to be called when JSON could not be parsed. No parameters are passed here.",
+                    "type": "Function"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 247,
+            "description": "Loads a script from a URL and adds it dynamically to the webapp.",
+            "itemtype": "method",
+            "name": "addScript",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL of the JS file",
+                    "type": "String"
+                },
+                {
+                    "name": "onloaded",
+                    "description": "Function to be called when script is loaded and ready.",
+                    "type": "Function"
+                },
+                {
+                    "name": "async",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 278,
+            "description": "Loads a CSS stylesheet file from a URL and adds it dynamically to the webapp.",
+            "itemtype": "method",
+            "name": "addStylesheet",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL of the CSS file",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 298,
+            "description": "Adds either a JS file or a CSS file to the web page. This function is a wrapper of the two functions addScript and addStylesheet",
+            "itemtype": "method",
+            "name": "addFile",
+            "params": [
+                {
+                    "name": "filename",
+                    "description": "URL of the resource",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 317,
+            "description": "Adds files to the web page, which can be either JS or CSS. This function is a wrapper of the function addFile, which again is a wrapper of addScript and addStylesheet",
+            "itemtype": "method",
+            "name": "addFiles",
+            "params": [
+                {
+                    "name": "string_or_array",
+                    "description": "String or array of strings with URL(s) of the resource(s)",
+                    "type": "Mixed"
+                },
+                {
+                    "name": "url_prefix",
+                    "description": "Prefix which is added to each passed URL",
+                    "type": "String"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 356,
+            "description": "Searches an array of objects. If an object is found, where object[key]==value, the function returns the index of the object in the array.",
+            "itemtype": "method",
+            "name": "getIndex",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Array of Javascript Objects",
+                    "type": "Array"
+                },
+                {
+                    "name": "key",
+                    "description": "Key in object",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "Value of key in object",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns index as number or undefined, if there is no such object.",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 379,
+            "description": "Searches an array of objects. If an object is found, where object[\"id\"]==value, the function returns the index of the object in the array.",
+            "itemtype": "method",
+            "name": "getIndexByID",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Array of Javascript Objects",
+                    "type": "Array"
+                },
+                {
+                    "name": "id",
+                    "description": "Value of ID",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns index as number or undefined, if there is no such object.",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 394,
+            "description": "Searches an array of objects. If an object is found, where object[key]==value, the function returns the respective object.",
+            "itemtype": "method",
+            "name": "getObject",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Array of Javascript Objects",
+                    "type": "Array"
+                },
+                {
+                    "name": "key",
+                    "description": "Key in object",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "Value of key in object",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns an object or undefined, if there is no such object.",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 417,
+            "description": "Searches an array of objects. If an object is found, where object[\"id\"]==value, the function returns the the respective object.",
+            "itemtype": "method",
+            "name": "getIndexByID",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Array of Javascript Objects",
+                    "type": "Array"
+                },
+                {
+                    "name": "id",
+                    "description": "Value of ID",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns an object or undefined, if there is no such object.",
+                "type": "Mixed"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 432,
+            "description": "Iterates through ALL items of an array. This function should be preferred over forEach, when the action could delete items of the array. I. e. this function iterates really through ALL items, even if some of them are deleted along the way.",
+            "itemtype": "method",
+            "name": "forAllItems",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Any array",
+                    "type": "Array"
+                },
+                {
+                    "name": "action",
+                    "description": "Action that is performed on each item.",
+                    "type": "Function"
+                }
+            ],
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 461,
+            "description": "Maps an array like Array.map()",
+            "itemtype": "method",
+            "name": "maps",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Any array",
+                    "type": "Array"
+                },
+                {
+                    "name": "transform",
+                    "description": "Transformation method that is performed on each item",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Returns the resulting array of the map.",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 480,
+            "description": "Creates an array with values by an array of JS objects. Of every object, the value of a specific key is taken.",
+            "itemtype": "method",
+            "name": "getArrayWithValuesByKey",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Any array",
+                    "type": "Array"
+                },
+                {
+                    "name": "key",
+                    "description": "Key, of which the value is taken.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Array with values.",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 499,
+            "description": "Creates an array with IDs by an array of JS objects. Of every object, the value of the key \"id\" is taken.",
+            "itemtype": "method",
+            "name": "getArrayWithIDs",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Any array",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Array with IDs",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 513,
+            "description": "Filters an array like Array.filter()",
+            "itemtype": "method",
+            "name": "filter",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "Any array",
+                    "type": "Array"
+                },
+                {
+                    "name": "test",
+                    "description": "Test function that is called for every array item. Array item is passed. If the function returns true, the item will appear in the array that is returned.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Filtered array",
+                "type": "Array"
+            },
+            "static": 1,
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 643,
+            "description": "Remove an element and provide a function that inserts it into its original position",
+            "itemtype": "method",
+            "name": "removeToInsertLater",
+            "params": [
+                {
+                    "name": "element",
+                    "description": "The element to be temporarily removed",
+                    "type": "Element"
+                }
+            ],
+            "return": {
+                "description": "A function that inserts the element into its original position",
+                "type": "Function"
+            },
+            "class": "HELPERS",
+            "module": "HELPERS"
+        },
+        {
+            "file": "src\\js\\helpers.js",
+            "line": 663,
             "description": "Remove an element and provide a function that inserts it into its original position",
             "params": [
                 {
@@ -2246,7 +2882,7 @@
         },
         {
             "message": "Missing item type\nRemove an element and provide a function that inserts it into its original position",
-            "line": " src\\js\\helpers.js:518"
+            "line": " src\\js\\helpers.js:663"
         }
     ]
 }

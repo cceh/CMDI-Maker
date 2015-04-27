@@ -201,7 +201,42 @@ APP.save_and_recall = (function () {
 		}
 		
 		console.log("Form saved");
+		
+		
+		//my.checkRemainingLocalStorageCapacity();
 
+	};
+	
+	
+	
+	my.checkRemainingLocalStorageCapacity = function(){
+	
+		localStorage.setItem("DATA", "m");
+		
+		for(var i=0 ; i<40 ; i++) {
+		
+			var data = localStorage.getItem("DATA");
+			
+			try { 
+				localStorage.setItem("DATA", data + data);
+			}
+			
+			catch(e) {
+			
+				console.log("LIMIT REACHED: (" + i + ")");
+				console.log(e);
+				
+				if (i < 10){
+					APP.alert("WARNING!<br>LocalStorage is almost full! Please delete some data or raise your browser's LocalStorage capacity!");
+				}
+				
+				break;
+				
+			}
+		}
+		
+		localStorage.removeItem("DATA");
+	
 	};
 	
 
