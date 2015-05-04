@@ -935,7 +935,10 @@ APP.GUI = (function() {
 			
 		}
 		
-		var frame = dom.make("div",APP.CONF.select_frame_id,APP.CONF.select_frame_id,SF_view,"");	
+		//show everyone, where this select frame came from
+		SF_view.setAttribute("originator_view_id", old_view);
+		
+		var frame = dom.make("div", APP.CONF.select_frame_id, APP.CONF.select_frame_id, SF_view, "");	
 		frame.style.display = "block";
 		
 		dom.make("h1","","",frame,title); 
@@ -947,11 +950,11 @@ APP.GUI = (function() {
 			APP.view(old_view); 
 		} );
 		
-		dom.h3(frame,subtitle);
+		dom.h3(frame, subtitle);
 		
 		for (var j=0; j<options.length; j++){
 		
-			var a = dom.link(frame,'cl_results_link_'+j,'cl_results_link',"",function(num) {
+			var a = dom.link(frame, 'cl_results_link_'+j, 'cl_results_link', "", function(num) {
 				return function(){
 					callback(num);
 					
@@ -966,6 +969,21 @@ APP.GUI = (function() {
 		
 		APP.view("VIEW_SF");
 	
+	};
+	
+	
+	my.closeSelectFrame = function(){
+		
+		//only do something if we're really in select frame. otherwise we would always mess up things when pressing ESCAPE
+		if (APP.active_view == "VIEW_SF"){
+			
+			var originator_view_id = g("VIEW_SF").getAttribute("originator_view_id");
+		
+			APP.view(originator_view_id);
+			
+		}
+		
+		
 	};
 	
 
