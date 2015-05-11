@@ -386,7 +386,7 @@ var APP = (function () {
 				onclick: function(){ my.GUI.showFileDialog(APP.save_and_recall.loadFromFile);}
 			},
 			{
-				title: my.l("main", "export_to_file"),
+				title: my.l("main", "save_to_file"),
 				id: "LINK_export_to_file",
 				icon:	"save",
 				onclick: function(){ my.save_and_recall.saveActiveEnvironmentStateToFile(); }
