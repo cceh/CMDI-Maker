@@ -246,9 +246,9 @@ var dates = (function() {
 	
 	my.dateAsString = function(date){
 
-		var year = date.year;
-		var month = date.month;
-		var day = date.day;
+		var year = parseInt(date.year);
+		var month = parseInt(date.month);
+		var day = parseInt(date.day);
 
 		if (month < 10){
 		
