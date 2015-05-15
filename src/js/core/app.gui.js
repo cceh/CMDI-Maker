@@ -620,7 +620,7 @@ APP.GUI = (function() {
 		if (!hover){
 			hover = "";
 		}
-
+		
 		var span = dom.spanBR(parent, "", "", title);
 		span.title = hover;
 		

@@ -408,6 +408,11 @@ APP.forms = (function () {
 			resulting_object[field.name] = field.default_value;
 		}
 		
+		//if field is a select without default_value, the string should not be empty!
+		else if (field.type == "select" && field.vocabulary && field.vocabulary.length > 0){
+			resulting_object[field.name] = field.vocabulary[0];
+		}
+		
 		else {
 			resulting_object[field.name] = "";
 		}
