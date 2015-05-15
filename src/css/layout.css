@@ -897,3 +897,12 @@ float: right;
 	padding-left: 10px;
 	margin-right: 10px;
 }
+
+
+
+.edit_img{
+	width: 18px;
+	height: 15px;
+	margin-left: 3px;
+	cursor: pointer;
+}
