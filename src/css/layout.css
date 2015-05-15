@@ -886,6 +886,26 @@ float: right;
 }
 
 
+.fileDropZone{
+
+	background-color: lightsalmon;
+	text-align: center;
+	border-radius: 15px;
+	height: 156px;
+	width:220px;
+
+}
+
+
+.fileDropZone h2{
+
+	font-size: 200%;
+	padding: 30px;
+	margin:0px;
+
+}
+
+
 #internationalization_introduction{
 	font-size: 13pt;
 	margin-top: 0px;
