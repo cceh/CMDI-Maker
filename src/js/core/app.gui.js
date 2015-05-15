@@ -161,11 +161,13 @@ APP.GUI = (function() {
  * @return {Object} Element that is to be created.
  */	
 	my.makeTextInput = function (parent, title, name, id, value, hover, maxLength){
-
-		var span = dom.spanBR(parent, "", "", title);
 		
-		if (hover){		
-			span.title = hover;
+		if (title){
+			var span = dom.spanBR(parent, "", "", title);
+			
+			if (hover){		
+				span.title = hover;
+			}
 		}
 
 		var input = dom.input(parent, id, "", name, "text", value);
@@ -198,10 +200,12 @@ APP.GUI = (function() {
  */		
 	my.makeYearInput = function (parent, title, name, id, value, hover){
 
-		var span = dom.spanBR(parent, "", "", title);
-		
-		if (hover){		
-			span.title = hover;
+		if (title){
+			var span = dom.spanBR(parent, "", "", title);
+			
+			if (hover){		
+				span.title = hover;
+			}
 		}
 
 		var input = dom.input(parent, id, "YearInput", name, "text", (value !== "") ? value : "YYYY");
