@@ -595,7 +595,10 @@ var ObjectList = function(start_array) {
 	
 		if (self.IDexists(id)){
 			pointer = id;
+			return true;
 		}
+		
+		return false;
 	
 	};
 	
