@@ -494,6 +494,25 @@ var dom = (function() {
 	};
 	
 	
+	my.setSelectValue = function(select, value){
+		
+		for (var i=0, len=select.options.length; i<len; i++){
+			
+			if (select.options[i].value == value){
+				
+				select.selectedIndex = i;
+				return;
+				
+			}
+			
+		}
+		
+		//if value isn't available, set no selectedIndex
+		select.selectedIndex = -1;
+		
+	}
+	
+	
 	my.appendOption = function(select, text, value){
 	
 		var NewOption = new Option(text, value, false, true);

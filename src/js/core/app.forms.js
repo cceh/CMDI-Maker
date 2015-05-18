@@ -24,6 +24,8 @@ APP.forms = (function () {
 	
 	//PRIVATE
 	
+	//check if value can be taken by data_object. if not, check if there is a default_value.
+	//if not, return empty string as value. for selects, empty strings are replaced by select.selectedIndex=-1
 	var checkForValueOrTakeDefault = function(data_object, field){
 		var value;
 		
@@ -56,6 +58,7 @@ APP.forms = (function () {
 		}
 	
 		return value;
+		
 	};
 	
 	
@@ -766,13 +769,23 @@ APP.forms = (function () {
 			
 		}
 	
-		if (field.type == "year" || field.type == "text" || field.type == "textarea" || field.type == "select" || field.type == "open_vocabulary" || field.type == "check"){
+		if (field.type == "year" || field.type == "text" || field.type == "textarea" || field.type == "open_vocabulary" || field.type == "check"){
 		
 			target = checkForValueOrTakeDefault(data_object, field);
 		
 			APP.GUI.setFormValue(element_id_prefix+field.name, target, field.vocabulary);
 
 		}
+		
+		
+		if (field.type == "select"){
+			
+			target = checkForValueOrTakeDefault(data_object, field);
+			
+			dom.setSelectValue(g(element_id_prefix + field.name), target);
+			
+		}
+		
 		
 		if (field.type == "date"){
 		
