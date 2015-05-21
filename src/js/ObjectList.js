@@ -560,6 +560,17 @@ var ObjectList = function(start_array) {
 	};
 	
 	
+	this.deleteKeyInAllItems = function(key){
+	
+		for (var i = 0; i < list.length; i++){
+			if (list[i][key]){
+				delete list[i][key];
+			}
+		}		
+	
+	};
+	
+	
 	this.isThereAnyItemWhereSubKeyIsValue = function(key, subkey, value){
 	
 		for (var i = 0; i < list.length; i++){
