@@ -68,8 +68,10 @@ img/icons/warning.png
 img/icons/wrench.png
 imdi_environment.js
 eldp_environment.js
+lido_environment.js
 imdi_environment.css
 eldp_environment.css
+lido_environment.css
 
 
 NETWORK:

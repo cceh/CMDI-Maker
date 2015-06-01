@@ -21,14 +21,16 @@ var notify = require('gulp-notify');
 // !!! You are responsible for their real existence at their specified position !!!
 var environment_scripts = [
 	"imdi_environment.js",
-	"eldp_environment.js"
+	"eldp_environment.js",
+	"lido_environment.js"
 ];
 
 // Here you can specify environment stylesheets which shall be included in the build/index.html as well as in the build/mdi-maker.appcache
 // !!! You are responsible for their real existence at their specified position !!!
 var environment_stylesheets = [
 	"imdi_environment.css",
-	"eldp_environment.css"
+	"eldp_environment.css",
+	"lido_environment.css"
 ];
 
 
