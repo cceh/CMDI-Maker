@@ -62,7 +62,20 @@ APP.settings = (function () {
 		file: function(setting, parent){
 		
 			var input = dom.input(parent,setting.file_input_id,"",setting.file_input_name,"file");
-			input.addEventListener('change', setting.onchange, false);
+			input.addEventListener('change', function(event){
+				setting.onchange(event);
+
+				//by default, reset the file input element after onchange has happened
+				//except when the caller sets reset_after_onchange = false
+				if (setting.reset_after_onchange === false){
+					return;
+				}
+
+				else {
+					input.value = "";
+				}
+
+			}, false);
 			dom.br(parent);
 		},
 		
