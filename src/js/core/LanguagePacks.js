@@ -291,7 +291,7 @@ APP.languages[2] = {
 		},
 		
 		main: {
-			on: "Encendido",
+			on: "Prendido",
 			off: "Apagado",
 			ok: "OK",
 			
@@ -437,4 +437,106 @@ APP.languages[3] = {
 		}
 	}
 	
+};
+
+
+APP.languages[4] = {
+
+    id: "chinese",
+    name: "中文",
+    code: "中文",
+
+    terms: {
+        "settings": {
+            "settings": "设置",
+            "profile": "模式",
+            "auto_save": "自动保存",
+            "off": "关闭",
+            "every_30_seconds": "每 30 秒",
+            "every_60_seconds": "每 60 秒",
+            "every_5_minutes": "每 5 分钟",
+            "every_10_minutes": "每 10 分钟",
+            "load_project": "加载项目",
+            "load_project_description": "加载一个带有CMDIMaker项目数据的CMP文件.",
+            "delete_recall_data": "删除缓存数据",
+            "delete_recall_data_description": "CMDI Maker把你输入的信息保存在浏览器数据库里。即使你关闭浏览器，数据依然得到保存。<br>然而，如果使用自动保存，新的数据会自动保存下来。<br>这个功能只删除活动模式的数据！",
+            "hard_reset": "硬重置",
+            "hard_reset_description": "硬重置删除所有CMDIMaker曾经保存在你电脑上的数据。",
+            "program_language": "界面语言",
+            "no_project_data_found_in_file": "文件里面没有CMDIMaker数据！",
+            "internationalization": "国际化",
+            "internationalization_description": "察看，编辑和创制新的CMDIMaker语言包，察看在所有不同语言中的GUI术语。"
+        },
+        "save_and_recall": {
+            "active_profile_data_deleted": "活动模式的缓存数据删除了！",
+            "no_data_found": "找不到活动模式的数据！",
+            "form_saved": "窗体保存了！",
+            "no_data_to_save_no_profile_loaded": "没有可以保存的数据因为没上载模式。"
+        },
+        "confirm": {
+            "no": "否",
+            "yes_delete_everything": "是, 删除所有数据",
+            "yes_overwrite_data": "是, 覆盖数据",
+            "overwrite_data": "确定吗？<br>你要覆盖所有数据吗？",
+            "hard_reset": "确定吗？<br>你要硬重置CMDIMaker？你所有的参与者和其他东西将被删除！"
+        },
+        "main": {
+            "on": "开",
+            "off": "关",
+            "ok": "确定",
+            "welcome_back": "欢迎回来！",
+            "about": "关于",
+            "save": "保存",
+            "export_to_file": "导出项目到文件",
+            "save_to_file": "保存项目到文件",
+            "open_file": "打开项目文件",
+            "abort": "中止",
+            "reset_form": "重置窗体",
+            "form_reset": "窗体重置",
+            "really_reset_form": "你真的要删除所有窗体数据吗？",
+            "yes_delete_form": "是, 删除窗体",
+            "no": "否",
+            "help": "帮助"
+        },
+        "start": {
+            "greeting_text": "欢迎使用CMDIMaker!<br>请注意，这是一个离线应用。 可以在没有网络的环境下使用。<br>你加载这个页面的时候，你可以从上次离开的地方开始。",
+            "and_lets_go__before_link": "然后",
+            "and_lets_go__link": "开始",
+            "and_lets_go__after_link": "！",
+            "is_supported_by": "CMDIMaker得到了这些机构的支持：",
+            "need_help": "需要帮助？",
+            "help_pages_description": "在帮助页面你会看到<a href='http://cmdi-maker.uni-koeln.de/help/'>用几种语言拍摄的视频教程</a>, <a href='http://cmdi-maker.uni-koeln.de/help/#faq'>常见问题 （英文）</a>, <a href='https://lists.uni-koeln.de/mailman/listinfo/cmdi-maker-news'>邮件列表</a>, <a href='http://cmdi-maker.uni-koeln.de/help/#contact'>邮件支持</a> 还有更多！",
+            "select_your_profile": "选择模式",
+            "this_is": {
+                "before_language": "这是",
+                "after_language": "！"
+            },
+            "you_are_now_using_version__before_version_number": "你现在使用CMDIMaker",
+            "you_are_now_using_version__after_version_number": "的版本。"
+        },
+        "language_search": {
+            "or_type_in_iso_code": "或者键入ISO代码",
+            "search": "搜索"
+        },
+        "forms": {
+            "drag_and_drop_files_here": "将文件拖放到这里",
+            "this_character_is_not_allowed_here": "这里禁用这个字！"
+        },
+        "languages": {
+            "set_global_languages_of_content": "设置内容的整体语言",
+            "language_search": "语言搜索",
+            "result": "结果",
+            "results": "结果",
+            "language_name": "语言名称",
+            "is_new_global": "增添在整体内容语言。",
+            "iso_code": "ISO代码",
+            "not_found_in_db": "在数据库中找不到",
+            "specify_search_request_at_least_3_chars": "请具体输入搜索请求. 至少键入三个字符。",
+            "primary_language": "主要语言",
+            "mother_tongue": "母语",
+            "current_content_languages": "当前内容语言",
+            "content_language_removed__before_lang": "内容语言 \"",
+            "content_language_removed__after_lang": "\"移除了"
+        }
+    }
 };
