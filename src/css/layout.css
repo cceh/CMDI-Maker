@@ -86,6 +86,24 @@ color: #4D87C7;
 }
 
 
+/* play button */
+#link_lets_go {
+	position: relative;
+    top: -35px;
+    right: -96px;
+    height: 1.8em;
+    width: 1.8em;
+    webkit-transition: opacity .25s ease;
+	-moz-transition: opacity .25s ease;
+}
+
+
+#link_lets_go:hover {
+   	opacity: 0.2;
+	filter: alpha(opacity=30); /* for IE 8, 9 */
+}
+
+
 #about_img{
 	width: 128px;
 	height: 128px;
