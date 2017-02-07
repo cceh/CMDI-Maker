@@ -1,6 +1,5 @@
 CACHE MANIFEST
 
-
 CACHE:
 index.html
 styles/styles.css
@@ -47,6 +46,7 @@ img/icons/minus.png
 img/icons/network.png
 img/icons/open.png
 img/icons/pie_chart.png
+img/icons/play.png
 img/icons/plus.png
 img/icons/refresh.png
 img/icons/reset.png
@@ -72,7 +72,6 @@ lido_environment.js
 imdi_environment.css
 eldp_environment.css
 lido_environment.css
-
 
 NETWORK:
 *
